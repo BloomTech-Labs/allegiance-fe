@@ -5,13 +5,13 @@ import createHistory from "history/createBrowserHistory";
 import "./App.css";
 
 import Home from "./components/Home"
-import Analytics from "./components//analytics/Analytics"
+import Analytics from "./components/analytics/Analytics"
 
 const history = createHistory();
 ReactGA.initialize("UA-145774968-1");
 history.listen((location, action) => {
-	ReactGA.pageview(window.location.pathname + window.location.search);
-	console.log(window.location.pathname);
+	ReactGA.pageview(location.pathname + location.search);
+	console.log(location.pathname);
 });
 
 function App() {
