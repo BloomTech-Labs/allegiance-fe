@@ -5,7 +5,7 @@ import createHistory from "history/createBrowserHistory";
 import "./App.css";
 
 const history = createHistory();
-ReactGA.initialize("UA-145774968-0");
+ReactGA.initialize("UA-145774968-1");
 history.listen((location, action) => {
 	ReactGA.pageview(location.pathname + location.search);
 	console.log(location.pathname);
