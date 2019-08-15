@@ -10,8 +10,8 @@ import Analytics from "./components//analytics/Analytics"
 const history = createHistory();
 ReactGA.initialize("UA-145774968-1");
 history.listen((location, action) => {
-	ReactGA.pageview(location.pathname + location.search);
-	console.log(location.pathname);
+	ReactGA.pageview(window.location.pathname + window.location.search);
+	console.log(window.location.pathname);
 });
 
 function App() {
