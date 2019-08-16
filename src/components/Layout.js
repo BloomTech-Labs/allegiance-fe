@@ -12,7 +12,7 @@ const Layout = () => {
     }, [])
 
     return (
-        <div>{this.props.children}</div>
+        <div></div>
     )
 
 }

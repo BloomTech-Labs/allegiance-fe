@@ -1,20 +1,24 @@
 import React, { useEffect } from "react";
-import { Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
+import { initGA, logPageView } from "./components/analytics/Analytics"
+
 import Home from "./components/Home"
-import Layout from "./components/Layout"
 
 function App() {
 
+	useEffect(() => {
+		if (!window.GA_INITIALIZED) {
+			initGA()
+			window.GA_INITIALIZED = true
+		}
+		logPageView()
+	}, [])
+
 	return (
-		<Router>
-			<Layout>
-				<div className="App">
-					<Route exact path='/' component={Home} />
+		<div className="App">
+			Home
 				</div>
-			</Layout>
-		</Router>
 	);
 }
 
