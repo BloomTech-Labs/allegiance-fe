@@ -1,23 +1,24 @@
-import React from "react";
-import { Router, Route, Switch } from "react-router-dom";
-import ReactGA from "react-ga";
-import createHistory from "history/createBrowserHistory";
+import React, { useEffect } from "react";
 import "./App.css";
 
-const history = createHistory();
-ReactGA.initialize("UA-145774968-1");
-history.listen((location, action) => {
-	ReactGA.pageview(location.pathname + location.search);
-	console.log(location.pathname);
-});
+import { initGA, logPageView } from "./components/analytics/Analytics"
+
+import Home from "./components/Home"
 
 function App() {
+
+	useEffect(() => {
+		if (!window.GA_INITIALIZED) {
+			initGA()
+			window.GA_INITIALIZED = true
+		}
+		logPageView()
+	}, [])
+
 	return (
-		<Router history={history}>
-			<div className="App">
-				<header className="App-header">Welcome to Allegiance</header>
-			</div>
-		</Router>
+		<div className="App">
+			Home
+				</div>
 	);
 }
 
