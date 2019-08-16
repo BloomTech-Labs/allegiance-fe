@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@testing-library/react": "^9.1.2",
+    "cypress": "^3.4.1",
     "jest": "^24.8.0",
     "jest-dom": "^4.0.0"
   },
