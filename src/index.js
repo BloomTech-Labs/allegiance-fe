@@ -5,12 +5,17 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { BrowserRouter as Router } from "react-router-dom";
+import mixpanel from 'mixpanel-browser';
+import { MixpanelProvider } from 'react-mixpanel';
 
+mixpanel.init("0a656753e6651e53814b19a9ad2bc9c5");
 
 ReactDOM.render(
-    <Router>
-        <App />
-    </Router>,
+    <MixpanelProvider mixpanel={mixpanel}>
+        <Router>
+            <App />
+        </Router>
+    </MixpanelProvider>,
     document.getElementById("root")
 );
 

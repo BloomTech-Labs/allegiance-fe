@@ -3,6 +3,8 @@ import "./App.css";
 
 import { initGA, logPageView } from "./components/analytics/Analytics"
 
+import Test from './components/Test'
+import Mixpanel from './components/analytics/Mixpanel'
 
 function App() {
 
@@ -16,7 +18,7 @@ function App() {
 
 	return (
 		<div className="App">
-			Home
+			<Mixpanel component={Test} />
 		</div>
 	);
 }
