@@ -1,12 +1,11 @@
-import React from "react"
+import ReactGA from "react-ga"
 
-function Analytics() {
-    return (
-        <div>
-            Analytics check
-        </div>
-    )
+export const initGA = () => {
+    ReactGA.initialize("UA-145774968-1")
 }
 
-export default Analytics;
+export const logPageView = () => {
+    ReactGA.set({ page: window.location.pathname })
+    ReactGA.pageview(window.location.pathname)
+}
 
