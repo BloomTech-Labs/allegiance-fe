@@ -26,10 +26,10 @@ const onRedirectCallback = appState => {
 
 ReactDOM.render(
 	<Auth0Provider
-		domain={config.domain || process.env.DOMAIN}
-		client_id={config.clientId || process.env.CLIENTID}
+		domain={process.env.DOMAIN || config.domain}
+		client_id={process.env.CLIENTID|| config.clientId}
 		redirect_uri={window.location.origin}
-		audience={config.audience || process.env.AUDIENCE}
+		audience={process.env.AUDIENCE || config.audience}
 		onRedirectCallback={onRedirectCallback}
 	>
 		<MixpanelProvider mixpanel={mixpanel}>
