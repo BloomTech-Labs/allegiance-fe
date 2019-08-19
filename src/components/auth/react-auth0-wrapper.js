@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 
-//Overwrites browsing history so that if user presses back button, it skips auth0 login page
+// Overwrites browsing history so that if user presses back button, it skips auth0 login page
 const DEFAULT_REDIRECT_CALLBACK = () =>
 	window.history.replaceState({}, document.title, window.location.pathname);
 
+// Auth0 code for implementation
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
 export const Auth0Provider = ({
