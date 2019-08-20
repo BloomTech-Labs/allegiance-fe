@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./components/auth/react-auth0-wrapper";
-import config from "./config/auth_config.json";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import mixpanel from "mixpanel-browser";
@@ -26,10 +25,10 @@ const onRedirectCallback = appState => {
 
 ReactDOM.render(
 	<Auth0Provider
-		domain={config.domain}
-		client_id={config.clientId}
+		domain={process.env.REACT_APP_DOMAIN}
+		client_id={process.env.REACT_APP_CLIENTID}
+		audience={process.env.REACT_APP_AUDIENCE}
 		redirect_uri={window.location.origin}
-		audience={config.audience}
 		onRedirectCallback={onRedirectCallback}
 	>
 		<MixpanelProvider mixpanel={mixpanel}>
