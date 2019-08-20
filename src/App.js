@@ -5,7 +5,6 @@ import "./App.css";
 import PrivateRoute from "./components/PrivateRoute";
 
 import { initGA, logPageView } from "./components/analytics/Analytics";
-import Mixpanel from "./components/analytics/Mixpanel";
 
 import { useAuth0 } from "./components/auth/react-auth0-wrapper";
 
@@ -31,16 +30,15 @@ function App() {
 
 	return (
 		<div className="App">
-			<Mixpanel component={NavBar} />
-			<Route exact path="/" component={() => <Mixpanel component={Test} />} />
+			<NavBar />
+			<Route exact path="/" component={Test} />
 			<PrivateRoute
 				path="/profile"
-				component={() => <Mixpanel component={Profile} />}
+				component={Profile}
 			/>
 			<PrivateRoute
 				path="/external-api"
-				component={() => <Mixpanel component={ExternalApi} />}
-			/>
+				component={ExternalApi} />
 		</div>
 	);
 }
