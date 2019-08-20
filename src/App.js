@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import "./App.css";
 
 import PrivateRoute from "./components/PrivateRoute";
@@ -31,14 +31,11 @@ function App() {
 	return (
 		<div className="App">
 			<NavBar />
-			<Route exact path="/" component={Test} />
-			<PrivateRoute
-				path="/profile"
-				component={Profile}
-			/>
-			<PrivateRoute
-				path="/external-api"
-				component={ExternalApi} />
+			<Switch>
+				<Route exact path="/" component={Test} />
+				<PrivateRoute exact path="/profile" component={Profile} />
+				<PrivateRoute exact path="/external-api" component={ExternalApi} />
+			</Switch>
 		</div>
 	);
 }

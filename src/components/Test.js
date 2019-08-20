@@ -1,18 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-import { Mixpanel } from './analytics/Mixpanel';
+import { Mixpanel } from "./analytics/Mixpanel";
 
-const Test = (props) => {
+const Test = () => {
+	const [data, setData] = useState({ users: [] });
 
-    useEffect(() => {
-        Mixpanel.track('Hello mixpanel!');
-    }, [])
+	useEffect(() => {
+		Mixpanel.track("Hello mixpanel!");
+	}, []);
 
-    return (
-        <div>
-            Hi
-        </div>
-    )
-}
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await axios(
+				"https://labs15-allegiance.herokuapp.com/users"
+			);
+			console.log(result);
+			setData(result.data);
+		};
+
+		fetchData();
+	}, []);
+
+	console.log(data);
+
+	return (
+		<div>
+			{data.users.map(user => (
+				<div key={user.id}>
+					{user.username}, {user.email}, {user.location}
+				</div>
+			))}
+		</div>
+	);
+};
 
 export default Test;
