@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import mixpanel from "mixpanel-browser"
+
+import { Mixpanel } from './analytics/Mixpanel';
 
 const Test = (props) => {
 
     useEffect(() => {
-        mixpanel.track('Hello mixpanel!');
+        Mixpanel.track('Hello mixpanel!');
     }, [])
 
     return (

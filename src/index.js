@@ -6,10 +6,6 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./components/auth/react-auth0-wrapper";
 
 import { BrowserRouter as Router } from "react-router-dom";
-import mixpanel from "mixpanel-browser";
-import { MixpanelProvider } from "react-mixpanel";
-
-mixpanel.init("0a656753e6651e53814b19a9ad2bc9c5");
 
 // A function that routes the user to the right place
 // after login
@@ -31,11 +27,9 @@ ReactDOM.render(
 		redirect_uri={window.location.origin}
 		onRedirectCallback={onRedirectCallback}
 	>
-		<MixpanelProvider mixpanel={mixpanel}>
-			<Router>
-				<App />
-			</Router>
-		</MixpanelProvider>
+		<Router>
+			<App />
+		</Router>
 	</Auth0Provider>,
 	document.getElementById("root")
 );
