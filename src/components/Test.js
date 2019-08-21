@@ -15,8 +15,8 @@ const Test = () => {
     const fetchData = async () => {
       const token = await getTokenSilently();
       const result = await axios(
-        "http://localhost:5000/users",
-        // "https://labs15-allegiance.herokuapp.com/users"
+        // "http://localhost:5000/users",
+        "https://labs15-allegiance-staging.herokuapp.com/users",
         {
           headers: {
             Authorization: `Bearer ${token}`
