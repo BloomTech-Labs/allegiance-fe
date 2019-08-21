@@ -1,14 +1,18 @@
-import { START } from "../actions"
+import { LOGIN } from "../actions"
 
 const initialState = {
-    users: ["nah"]
+    user: ["nah"],
+    loggedInUser: "",
+    error: ""
 }
 
 export const userReducer = (state = initialState, action) => {
     switch (action.type) {
-        case START:
+        case LOGIN:
             return {
-                ...state
+                ...state,
+                loggedInUser: action.payload,
+                error: ""
             }
         default:
             return state;
