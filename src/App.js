@@ -12,6 +12,7 @@ import Test from "./components/Test";
 import Profile from "./components/profile/Profile";
 import NavBar from "./components/nav/NavBar";
 import ExternalApi from "./components/ExternalApi";
+import TestRedux from "./components/TestRedux";
 
 function App() {
 	useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
 	return (
 		<div className="App">
 			<NavBar />
+			<Route path="/" component={TestRedux} />
 			<Switch>
 				<Route exact path="/" component={Test} />
 				<PrivateRoute exact path="/profile" component={Profile} />

@@ -5,6 +5,12 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./components/auth/react-auth0-wrapper";
 
+import { Provider } from "react-redux"
+import { createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
+import logger from "redux-logger"
+import rootReducer from "./reducers"
+
 import { BrowserRouter as Router } from "react-router-dom";
 
 // A function that routes the user to the right place
@@ -19,6 +25,8 @@ const onRedirectCallback = appState => {
 	);
 };
 
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+
 ReactDOM.render(
 	<Auth0Provider
 		domain={process.env.REACT_APP_DOMAIN}
@@ -27,9 +35,11 @@ ReactDOM.render(
 		redirect_uri={window.location.origin}
 		onRedirectCallback={onRedirectCallback}
 	>
-		<Router>
-			<App />
-		</Router>
+		<Provider store={store}>
+			<Router>
+				<App />
+			</Router>
+		</Provider>
 	</Auth0Provider>,
 	document.getElementById("root")
 );
