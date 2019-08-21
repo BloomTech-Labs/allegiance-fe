@@ -31,8 +31,8 @@ function App() {
       axios
 
         .post(
-          "http://localhost:5000/auth",
-          // "https://labs15-allegiance.herokuapp.com/auth"
+          //"http://localhost:5000/auth",
+          "https://labs15-allegiance.herokuapp.com/auth",
           {
             email: user.email,
             location: 90210

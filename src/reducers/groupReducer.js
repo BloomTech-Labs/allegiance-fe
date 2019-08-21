@@ -1,4 +1,4 @@
-import { START } from "../actions"
+import { LOGIN } from "../actions"
 
 const initialState = {
     groups: []
@@ -6,7 +6,7 @@ const initialState = {
 
 export const groupReducer = (state = initialState, action) => {
     switch (action.type) {
-        case START:
+        case LOGIN:
             return {
                 ...state
             }
