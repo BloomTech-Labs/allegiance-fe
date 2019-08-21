@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux"
 
 import "./App.css";
 
@@ -16,8 +17,15 @@ import NavBar from "./components/nav/NavBar";
 import ExternalApi from "./components/ExternalApi";
 import TestRedux from "./components/TestRedux";
 
+import { LOGIN } from "./actions"
+
 function App() {
+
+
+  const dispatch = useDispatch()
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const { loading, user, isAuthenticated } = useAuth0();
+
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
       initGA();
@@ -27,22 +35,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      axios
+    if (isAuthenticated && !loggedInUser && user) {
+      const registerUser = async () => {
+        const result = await axios
+          .post("https://labs15-allegiance-staging.herokuapp.com/auth",
+            { email: user.email })
+        dispatch({ type: LOGIN, payload: result.data.currentUser })
+      }
+      registerUser();
 
-        .post(
-          //"http://localhost:5000/auth",
-          "https://labs15-allegiance.herokuapp.com/auth",
-          {
-            email: user.email,
-            location: 90210
-          }
-        )
-        .then(res => {
-          console.log(res);
-        });
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, loggedInUser, dispatch]);
 
   if (loading) {
     return <div>Loading App...</div>;
