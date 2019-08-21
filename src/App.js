@@ -29,10 +29,15 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && user) {
       axios
-        .post("http://localhost:5000/users", {
-          email: user.email,
-          location: 90210
-        })
+
+        .post(
+          "http://localhost:5000/auth",
+          // "https://labs15-allegiance.herokuapp.com/auth"
+          {
+            email: user.email,
+            location: 90210
+          }
+        )
         .then(res => {
           console.log(res);
         });
