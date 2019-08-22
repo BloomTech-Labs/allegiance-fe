@@ -1,55 +1,37 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
-import axios from "axios"
 import useGetToken from "../utils/useGetToken";
 
 const GroupList = () => {
-    const [data, setData] = useState();
+  const [data, setData] = useState({ groups: [] });
 
-    const [token] = useGetToken();
+  const [token] = useGetToken();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const groups = await axiosWithAuth([token]).post(
+        "http://localhost:5000/api/groups",
+        {
+          group_name: ""
+        }
+      );
+      setData({ groups: groups.data.groupByFilter });
+    };
 
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const groups = await axios.post("https://labs15-allegiance-staging.herokuapp.com/api/groups", { group_name: "Cha" });
-            setData(groups.data);
-        };
-
-        fetchData();
-    }, [token]);
-
-    console.log(data);
-
-    if (!data) {
-        return <div>Loading App...</div>;
-    }
-
-    return (
-        <div className="group-list">
-            {data.groupByFilter.map(group => {
-                return <div className="group" key={group.id}> {group.group_name} </div>;
-            })}
-        </div>
-    );
+    fetchData();
+  }, [token]);
+  console.log(data);
+  if (!data.groups) {
+    return <div>Loading Groups...</div>;
+  }
+  //Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
+  return (
+    <div className="group-list">
+      {data.groups.map(group => {
+        return <div className="group"> {group.group_name} </div>;
+      })}
+    </div>
+  );
 };
 
 export default GroupList;
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//       const groups = await axiosWithAuth(token).get("/groups");
-//       setData(groups.data);
-//     };
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//       const groups = await axios.get("http://localhost:5000/api/groups");
-//       setData(groups.data);
-//     };
-
-//useEffect(() => {
-  //  const fetchData = async () => {
-    ///    const groups = await axiosWithAuth([token]).get("/groups", { body: { group_name: "Chargers" } });
-       // setData(groups.data);
-    //};
