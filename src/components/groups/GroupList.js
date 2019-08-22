@@ -10,16 +10,24 @@ const GroupList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const groups = await axios.get("http://localhost:5000/api/groups");
-      setData(groups.data);
+      const groups = await axiosWithAuth([token]).post(
+        "http://localhost:5000/api/groups",
+        {
+          group_name: ""
+        }
+      );
+      setData({ groups: groups.data.groupByFilter });
     };
 
     fetchData();
   }, [token]);
   console.log(data);
+  if (!data.groups) {
+    return <div>Loading Groups...</div>;
+  }
   return (
     <div className="group-list">
-      {data.groupByFilter.map(group => {
+      {data.groups.map(group => {
         return <div className="group"> {group.group_name} </div>;
       })}
     </div>
