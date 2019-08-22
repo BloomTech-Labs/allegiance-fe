@@ -17,7 +17,9 @@ const Test = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const users = await axiosWithAuth([token]).get('users')
+
+      const users = await axiosWithAuth([token]).get('/users')
+
       setData(users.data)
     };
     fetchData();
