@@ -35,15 +35,3 @@ const GroupList = () => {
 };
 
 export default GroupList;
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//       const groups = await axiosWithAuth(token).get("/groups");
-//       setData(groups.data);
-//     };
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//       const groups = await axios.get("http://localhost:5000/api/groups");
-//       setData(groups.data);
-//     };

@@ -19,6 +19,7 @@ import TestRedux from "./components/TestRedux";
 import GroupList from "./components/groups/GroupList";
 
 import { LOGIN } from "./actions";
+import GroupList from "./components/groups/GroupList";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function App() {
     if (isAuthenticated && !loggedInUser && user) {
       const registerUser = async () => {
         const result = await axios.post(
-          "https://labs15-allegiance-staging.herokuapp.com/api/auth",
+          "https://labs15-allegiance-staging.herokuapp.com/api/auth/",
           { email: user.email }
         );
         dispatch({ type: LOGIN, payload: result.data.currentUser });
@@ -56,8 +57,8 @@ function App() {
       <Route path="/" component={TestRedux} />
       <Switch>
         <Route exact path="/" component={Test} />
-        <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/groups" component={GroupList} />
+        <PrivateRoute exact path="/profile" component={Profile} />
       </Switch>
     </div>
   );
