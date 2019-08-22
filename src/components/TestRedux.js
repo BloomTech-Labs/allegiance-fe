@@ -2,9 +2,9 @@ import React from "react"
 import { useSelector } from 'react-redux'
 
 const TestRedux = () => {
-    const users = useSelector(state => state.userReducer.loggedInUser);
+    const user = useSelector(state => state.userReducer.loggedInUser);
 
-    console.log(users)
+    console.log(user)
 
     return (
         <div />
