@@ -18,6 +18,7 @@ import ExternalApi from "./components/ExternalApi";
 import TestRedux from "./components/TestRedux";
 
 import { LOGIN } from "./actions"
+import GroupList from "./components/groups/GroupList";
 
 function App() {
 
@@ -34,16 +35,17 @@ function App() {
     logPageView();
   }, []);
 
+
   useEffect(() => {
     if (isAuthenticated && !loggedInUser && user) {
+
       const registerUser = async () => {
         const result = await axios
-          .post("https://labs15-allegiance-staging.herokuapp.com/auth",
+          .post("https://labs15-allegiance-staging.herokuapp.com/api/auth/",
             { email: user.email })
         dispatch({ type: LOGIN, payload: result.data.currentUser })
       }
       registerUser();
-
     }
   }, [isAuthenticated, user, loggedInUser, dispatch]);
 
@@ -57,8 +59,8 @@ function App() {
       <Route path="/" component={TestRedux} />
       <Switch>
         <Route exact path="/" component={Test} />
+        <PrivateRoute exact path="/groups" component={GroupList} />
         <PrivateRoute exact path="/profile" component={Profile} />
-        <PrivateRoute exact path="/external-api" component={ExternalApi} />
       </Switch>
     </div>
   );

@@ -5,6 +5,9 @@ export const axiosWithAuth = (token) => {
         headers: {
             Authorization: `Bearer ${token}`
         },
-        baseURL: "https://labs15-allegiance.herokuapp.com/"
+        baseURL: "https://labs15-allegiance-staging.herokuapp.com/api"
     })
 }
+
+// baseURL: "https://labs15-allegiance.herokuapp.com/api"
+// baseURL: "https://labs15-allegiance-staging.herokuapp.com/api/"

@@ -1,22 +1,16 @@
-import React from "react";
-import { useAuth0 } from "../auth/react-auth0-wrapper";
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Profile = () => {
-	const { loading, user } = useAuth0();
-
-	if (loading || !user) {
-		return <div>Loading...</div>;
-	}
-
-	console.log(user);
+	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
 	return (
 		<>
-			<img src={user.picture} alt="Profile" />
+			<img src={loggedInUser.picture} alt="Profile" />
 
-			<h2>{user.name}</h2>
-			<p>{user.email}</p>
-			<code>{JSON.stringify(user, null, 2)}</code>
+			<h2>{loggedInUser.name}</h2>
+			<p>{loggedInUser.email}</p>
+			<code>{JSON.stringify(loggedInUser, null, 2)}</code>
 		</>
 	);
 };
