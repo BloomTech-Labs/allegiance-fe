@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
@@ -25,6 +24,7 @@ const GroupList = () => {
   if (!data.groups) {
     return <div>Loading Groups...</div>;
   }
+  //Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
   return (
     <div className="group-list">
       {data.groups.map(group => {

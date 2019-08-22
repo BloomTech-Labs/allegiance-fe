@@ -14,12 +14,10 @@ import { useAuth0 } from "./components/auth/react-auth0-wrapper";
 import Test from "./components/Test";
 import Profile from "./components/profile/Profile";
 import NavBar from "./components/nav/NavBar";
-import ExternalApi from "./components/ExternalApi";
 import TestRedux from "./components/TestRedux";
-import GroupList from "./components/groups/GroupList";
+import GroupContainer from "./components/groups/GroupList";
 
 import { LOGIN } from "./actions";
-import GroupList from "./components/groups/GroupList";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,7 +55,7 @@ function App() {
       <Route path="/" component={TestRedux} />
       <Switch>
         <Route exact path="/" component={Test} />
-        <PrivateRoute exact path="/groups" component={GroupList} />
+        <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
       </Switch>
     </div>
