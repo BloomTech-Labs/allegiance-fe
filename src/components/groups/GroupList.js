@@ -13,7 +13,8 @@ const GroupList = () => {
 				"https://labs15-allegiance-staging.herokuapp.com/api/groups",
 				// "http://localhost:5000/api/groups",
 				{
-					group_name: ""
+					column: "group_name",
+					row: ""
 				}
 			);
 			setData({ groups: groups.data.groupByFilter });
