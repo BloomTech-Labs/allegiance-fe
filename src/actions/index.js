@@ -1,6 +1,5 @@
+// import axios from "axios"
 
-export const LOGIN = "LOGIN"
+export const LOGIN = "LOGIN";
 
-export const login = creds => {
-
-}
+export const login = creds => { };
