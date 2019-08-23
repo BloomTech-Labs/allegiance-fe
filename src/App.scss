@@ -54,6 +54,9 @@
 		z-index: 1;
 		background-color: white;
 		margin-top: 4.25vh;
+		.suggestion-active {
+			background-color: lightgoldenrodyellow;
+		}
 		.single-result {
 			text-decoration: none;
 			width: 100%;
