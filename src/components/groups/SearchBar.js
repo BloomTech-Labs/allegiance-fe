@@ -34,7 +34,9 @@ const SearchBar = () => {
 		const filtered = data.groups.filter(group =>
 			group.group_name.toLowerCase().includes(value.toLowerCase())
 		);
-		setResults(filtered);
+		if (value.length < 1) {
+			setResults([]);
+		} else setResults(filtered);
 	}, [data.groups, value]);
 
 	console.log(results);
