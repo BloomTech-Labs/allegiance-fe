@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-// import useForm from "../utils/useForm";
-// import { Search, Grid } from "semantic-ui-react";
+import useForm from "../utils/useForm";
 
 const SearchBar = () => {
 	const [data, setData] = useState({ groups: [] });
@@ -27,32 +26,36 @@ const SearchBar = () => {
 
 	// const [isLoading, setLoading] = useState(false);
 	const [results, setResults] = useState([]);
-	const [value, setValue] = useState("");
-	// const { values, handleChange, handleSubmit } = useForm();
+	// const [value, setValue] = useState("");
+	const { values, handleChange, handleSubmit } = useForm();
 
 	useEffect(() => {
-		const filtered = data.groups.filter(group =>
-			group.group_name.toLowerCase().includes(value.toLowerCase())
-		);
-		if (value.length < 1) {
-			setResults([]);
-		} else setResults(filtered);
-	}, [data.groups, value]);
+		if (values.text) {
+			const filtered = data.groups.filter(group =>
+				group.group_name.toLowerCase().includes(values.text.toLowerCase())
+			);
+			if (values.text.length < 1) {
+				setResults([]);
+			} else setResults(filtered);
+		}
+	}, [data.groups, values]);
 
 	console.log(results);
 
-	const handleSubmit = (e, { result }) => {
-		e.preventDefault();
-		setValue({ value: result.group_name });
-	};
+	// const handleSubmit = (e, { result }) => {
+	// 	e.preventDefault();
+	// 	setValue({ value: result.group_name });
+	// };
 
-	const handleChange = e => {
-		setValue(e.target.value);
-	};
+	// const handleChange = e => {
+	// 	setValue(e.target.value);
+	// };
 
 	if (!data.groups) {
 		return <div>Loading Groups...</div>;
 	}
+
+	console.log(values);
 
 	return (
 		<div>
@@ -63,7 +66,7 @@ const SearchBar = () => {
 					name="group_name"
 					id="group_name"
 					placeholder="Enter Group Name"
-					value={value}
+					value={values.text || ""}
 					type="text"
 					required
 				/>
