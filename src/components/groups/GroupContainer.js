@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import GroupList from "./GroupList";
+import SearchBar from "./SearchBar";
 
 function GroupContainer() {
-  return <GroupList />;
+	return (
+		<div>
+			<GroupList />
+			<SearchBar />
+		</div>
+	);
 }
 export default GroupContainer;
