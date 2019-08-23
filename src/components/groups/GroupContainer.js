@@ -6,8 +6,8 @@ import SearchBar from "./SearchBar";
 function GroupContainer() {
 	return (
 		<div>
-			<GroupList />
 			<SearchBar />
+			<GroupList />
 		</div>
 	);
 }

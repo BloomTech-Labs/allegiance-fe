@@ -29,8 +29,13 @@ const GroupList = () => {
 	//Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
 	return (
 		<div className="group-list">
+			<h1>All Groups</h1>
 			{data.groups.map(group => {
-				return <div className="group"> {group.group_name} </div>;
+				return (
+					<div className="group" key={group.id}>
+						{group.group_name}
+					</div>
+				);
 			})}
 		</div>
 	);
