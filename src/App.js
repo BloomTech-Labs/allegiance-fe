@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-import "./App.css";
+import "./App.scss";
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -16,7 +16,7 @@ import Test from "./components/Test";
 import Profile from "./components/profile/Profile";
 import NavBar from "./components/nav/NavBar";
 import GroupContainer from "./components/groups/GroupContainer";
-import MakeProfile from "./components/profile/MakeProfile"
+import MakeProfile from "./components/profile/MakeProfile";
 
 import { LOGIN } from "./actions";
 
@@ -40,9 +40,12 @@ function App(props) {
           "https://labs15-allegiance-staging.herokuapp.com/api/auth/",
           { email: user.email }
         );
-        dispatch({ type: LOGIN, payload: result.data.currentUser || result.data.newUser });
+        dispatch({
+          type: LOGIN,
+          payload: result.data.currentUser || result.data.newUser
+        });
         if (result.data.newUser) {
-          props.history.push('/makeprofile')
+          props.history.push("/makeprofile");
         }
       };
       registerUser();
@@ -58,7 +61,7 @@ function App(props) {
       <NavBar />
       <Switch>
         <Route exact path="/" component={Test} />
-        <Route exact path='/makeprofile' component={MakeProfile} />
+        <Route exact path="/makeprofile" component={MakeProfile} />
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
       </Switch>
@@ -66,4 +69,4 @@ function App(props) {
   );
 }
 
-export default withRouter(App)
+export default withRouter(App);
