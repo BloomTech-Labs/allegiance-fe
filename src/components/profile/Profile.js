@@ -7,9 +7,12 @@ const Profile = () => {
 	return (
 		<>
 			<img src={loggedInUser.picture} alt="Profile" />
-
-			<h2>{loggedInUser.name}</h2>
-			<p>{loggedInUser.email}</p>
+			<div>
+				{loggedInUser.first_name}{loggedInUser.last_name}
+				{loggedInUser.bio}
+			</div>
+			{/*<MyAllegiances/>*/}
+			{/*<MyGroups/>*/}
 			<code>{JSON.stringify(loggedInUser, null, 2)}</code>
 		</>
 	);
