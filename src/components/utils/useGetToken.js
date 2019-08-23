@@ -10,7 +10,6 @@ function useGetToken() {
         const fetchToken = async () => {
             const result = await getTokenSilently()
             setToken(result)
-            console.log(result)
         }
         fetchToken()
     })
