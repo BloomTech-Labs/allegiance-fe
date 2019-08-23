@@ -11,8 +11,9 @@ const NavBar = () => {
 			{isAuthenticated && (
 				<>
 					<Link to="/">Home</Link>&nbsp;
-					<Link to="/profile">Profile</Link>
-					<Link to="/external-api">External API</Link>
+          <Link to="/profile">Profile</Link>
+					<Link to="/groups">Groups</Link>
+					<Link to="/makeprofile">Edit Profile</Link>
 				</>
 			)}
 
@@ -27,4 +28,4 @@ const NavBar = () => {
 	);
 };
 
-export default NavBar;
+export default NavBar

@@ -5,11 +5,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./components/auth/react-auth0-wrapper";
 
-import { BrowserRouter as Router } from "react-router-dom";
-import mixpanel from "mixpanel-browser";
-import { MixpanelProvider } from "react-mixpanel";
+import { Provider } from "react-redux"
+import { createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
+import logger from "redux-logger"
+import rootReducer from "./reducers"
 
-mixpanel.init("0a656753e6651e53814b19a9ad2bc9c5");
+import { BrowserRouter as Router } from "react-router-dom";
 
 // A function that routes the user to the right place
 // after login
@@ -23,6 +25,8 @@ const onRedirectCallback = appState => {
 	);
 };
 
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+
 ReactDOM.render(
 	<Auth0Provider
 		domain={process.env.REACT_APP_DOMAIN}
@@ -31,11 +35,11 @@ ReactDOM.render(
 		redirect_uri={window.location.origin}
 		onRedirectCallback={onRedirectCallback}
 	>
-		<MixpanelProvider mixpanel={mixpanel}>
+		<Provider store={store}>
 			<Router>
 				<App />
 			</Router>
-		</MixpanelProvider>
+		</Provider>
 	</Auth0Provider>,
 	document.getElementById("root")
 );
