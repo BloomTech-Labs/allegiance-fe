@@ -16,7 +16,6 @@ const useForm = callback => {
     }));
   };
 
-  console.log(values)
   return {
     handleChange,
     handleSubmit,
@@ -24,4 +23,4 @@ const useForm = callback => {
   };
 };
 
-export default useForm
+export default useForm;
