@@ -9,12 +9,24 @@ import "../../App.scss";
 import SearchResults from "./SearchResults";
 
 const SearchBar = () => {
+	// useStates for results and is searching status
 	const [results, setResults] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
+	// token for accessing authentication required backend routes
 	const [token] = useGetToken();
-	const { values, handleChange, handleSubmit } = useForm();
+	// useForm custom hook and set timeout custom hook
+	const { values, setValues, handleChange, handleSubmit } = useForm(fillSearch);
 	const debouncedSearchTerm = useDebounce(values.group_name, 1000);
+	// useStates for handling up and down arrow key selections
+	const [activeSuggestion, setSuggestion] = useState(0);
+	// callback function to handle submit
+	function fillSearch(e, group) {
+		if (group) {
+			setValues({ group_name: group.group_name });
+		}
+	}
 
+	//useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
 	useEffect(() => {
 		const fetchData = async () => {
 			const groups = await axiosWithAuth([token]).post(
@@ -27,9 +39,10 @@ const SearchBar = () => {
 			);
 			return groups;
 		};
-
+		// If empty string in search immediately set results array to blank
+		if (values.group_name === "") setResults([]);
 		// Make sure we have a value (user has entered something in input)
-		if (debouncedSearchTerm) {
+		else if (debouncedSearchTerm) {
 			// Set isSearching state
 			setIsSearching(true);
 			// Fire off our API call
@@ -39,13 +52,10 @@ const SearchBar = () => {
 				// Set results state
 				setResults(res.data.groupByFilter);
 			});
-		} else setResults([]);
+		}
 	}, [values, token, debouncedSearchTerm]);
 
-	// const handleSubmit = (e, { result }) => {
-	// 	e.preventDefault();
-	// 	setValue({ value: result.group_name });
-	// };
+	// Handle up and down arrow keys
 
 	console.log(values);
 	console.log(results);
@@ -64,7 +74,7 @@ const SearchBar = () => {
 					type="text"
 				/>
 			</form>
-			<SearchResults results={results} />
+			<SearchResults results={results} fillSearch={fillSearch} />
 		</div>
 	);
 };
