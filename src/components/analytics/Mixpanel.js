@@ -1,14 +1,24 @@
-import React from "react";
-import { MixpanelConsumer } from 'react-mixpanel';
+import mixpanel from 'mixpanel-browser';
 
+mixpanel.init("0a656753e6651e53814b19a9ad2bc9c5");
 
-const Mixpanel = ({ component: Component }) => {
+let env_check = process.env.NODE_ENV === 'production';
 
-    return (
-        <MixpanelConsumer>
-            {mixpanel => <Component mixpanel={mixpanel} />}
-        </MixpanelConsumer>
-    )
-}
+let actions = {
+    identify: (id) => {
+        if (env_check) mixpanel.identify(id);
+    },
+    alias: (id) => {
+        if (env_check) mixpanel.alias(id);
+    },
+    track: (name, props) => {
+        if (env_check) mixpanel.track(name, props);
+    },
+    people: {
+        set: (props) => {
+            if (env_check) mixpanel.people.set(props);
+        },
+    },
+};
 
-export default Mixpanel;
+export let Mixpanel = actions;

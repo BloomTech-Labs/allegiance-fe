@@ -66,4 +66,4 @@ function App(props) {
   );
 }
 
-export default withRouter(App);
+export default withRouter(App)
