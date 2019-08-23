@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-// import useForm from "../utils/useForm";
-// import { Search, Grid } from "semantic-ui-react";
+import useForm from "../utils/useForm";
+import useDebounce from "../utils/useDebounce";
 
 const SearchBar = () => {
-	const [data, setData] = useState({ groups: [] });
-
+	const [results, setResults] = useState([]);
+	const [isSearching, setIsSearching] = useState(false);
 	const [token] = useGetToken();
+	const { values, handleChange, handleSubmit } = useForm();
+	const debouncedSearchTerm = useDebounce(values.group_name, 1000);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -16,43 +18,34 @@ const SearchBar = () => {
 				// "http://localhost:5000/api/groups",
 				{
 					column: "group_name",
-					row: ""
+					row: values.group_name
 				}
 			);
-			setData({ groups: groups.data.groupByFilter });
+			return groups;
 		};
 
-		fetchData();
-	}, [token]);
+		// Make sure we have a value (user has entered something in input)
+		if (debouncedSearchTerm) {
+			// Set isSearching state
+			setIsSearching(true);
+			// Fire off our API call
+			fetchData().then(res => {
+				// Set searching state
+				setIsSearching(false);
+				// Set results state
+				setResults(res.data.groupByFilter);
+			});
+		} else setResults([]);
+	}, [values, token, debouncedSearchTerm]);
 
-	// const [isLoading, setLoading] = useState(false);
-	const [results, setResults] = useState([]);
-	const [value, setValue] = useState("");
-	// const { values, handleChange, handleSubmit } = useForm();
+	// const handleSubmit = (e, { result }) => {
+	// 	e.preventDefault();
+	// 	setValue({ value: result.group_name });
+	// };
 
-	useEffect(() => {
-		const filtered = data.groups.filter(group =>
-			group.group_name.toLowerCase().includes(value.toLowerCase())
-		);
-		if (value.length < 1) {
-			setResults([]);
-		} else setResults(filtered);
-	}, [data.groups, value]);
-
+	console.log(values);
 	console.log(results);
-
-	const handleSubmit = (e, { result }) => {
-		e.preventDefault();
-		setValue({ value: result.group_name });
-	};
-
-	const handleChange = e => {
-		setValue(e.target.value);
-	};
-
-	if (!data.groups) {
-		return <div>Loading Groups...</div>;
-	}
+	console.log(isSearching);
 
 	return (
 		<div>
@@ -63,9 +56,8 @@ const SearchBar = () => {
 					name="group_name"
 					id="group_name"
 					placeholder="Enter Group Name"
-					value={value}
+					value={values.group_name || ""}
 					type="text"
-					required
 				/>
 			</form>
 			<div>{results.map(group => group.group_name)}</div>

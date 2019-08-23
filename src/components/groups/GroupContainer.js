@@ -4,11 +4,11 @@ import GroupList from "./GroupList";
 import SearchBar from "./SearchBar";
 
 function GroupContainer() {
-    return (
-        <div>
-            <GroupList />
-            <SearchBar />
-        </div>
-    );
+	return (
+		<div>
+			<SearchBar />
+			<GroupList />
+		</div>
+	);
 }
 export default GroupContainer;
