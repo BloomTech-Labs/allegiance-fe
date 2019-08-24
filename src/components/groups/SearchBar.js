@@ -95,7 +95,7 @@ const SearchBar = () => {
 					id="group_name"
 					placeholder="Enter Group Name"
 					value={values.group_name || ""}
-					type="text"
+					type="search"
 				/>
 			</form>
 			{/* search results component handles display of results */}
