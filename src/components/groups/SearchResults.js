@@ -2,20 +2,29 @@ import React from "react";
 
 import "../../App.scss";
 
+// Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {
 	return (
 		<div className="results-container">
-			{props.results.map(group => (
-				<div
-					key={group.id}
-					className="single-result"
-					onClick={e => {
-						props.fillSearch(e, group);
-					}}
-				>
-					{group.group_name} {group.location}
-				</div>
-			))}
+			{/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
+			{props.results.map((group, index) => {
+				let className;
+				if (index === props.activeSuggestion) {
+					className = "suggestion-active";
+				}
+				return (
+					// onClick or enter key calls fillSearch from SearchBar
+					<div
+						key={group.id}
+						className={`single-result ${className}`}
+						onClick={e => {
+							props.fillSearch(e, group);
+						}}
+					>
+						{group.group_name} {group.location}
+					</div>
+				);
+			})}
 		</div>
 	);
 };
