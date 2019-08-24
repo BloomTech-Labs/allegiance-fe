@@ -43,7 +43,7 @@ const SearchBar = () => {
 		}
 		// User pressed the down arrow
 		else if (e.keyCode === 40) {
-			if (activeSuggestion - 1 === results.length) {
+			if (activeSuggestion + 1 === results.length) {
 				return;
 			}
 			setSuggestion(activeSuggestion + 1);
