@@ -6,34 +6,36 @@ import useGetToken from "./utils/useGetToken";
 import { Mixpanel } from "./analytics/Mixpanel";
 
 const Test = () => {
-  const [data, setData] = useState({ users: [] });
+	const [data, setData] = useState({ users: [] });
 
-  useEffect(() => {
-    Mixpanel.track("Hello mixpanel!");
-  }, []);
+	useEffect(() => {
+		Mixpanel.track("Hello mixpanel!");
+	}, []);
 
-  const [token] = useGetToken();
+	const [token] = useGetToken();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const users = await axiosWithAuth([token]).get("/users");
+	console.log(token);
 
-      setData(users.data);
-    };
-    fetchData();
-  }, [token]);
+	useEffect(() => {
+		const fetchData = async () => {
+			const users = await axiosWithAuth([token]).get("/users");
 
-  console.log(data);
+			setData(users.data);
+		};
+		fetchData();
+	}, [token]);
 
-  return (
-    <div>
-      {data.users.map(user => (
-        <div key={user.id}>
-          {user.username}, {user.email}, {user.location}
-        </div>
-      ))}
-    </div>
-  );
+	console.log(data);
+
+	return (
+		<div>
+			{data.users.map(user => (
+				<div key={user.id}>
+					{user.username}, {user.email}, {user.location}
+				</div>
+			))}
+		</div>
+	);
 };
 
 export default Test;
