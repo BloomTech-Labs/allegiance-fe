@@ -17,7 +17,7 @@ import Profile from "./components/profile/Profile";
 import NavBar from "./components/nav/NavBar";
 import GroupContainer from "./components/groups/GroupContainer";
 import MakeProfile from "./components/profile/MakeProfile";
-import GroupPage from "./components/groups/GroupPage";
+import GroupPage from "./components/group-page/GroupPage";
 
 // import { LOGIN } from "./actions";
 import { LOGIN } from "./reducers/userReducer";

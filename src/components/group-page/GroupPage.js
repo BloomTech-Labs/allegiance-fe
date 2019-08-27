@@ -4,6 +4,10 @@ import useGetToken from "../utils/useGetToken";
 
 import { useSelector } from "react-redux";
 
+import GroupInfo from "./GroupInfo";
+import MembershipStatus from "./MembershipStatus";
+import GroupAllegiances from "./GroupAllegiances";
+
 import styled from "styled-components";
 import {
   Image,
@@ -21,7 +25,7 @@ const GroupPage = props => {
 
   const [group, setGroup] = useState({});
   const [allegiances, setAllegiances] = useState([]);
-  const [userType, setUserType] = useState({});
+  const [userType, setUserType] = useState("");
 
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
@@ -36,8 +40,7 @@ const GroupPage = props => {
       const response = await axiosWithAuth([token]).post(
         `/groups_users/search`,
         {
-          //   user_id: loggedInUser.id,
-          user_id: 1,
+          user_id: loggedInUser.id,
           group_id: id
         }
       );
@@ -49,39 +52,11 @@ const GroupPage = props => {
     fetchDataUserType();
   }, [token, id, loggedInUser]);
 
-  console.log("group:", group);
-  console.log("LIU", loggedInUser.id);
-  console.log("userType", userType);
   return (
     <GroupPageContainer>
-      <GroupInfoDiv>
-        <h1 className="h1">{group.group_name}</h1>
-        <h3>{group.privacy_setting}</h3>
-
-        <h3>Groups Allegiances</h3>
-        {/* <div>{allegiances.map(al => al.name)}</div> */}
-        <LogoHolder>
-          {allegiances.map(al => (
-            <div key={al.id}>
-              <Popup trigger={<Image src={al.image} size="mini" circular />} />
-              {al.name}
-            </div>
-          ))}
-        </LogoHolder>
-      </GroupInfoDiv>
-      <GroupMemberStatus>
-        {Object.keys(userType).length && (
-          <>
-            {userType === "admin" && (
-              <>
-                <Button>Admin</Button>
-              </>
-            )}
-          </>
-        )}
-        <Button>Join Group</Button>
-        {/* {(Object.keys(userType).length) ? userType : <Button>Join Group</Button>} */}
-      </GroupMemberStatus>
+      <GroupInfo group={group} />
+      <MembershipStatus userType={userType} />
+      <GroupAllegiances allegiances={allegiances} />
       <Divider />
 
       <PostsContainer>{/* posts go here */}</PostsContainer>
@@ -109,17 +84,6 @@ const GroupPageContainer = styled.div`
   width: 100%;
 `;
 
-const GroupInfoDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-const LogoHolder = styled.div`
-  display: flex;
-  flexdirection: row;
-  justify-content: center;
-`;
-
 const FormContainer = styled(Form)`
   margin-top: 5vh;
   display: flex;
@@ -129,11 +93,6 @@ const FormContainer = styled(Form)`
 
 const PostsContainer = styled.div`
   display: flex;
-`;
-
-const GroupMemberStatus = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 export default GroupPage;
