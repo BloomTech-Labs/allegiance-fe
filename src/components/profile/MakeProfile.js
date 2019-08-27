@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import useForm from "../utils/useForm";
 import { Form, Button } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -6,10 +6,11 @@ import useGetToken from "../utils/useGetToken"
 import { useSelector, useDispatch } from "react-redux"
 import { LOGIN } from "../../actions";
 
-const MakeProfile = () => {
+const MakeProfile = props => {
     //Fetches logged in user's info from redux store.
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const dispatch = useDispatch();
+    const [isLoading, setLoading] = useState()
 
     //Fetches Auth0 token for axios call
     const [token] = useGetToken();
@@ -19,9 +20,15 @@ const MakeProfile = () => {
 
     //Sends user data as a put request to API to update user info.
     async function updateUser() {
+        setLoading(true)
         const result = await axiosWithAuth([token]).put(`/users/${loggedInUser.id}`, values)
         dispatch({ type: LOGIN, payload: result.data.updated })
 
+        const push = () => {
+            props.history.push("/profile")
+        }
+
+        setTimeout(push, 1000)
     }
 
     useEffect(() => {
@@ -101,7 +108,9 @@ const MakeProfile = () => {
                     name="email"
                     type="text" />
             </Form.Field>
-            <Button type='submit'>Submit</Button>
+            {isLoading
+                ? <Button loading>Submit</Button>
+                : <Button type='submit'>Submit</Button>}
         </Form>
     )
 }

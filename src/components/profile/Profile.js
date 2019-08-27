@@ -8,30 +8,41 @@ const Profile = () => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 	const loggedInAllegiances = useSelector(state => state.userReducer.loggedInAllegiances);
+	const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
 
 	return (
 		<ProfileContainer>
 			<div>
-				<div>
-					<Image src={loggedInUser.banner_image} fluid />
-				</div>
+				<Banner>
+					<BannerImage src={loggedInUser.banner_image} fluid />
+				</Banner>
 				<ImageCrop>
-					<ProfileImage src={loggedInUser.image} centered />
+					<ProfileImage src={loggedInUser.image} />
 				</ImageCrop>
-				<h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
-				<p>{loggedInUser.bio}</p>
-				<div>
+				<InfoHolder>
+					<h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
+					<p>{loggedInUser.bio}</p>
 					<div>
-						<h3>My Allegiances</h3>
+						<H3>MY ALLEGIANCES</H3>
 						<AllegianceHolder><MyAllegianceGroups content={loggedInAllegiances} /></AllegianceHolder>
 					</div>
 					<div>
-						<h3>My Groups</h3>
+						<H3>MY GROUPS</H3>
 						<div><MyAllegianceGroups content={loggedInGroups} /></div>
 					</div>
-				</div>
+					<div>
+						<Image src="" rounded />
+						<Image src="" rounded />
+					</div>
+				</InfoHolder>
 				<div>
-					{/*Posts*/}
+					<PostHeader>
+						<H3>POSTS</H3>
+						<H3 style={{ color: "lightgrey" }} onClick={() => console.log(10)}> MANAGE POSTS</H3>
+					</PostHeader>
+					<div>
+						{loggedInPosts ? loggedInPosts : <NoPosts>You haven't posted yet!</NoPosts>}
+					</div>
 				</div>
 			</div>
 		</ProfileContainer>
@@ -41,8 +52,20 @@ const Profile = () => {
 const ProfileContainer = styled.div`
 display: flex;
 justify-content: center;
-margin-top: 5rem;
+margin-top: 2rem;
 `
+
+const Banner = styled.div`
+border-bottom: 10px solid black`
+
+const BannerImage = styled(Image)`
+height: 225px !important;
+object-fit: cover`
+
+const InfoHolder = styled.div`
+margin-top: 5%;
+padding-bottom: 1rem;
+border-bottom: .5px solid lightgray;`
 
 const ImageCrop = styled.div`
 width: 150px;
@@ -50,20 +73,40 @@ height: 150px;
 position: relative;
 overflow: hidden;
 border-radius: 50%;
-margin-top: -15%;
+margin-top: -8rem;
 margin-left: auto;
 margin-right: auto;
+background-color: white;
 `
 const ProfileImage = styled(Image)`
 display: inline;
-margin: 0 auto;
 margin-left: -25%; //centers the image
 height: 100%;
 width: auto;
+max-width: none !important;
 `
 
 const AllegianceHolder = styled.div`
+margin: auto`
+
+const H3 = styled.h3`
+font-size: 1rem;
+font-weight: bold;
+margin-top: 0;
+margin-bottom: 0`
+
+const PostHeader = styled.div`
 display: flex;
-justify-content: center;`
+flex-direction: row;
+justify-content: space-between
+align-items: center;
+margin-left: 5%;
+margin-right: 5%;
+margin-top: .5rem;`
+
+const NoPosts = styled.p`
+color: lightgrey;
+font-weight: bold;
+font-size: 1rem`
 
 export default Profile;

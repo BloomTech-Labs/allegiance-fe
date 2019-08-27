@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import 'semantic-ui-css/semantic.min.css'
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./components/auth/react-auth0-wrapper";
-import 'semantic-ui-css/semantic.min.css'
+
 
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
