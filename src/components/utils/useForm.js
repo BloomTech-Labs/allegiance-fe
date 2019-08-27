@@ -19,7 +19,8 @@ const useForm = callback => {
   return {
     handleChange,
     handleSubmit,
-    values
+    values,
+    setValues
   };
 };
 

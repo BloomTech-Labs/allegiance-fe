@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import useForm from "../utils/useForm";
 import { Form, Button } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -7,16 +7,31 @@ import { useSelector, useDispatch } from "react-redux"
 import { LOGIN } from "../../actions";
 
 const MakeProfile = () => {
-
+    //Fetches logged in user's info from redux store.
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
-    const [token] = useGetToken();
-    const { values, handleChange, handleSubmit } = useForm(updateUser);
     const dispatch = useDispatch();
 
+    //Fetches Auth0 token for axios call
+    const [token] = useGetToken();
+
+    //Imports form custom hook to handle state, form entry and form submission.
+    const { values, handleChange, handleSubmit, setValues } = useForm(updateUser);
+
+    //Sends user data as a put request to API to update user info.
     async function updateUser() {
         const result = await axiosWithAuth([token]).put(`/users/${loggedInUser.id}`, values)
         dispatch({ type: LOGIN, payload: result.data.updated })
+
     }
+
+    useEffect(() => {
+        //Separates user id from user info and then sets the value of each field to the logged in user's info. This auto fills the form fields allowing user's to easily see their current info and enter slight changes without needing to re-enter the entire field.
+        let { id, ...userInfo } = loggedInUser
+        setValues(userInfo)
+    }, [loggedInUser, setValues])
+
+    console.log(values)
+
 
 
     return (
@@ -76,7 +91,7 @@ const MakeProfile = () => {
                     onChange={handleChange}
                     value={values.location || ""}
                     name="location"
-                    type="text" />
+                    type="number" />
             </Form.Field>
             <Form.Field>
                 <label>E-mail</label>
@@ -90,5 +105,6 @@ const MakeProfile = () => {
         </Form>
     )
 }
+
 
 export default MakeProfile;
