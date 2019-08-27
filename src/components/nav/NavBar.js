@@ -14,6 +14,7 @@ const NavBar = () => {
           <Link to="/profile">Profile</Link>
           <Link to="/groups">Groups</Link>
           <Link to="/makeprofile">Edit Profile</Link>
+          <Link to="/group">Group View</Link>
         </>
       )}
 
@@ -28,4 +29,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar
+export default NavBar;
