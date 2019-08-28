@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  padding-top: 15%;
 }
 
 .App-logo {
@@ -32,11 +33,14 @@
   }
 }
 
+.h1 {
+  color: #1b4570;
+}
 .search-form {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 60%;
+  width: 90%;
   position: relative;
   .form-items {
     display: flex;
@@ -53,13 +57,26 @@
     position: absolute;
     z-index: 1;
     background-color: white;
-    margin-top: 4.25vh;
+    margin-top: 12.5%;
+    .suggestion-active {
+      background-color: lightgoldenrodyellow;
+    }
     .single-result {
+      display: flex;
+      align-self: center;
+      justify-content: space-between;
+      padding: 0 5%;
       text-decoration: none;
       width: 100%;
-      color: #61dafb;
       border: 1px solid black;
-      height: 25px;
+      height: 8vh;
+      &:hover {
+        background-color: lightgoldenrodyellow;
+      }
+      .result-info {
+        display: flex;
+        align-self: center;
+      }
     }
   }
 }
