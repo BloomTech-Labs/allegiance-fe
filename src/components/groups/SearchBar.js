@@ -5,6 +5,7 @@ import useForm from "../utils/useForm";
 import useDebounce from "../utils/useDebounce";
 
 import "../../App.scss";
+import styled from "styled-components";
 
 import SearchResults from "./SearchResults";
 
@@ -87,13 +88,12 @@ const SearchBar = () => {
     <div className="search-form">
       {/* form to handle group search text from user */}
       <form className="form-items" onSubmit={handleSubmit}>
-        <label className="label">Search</label>
-        <input
+        <GroupSearch
           onChange={handleChange}
           onKeyDown={onKeyDown}
           name="group_name"
           id="group_name"
-          placeholder="Enter Group Name"
+          placeholder="Search For Group..."
           value={values.group_name || ""}
           type="search"
         />
@@ -107,5 +107,18 @@ const SearchBar = () => {
     </div>
   );
 };
+
+const GroupSearch = styled.input`
+  width: 100%;
+  height: 2.2rem;
+  padding: 1% 2%;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  margin-top: 3%;
+  box-shadow: 0px 4px 20px 0px transparent;
+`;
 
 export default SearchBar;
