@@ -1,4 +1,5 @@
-import { LOGIN } from "../actions"
+export const LOGIN = "LOGIN";
+export const UPDATE_USER = "UPDATE_USER"
 
 const initialState = {
     user: ["nah"],
@@ -36,6 +37,13 @@ const initialState = {
 export const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
+            return {
+                ...state,
+                loggedInUser: action.payload.currentUser || action.payload.newUser,
+                loggedInGroups: action.payload.basicGroupInfo,
+                error: ""
+            }
+        case UPDATE_USER:
             return {
                 ...state,
                 loggedInUser: action.payload,

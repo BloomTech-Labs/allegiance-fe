@@ -4,7 +4,7 @@ import { Form, Button } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken"
 import { useSelector, useDispatch } from "react-redux"
-import { LOGIN } from "../../actions";
+import { UPDATE_USER } from "../../reducers/userReducer";
 
 const MakeProfile = props => {
     //Fetches logged in user's info from redux store.
@@ -22,7 +22,7 @@ const MakeProfile = props => {
     async function updateUser() {
         setLoading(true)
         const result = await axiosWithAuth([token]).put(`/users/${loggedInUser.id}`, values)
-        dispatch({ type: LOGIN, payload: result.data.updated })
+        dispatch({ type: UPDATE_USER, payload: result.data.updated })
 
         const push = () => {
             props.history.push("/profile")
