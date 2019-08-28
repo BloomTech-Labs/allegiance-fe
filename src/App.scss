@@ -1,71 +1,74 @@
 .App {
-	text-align: center;
+  text-align: center;
 }
 
 .App-logo {
-	animation: App-logo-spin infinite 20s linear;
-	height: 40vmin;
-	pointer-events: none;
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
 }
 
 .App-header {
-	background-color: #282c34;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-link {
-	color: #61dafb;
+  color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
+.h1 {
+  color: #1b4570;
+}
 .search-form {
-	display: flex;
-	flex-direction: column;
-	margin: 0 auto;
-	width: 60%;
-	position: relative;
-	.form-items {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		input {
-			text-align: center;
-		}
-	}
-	.results-container {
-		display: flex;
-		width: 100%;
-		flex-direction: column;
-		position: absolute;
-		z-index: 1;
-		background-color: white;
-		margin-top: 4.25vh;
-		.suggestion-active {
-			background-color: lightgoldenrodyellow;
-		}
-		.single-result {
-			text-decoration: none;
-			width: 100%;
-			color: #61dafb;
-			border: 1px solid black;
-			height: 25px;
-			&:hover {
-				background-color: lightgoldenrodyellow;
-			}
-		}
-	}
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 60%;
+  position: relative;
+  .form-items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    input {
+      text-align: center;
+    }
+  }
+  .results-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    margin-top: 4.25vh;
+    .suggestion-active {
+      background-color: lightgoldenrodyellow;
+    }
+    .single-result {
+      text-decoration: none;
+      width: 100%;
+      color: #61dafb;
+      border: 1px solid black;
+      height: 25px;
+      &:hover {
+        background-color: lightgoldenrodyellow;
+      }
+    }
+  }
 }
