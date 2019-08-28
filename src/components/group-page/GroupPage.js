@@ -25,7 +25,7 @@ const GroupPage = props => {
 
   const [group, setGroup] = useState({});
   const [allegiances, setAllegiances] = useState([]);
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState();
 
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
@@ -46,6 +46,8 @@ const GroupPage = props => {
       );
       if (response.data.relationExists) {
         setUserType(response.data.relationExists[0].user_type);
+      } else {
+        setUserType("non-member");
       }
     };
     fetchData();

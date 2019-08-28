@@ -25,7 +25,7 @@ const MembershipStatus = props => {
           )}
         </>
       )}
-      {props.userType === "" && <Button>Join Group</Button>}
+      {props.userType === "non-member" && <Button>Join Group</Button>}
     </GroupMemberStatus>
   );
 };

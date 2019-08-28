@@ -10,7 +10,7 @@ const GroupInfo = props => {
       <LogoHolder>
         {props.allegiances.map(al => (
           <div key={al.id}>
-            <Popup trigger={<Image src={al.image} size="mini" circular />} />
+            <Image src={al.image} size="tiny" circular />
             {al.name}
           </div>
         ))}
