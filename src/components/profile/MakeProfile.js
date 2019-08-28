@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import useForm from "../utils/useForm";
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Segment } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken"
 import { useSelector, useDispatch } from "react-redux"
@@ -42,78 +42,71 @@ const MakeProfile = props => {
 
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Field>
-                <label>First Name
-                <input placeholder='First Name'
-                        onChange={handleChange}
-                        value={values.first_name || ""}
-                        name="first_name"
-                        type="text" />
-                </label>
-            </Form.Field>
-            <Form.Field>
-                <label>Last Name</label>
-                <input placeholder='Last Name'
-                    onChange={handleChange}
-                    value={values.last_name || ""}
-                    name="last_name"
-                    type="text" />
-            </Form.Field>
-            <Form.Field>
-                <label>Username</label>
-                <input placeholder='Username'
-                    onChange={handleChange}
-                    value={values.username || ""}
-                    name="username"
-                    type="text" />
-            </Form.Field>
-            <Form.Field>
-                <label>Banner Image</label>
-                <input placeholder='Banner Image'
-                    onChange={handleChange}
-                    value={values.banner_image || ""}
-                    name="banner_image"
-                    type="text" />
-            </Form.Field>
-            <Form.Field>
-                <label>Bio</label>
-                <input placeholder='Bio'
-                    onChange={handleChange}
-                    value={values.bio || ""}
-                    name="bio"
-                    type="text" />
-            </Form.Field>
-            <Form.Field>
-                <label>Profile Image</label>
-                <input placeholder='Profile Image'
-                    onChange={handleChange}
-                    value={values.image || ""}
-                    name="image"
-                    type="text" />
-            </Form.Field>
-            <Form.Field>
-                <label>Location</label>
-                <input placeholder='Location'
-                    onChange={handleChange}
-                    value={values.location || ""}
-                    name="location"
-                    type="number" />
-            </Form.Field>
-            <Form.Field>
-                <label>E-mail</label>
-                <input placeholder='E-Mail'
+        <Segment raised color='blue' style={{ width: "90%", margin: "1rem auto" }}>
+            <Form onSubmit={handleSubmit}>
+                <h1>Edit Profile</h1>
+                <Form.Input
+                    label="E-mail Address"
+                    placeholder='E-Mail'
                     onChange={handleChange}
                     value={values.email || ""}
                     name="email"
                     type="text" />
-            </Form.Field>
-            {isLoading
-                ? <Button loading>Submit</Button>
-                : <Button type='submit'>Submit</Button>}
-        </Form>
+                <Form.Input
+                    label="Username"
+                    placeholder='Username'
+                    onChange={handleChange}
+                    value={values.username || ""}
+                    name="username"
+                    type="text" />
+                <Form.Input
+                    label="First Name"
+                    placeholder='First Name'
+                    onChange={handleChange}
+                    value={values.first_name || ""}
+                    name="first_name"
+                    type="text" />
+                <Form.Input
+                    label="Last Name"
+                    placeholder='Last Name'
+                    onChange={handleChange}
+                    value={values.last_name || ""}
+                    name="last_name"
+                    type="text" />
+                <Form.Input
+                    label="Bio"
+                    placeholder='Bio'
+                    onChange={handleChange}
+                    value={values.bio || ""}
+                    name="bio"
+                    type="text" />
+                <Form.Input
+                    label="Location"
+                    placeholder='Location'
+                    onChange={handleChange}
+                    value={values.location || ""}
+                    name="location"
+                    type="number" />
+                <Form.Input
+                    label="Banner Image"
+                    placeholder='Banner Image'
+                    onChange={handleChange}
+                    value={values.banner_image || ""}
+                    name="banner_image"
+                    type="text" />
+                <Form.Input
+                    label="Profile Image"
+                    placeholder='Profile Image'
+                    onChange={handleChange}
+                    value={values.image || ""}
+                    name="image"
+                    type="text" />
+                {isLoading
+                    ? <Button loading>Submit</Button>
+                    : <Button type='submit'>Submit</Button>}
+            </Form>
+        </Segment>
     )
 }
-
 
 export default MakeProfile;

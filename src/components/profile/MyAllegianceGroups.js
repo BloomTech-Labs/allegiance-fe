@@ -9,7 +9,7 @@ const MyAllegianceGroups = props => {
         <LogoHolder>
             {props.content.map(item => (
                 <LogoBox key={item.id}>
-                    <Popup content={item.name} trigger={<Image src={item.image} size="mini" circular bordered />} />
+                    <Popup content={item.name} trigger={<Image src={item.image} size="tiny" circular bordered />} />
                     <Nickname>{item.nickname ? item.nickname : null}</Nickname>
                 </LogoBox>
             ))}
