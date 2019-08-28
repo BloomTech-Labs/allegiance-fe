@@ -2,7 +2,6 @@ export const LOGIN = "LOGIN";
 export const UPDATE_USER = "UPDATE_USER"
 
 const initialState = {
-    user: ["nah"],
     loggedInUser: "",
     loggedInPosts: "",
     loggedInGroups: [
