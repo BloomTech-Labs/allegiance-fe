@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
+import styled from "styled-components";
+
+import GroupCard from "./GroupCard";
 
 const GroupList = () => {
   const [data, setData] = useState({ groups: [] });
@@ -33,13 +36,19 @@ const GroupList = () => {
       <h1>All Groups</h1>
       {data.groups.map(group => {
         return (
-          <div className="group" key={group.id}>
-            <Link to={`/group/${group.id}`}>{group.group_name}</Link>
-          </div>
+          <CardListContainer key={group.id}>
+            <GroupCard group={group} />
+            {/* <Link to={`/group/${group.id}`}>{group.group_name}</Link> */}
+          </CardListContainer>
         );
       })}
     </div>
   );
 };
+
+const CardListContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 export default GroupList;
