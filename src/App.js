@@ -37,7 +37,7 @@ function App(props) {
     if (isAuthenticated && !loggedInUser && user) {
       const registerUser = async () => {
         const result = await axios.post(
-          "https://labs15-allegiance-staging.herokuapp.com/api/auth",
+          process.env.REACT_APP_AUTHURL,
           { email: user.email }
         );
         console.log(result)
