@@ -16,7 +16,6 @@ const Profile = () => {
       </div>
       {/*<MyAllegiances/>*/}
       {/*<MyGroups/>*/}
-      <code>{JSON.stringify(loggedInUser, null, 2)}</code>
     </>
   );
 };

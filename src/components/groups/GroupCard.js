@@ -1,38 +1,54 @@
 import React from "react";
-import { Image, Card } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Divider, Icon } from "semantic-ui-react";
 
 import styled from "styled-components";
 
 const GroupCard = props => {
+  const extra = (
+    <a>
+      <Icon name="users" />
+      # members <br />
+      {props.group.privacy_setting}
+    </a>
+  );
   return (
-    <GroupCardContainer>
-      {/* <CardInfo>{props.group.group_name}</CardInfo> */}
-      <Card
-        size="small"
-        header={props.group.group_name}
-        meta="Group"
-        image={props.group.image}
-      />
-      {/* <ImageCard src={props.group.image} /> */}
-    </GroupCardContainer>
+    <GroupInfoCard>
+      <Link to={`/group/${props.group.id}`}>
+        <div class="card">
+          <CardImage src={props.group.image} alt="GroupAvatar" />
+          <Divider />
+          <div class="container">
+            <h4>
+              <b>{props.group.group_name}</b>
+            </h4>
+            <p>{props.group.privacy_setting.toUpperCase()}</p>
+            <Divider />
+            <p>
+              <Icon name="users" /> # members
+            </p>
+          </div>
+        </div>
+      </Link>
+    </GroupInfoCard>
   );
 };
 
-const GroupCardContainer = styled.div`
+const GroupInfoCard = styled.div`
   display: flex;
-  justify-content: center;
-  //   width: 65%;
-  //   height: 6vh;
-  margin-bottom: 3%;
+  margin: 2%;
+  max-width: 40%;
+  box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5%;
+  &:hover {
+    box-shadow: 5px 8px 16px 5px rgba(0, 0, 0, 0.2);
+  }
 `;
 
-const ImageCard = styled(Image)`
-  display: flex;
+const CardImage = styled.img`
+  max-width: 80%;
+  height: auto;
 `;
-
-// const CardInfo = styled.div`
-//   display: flex;
-//   align-content: center;
-// `;
 
 export default GroupCard;
