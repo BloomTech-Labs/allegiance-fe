@@ -5,7 +5,6 @@ export const axiosWithAuth = token => {
     headers: {
       Authorization: `Bearer ${token}`
     },
-    // baseURL: process.env.REACT_APP_BASEURL
-    baseURL: process.env.REACT_APP_LOCALURL
+    baseURL: process.env.REACT_APP_BASEURL
   });
 };
