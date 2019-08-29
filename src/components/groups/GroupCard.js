@@ -8,20 +8,16 @@ const GroupCard = props => {
 	return (
 		<GroupInfoCard>
 			<Link to={`/group/${props.group.id}`}>
-				<div class="card">
-					<CardImage src={props.group.image} alt="GroupAvatar" />
-					<Divider />
-					<div class="container">
-						<h4>
-							<b>{props.group.group_name}</b>
-						</h4>
-						<p>{props.group.privacy_setting.toUpperCase()}</p>
-						<Divider />
-						<p>
-							<Icon name="users" /> # members
-						</p>
-					</div>
-				</div>
+				<CardImage src={props.group.image} alt="GroupAvatar" />
+				<Divider />
+				<h4>
+					<b>{props.group.group_name}</b>
+				</h4>
+				<p>{props.group.privacy_setting.toUpperCase()}</p>
+				<Divider />
+				<p>
+					<Icon name="users" /> # members
+				</p>
 			</Link>
 		</GroupInfoCard>
 	);
