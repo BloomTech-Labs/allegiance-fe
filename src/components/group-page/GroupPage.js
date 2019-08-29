@@ -18,6 +18,7 @@ const GroupPage = props => {
   const [group, setGroup] = useState({});
   const [allegiances, setAllegiances] = useState([]);
   const [userType, setUserType] = useState();
+  const [members, setMembers] = useState([]);
 
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
@@ -26,6 +27,7 @@ const GroupPage = props => {
       const response = await axiosWithAuth([token]).get(`/groups/${id}`);
       setGroup(response.data.group);
       setAllegiances(response.data.allegiances);
+      setMembers(response.data.members);
       console.log("data:", response.data);
     };
     const fetchDataUserType = async () => {
@@ -48,7 +50,7 @@ const GroupPage = props => {
 
   return (
     <GroupPageContainer>
-      <GroupInfo group={group} userType={userType} />
+      <GroupInfo group={group} userType={userType} members={members} />
       <GroupAllegiances allegiances={allegiances} />
       <SectionDivider />
 

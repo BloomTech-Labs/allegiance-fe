@@ -9,14 +9,14 @@ const GroupInfo = props => {
       <h3>Groups Allegiances</h3>
       <LogoHolder>
         {props.allegiances.map(al => (
-          <div key={al.id}>
+          <ImageHolder key={al.id}>
             {/* <Image src={al.image} size="mini" circular /> */}
             <Popup
               content="Allegiance"
               header={al.name}
-              trigger={<Image src={al.image} size="mini" avatar />}
+              trigger={<Image src={al.image} size="mini" circular bordered />}
             />
-          </div>
+          </ImageHolder>
         ))}
       </LogoHolder>
     </Allegiances>
@@ -31,6 +31,10 @@ const Allegiances = styled.div`
     margin: 0 auto;
   }
 `;
+const ImageHolder = styled.div`
+  margin: 0 0.4rem;
+`;
+
 const LogoHolder = styled.div`
   display: flex;
   flexdirection: row;

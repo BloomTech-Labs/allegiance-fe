@@ -19,7 +19,8 @@ const GroupInfo = props => {
             <Icon name="lock" />
           ) : (
             <Icon name="lock open" />
-          )}
+          )}{" "}
+          {props.members.length} Members
         </h3>
 
         <MembershipStatus userType={props.userType} />
