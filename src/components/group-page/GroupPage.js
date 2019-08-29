@@ -5,7 +5,6 @@ import useGetToken from "../utils/useGetToken";
 import { useSelector } from "react-redux";
 
 import GroupInfo from "./GroupInfo";
-import MembershipStatus from "./MembershipStatus";
 import GroupAllegiances from "./GroupAllegiances";
 
 import styled from "styled-components";
@@ -18,6 +17,7 @@ const GroupPage = props => {
 	const [group, setGroup] = useState({});
 	const [allegiances, setAllegiances] = useState([]);
 	const [userType, setUserType] = useState();
+	const [members, setMembers] = useState([]);
 
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
@@ -26,6 +26,7 @@ const GroupPage = props => {
 			const response = await axiosWithAuth([token]).get(`/groups/${id}`);
 			setGroup(response.data.group);
 			setAllegiances(response.data.allegiances);
+			setMembers(response.data.members);
 			console.log("data:", response.data);
 		};
 		const fetchDataUserType = async () => {
@@ -48,10 +49,9 @@ const GroupPage = props => {
 
 	return (
 		<GroupPageContainer>
-			<GroupInfo group={group} />
-			<MembershipStatus userType={userType} />
+			<GroupInfo group={group} userType={userType} members={members} />
 			<GroupAllegiances allegiances={allegiances} />
-			<Divider />
+			<SectionDivider />
 
 			<PostsContainer>{/* posts go here */}</PostsContainer>
 
@@ -72,7 +72,6 @@ const GroupPageContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	margin-top: 5rem;
 	width: 100%;
 `;
 
@@ -81,6 +80,10 @@ const FormContainer = styled(Form)`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+`;
+
+const SectionDivider = styled(Divider)`
+	margin: 0rem;
 `;
 
 const PostsContainer = styled.div`

@@ -1,26 +1,19 @@
 import React from "react";
+import { Image, Popup } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { Image, Popup, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 
 const MyAllegianceGroups = props => {
-	console.log(props);
 	return (
 		<LogoHolder>
-			{props.name === "groups" && (
-				<Link to="/creategroup">
-					<Popup
-						content="Create a Group"
-						trigger={<Icon size="large" name="plus square" circular />}
-					/>
-				</Link>
-			)}
 			{props.content.map(item => (
 				<LogoBox key={item.id}>
-					<Popup
-						content={item.name}
-						trigger={<Image src={item.image} size="tiny" circular bordered />}
-					/>
+					<Link to={`/group/${item.id}`}>
+						<Popup
+							content={item.name}
+							trigger={<Image src={item.image} size="tiny" circular bordered />}
+						/>
+					</Link>
 					<Nickname>{item.nickname ? item.nickname : null}</Nickname>
 				</LogoBox>
 			))}

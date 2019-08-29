@@ -113,7 +113,7 @@ const Profile = props => {
 const ProfileContainer = styled.div`
 	display: flex;
 	justify-content: center;
-	margin-top: 2rem;
+	margin-top: -4.5%;
 `;
 
 const Banner = styled.div`
