@@ -55,16 +55,14 @@ const GroupPage = props => {
       <PostsContainer>{/* posts go here */}</PostsContainer>
 
       {/* Form for adding posts to group */}
-      <Form>
-        <FormContainer>
-          <Form.Field
-            control={TextArea}
-            label="Post"
-            placeholder="write a post to the group..."
-          />
-          <Form.Field control={Button}>Submitpost</Form.Field>
-        </FormContainer>
-      </Form>
+      <FormContainer>
+        <Form.Field
+          control={TextArea}
+          label="Post"
+          placeholder="write a post to the group..."
+        />
+        <Form.Field control={Button}>Submitpost</Form.Field>
+      </FormContainer>
     </GroupPageContainer>
   );
 };

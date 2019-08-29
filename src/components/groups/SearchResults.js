@@ -18,8 +18,8 @@ const SearchResults = props => {
         return (
           // onClick or enter key calls fillSearch from SearchBar
 
-          <Link to={`/group/${group.id}`}>
-            <div key={group.id} className={`single-result ${className}`}>
+          <Link to={`/group/${group.id}`} key={group.id}>
+            <div className={`single-result ${className}`}>
               <ResultImage src={group.image} />{" "}
               <div className="result-info">{group.group_name}</div>
             </div>
