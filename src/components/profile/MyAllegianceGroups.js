@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, Popup } from 'semantic-ui-react'
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 
@@ -9,7 +10,9 @@ const MyAllegianceGroups = props => {
         <LogoHolder>
             {props.content.map(item => (
                 <LogoBox key={item.id}>
-                    <Popup content={item.name} trigger={<Image src={item.image} size="tiny" circular bordered />} />
+                    <Link to={`/group/${item.id}`}>
+                        <Popup content={item.name} trigger={<Image src={item.image} size="tiny" circular bordered />} />
+                    </Link>
                     <Nickname>{item.nickname ? item.nickname : null}</Nickname>
                 </LogoBox>
             ))}
