@@ -11,7 +11,9 @@ const NavBar = () => {
 
 	return (
 		<>
-			<TopNav>Title</TopNav>
+			<TopNav>
+				<p>Title</p>
+			</TopNav>
 			{/* If user is not authenticated, show log in button */}
 			{!isAuthenticated && (
 				<button onClick={() => loginWithRedirect({})}>Log in</button>
