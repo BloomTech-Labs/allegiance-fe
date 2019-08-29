@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 
 import styled from "styled-components";
 
@@ -10,17 +10,26 @@ const MembershipStatus = props => {
         <>
           {props.userType === "admin" && (
             <>
-              <Button>Admin</Button>
+              {/* <Button>Admin</Button> */}
+              <Label as="a" basic color="red">
+                Admin
+              </Label>
             </>
           )}
           {props.userType === "invited" && (
             <>
               <Button>Accept Invite</Button>
+              <Label as="a" basic color="green">
+                Accept Invite
+              </Label>
             </>
           )}
           {props.userType === "member" && (
             <>
-              <Button>Member</Button>
+              {/* <Button>Member</Button> */}
+              <Label as="a" basic color="blue">
+                Member
+              </Label>
             </>
           )}
         </>
