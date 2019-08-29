@@ -12,6 +12,10 @@ const NavBar = () => {
 	return (
 		<>
 			<TopNav>Title</TopNav>
+			{/* If user is not authenticated, show log in button */}
+			{!isAuthenticated && (
+				<button onClick={() => loginWithRedirect({})}>Log in</button>
+			)}
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
 				{isAuthenticated && (
@@ -22,7 +26,7 @@ const NavBar = () => {
 								name="Home"
 								to="/"
 								onClick={() => setActiveItem("Home")}
-								active={activeItem}
+								active={activeItem === "Home"}
 							>
 								<NavIcon size="large" name="home" />
 							</Menu.Item>
@@ -31,7 +35,7 @@ const NavBar = () => {
 								name="Groups"
 								to="/groups"
 								onClick={() => setActiveItem("Groups")}
-								active={activeItem}
+								active={activeItem === "Groups"}
 							>
 								<NavIcon size="large" name="group" />
 							</Menu.Item>
@@ -40,7 +44,7 @@ const NavBar = () => {
 								name="Notifications"
 								to="/notifications"
 								onClick={() => setActiveItem("Notifications")}
-								active={activeItem}
+								active={activeItem === "Notifications"}
 							>
 								<NavIcon size="large" name="bell outline" />
 							</Menu.Item>
@@ -49,7 +53,7 @@ const NavBar = () => {
 								name="Profile"
 								to="/profile"
 								onClick={() => setActiveItem("Profile")}
-								active={activeItem}
+								active={activeItem === "Profile"}
 							>
 								<NavIcon size="large" name="user" />
 							</Menu.Item>
@@ -57,7 +61,6 @@ const NavBar = () => {
 						<NavRight>
 							<Menu.Item
 								style={{ color: "white", fontWeight: "bold" }}
-								as={Link}
 								name="Logout"
 								onClick={() => logout()}
 							>
@@ -66,13 +69,6 @@ const NavBar = () => {
 						</NavRight>
 					</Nav>
 				)}
-				{/* If user is not authenticated, show log in button */}
-				{!isAuthenticated && (
-					<button onClick={() => loginWithRedirect({})}>Log in</button>
-				)}
-
-				{/* If user is authenticated, show log out button */}
-				{/* {isAuthenticated && <button onClick={() => logout()}>Log out</button>} */}
 			</BottomNav>
 		</>
 	);

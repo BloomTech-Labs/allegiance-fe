@@ -19,7 +19,6 @@ import GroupContainer from "./components/groups/GroupContainer";
 import MakeProfile from "./components/profile/MakeProfile";
 import GroupPage from "./components/group-page/GroupPage";
 
-// import { LOGIN } from "./actions";
 import { LOGIN } from "./reducers/userReducer";
 
 function App(props) {
@@ -38,12 +37,14 @@ function App(props) {
   useEffect(() => {
     if (isAuthenticated && !loggedInUser && user) {
       const registerUser = async () => {
-        const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-          email: user.email
-        });
+        const result = await axios.post(
+          process.env.REACT_APP_AUTHURL,
+          { email: user.email }
+        );
+        console.log(result)
         dispatch({
           type: LOGIN,
-          payload: result.data.currentUser || result.data.newUser
+          payload: result.data
         });
         if (result.data.newUser) {
           props.history.push("/makeprofile");
@@ -51,7 +52,7 @@ function App(props) {
       };
       registerUser();
     }
-  }, [isAuthenticated, user, loggedInUser, dispatch, props.history]);
+  });
 
   if (loading) {
     return <div>Loading App...</div>;
