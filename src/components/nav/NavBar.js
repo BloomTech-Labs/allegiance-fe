@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "../auth/react-auth0-wrapper";
-import { Menu, Icon, Popup } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 
 import styled from "styled-components";
 
@@ -12,9 +12,6 @@ const NavBar = () => {
 	return (
 		<>
 			<TopNav>
-				<Link to='/creategroup'>
-					<Popup content="Create a Group" trigger={<Icon size='large' name='plus square' />} />
-				</Link>
 				<p>Title</p>
 			</TopNav>
 			{/* If user is not authenticated, show log in button */}
