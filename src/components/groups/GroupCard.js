@@ -16,7 +16,8 @@ const GroupCard = props => {
         <p>{props.group.privacy_setting.toUpperCase()}</p>
         <Divider />
         <p>
-          <Icon name="users" /> {props.group.members.length} members
+          <Icon name="users" />{" "}
+          {props.group.members ? props.group.members.length : 0} members
         </p>
       </Link>
     </GroupInfoCard>
