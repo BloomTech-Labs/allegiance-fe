@@ -12,7 +12,13 @@ const NavBar = () => {
 	return (
 		<>
 			<TopNav>
-				<p>Title</p>
+				{window.location.pathname === "/" && <p>Home</p>}
+				{window.location.pathname === "/groups" && <p>Groups</p>}
+				{window.location.pathname.includes("/group/") && <p>Group</p>}
+				{window.location.pathname === "/creategroup" && <p>Create Group</p>}
+				{window.location.pathname === "/notifications" && <p>Notifications</p>}
+				{window.location.pathname === "/profile" && <p>Profile</p>}
+				{window.location.pathname === "/makeprofile" && <p>Edit Profile</p>}
 			</TopNav>
 			{/* If user is not authenticated, show log in button */}
 			{!isAuthenticated && (
