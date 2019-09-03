@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MembershipStatus from "./MembershipStatus";
 
 const GroupInfo = props => {
-	console.log("GROUP", props.group);
+	console.log("GroupInfo Props", props);
 
 	// define privacy variable for reusable formatting
 	const privacy = props.group.privacy_setting;
@@ -20,7 +20,7 @@ const GroupInfo = props => {
 					bordered
 					style={{ borderColor: "black" }}
 				/>
-				<MembershipStatus userType={props.userType} />
+				<MembershipStatus group_id={props.group.id} members={props.members} />
 			</ImageDiv>
 			<InfoDiv>
 				<h1>{props.group.group_name}</h1>
