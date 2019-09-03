@@ -45,7 +45,7 @@ const MakeProfile = props => {
 	console.log(values);
 
 	return (
-		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
+		<Segment raised color="blue" style={{ width: "90%", margin: "auto", marginBottom: '15%' }}>
 			<Form onSubmit={handleSubmit}>
 				<h1>Edit Profile</h1>
 				<Form.Input
@@ -115,8 +115,8 @@ const MakeProfile = props => {
 				{isLoading ? (
 					<Button loading>Submit</Button>
 				) : (
-					<Button type="submit">Submit</Button>
-				)}
+						<Button type="submit">Submit</Button>
+					)}
 			</Form>
 		</Segment>
 	);

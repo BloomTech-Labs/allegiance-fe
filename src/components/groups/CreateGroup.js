@@ -13,7 +13,7 @@ const CreateGroup = props => {
     const [token] = useGetToken();
 
     //Imports form custom hook to handle state, form entry and form submission.
-    const requestType = props.location.state.editing ? editGroup : createGroup
+    const requestType = props.location.state && props.location.state.editing === true ? editGroup : createGroup
     const { values, handleChange, handleSubmit, setValues } = useForm(requestType);
 
     async function createGroup() {
@@ -45,7 +45,7 @@ const CreateGroup = props => {
     }
 
     useEffect(() => {
-        if (props.location.state.group && props.location.state.editing) {
+        if (props.location.state && props.location.state.group && props.location.state.editing === true) {
             let { id, creator_id, ...groupInfo } = props.location.state.group
             setValues(groupInfo)
         }
@@ -70,13 +70,27 @@ const CreateGroup = props => {
                     name='location'
                     type='text' />
                 <Form.Field label='Privacy Setting' onChange={handleChange} name='privacy_setting' control='select' defaultValue={values.privacy_setting || ''}>
-                    {props.location.state.editing
+                    {props.location.state && props.location.state.editing === true
                         ? <option value={values.privacy_setting}>{values.privacy_setting}</option>
                         : <option value='' disabled hidden>Choose Privacy setting...</option>}
                     <option value='public'>Public</option>
                     <option value='private'>Private</option>
                     <option value='hidden'>Hidden</option>
                 </Form.Field>
+                <Form.Input
+                    label='Acronym'
+                    placeholder='Acronym'
+                    onChange={handleChange}
+                    value={values.acronym || ''}
+                    name='acronym'
+                    type='text' />
+                <Form.Input
+                    label='Description'
+                    placeholder='Description'
+                    onChange={handleChange}
+                    value={values.description || ''}
+                    name='description'
+                    type='text' />
                 <Form.Input
                     label='Group Image'
                     placeholder='Group Image'
