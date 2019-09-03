@@ -8,6 +8,7 @@ import styled from "styled-components";
 const NavBar = () => {
 	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 	const [activeItem, setActiveItem] = useState("");
+	console.log("navbar props:", window.location.pathname);
 
 	return (
 		<>
