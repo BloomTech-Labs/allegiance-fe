@@ -23,24 +23,28 @@ const GroupPage = props => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await axiosWithAuth([token]).get(`/groups/${id}`);
-			setGroup(response.data.group);
-			setAllegiances(response.data.allegiances);
-			setMembers(response.data.members);
-			console.log("data:", response.data);
+			if (token) {
+				const response = await axiosWithAuth([token]).get(`/groups/${id}`);
+				setGroup(response.data.group);
+				setAllegiances(response.data.allegiances);
+				setMembers(response.data.members);
+				console.log("data:", response.data);
+			}
 		};
 		const fetchDataUserType = async () => {
-			const response = await axiosWithAuth([token]).post(
-				`/groups_users/search`,
-				{
-					user_id: loggedInUser.id,
-					group_id: id
+			if (token) {
+				const response = await axiosWithAuth([token]).post(
+					`/groups_users/search`,
+					{
+						user_id: loggedInUser.id,
+						group_id: id
+					}
+				);
+				if (response.data.relationExists) {
+					setUserType(response.data.relationExists[0].user_type);
+				} else {
+					setUserType("non-member");
 				}
-			);
-			if (response.data.relationExists) {
-				setUserType(response.data.relationExists[0].user_type);
-			} else {
-				setUserType("non-member");
 			}
 		};
 		fetchData();

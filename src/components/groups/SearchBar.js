@@ -54,11 +54,13 @@ const SearchBar = () => {
 	//useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
 	useEffect(() => {
 		const fetchData = async () => {
-			const groups = await axiosWithAuth([token]).post("/groups/search", {
-				column: "group_name",
-				row: values.group_name
-			});
-			return groups;
+			if (token) {
+				const groups = await axiosWithAuth([token]).post("/groups/search", {
+					column: "group_name",
+					row: values.group_name
+				});
+				return groups;
+			}
 		};
 		// If empty string in search immediately set results array to blank
 		if (values.group_name === "") setResults([]);
