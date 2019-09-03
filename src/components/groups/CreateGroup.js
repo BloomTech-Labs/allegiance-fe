@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import useForm from "../utils/useForm";
 import { Form, Button, Segment } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -13,16 +13,16 @@ const CreateGroup = props => {
     const [token] = useGetToken();
 
     //Imports form custom hook to handle state, form entry and form submission.
-    const { values, handleChange, handleSubmit } = useForm(updateUser);
+    const requestType = props.location.state && props.location.state.editing === true ? editGroup : createGroup
+    const { values, handleChange, handleSubmit, setValues } = useForm(requestType);
 
-    async function updateUser() {
+    async function createGroup() {
         setLoading(true)
         const newGroup = {
             ...values,
             creator_id: loggedInUser.id
         }
         const result = await axiosWithAuth([token]).post('/groups/', newGroup)
-        console.log(result)
         const push = () => {
             props.history.push(`/group/${result.data.newGroup.id}`)
         }
@@ -30,7 +30,26 @@ const CreateGroup = props => {
         setTimeout(push, 1000)
     }
 
-    console.log(values)
+    async function editGroup() {
+        setLoading(true)
+        const updatedGroup = {
+            ...values,
+            creator_id: props.location.state.group.creator_id
+        }
+        const result = await axiosWithAuth([token]).put(`/groups/${props.location.state.group.id}`, updatedGroup)
+        const push = () => {
+            props.history.push(`/group/${props.location.state.group.id}`)
+        }
+
+        setTimeout(push, 1000)
+    }
+
+    useEffect(() => {
+        if (props.location.state && props.location.state.group && props.location.state.editing === true) {
+            let { id, creator_id, ...groupInfo } = props.location.state.group
+            setValues(groupInfo)
+        }
+    }, [props, setValues])
 
     return (
         <Segment raised color='blue' style={{ width: '90%', margin: '1rem auto' }}>
@@ -50,12 +69,28 @@ const CreateGroup = props => {
                     value={values.location || ''}
                     name='location'
                     type='text' />
-                <Form.Field label='Privacy Setting' onChange={handleChange} name='privacy_setting' control='select'>
-                    <option value='' disabled selected hidden>Choose Privacy setting...</option>
+                <Form.Field label='Privacy Setting' onChange={handleChange} name='privacy_setting' control='select' defaultValue={values.privacy_setting || ''}>
+                    {props.location.state && props.location.state.editing === true
+                        ? <option value={values.privacy_setting}>{values.privacy_setting}</option>
+                        : <option value='' disabled hidden>Choose Privacy setting...</option>}
                     <option value='public'>Public</option>
                     <option value='private'>Private</option>
                     <option value='hidden'>Hidden</option>
                 </Form.Field>
+                <Form.Input
+                    label='Acronym'
+                    placeholder='Acronym'
+                    onChange={handleChange}
+                    value={values.acronym || ''}
+                    name='acronym'
+                    type='text' />
+                <Form.Input
+                    label='Description'
+                    placeholder='Description'
+                    onChange={handleChange}
+                    value={values.description || ''}
+                    name='description'
+                    type='text' />
                 <Form.Input
                     label='Group Image'
                     placeholder='Group Image'

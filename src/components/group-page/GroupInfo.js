@@ -54,6 +54,7 @@ const GroupImage = styled(Image)`
 	width: 35%;
 	margin: 0 0 1% 0;
 `;
+
 const InfoDiv = styled.div`
 	display: flex;
 	flex-direction: column;

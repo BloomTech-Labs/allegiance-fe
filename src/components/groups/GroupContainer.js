@@ -18,7 +18,7 @@ function GroupContainer() {
 			<MyGroups>
 				<GroupTitleHolder>
 					<H3>MY GROUPS</H3>
-					<Link to="/creategroup">
+					<Link to={{ pathname: '/createGroup', state: { editing: false } }}>
 						<Popup
 							content="Create a Group"
 							trigger={<Icon name="plus square" size="small" />}
