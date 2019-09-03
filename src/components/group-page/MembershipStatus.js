@@ -91,6 +91,45 @@ const MembershipStatus = props => {
 		// setLoading(false);
 	}
 
+	// Test functions to change status to invite or admin
+	// async function invite(e) {
+	// 	e.preventDefault();
+	// 	// setLoading(true);
+	// 	if (token) {
+	// 		const result = await axiosWithAuth([token]).put(
+	// 			`/groups_users/${relation}`,
+	// 			{
+	// 				user_id: loggedInUser.id,
+	// 				group_id: props.group_id,
+	// 				user_type: "invited"
+	// 			}
+	// 		);
+	// 		if (result.data.updated) {
+	// 			setUserType("invited");
+	// 		}
+	// 	}
+	// 	// setLoading(false);
+	// }
+
+	// async function admin(e) {
+	// 	e.preventDefault();
+	// 	// setLoading(true);
+	// 	if (token) {
+	// 		const result = await axiosWithAuth([token]).put(
+	// 			`/groups_users/${relation}`,
+	// 			{
+	// 				user_id: loggedInUser.id,
+	// 				group_id: props.group_id,
+	// 				user_type: "admin"
+	// 			}
+	// 		);
+	// 		if (result.data.updated) {
+	// 			setUserType("admin");
+	// 		}
+	// 	}
+	// 	// setLoading(false);
+	// }
+
 	return (
 		<GroupMemberStatus>
 			{userType && (
@@ -111,6 +150,9 @@ const MembershipStatus = props => {
 						<>
 							<Membership>Member</Membership>
 							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							{/* Test buttons to change status to invite or admin */}
+							{/* <button onClick={e => invite(e)}>Invite</button>
+							<button onClick={e => admin(e)}>Admin</button> */}
 						</>
 					)}
 				</>
