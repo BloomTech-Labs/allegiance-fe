@@ -12,30 +12,30 @@ import NearbyGroups from "./NearbyGroups";
 function GroupContainer() {
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 
-  return (
-    <div>
-      <SearchBar />
-      <Divider />
-      <MyGroups>
-        <GroupTitleHolder>
-          <H3>MY GROUPS</H3>
-          <Link to="/creategroup">
-            <Popup
-              content="Create a Group"
-              trigger={<Icon name="plus square" size="small" />}
-            />
-          </Link>
-        </GroupTitleHolder>
-        <>
-          <MyAllegianceGroups content={loggedInGroups} />
-        </>
-      </MyGroups>
-      <Divider />
+	return (
+		<div>
+			<SearchBar />
+			<Divider />
+			<MyGroups>
+				<GroupTitleHolder>
+					<H3>MY GROUPS</H3>
+					<Link to={{ pathname: '/createGroup', state: { editing: false } }}>
+						<Popup
+							content="Create a Group"
+							trigger={<Icon name="plus square" size="small" />}
+						/>
+					</Link>
+				</GroupTitleHolder>
+				<>
+					<MyAllegianceGroups content={loggedInGroups} />
+				</>
+			</MyGroups>
+			<Divider />
       <NearbyGroups />
       <Divider />
-      <GroupList />
-    </div>
-  );
+			<GroupList />
+		</div>
+	);
 }
 export default GroupContainer;
 
