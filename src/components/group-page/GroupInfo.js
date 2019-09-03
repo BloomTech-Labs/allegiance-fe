@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
+import { Link } from "react-router-dom"
 
 import MembershipStatus from "./MembershipStatus";
 
@@ -11,15 +12,20 @@ const GroupInfo = props => {
     <GroupInfoDiv>
       <ImageDiv src={props.group.image} size="tiny" circular bordered />
       <InfoDiv>
-        <h1 className="h1">{props.group.group_name}</h1>
+        <NameHolder>
+          <h1 className="h1">{props.group.group_name}</h1>
+          {props.userType === 'admin'
+            ? <Link to={{ pathname: '/createGroup', state: { group: props.group, editing: true } }}><Icon name='setting' /></Link>
+            : null}
+        </NameHolder>
         <h3>
           {props.group.privacy_setting}
           {"   "}
           {props.group.privacy_setting === "private" ? (
             <Icon name="lock" />
           ) : (
-            <Icon name="lock open" />
-          )}{" "}
+              <Icon name="lock open" />
+            )}{" "}
           {props.members.length} Members
         </h3>
 
@@ -38,6 +44,12 @@ const GroupInfoDiv = styled.div`
 const ImageDiv = styled(Image)`
   align-self: center;
 `;
+
+const NameHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;`
 const InfoDiv = styled.div`
   display: flex;
   flex-direction: column;

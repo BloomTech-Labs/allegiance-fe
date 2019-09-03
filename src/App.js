@@ -12,7 +12,6 @@ import { initGA, logPageView } from "./components/analytics/Analytics";
 
 import { useAuth0 } from "./components/auth/react-auth0-wrapper";
 
-import Test from "./components/Test";
 import Landing from "./components/Landing"
 import Profile from "./components/profile/Profile";
 import NavBar from "./components/nav/NavBar";
@@ -37,6 +36,7 @@ function App(props) {
   }, []);
 
   useEffect(() => {
+    const pushTo = window.location.pathname !== '/' ? window.location.pathname : '/profile'
     if (isAuthenticated && !loggedInUser && user) {
       const registerUser = async () => {
         const result = await axios.post(
@@ -52,7 +52,7 @@ function App(props) {
           props.history.push("/makeprofile");
         }
         if (result.data.currentUser) {
-          props.history.push('/profile')
+          props.history.push(`${pushTo}`)
         }
       };
       registerUser();
@@ -70,7 +70,6 @@ function App(props) {
         <NavBar />
       </Switch>
       <Switch>
-        <Route exact path="/" component={Test} />
         <Route exact path="/makeprofile" component={MakeProfile} />
         <Route exact path='/creategroup' component={CreateGroup} />
         <PrivateRoute exact path="/groups" component={GroupContainer} />
