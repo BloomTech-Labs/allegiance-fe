@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
@@ -18,13 +18,7 @@ const GroupInfo = props => {
   return (
     <GroupInfoDiv>
       <ImageDiv>
-        <GroupImage
-          src={props.group.image}
-          size="tiny"
-          circular
-          bordered
-          style={{ borderColor: "black" }}
-        />
+        <GroupLogo src={props.group.image} />
         <MembershipStatus group_id={props.group.id} members={props.members} />
       </ImageDiv>
       <InfoDiv>
@@ -61,11 +55,16 @@ const ImageDiv = styled.div`
   display: flex;	
   flex-direction: column;	
 `;
-const GroupImage = styled(Image)`	
-  align-self: center;	
-  width: 35%;	
-  margin: 0 0 1% 0;
-  `;
+
+const GroupLogo = styled.img`
+	border-color: black;
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+	border: 1px solid black;
+	flex: 0 0 auto;
+	`
 
 const InfoDiv = styled.div`
   display: flex;

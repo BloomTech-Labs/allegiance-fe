@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useForm from "../utils/useForm";
 
-import { Form, Button, Segment, Modal, Header } from 'semantic-ui-react'
+import { Form, Button, Segment, Modal, Header, Icon } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken"
 import { useSelector } from "react-redux"
@@ -13,8 +13,8 @@ const CreateGroup = props => {
     const [modalOpen, setModal] = useState(false)
 
 
-	//Fetches Auth0 token for axios call
-	const [token] = useGetToken();
+    //Fetches Auth0 token for axios call
+    const [token] = useGetToken();
 
 
     //Imports form custom hook to handle state, form entry and form submission.
@@ -25,7 +25,7 @@ const CreateGroup = props => {
     const group = props.location.state ? props.location.state.group : null
     useEffect(() => {
         if (group && window.location.pathname === '/editgroup') {
-            let { id, creator_id, ...groupInfo } = group
+            let { id, updated_at, created_at, ...groupInfo } = group
             setValues(groupInfo)
         }
     }, [props, setValues, group])
@@ -43,16 +43,15 @@ const CreateGroup = props => {
         }
 
 
-		setTimeout(push, 1000);
-	}
+        setTimeout(push, 1000);
+    }
 
 
     //Edits existing group and pushes the user to the group page after submission.
     async function editGroup() {
         setLoading(true)
         const updatedGroup = {
-            ...values,
-            creator_id: group.creator_id
+            ...values
         }
         const result = await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup)
         console.log(result)
@@ -61,8 +60,8 @@ const CreateGroup = props => {
         }
 
 
-		setTimeout(push, 1000);
-	}
+        setTimeout(push, 1000);
+    }
 
 
     //Deletes a group.
@@ -77,7 +76,7 @@ const CreateGroup = props => {
         setTimeout(push, 1000)
     }
 
-
+    const privacy = values && values.privacy_setting ? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1) : null
     return (
         <Segment raised color='blue' style={{ width: '90%', margin: '1rem auto' }}>
             <Form onSubmit={handleSubmit}>
@@ -136,7 +135,7 @@ const CreateGroup = props => {
                 </Form.Group>
                 <Form.Field label='Privacy Setting' onChange={handleChange} name='privacy_setting' control='select' defaultValue={values.privacy_setting || ''}>
                     {window.location.pathname === '/editgroup'
-                        ? <option value={values.privacy_setting}>{values.privacy_setting}</option>
+                        ? <option value={values.privacy_setting}>Current: {privacy} </option>
                         : <option value='' disabled hidden>Choose Privacy setting...</option>}
                     <option value='public'>Public</option>
                     <option value='private'>Private</option>
@@ -155,7 +154,9 @@ const CreateGroup = props => {
                                 </p>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button color='red' onClick={() => deleteGroup()}>Delete</Button>
+                                <Button color='red' onClick={() => deleteGroup()}>
+                                    Delete
+                                </Button>
                             </Modal.Actions>
                         </Modal>
                         : null}

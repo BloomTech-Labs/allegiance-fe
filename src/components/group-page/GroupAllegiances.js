@@ -39,6 +39,7 @@ const LogoHolder = styled.div`
   display: flex;
   flexdirection: row;
   justify-content: center;
+  margin-top: 1%;
 `;
 
 export default GroupInfo;
