@@ -4,7 +4,8 @@ import { Image, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
-import axios from "axios"
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import useGetToken from "../utils/useGetToken";
 import { GET_GROUPS } from "../../reducers/userReducer"
 
 const Profile = props => {
@@ -17,17 +18,30 @@ const Profile = props => {
 	const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
 	const dispatch = useDispatch();
 
+	//Fetches Auth0 token for axios call
+	const [token] = useGetToken();
+
+
 	useEffect(() => {
 		if (loggedInUser) {
-			console.log(loggedInUser.id)
-			const getGroups = async () => {
-				const result = await axios.post(process.env.REACT_APP_AUTHURL,
-					{ email: loggedInUser.email })
-				dispatch({ type: GET_GROUPS, payload: result.data.basicGroupInfo })
-			}
-			getGroups()
+			const fetchData = async () => {
+				if (token) {
+					const groups = await axiosWithAuth([token]).get(`/groups_users/search/${loggedInUser.id}`);
+					const userGroups = groups.data.groups.map(group => {
+						return {
+							name: group.group_name,
+							image: group.group_image,
+							id: group.group_id
+						}
+					})
+					dispatch({ type: GET_GROUPS, payload: userGroups })
+				}
+			};
+
+			fetchData();
 		}
-	}, [loggedInUser])
+	}, [token, loggedInUser, dispatch]);
+
 
 	return (
 		<ProfileContainer>
@@ -121,10 +135,6 @@ const ProfileImage = styled.img`
   height: 100%;
   width: auto;
   max-width: none;
-`;
-
-const AllegianceHolder = styled.div`
-  margin: auto;
 `;
 
 const H3 = styled.h3`
