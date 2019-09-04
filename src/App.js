@@ -36,6 +36,8 @@ function App(props) {
   }, []);
 
   useEffect(() => {
+    const pushTo =
+      window.location.pathname !== "/" ? window.location.pathname : "/profile";
     if (isAuthenticated && !loggedInUser && user) {
       const registerUser = async () => {
         const result = await axios.post(process.env.REACT_APP_AUTHURL, {
@@ -50,7 +52,7 @@ function App(props) {
           props.history.push("/makeprofile");
         }
         if (result.data.currentUser) {
-          props.history.push("/profile");
+          props.history.push(`${pushTo}`);
         }
       };
       registerUser();
@@ -68,7 +70,7 @@ function App(props) {
         <NavBar />
       </Switch>
       <Switch>
-        {/* <Route exact path="/" component={Test} /> */}
+        <Route exact path="/" />
         <Route exact path="/makeprofile" component={MakeProfile} />
         <Route exact path="/creategroup" component={CreateGroup} />
         <PrivateRoute exact path="/groups" component={GroupContainer} />
