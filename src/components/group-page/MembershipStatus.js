@@ -7,7 +7,6 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
 const MembershipStatus = props => {
-	// Set initial user type to user type fetched from props
 	// const [isLoading, setLoading] = useState(false);
 	const [userType, setUserType] = useState();
 	const [relation, setRelation] = useState();

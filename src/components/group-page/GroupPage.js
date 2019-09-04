@@ -32,6 +32,10 @@ const GroupPage = props => {
 		fetchData();
 	}, [token, id]);
 
+	if (Object.keys(group).length === 0) {
+		return <div>Loading Group...</div>;
+	}
+
 	return (
 		<GroupPageContainer>
 			<GroupInfo group={group} members={members} />
