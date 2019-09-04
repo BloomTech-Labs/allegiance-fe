@@ -1,37 +1,45 @@
 import React from "react";
-import { Image, Popup } from "semantic-ui-react";
+import { Popup, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const MyAllegianceGroups = props => {
 	return (
 		<LogoHolder>
+			{props.type === 'groups'
+				? <div style={{ margin: '1%' }}>
+					<Link to={`/creategroup`}>
+						<Popup
+							content={'Create a Group'}
+							trigger={<Icon name='plus' size='big' circular inverted color='blue' style={{ fontSize: '2.86rem' }} />}
+						/>
+					</Link>
+				</div>
+				: null}
 			{props.content.map(item => (
-				<LogoBox key={item.id}>
+				<div key={item.id} style={{ margin: '1%' }}>
 					<Link to={`/group/${item.id}`}>
 						<Popup
 							content={item.name}
-							trigger={<Image src={item.image} size="tiny" circular bordered />}
+							trigger={<GroupLogo src={item.image} />}
 						/>
 					</Link>
-					<Nickname>{item.nickname ? item.nickname : null}</Nickname>
-				</LogoBox>
+					<Nickname>{item.acronym ? item.acronym : null}</Nickname>
+				</div>
 			))}
 		</LogoHolder>
 	);
 };
 
 const LogoHolder = styled.div`
+	width: 98%;
 	display: flex;
-	flex-direction: row;
-	justify-content: center;
-`;
-
-const LogoBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 1%;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	margin-left: 1%;
+	&::-webkit-scrollbar {
+		display: none;
+	  };
 `;
 
 const Nickname = styled.p`
@@ -39,5 +47,15 @@ const Nickname = styled.p`
 	font-weight: bold;
 	margin-top: 10%;
 `;
+
+const GroupLogo = styled.img`
+	border-color: black;
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+	border: 1px solid black;
+	flex: 0 0 auto;
+	`
 
 export default MyAllegianceGroups;
