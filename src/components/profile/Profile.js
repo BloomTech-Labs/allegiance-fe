@@ -27,11 +27,13 @@ const Profile = props => {
 			const fetchData = async () => {
 				if (token) {
 					const groups = await axiosWithAuth([token]).get(`/groups_users/search/${loggedInUser.id}`);
+					console.log(groups)
 					const userGroups = groups.data.groups.map(group => {
 						return {
 							name: group.group_name,
 							image: group.group_image,
-							id: group.group_id
+							id: group.group_id,
+							user_type: group.user_type
 						}
 					})
 					dispatch({ type: GET_GROUPS, payload: userGroups })
