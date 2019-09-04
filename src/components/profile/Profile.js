@@ -31,10 +31,11 @@ const Profile = props => {
 						return {
 							name: group.group_name,
 							image: group.group_image,
-							id: group.group_id
-						};
-					});
-					dispatch({ type: GET_GROUPS, payload: userGroups });
+							id: group.group_id,
+							user_type: group.user_type
+						}
+					})
+					dispatch({ type: GET_GROUPS, payload: userGroups })
 				}
 			};
 

@@ -10,7 +10,7 @@ import MyAllegianceGroups from "../profile/MyAllegianceGroups";
 import NearbyGroups from "./NearbyGroups";
 
 function GroupContainer() {
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
+	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 
 	return (
 		<div>
@@ -19,7 +19,7 @@ function GroupContainer() {
 			<MyGroups>
 				<GroupTitleHolder>
 					<H3>MY GROUPS</H3>
-					<Link to={{ pathname: '/createGroup', state: { editing: false } }}>
+					<Link to='/createGroup'  >
 						<Popup
 							content="Create a Group"
 							trigger={<Icon name="plus square" size="small" />}
@@ -31,8 +31,8 @@ function GroupContainer() {
 				</>
 			</MyGroups>
 			<Divider />
-      <NearbyGroups />
-      <Divider />
+			<NearbyGroups />
+			<Divider />
 			<GroupList />
 		</div>
 	);

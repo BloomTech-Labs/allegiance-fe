@@ -49,9 +49,9 @@ const GroupPage = props => {
 				<Form.Field
 					control={TextArea}
 					label="Post"
-					placeholder="write a post to the group..."
+					placeholder="Write a post to the group..."
 				/>
-				<Form.Field control={Button}>Submitpost</Form.Field>
+				<Form.Field control={Button}>Submit Post</Form.Field>
 			</FormContainer>
 		</GroupPageContainer>
 	);

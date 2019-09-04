@@ -20,6 +20,7 @@ const NavBar = () => {
 				{window.location.pathname === "/notifications" && <p>Notifications</p>}
 				{window.location.pathname === "/profile" && <p>Profile</p>}
 				{window.location.pathname === "/makeprofile" && <p>Edit Profile</p>}
+				{window.location.pathname === "/editgroup" && <p>Edit Group</p>}
 			</TopNav>
 			{/* If user is not authenticated, show log in button */}
 			{!isAuthenticated && (

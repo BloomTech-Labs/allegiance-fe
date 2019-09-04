@@ -72,7 +72,8 @@ function App(props) {
       <Switch>
         <Route exact path="/" />
         <Route exact path="/makeprofile" component={MakeProfile} />
-        <Route exact path="/creategroup" component={CreateGroup} />
+        <Route exact path='/creategroup' component={CreateGroup} />
+        <Route exact path='/editgroup' component={CreateGroup} />
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/group/:id" component={GroupPage} />
