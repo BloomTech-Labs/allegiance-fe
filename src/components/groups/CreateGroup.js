@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import useForm from "../utils/useForm";
+
 import { Form, Button, Segment, Modal, Header } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken"
@@ -11,8 +12,10 @@ const CreateGroup = props => {
     const [isLoading, setLoading] = useState()
     const [modalOpen, setModal] = useState(false)
 
-    //Fetches Auth0 token for axios call
-    const [token] = useGetToken();
+
+	//Fetches Auth0 token for axios call
+	const [token] = useGetToken();
+
 
     //Imports form custom hook to handle state, form entry and form submission.
     const requestType = window.location.pathname === '/editgroup' ? editGroup : createGroup
@@ -39,8 +42,10 @@ const CreateGroup = props => {
             props.history.push(`/group/${result.data.newGroup.id}`)
         }
 
-        setTimeout(push, 1000)
-    }
+
+		setTimeout(push, 1000);
+	}
+
 
     //Edits existing group and pushes the user to the group page after submission.
     async function editGroup() {
@@ -55,8 +60,10 @@ const CreateGroup = props => {
             props.history.push(`/group/${group.id}`)
         }
 
-        setTimeout(push, 1000)
-    }
+
+		setTimeout(push, 1000);
+	}
+
 
     //Deletes a group.
     async function deleteGroup() {
@@ -182,3 +189,4 @@ input:first-child {
     font-weight: bold;
 }`
 export default CreateGroup
+
