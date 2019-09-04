@@ -5,54 +5,54 @@ import styled from "styled-components";
 import MembershipStatus from "./MembershipStatus";
 
 const GroupInfo = props => {
-	console.log("GroupInfo Props", props);
+  console.log("GroupInfo Props", props);
 
-	// define privacy variable for reusable formatting
-	const privacy = props.group.privacy_setting;
+  // define privacy variable for reusable formatting
+  const privacy = props.group.privacy_setting;
 
-	return (
-		<GroupInfoDiv>
-			<ImageDiv>
-				<GroupImage
-					src={props.group.image}
-					size="tiny"
-					circular
-					bordered
-					style={{ borderColor: "black" }}
-				/>
-				<MembershipStatus group_id={props.group.id} members={props.members} />
-			</ImageDiv>
-			<InfoDiv>
-				<h1>{props.group.group_name}</h1>
-				<h2>{props.group.description}</h2>
-				<h3>
-					{props.group.privacy_setting === "private" ? (
-						<Icon name="lock" />
-					) : (
-						<Icon name="unlock" />
-					)}
-					{privacy ? privacy.charAt(0).toUpperCase() + privacy.slice(1) : null}{" "}
-					group - {props.members.length} fans
-				</h3>
-			</InfoDiv>
-		</GroupInfoDiv>
-	);
+  return (
+    <GroupInfoDiv>
+      <ImageDiv>
+        <GroupImage
+          src={props.group.image}
+          size="tiny"
+          circular
+          bordered
+          style={{ borderColor: "black" }}
+        />
+        <MembershipStatus group_id={props.group.id} members={props.members} />
+      </ImageDiv>
+      <InfoDiv>
+        <h1>{props.group.group_name}</h1>
+        <h2>{props.group.description}</h2>
+        <h3>
+          {props.group.privacy_setting === "private" ? (
+            <Icon name="lock" />
+          ) : (
+            <Icon name="unlock" />
+          )}
+          {privacy ? privacy.charAt(0).toUpperCase() + privacy.slice(1) : null}{" "}
+          group - {props.members.length} fans
+        </h3>
+      </InfoDiv>
+    </GroupInfoDiv>
+  );
 };
 
 const GroupInfoDiv = styled.div`
-	display: flex;
-	flex-direction: row;
-	margin: 0 4% 4% 4%;
-	justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  margin: 0 4% 4% 4%;
+  justify-content: space-around;
 `;
 const ImageDiv = styled.div`
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 const GroupImage = styled(Image)`
-	align-self: center;
-	width: 35%;
-	margin: 0 0 1% 0;
+  align-self: center;
+  width: 35%;
+  margin: 0 0 1% 0;
 `;
 
 const InfoDiv = styled.div`
