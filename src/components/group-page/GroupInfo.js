@@ -9,7 +9,7 @@ import MembershipStatus from "./MembershipStatus";
 const GroupInfo = props => {
   console.log("GroupInfo Props", props);
 
-  // define privacy variable for reusable formatting	  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
+  // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting;
 
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
@@ -28,7 +28,7 @@ const GroupInfo = props => {
         <MembershipStatus group_id={props.group.id} members={props.members} />
       </ImageDiv>
       <InfoDiv>
-        <h1 className="h1">{props.group.group_name}</h1>
+        <h1>{props.group.group_name}</h1>
         <h2>{props.group.description}</h2>
         <h3>
           {props.group.privacy_setting === "private" ? (
