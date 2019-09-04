@@ -9,6 +9,7 @@ import useGetToken from "../utils/useGetToken";
 import { GET_GROUPS } from "../../reducers/userReducer"
 
 const Profile = props => {
+
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 	/*const loggedInAllegiances = useSelector(
@@ -92,58 +93,59 @@ const ProfileContainer = styled.div`
 	justify-content: center;
 	margin-top: -4.5%;
 	margin-bottom: 15%;
+
 `;
 
 const Banner = styled.div`
-	border-bottom: 10px solid black;
+  border-bottom: 10px solid black;
 `;
 
 const BannerImage = styled(Image)`
-	height: 225px !important;
-	object-fit: cover;
+  height: 225px !important;
+  object-fit: cover;
 `;
 
 const InfoHolder = styled.div`
-	margin-top: 5%;
-	padding-bottom: 1rem;
-	border-bottom: 0.5px solid lightgray;
+  margin-top: 5%;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid lightgray;
 `;
 
 const Name = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const ImageCrop = styled.div`
-	width: 150px;
-	height: 150px;
-	position: relative;
-	overflow: hidden;
-	border-radius: 50%;
-	border: 1px solid white;
-	margin-top: -8rem;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: white;
+  width: 150px;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid white;
+  margin-top: -8rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
 `;
 const ProfileImage = styled.img`
-	display: inline;
-	margin-left: -25%; //centers the image
-	height: 100%;
-	width: auto;
-	max-width: none !important;
+  display: inline;
+  margin-left: -25%; //centers the image
+  height: 100%;
+  width: auto;
+  max-width: none;
 `;
 
 const AllegianceHolder = styled.div`
-	margin: auto;
+  margin: auto;
 `;
 
 const H3 = styled.h3`
-	font-size: 1rem;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
 `;
 
 const PostHeader = styled.div`
@@ -155,10 +157,11 @@ const PostHeader = styled.div`
 	margin-right: 5%;
 	margin-top: .5rem;`;
 
+
 const NoPosts = styled.p`
-	color: lightgrey;
-	font-weight: bold;
-	font-size: 1rem;
+  color: lightgrey;
+  font-weight: bold;
+  font-size: 1rem;
 `;
 
 export default Profile;

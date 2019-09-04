@@ -1,7 +1,7 @@
 // Mobile S - 320px
 // Mobile M - 375px
 // Mobile L - 425px
-// Tablet - 768px
+// Tablet - 768px width, 1024 height;
 // Laptop - 1024px
 // Laptop L - 1440px
 // 4K - 2560px
@@ -15,6 +15,12 @@ const size = {
   laptopL: "1440px",
   desktop: "2560px"
 };
+
+//Default Mobile View === 320-450px width     650-750px height
+
+//Small Mobile view 550-650px height
+
+//large Mobile view  750px + height
 
 export const device = {
   mobileS: `(min-width: ${size.mobileS})`,
