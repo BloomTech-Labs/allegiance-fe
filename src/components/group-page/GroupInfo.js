@@ -2,11 +2,15 @@ import React from "react";
 import { Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 import MembershipStatus from "./MembershipStatus";
 
 const GroupInfo = props => {
-  console.log("GROUP", props.group);
+  console.log("GROUP", props);
+
+  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
+  const isAdmin = loggedInGroups ? loggedInGroups.find(group => group.id === props.group.id) : null
 
   return (
     <GroupInfoDiv>
@@ -14,7 +18,7 @@ const GroupInfo = props => {
       <InfoDiv>
         <NameHolder>
           <h1 className="h1">{props.group.group_name}</h1>
-          {props.userType === 'admin'
+          {isAdmin && isAdmin.user_type === 'admin'
             ? <Link to={{ pathname: '/editgroup', state: { group: props.group } }}><Icon name='setting' /></Link>
             : null}
         </NameHolder>
