@@ -32,7 +32,7 @@ const MyAllegianceGroups = props => {
 };
 
 const LogoHolder = styled.div`
-	width: 95%;
+	width: 98%;
 	display: flex;
 	flex-wrap: nowrap;
 	overflow-x: auto;
