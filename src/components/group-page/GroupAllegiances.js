@@ -6,7 +6,7 @@ import styled from "styled-components";
 const GroupInfo = props => {
   return (
     <Allegiances>
-      <h3>Groups Allegiances</h3>
+      <h3>Allegiances</h3>
       <LogoHolder>
         {props.allegiances.map(al => (
           <ImageHolder key={al.id}>
