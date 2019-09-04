@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
-import { useSelector } from "react-redux";
-
 import GroupInfo from "./GroupInfo";
 import GroupAllegiances from "./GroupAllegiances";
 
@@ -11,17 +9,17 @@ import styled from "styled-components";
 import { Form, Button, TextArea, Divider } from "semantic-ui-react";
 
 const GroupPage = props => {
+	// Fetches Auth0 token for axios call
 	const [token] = useGetToken();
+	// Defines id to be group id from params
 	const id = props.match.params.id;
 
 	const [group, setGroup] = useState({});
 	const [allegiances, setAllegiances] = useState([]);
-	const [userType, setUserType] = useState();
 	const [members, setMembers] = useState([]);
 
-	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
-
 	useEffect(() => {
+		// Fetch group related data
 		const fetchData = async () => {
 			if (token) {
 				const response = await axiosWithAuth([token]).get(`/groups/${id}`);
@@ -31,29 +29,12 @@ const GroupPage = props => {
 				console.log("data:", response.data);
 			}
 		};
-		const fetchDataUserType = async () => {
-			if (token) {
-				const response = await axiosWithAuth([token]).post(
-					`/groups_users/search`,
-					{
-						user_id: loggedInUser.id,
-						group_id: id
-					}
-				);
-				if (response.data.relationExists) {
-					setUserType(response.data.relationExists[0].user_type);
-				} else {
-					setUserType("non-member");
-				}
-			}
-		};
 		fetchData();
-		fetchDataUserType();
-	}, [token, id, loggedInUser]);
+	}, [token, id]);
 
 	return (
 		<GroupPageContainer>
-			<GroupInfo group={group} userType={userType} members={members} />
+			<GroupInfo group={group} members={members} />
 			<GroupAllegiances allegiances={allegiances} />
 			<SectionDivider />
 
