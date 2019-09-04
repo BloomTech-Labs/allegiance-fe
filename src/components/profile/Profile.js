@@ -15,7 +15,7 @@ const Profile = props => {
 
 	return (
 		<ProfileContainer>
-			<div>
+			<div style={{ maxWidth: '100%' }}>
 				<Banner>
 					<BannerImage src={loggedInUser.banner_image} fluid />
 				</Banner>
@@ -35,22 +35,12 @@ const Profile = props => {
 					<div>
 						<H3>MY ALLEGIANCES</H3>
 						<AllegianceHolder>
-							<MyAllegianceGroups content={loggedInAllegiances} />
+							<MyAllegianceGroups content={loggedInAllegiances} type={'allegiances'} />
 						</AllegianceHolder>
 					</div>
 					<>
-						<GroupTitleHolder>
-							<H3>MY GROUPS</H3>
-							<Link to="/creategroup">
-								<Popup
-									content="Create a Group"
-									trigger={<Icon name="plus square" size="small" />}
-								/>
-							</Link>
-						</GroupTitleHolder>
-						<div>
-							<MyAllegianceGroups content={loggedInGroups} />
-						</div>
+						<H3>MY GROUPS</H3>
+						<MyAllegianceGroups content={loggedInGroups} type={'groups'} />
 					</>
 					<ImageHolder>
 						<Modal
@@ -101,8 +91,8 @@ const Profile = props => {
 						{loggedInPosts ? (
 							loggedInPosts
 						) : (
-							<NoPosts>You haven't posted yet!</NoPosts>
-						)}
+								<NoPosts>You haven't posted yet!</NoPosts>
+							)}
 					</div>
 				</div>
 			</div>
