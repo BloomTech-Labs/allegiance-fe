@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { device } from "../../styled/device";
 
 const GroupCard = props => {
+  console.log("PROPS:", props);
+
   return (
     <GroupInfoCard>
       <Link to={`/group/${props.group.id}`}>
@@ -24,7 +26,7 @@ const GroupCard = props => {
           <BottomDiv>
             {/* <hr /> */}
             <p>
-              <Icon name="users" /> {props.group.members.length} members
+              {props.group.members ? props.group.members.length : 0} members
             </p>
           </BottomDiv>
         </CardContainer>
