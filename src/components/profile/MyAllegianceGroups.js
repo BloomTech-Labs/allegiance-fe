@@ -40,7 +40,6 @@ const LogoHolder = styled.div`
 	&::-webkit-scrollbar {
 		display: none;
 	  };
-	  -webkit-overflow-scrolling: touch;
 `;
 
 const Nickname = styled.p`
