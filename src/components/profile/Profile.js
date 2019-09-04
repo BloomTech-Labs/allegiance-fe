@@ -40,7 +40,7 @@ const Profile = props => {
 
 			fetchData();
 		}
-	}, [token, loggedInUser]);
+	}, [token, loggedInUser, dispatch]);
 
 
 	return (
@@ -135,10 +135,6 @@ const ProfileImage = styled.img`
   height: 100%;
   width: auto;
   max-width: none;
-`;
-
-const AllegianceHolder = styled.div`
-  margin: auto;
 `;
 
 const H3 = styled.h3`
