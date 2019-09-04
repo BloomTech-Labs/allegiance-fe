@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Divider, Icon, Container, Image } from "semantic-ui-react";
 
 import styled from "styled-components";
+import { device } from "../../styled/device";
 
 const GroupCard = props => {
   return (
@@ -45,6 +46,13 @@ const GroupInfoCard = styled.div`
   &:hover {
     box-shadow: 5px 8px 16px 5px rgba(0, 0, 0, 0.2);
   }
+
+  @media ${device.tablet} {
+    width: 25%;
+  }
+  @media ${device.laptop} {
+    width: 15%;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -54,10 +62,13 @@ const CardContainer = styled.div`
 const CardImage = styled.img`
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 5% 5% 0 0;
 `;
 
 const TopDiv = styled.div`
+  display: flex;
+  justify-content: center;
   height: 17vh;
   border-bottom: 1px solid black;
 `;
@@ -68,6 +79,8 @@ const MiddleDiv = styled.div`
   height: 7vh;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
+  color: black;
+  font-weight: heavy;
   p {
     align-content: flex-end;
   }
@@ -83,7 +96,11 @@ const MiddleDiv = styled.div`
   }
 `;
 const BottomDiv = styled.div`
+  display: flex;
   height: 4vh;
+  color: black;
+  justify-content: center;
+  align-items: center;
   hr {
     color: lightgray;
     margin: 0;
