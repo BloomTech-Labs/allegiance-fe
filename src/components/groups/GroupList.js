@@ -35,7 +35,6 @@ const GroupList = () => {
 			<h3>Discover</h3>
 			<GroupListContainer>
 				{data.groups.map(group => {
-					console.log("Group:", group);
 					return <GroupCard group={group} key={group.id} />;
 				})}
 			</GroupListContainer>
