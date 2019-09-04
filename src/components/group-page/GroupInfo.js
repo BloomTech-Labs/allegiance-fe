@@ -15,7 +15,7 @@ const GroupInfo = props => {
         <NameHolder>
           <h1 className="h1">{props.group.group_name}</h1>
           {props.userType === 'admin'
-            ? <Link to={{ pathname: '/createGroup', state: { group: props.group, editing: true } }}><Icon name='setting' /></Link>
+            ? <Link to={{ pathname: '/editgroup', state: { group: props.group } }}><Icon name='setting' /></Link>
             : null}
         </NameHolder>
         <h3>
