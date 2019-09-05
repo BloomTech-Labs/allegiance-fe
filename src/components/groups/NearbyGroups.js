@@ -19,12 +19,14 @@ const NearbyGroups = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-        column: "location",
-        row: loggedInUser.location
-      });
-      console.log("DATA", groups.data);
-      setData({ groups: groups.data.groupByFilter });
+      if (token) {
+        const groups = await axiosWithAuth([token]).post(`/groups/search`, {
+          column: "location",
+          row: loggedInUser.location
+        });
+        console.log("DATA", groups.data);
+        setData({ groups: groups.data.groupByFilter });
+      }
     };
 
     fetchData();
