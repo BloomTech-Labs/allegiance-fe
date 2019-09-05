@@ -12,30 +12,34 @@ import NearbyGroups from "./NearbyGroups";
 function GroupContainer() {
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 
-	return (
-		<div>
-			<SearchBar />
-			<Divider />
-			<MyGroups>
-				<GroupTitleHolder>
-					<H3>MY GROUPS</H3>
-					<Link to={{ pathname: '/createGroup', state: { editing: false } }}>
-						<Popup
-							content="Create a Group"
-							trigger={<Icon name="plus square" size="small" />}
-						/>
-					</Link>
-				</GroupTitleHolder>
-				<>
-					<MyAllegianceGroups content={loggedInGroups} />
-				</>
-			</MyGroups>
-			<Divider />
-      <NearbyGroups />
+  return (
+    <div>
+      <SearchBar />
       <Divider />
-			<GroupList />
-		</div>
-	);
+      <MyGroups>
+        <GroupTitleHolder>
+          <H3>MY GROUPS</H3>
+          <Link to={{ pathname: "/createGroup", state: { editing: false } }}>
+            <Popup
+              content="Create a Group"
+              trigger={<Icon name="plus square" size="small" />}
+            />
+          </Link>
+        </GroupTitleHolder>
+        <>
+          <MyAllegianceGroups content={loggedInGroups} />
+        </>
+      </MyGroups>
+      <Divider style={{ margin: "1%" }} />
+      <GroupsByYouDiv>
+        <H3>GROUPS NEAR YOU</H3>
+        <NearbyGroups />
+      </GroupsByYouDiv>
+
+      <Divider />
+      <GroupList />
+    </div>
+  );
 }
 export default GroupContainer;
 
@@ -57,4 +61,15 @@ const H3 = styled.h3`
   font-size: 1rem;
   font-weight: bold;
   margin: 1% 0;
+`;
+
+const GroupsByYouDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // justify-content: flex-start;
+  // align-items: center;
+  h3 {
+    margin: 0 1%;
+  }
 `;
