@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
+
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import styled from "styled-components";
 
 import GroupCard from "./GroupCard";
 
-const GroupList = () => {
+const NearbyGroups = () => {
   const [data, setData] = useState({ groups: [] });
 
+  // Fetches Auth0 token for axios call
   const [token] = useGetToken();
+
+  // Fetches user information from Redux
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
         const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-          column: "group_name",
-          row: ""
+          column: "location",
+          row: loggedInUser.location
         });
         console.log("DATA", groups.data);
         setData({ groups: groups.data.groupByFilter });
@@ -23,21 +30,18 @@ const GroupList = () => {
     };
 
     fetchData();
-  }, [token]);
+  }, [token, loggedInUser]);
 
   if (!data.groups) {
     return <div>Loading Groups...</div>;
   }
-  //Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
-
   return (
     <SectionContainer>
-      <h3>DISCOVER</h3>
-      <GroupListContainer>
+      <NearbyGroupsContainer>
         {data.groups.map(group => {
-          return <GroupCard group={group} key={group.id} />;
+          return <GroupCard minWidth="40%" group={group} key={group.id} />;
         })}
-      </GroupListContainer>
+      </NearbyGroupsContainer>
     </SectionContainer>
   );
 };
@@ -45,15 +49,19 @@ const GroupList = () => {
 const SectionContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const GroupListContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
   width: 100%;
-  margin-top: 1vh;
 `;
 
-export default GroupList;
+const NearbyGroupsContainer = styled.div`
+  width: 98%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-left: 1%;
+  padding-bottom: 3%
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export default NearbyGroups;
