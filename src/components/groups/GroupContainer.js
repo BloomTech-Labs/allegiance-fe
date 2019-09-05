@@ -31,6 +31,7 @@ function GroupContainer() {
         </>
       </MyGroups>
       <Divider />
+      <H3>GROUPS NEAR YOU</H3>
       <NearbyGroups />
       <Divider />
       <GroupList />
