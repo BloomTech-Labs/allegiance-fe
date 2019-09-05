@@ -5,8 +5,6 @@ import styled from "styled-components";
 import { device } from "../../styled/device";
 
 const GroupCard = props => {
-  console.log("PROPS:", props);
-
   return (
     <GroupInfoCard minWidth={props.minWidth}>
       <Link to={`/group/${props.group.id}`}>

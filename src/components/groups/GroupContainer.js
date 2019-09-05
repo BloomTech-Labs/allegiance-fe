@@ -19,7 +19,7 @@ function GroupContainer() {
       <MyGroups>
         <GroupTitleHolder>
           <H3>MY GROUPS</H3>
-          <Link to={{ pathname: "/createGroup", state: { editing: false } }}>
+          <Link to="/createGroup">
             <Popup
               content="Create a Group"
               trigger={<Icon name="plus square" size="small" />}
@@ -30,12 +30,8 @@ function GroupContainer() {
           <MyAllegianceGroups content={loggedInGroups} />
         </>
       </MyGroups>
-      <Divider style={{ margin: "1%" }} />
-      <GroupsByYouDiv>
-        <H3>GROUPS NEAR YOU</H3>
-        <NearbyGroups />
-      </GroupsByYouDiv>
-
+      <Divider />
+      <NearbyGroups />
       <Divider />
       <GroupList />
     </div>
