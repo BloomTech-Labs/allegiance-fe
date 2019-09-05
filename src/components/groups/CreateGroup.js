@@ -4,11 +4,13 @@ import useForm from "../utils/useForm";
 import { Form, Button, Segment, Modal, Header, Message } from 'semantic-ui-react'
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
+import { ADD_GROUP } from "../../reducers/userReducer"
 
 const CreateGroup = props => {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+    const dispatch = useDispatch();
     const [isLoading, setLoading] = useState()
     const [modalOpen, setModal] = useState(false)
     const [isError, setError] = useState();
@@ -41,6 +43,14 @@ const CreateGroup = props => {
                 creator_id: loggedInUser.id
             }
             const result = await axiosWithAuth([token]).post('/groups/', newGroup)
+            console.log(result)
+            const addedGroup = {
+                name: result.data.newGroup.group_name,
+                image: result.data.newGroup.image,
+                id: result.data.newGroup.id,
+                user_type: 'admin'
+            }
+            dispatch({ type: ADD_GROUP, payload: addedGroup })
             const push = () => {
                 props.history.push(`/group/${result.data.newGroup.id}`)
             }
