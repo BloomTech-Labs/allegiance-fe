@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.scss";
+import { Loader } from "semantic-ui-react"
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -60,7 +61,7 @@ function App(props) {
   });
 
   if (loading) {
-    return <div>Loading App...</div>;
+    return <Loader active size='large'>Loading</Loader>
   }
 
   return (
