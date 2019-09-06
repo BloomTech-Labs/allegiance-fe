@@ -210,13 +210,13 @@ const CreateGroup = props => {
 							Choose Privacy setting...
 						</option>
 					)}
-					{privacy !== "Public" || privacy !== undefined ? (
+					{privacy !== "Public" && privacy !== undefined ? (
 						<option value="public">Public</option>
 					) : null}
-					{privacy !== "Private" || privacy !== undefined ? (
+					{privacy !== "Private" && privacy !== undefined ? (
 						<option value="private">Private</option>
 					) : null}
-					{privacy !== "Hidden" || privacy !== undefined ? (
+					{privacy !== "Hidden" && privacy !== undefined ? (
 						<option value="hidden">Hidden</option>
 					) : null}
 				</Form.Field>
