@@ -1,6 +1,7 @@
 export const LOGIN = "LOGIN";
 export const UPDATE_USER = "UPDATE_USER"
 export const GET_GROUPS = "GET_GROUPS"
+export const ADD_GROUP = "ADD_GROUP"
 
 const initialState = {
     loggedInUser: "",
@@ -41,6 +42,11 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 loggedInGroups: action.payload,
                 error: ""
+            }
+        case ADD_GROUP:
+            return {
+                ...state,
+                loggedInGroups: [...state.loggedInGroups, action.payload]
             }
         default:
             return state;

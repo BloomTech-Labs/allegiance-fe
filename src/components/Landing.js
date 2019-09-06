@@ -36,6 +36,7 @@ const LandingContainer = styled.div`
         color: white;
         height: 100vh;
         margin-top: -15%;
+        margin-bottom: -15%;
         align-items: center;`
 
 const LogoHolder = styled.div`
