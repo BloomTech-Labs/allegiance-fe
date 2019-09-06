@@ -20,6 +20,7 @@ import GroupContainer from "./components/groups/GroupContainer";
 import MakeProfile from "./components/profile/MakeProfile";
 import GroupPage from "./components/group-page/GroupPage";
 import CreateGroup from "./components/groups/CreateGroup";
+import UnderConstruction from "./components/UnderConstruction"
 
 import { LOGIN } from "./reducers/userReducer";
 
@@ -71,10 +72,11 @@ function App(props) {
         <NavBar />
       </Switch>
       <Switch>
-        <Route exact path="/" />
-        <Route exact path="/makeprofile" component={MakeProfile} />
-        <Route exact path='/creategroup' component={CreateGroup} />
-        <Route exact path='/editgroup' component={CreateGroup} />
+        <Route exact path="/" component={UnderConstruction} />
+        <PrivateRoute exact path="/makeprofile" component={MakeProfile} />
+        <PrivateRoute exact path='/creategroup' component={CreateGroup} />
+        <PrivateRoute exact path='/editgroup' component={CreateGroup} />
+        <PrivateRoute exact path='/notifications' component={UnderConstruction} />
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/group/:id" component={GroupPage} />
