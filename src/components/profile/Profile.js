@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Image, Icon } from "semantic-ui-react";
+import { Image, Icon, Loader } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
@@ -43,6 +43,12 @@ const Profile = props => {
 		}
 	}, [token, loggedInUser, dispatch]);
 
+	if (!loggedInUser) {
+		return (
+			<Loader active size='large'>Loading</Loader>
+		)
+	}
+
 	return (
 		<ProfileContainer>
 			<div style={{ maxWidth: "100%" }}>
@@ -79,8 +85,8 @@ const Profile = props => {
 						{loggedInPosts ? (
 							loggedInPosts
 						) : (
-							<NoPosts>You haven't posted yet!</NoPosts>
-						)}
+								<NoPosts>You haven't posted yet!</NoPosts>
+							)}
 					</div>
 				</div>
 			</div>
