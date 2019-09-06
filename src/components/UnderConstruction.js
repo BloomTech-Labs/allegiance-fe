@@ -1,5 +1,5 @@
 import React from 'react'
-import ComingSoon from '../../assets/ComingSoon.svg'
+import ComingSoon from '../assets/ComingSoon.svg'
 import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 
