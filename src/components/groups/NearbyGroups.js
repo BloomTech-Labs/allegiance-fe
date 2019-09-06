@@ -22,22 +22,25 @@ const NearbyGroups = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			if (token) {
-				const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-					column: "location",
-					row: loggedInUser.location
-				});
-				console.log("NearbyGroups data", groups.data);
+				try {
+					const groups = await axiosWithAuth([token]).post(`/groups/search`, {
+						column: "location",
+						row: loggedInUser.location
+					});
+					console.log("NearbyGroups data", groups.data);
 
-				// Get array of ids for groups the user already is a member of
-				const loggedInIDs = loggedInGroups.map(group => group.id);
+					// Get array of ids for groups the user already is a member of
+					const loggedInIDs = loggedInGroups.map(group => group.id);
 
-				const uniqueGroups = groups.data.groupByFilter.filter(
-					group => !loggedInIDs.includes(group.id)
-				);
+					const uniqueGroups = groups.data.groupByFilter.filter(
+						group => !loggedInIDs.includes(group.id)
+					);
 
-				uniqueGroups.sort((a, b) => b.members.length - a.members.length);
-
-				setData({ groups: uniqueGroups });
+					uniqueGroups.sort((a, b) => b.members.length - a.members.length);
+					setData({ groups: uniqueGroups });
+				} catch {
+					setData({ groups: [] });
+				}
 			}
 		};
 
@@ -57,9 +60,13 @@ const NearbyGroups = () => {
 	return (
 		<SectionContainer>
 			<NearbyGroupsContainer>
-				{data.groups.map(group => {
-					return <GroupCard minWidth="40%" group={group} key={group.id} />;
-				})}
+				{data.groups.length > 0 &&
+					data.groups.map(group => {
+						return <GroupCard minWidth="40%" group={group} key={group.id} />;
+					})}
+				{data.groups.length === 0 && (
+					<h4 style={{ margin: "3% auto" }}>No Nearby Groups Detected</h4>
+				)}
 			</NearbyGroupsContainer>
 		</SectionContainer>
 	);

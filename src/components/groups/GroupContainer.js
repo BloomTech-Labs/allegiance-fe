@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Icon, Popup, Divider } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Divider } from "semantic-ui-react";
 import styled from "styled-components";
 
 import GroupList from "./GroupList";
@@ -19,15 +18,9 @@ function GroupContainer() {
 			<MyGroups>
 				<GroupTitleHolder>
 					<H3>MY GROUPS</H3>
-					<Link to="/createGroup">
-						<Popup
-							content="Create a Group"
-							trigger={<Icon name="plus square" size="small" />}
-						/>
-					</Link>
 				</GroupTitleHolder>
 				<>
-					<MyAllegianceGroups content={loggedInGroups} />
+					<MyAllegianceGroups content={loggedInGroups} type={"groups"} />
 				</>
 			</MyGroups>
 			<Divider />
