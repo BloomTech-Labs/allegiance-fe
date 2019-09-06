@@ -27,6 +27,8 @@ const MakeProfile = props => {
 		if (token) {
 			try {
 				setError(false)
+				Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
+				console.log(values)
 				const result = await axiosWithAuth([token]).put(
 					`/users/${loggedInUser.id}`,
 					values
@@ -79,7 +81,6 @@ const MakeProfile = props => {
 					<NameHolder>
 						<Form.Group inline style={{ fontSize: '1.2rem' }}>
 							<BoldInput
-								required
 								placeholder="First Name"
 								transparent
 								onChange={handleChange}
@@ -88,7 +89,6 @@ const MakeProfile = props => {
 								type="text"
 							/>
 							<BoldInput
-								required
 								placeholder="Last Name"
 								transparent
 								onChange={handleChange}
@@ -98,7 +98,6 @@ const MakeProfile = props => {
 							/>
 						</Form.Group>
 						<Form.Input
-							required
 							placeholder="Bio"
 							transparent
 							onChange={handleChange}
@@ -138,7 +137,6 @@ const MakeProfile = props => {
 					type="number"
 				/>
 				<Form.Input
-					required
 					label="Banner Image"
 					placeholder="Banner Image"
 					onChange={handleChange}
