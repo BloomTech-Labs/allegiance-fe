@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
+import { Loader } from "semantic-ui-react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -9,59 +10,83 @@ import styled from "styled-components";
 import GroupCard from "./GroupCard";
 
 const NearbyGroups = () => {
-  const [data, setData] = useState({ groups: [] });
+	const [data, setData] = useState();
 
-  // Fetches Auth0 token for axios call
-  const [token] = useGetToken();
+	// Fetches Auth0 token for axios call
+	const [token] = useGetToken();
 
-  // Fetches user information from Redux
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+	// Fetches user information and user groups from Redux
+	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-          column: "location",
-          row: loggedInUser.location
-        });
-        console.log("DATA", groups.data);
-        setData({ groups: groups.data.groupByFilter });
-      }
-    };
+	useEffect(() => {
+		const fetchData = async () => {
+			if (token) {
+				const groups = await axiosWithAuth([token]).post(`/groups/search`, {
+					column: "location",
+					row: loggedInUser.location
+				});
+				console.log("NearbyGroups data", groups.data);
 
-    fetchData();
-  }, [token, loggedInUser]);
+				// Get array of ids for groups the user already is a member of
+				const loggedInIDs = loggedInGroups.map(group => group.id);
 
-  if (!data.groups) {
-    return <div>Loading Groups...</div>;
-  }
-  return (
-    <SectionContainer>
-      <NearbyGroupsContainer>
-        {data.groups.map(group => {
-          return <GroupCard minWidth="40%" group={group} key={group.id} />;
-        })}
-      </NearbyGroupsContainer>
-    </SectionContainer>
-  );
+				const uniqueGroups = groups.data.groupByFilter.filter(
+					group => !loggedInIDs.includes(group.id)
+				);
+
+				uniqueGroups.sort((a, b) => b.members.length - a.members.length);
+
+				setData({ groups: uniqueGroups });
+			}
+		};
+
+		fetchData();
+	}, [token, loggedInUser, loggedInGroups]);
+
+	if (!data) {
+		return (
+			<LoaderDiv>
+				<Loader active size="large">
+					Loading
+				</Loader>
+			</LoaderDiv>
+		);
+	}
+
+	return (
+		<SectionContainer>
+			<NearbyGroupsContainer>
+				{data.groups.map(group => {
+					return <GroupCard minWidth="40%" group={group} key={group.id} />;
+				})}
+			</NearbyGroupsContainer>
+		</SectionContainer>
+	);
 };
 
+// LoaderDiv to keep sections from moving during load
+const LoaderDiv = styled.div`
+	height: 28vh;
+	margin: 4.75%;
+`;
+
 const SectionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 `;
 
 const NearbyGroupsContainer = styled.div`
-  width: 98%;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  margin-left: 1%;
-  padding-bottom: 3%
+	width: 98%;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	margin-left: 1%;
+	padding-bottom: 3%
   &::-webkit-scrollbar {
-    display: none;
-  }
+		display: none;
+	}
 `;
 
 export default NearbyGroups;

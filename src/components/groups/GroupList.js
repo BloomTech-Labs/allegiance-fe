@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
+import { Loader } from "semantic-ui-react";
+
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import styled from "styled-components";
@@ -6,54 +10,71 @@ import styled from "styled-components";
 import GroupCard from "./GroupCard";
 
 const GroupList = () => {
-  const [data, setData] = useState({ groups: [] });
+	const [data, setData] = useState({ groups: [] });
 
-  const [token] = useGetToken();
+	// Fetches Auth0 token for axios call
+	const [token] = useGetToken();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-          column: "group_name",
-          row: ""
-        });
-        console.log("DATA", groups.data);
-        setData({ groups: groups.data.groupByFilter });
-      }
-    };
+	// Fetches user groups from Redux
+	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
 
-    fetchData();
-  }, [token]);
+	useEffect(() => {
+		const fetchData = async () => {
+			if (token) {
+				const groups = await axiosWithAuth([token]).post(`/groups/search`, {
+					column: "group_name",
+					row: ""
+				});
+				console.log("GroupsList data", groups.data);
 
-  if (!data.groups) {
-    return <div>Loading Groups...</div>;
-  }
-  //Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
+				// Get array of ids for groups the user already is a member of
+				const loggedInIDs = loggedInGroups.map(group => group.id);
 
-  return (
-    <SectionContainer>
-      <h3>DISCOVER</h3>
-      <GroupListContainer>
-        {data.groups.map(group => {
-          return <GroupCard group={group} key={group.id} />;
-        })}
-      </GroupListContainer>
-    </SectionContainer>
-  );
+				const uniqueGroups = groups.data.groupByFilter.filter(
+					group => !loggedInIDs.includes(group.id)
+				);
+
+				uniqueGroups.sort((a, b) => b.members.length - a.members.length);
+
+				setData({ groups: uniqueGroups });
+			}
+		};
+
+		fetchData();
+	}, [token, loggedInGroups]);
+
+	if (!data) {
+		return (
+			<Loader active size="large">
+				Loading
+			</Loader>
+		);
+	}
+	//Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
+
+	return (
+		<SectionContainer>
+			<GroupListContainer>
+				{data.groups.map(group => {
+					return <GroupCard group={group} key={group.id} />;
+				})}
+			</GroupListContainer>
+		</SectionContainer>
+	);
 };
 
 const SectionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 `;
 
 const GroupListContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  margin-top: 1vh;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+	margin-top: 1vh;
 `;
 
 export default GroupList;
