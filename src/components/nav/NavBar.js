@@ -10,6 +10,11 @@ const NavBar = () => {
 	const [activeItem, setActiveItem] = useState("");
 	console.log("navbar props:", window.location.pathname);
 
+	const logoutWithRedirect = () =>
+		logout({
+			returnTo: window.location.origin
+		});
+
 	return (
 		<>
 			<TopNav>
@@ -68,7 +73,7 @@ const NavBar = () => {
 							<Menu.Item
 								style={{ color: "white", fontWeight: "bold" }}
 								name="Logout"
-								onClick={() => logout()}
+								onClick={() => logoutWithRedirect()}
 							>
 								Logout
 							</Menu.Item>
