@@ -137,9 +137,9 @@ const CreateGroup = props => {
                     {window.location.pathname === '/editgroup'
                         ? <option value={values.privacy_setting}>{privacy} </option>
                         : <option value='' disabled hidden>Choose Privacy setting...</option>}
-                    {privacy !== "Public" ? <option value='public'>Public</option> : null}
-                    {privacy !== "Private" ? <option value='private'>Private</option> : null}
-                    {privacy !== "Hidden" ? <option value='hidden'>Hidden</option> : null}
+                    {privacy !== "Public" && privacy !== undefined ? <option value='public'>Public</option> : null}
+                    {privacy !== "Private" && privacy !== undefined ? <option value='private'>Private</option> : null}
+                    {privacy !== "Hidden" && privacy !== undefined ? <option value='hidden'>Hidden</option> : null}
                 </Form.Field>
                 <div>
                     {isLoading
