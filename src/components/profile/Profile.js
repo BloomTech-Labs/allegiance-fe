@@ -64,7 +64,9 @@ const Profile = props => {
 				</ImageCrop>
 				<InfoHolder>
 					<Name>
-						<h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
+						{loggedInUser.first_name
+							? <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
+							: null}
 						{props.match.url === "/profile" ? (
 							<Link to="/makeprofile">
 								<Icon name="edit outline" />
