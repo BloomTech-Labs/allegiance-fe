@@ -7,6 +7,7 @@ import MyAllegianceGroups from "./MyAllegianceGroups";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { GET_GROUPS } from "../../reducers/userReducer";
+import defaultBanner from '../../assets/defaultBanner.jpg'
 
 const Profile = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -53,10 +54,13 @@ const Profile = props => {
 		<ProfileContainer>
 			<div style={{ maxWidth: "100%" }}>
 				<Banner>
-					<BannerImage src={loggedInUser.banner_image} fluid />
+					<BannerImage src={loggedInUser.banner_image || defaultBanner} fluid />
 				</Banner>
 				<ImageCrop>
-					<ProfileImage src={loggedInUser.image} alt="Profile" />
+					{loggedInUser.image
+						? <ProfileImage src={loggedInUser.image} alt="Profile" />
+						: <Icon name="football ball" size="huge" circular style={{ fontSize: "5.3rem" }}
+						/>}
 				</ImageCrop>
 				<InfoHolder>
 					<Name>
@@ -106,8 +110,6 @@ const Banner = styled.div`
 `;
 
 const BannerImage = styled(Image)`
-	height: 225px !important;
-	object-fit: cover;
 `;
 
 const InfoHolder = styled.div`

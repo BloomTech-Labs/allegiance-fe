@@ -81,6 +81,7 @@ const MakeProfile = props => {
 					<NameHolder>
 						<Form.Group inline style={{ fontSize: '1.2rem' }}>
 							<BoldInput
+								required
 								placeholder="First Name"
 								transparent
 								onChange={handleChange}
@@ -89,6 +90,7 @@ const MakeProfile = props => {
 								type="text"
 							/>
 							<BoldInput
+								required
 								placeholder="Last Name"
 								transparent
 								onChange={handleChange}
