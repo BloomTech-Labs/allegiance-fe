@@ -43,7 +43,7 @@ const GroupPage = props => {
       <GroupAllegiances allegiances={allegiances} />
       <SectionDivider />
 
-      <PostsContainer groupId={group.id} />
+      <PostsContainer groupId={group.id} members={members} />
     </GroupPageContainer>
   );
 };
