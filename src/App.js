@@ -53,7 +53,7 @@ function App(props) {
         if (result.data.newUser) {
           props.history.push("/makeprofile");
         }
-        if (result.data.currentUser) {
+        if (result.data.currentUser && result.data.currentUser.first_name) {
           props.history.push(`${pushTo}`);
         }
       };
