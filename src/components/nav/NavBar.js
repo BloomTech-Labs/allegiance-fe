@@ -6,9 +6,14 @@ import { Menu, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 
 const NavBar = () => {
-	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+	const { isAuthenticated, logout } = useAuth0();
 	const [activeItem, setActiveItem] = useState("");
 	console.log("navbar props:", window.location.pathname);
+
+	const logoutWithRedirect = () =>
+		logout({
+			returnTo: window.location.origin
+		});
 
 	return (
 		<>
@@ -22,10 +27,6 @@ const NavBar = () => {
 				{window.location.pathname === "/makeprofile" && <p>Edit Profile</p>}
 				{window.location.pathname === "/editgroup" && <p>Edit Group</p>}
 			</TopNav>
-			{/* If user is not authenticated, show log in button */}
-			{!isAuthenticated && (
-				<button onClick={() => loginWithRedirect({})}>Log in</button>
-			)}
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
 				{isAuthenticated && (
@@ -34,7 +35,7 @@ const NavBar = () => {
 							<Menu.Item
 								as={Link}
 								name="Home"
-								to="/"
+								to="/home"
 								onClick={() => setActiveItem("Home")}
 								active={activeItem === "Home"}
 							>
@@ -72,7 +73,7 @@ const NavBar = () => {
 							<Menu.Item
 								style={{ color: "white", fontWeight: "bold" }}
 								name="Logout"
-								onClick={() => logout()}
+								onClick={() => logoutWithRedirect()}
 							>
 								Logout
 							</Menu.Item>

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.scss";
+import { Loader } from "semantic-ui-react";
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -19,67 +20,81 @@ import GroupContainer from "./components/groups/GroupContainer";
 import MakeProfile from "./components/profile/MakeProfile";
 import GroupPage from "./components/group-page/GroupPage";
 import CreateGroup from "./components/groups/CreateGroup";
+import UnderConstruction from "./components/UnderConstruction";
 
 import { LOGIN } from "./reducers/userReducer";
 
 function App(props) {
-  const dispatch = useDispatch();
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
-  const { loading, user, isAuthenticated } = useAuth0();
+	const dispatch = useDispatch();
+	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+	const { loading, user, isAuthenticated } = useAuth0();
 
-  useEffect(() => {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
-  }, []);
+	useEffect(() => {
+		if (!window.GA_INITIALIZED) {
+			initGA();
+			window.GA_INITIALIZED = true;
+		}
+		logPageView();
+	}, []);
 
-  useEffect(() => {
-    const pushTo =
-      window.location.pathname !== "/" ? window.location.pathname : "/profile";
-    if (isAuthenticated && !loggedInUser && user) {
-      const registerUser = async () => {
-        const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-          email: user.email
-        });
-        console.log(result);
-        dispatch({
-          type: LOGIN,
-          payload: result.data
-        });
-        if (result.data.newUser) {
-          props.history.push("/makeprofile");
-        }
-        if (result.data.currentUser) {
-          props.history.push(`${pushTo}`);
-        }
-      };
-      registerUser();
-    }
-  });
+	useEffect(() => {
+		const pushTo =
+			window.location.pathname !== "/" ? window.location.pathname : "/profile";
+		if (isAuthenticated && !loggedInUser && user) {
+			const registerUser = async () => {
+				const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+					email: user.email
+				});
+				console.log(result);
+				dispatch({
+					type: LOGIN,
+					payload: result.data
+				});
+				const { newUser, currentUser } = result.data;
+				if (newUser) {
+					props.history.push("/makeprofile");
+				}
+				if (currentUser && currentUser.first_name === null) {
+					props.history.push("/makeprofile");
+				}
+				if (currentUser && currentUser.first_name !== null) {
+					props.history.push(`${pushTo}`);
+				}
+			};
+			registerUser();
+		}
+	});
 
-  if (loading) {
-    return <div>Loading App...</div>;
-  }
+	if (loading) {
+		return (
+			<Loader active size="large">
+				Loading
+			</Loader>
+		);
+	}
 
-  return (
-    <div className="App">
-      <Switch>
-        <Route exact path="/" component={!isAuthenticated ? Landing : NavBar} />
-        <NavBar />
-      </Switch>
-      <Switch>
-        <Route exact path="/" />
-        <Route exact path="/makeprofile" component={MakeProfile} />
-        <Route exact path='/creategroup' component={CreateGroup} />
-        <Route exact path='/editgroup' component={CreateGroup} />
-        <PrivateRoute exact path="/groups" component={GroupContainer} />
-        <PrivateRoute exact path="/profile" component={Profile} />
-        <PrivateRoute exact path="/group/:id" component={GroupPage} />
-      </Switch>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Switch>
+				<Route exact path="/" component={!isAuthenticated ? Landing : NavBar} />
+				<NavBar />
+			</Switch>
+			<Switch>
+				<Route exact path="/home" component={UnderConstruction} />
+				<PrivateRoute exact path="/makeprofile" component={MakeProfile} />
+				<PrivateRoute exact path="/creategroup" component={CreateGroup} />
+				<PrivateRoute exact path="/editgroup" component={CreateGroup} />
+				<PrivateRoute
+					exact
+					path="/notifications"
+					component={UnderConstruction}
+				/>
+				<PrivateRoute exact path="/groups" component={GroupContainer} />
+				<PrivateRoute exact path="/profile" component={Profile} />
+				<PrivateRoute exact path="/group/:id" component={GroupPage} />
+			</Switch>
+		</div>
+	);
 }
 
 export default withRouter(App);
