@@ -35,7 +35,7 @@ const NavBar = () => {
 							<Menu.Item
 								as={Link}
 								name="Home"
-								to="/"
+								to="/home"
 								onClick={() => setActiveItem("Home")}
 								active={activeItem === "Home"}
 							>
