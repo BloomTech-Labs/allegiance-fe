@@ -136,7 +136,7 @@ const MakeProfile = props => {
 					onChange={handleChange}
 					value={values.location || ""}
 					name="location"
-					type="number"
+					type="text"
 				/>
 				<Form.Input
 					label="Banner Image"
