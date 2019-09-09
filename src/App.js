@@ -50,10 +50,14 @@ function App(props) {
 					type: LOGIN,
 					payload: result.data
 				});
-				if (result.data.newUser) {
+				const { newUser, currentUser } = result.data;
+				if (newUser) {
 					props.history.push("/makeprofile");
 				}
-				if (result.data.currentUser) {
+				if (currentUser && currentUser.first_name === null) {
+					props.history.push("/makeprofile");
+				}
+				if (currentUser && currentUser.first_name !== null) {
 					props.history.push(`${pushTo}`);
 				}
 			};
@@ -76,7 +80,7 @@ function App(props) {
 				<NavBar />
 			</Switch>
 			<Switch>
-				<Route exact path="/" component={UnderConstruction} />
+				<Route exact path="/home" component={UnderConstruction} />
 				<PrivateRoute exact path="/makeprofile" component={MakeProfile} />
 				<PrivateRoute exact path="/creategroup" component={CreateGroup} />
 				<PrivateRoute exact path="/editgroup" component={CreateGroup} />

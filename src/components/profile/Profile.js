@@ -7,6 +7,7 @@ import MyAllegianceGroups from "./MyAllegianceGroups";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { GET_GROUPS } from "../../reducers/userReducer";
+import defaultBanner from '../../assets/defaultBanner.jpg'
 
 const Profile = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -24,18 +25,23 @@ const Profile = props => {
 		if (loggedInUser) {
 			const fetchData = async () => {
 				if (token) {
-					const groups = await axiosWithAuth([token]).get(
-						`/groups_users/search/${loggedInUser.id}`
-					);
-					const userGroups = groups.data.groups.map(group => {
-						return {
-							name: group.group_name,
-							image: group.group_image,
-							id: group.group_id,
-							user_type: group.user_type
-						}
-					})
-					dispatch({ type: GET_GROUPS, payload: userGroups })
+					try {
+						const groups = await axiosWithAuth([token]).get(
+							`/groups_users/search/${loggedInUser.id}`
+						);
+						const userGroups = groups.data.groups.map(group => {
+							return {
+								name: group.group_name,
+								image: group.group_image,
+								id: group.group_id,
+								user_type: group.user_type
+							}
+						})
+						dispatch({ type: GET_GROUPS, payload: userGroups })
+					}
+					catch {
+						dispatch({ type: GET_GROUPS, payload: [] })
+					}
 				}
 			};
 
@@ -53,14 +59,19 @@ const Profile = props => {
 		<ProfileContainer>
 			<div style={{ maxWidth: "100%" }}>
 				<Banner>
-					<BannerImage src={loggedInUser.banner_image} fluid />
+					<BannerImage src={loggedInUser.banner_image || defaultBanner} fluid />
 				</Banner>
 				<ImageCrop>
-					<ProfileImage src={loggedInUser.image} alt="Profile" />
+					{loggedInUser.image
+						? <ProfileImage src={loggedInUser.image} alt="Profile" />
+						: <Icon name="football ball" size="huge" circular style={{ fontSize: "5.3rem" }}
+						/>}
 				</ImageCrop>
 				<InfoHolder>
 					<Name>
-						<h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
+						{loggedInUser.first_name
+							? <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
+							: null}
 						{props.match.url === "/profile" ? (
 							<Link to="/makeprofile">
 								<Icon name="edit outline" />
@@ -70,7 +81,7 @@ const Profile = props => {
 					<p>{loggedInUser.bio}</p>
 					<>
 						<H3>MY GROUPS</H3>
-						<MyAllegianceGroups content={loggedInGroups} type={"groups"} />
+						<MyAllegianceGroups content={loggedInGroups || []} type={"groups"} />
 					</>
 				</InfoHolder>
 				<div>
@@ -106,8 +117,6 @@ const Banner = styled.div`
 `;
 
 const BannerImage = styled(Image)`
-	height: 225px !important;
-	object-fit: cover;
 `;
 
 const InfoHolder = styled.div`

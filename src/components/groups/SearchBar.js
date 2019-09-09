@@ -32,8 +32,11 @@ const SearchBar = () => {
   const onKeyDown = e => {
     // User pressed the enter key
     if (e.keyCode === 13) {
-      setSuggestion(0);
-      setValues(results[activeSuggestion]);
+      // Check that results from SearchResults has something to fill
+      if (results.length > 0) {
+        setSuggestion(0);
+        setValues(results[activeSuggestion]);
+      }
     }
     // User pressed the up arrow
     if (e.keyCode === 38) {

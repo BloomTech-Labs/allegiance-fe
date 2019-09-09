@@ -6,29 +6,25 @@ import Logo from "../assets/Logo.png";
 import LandingImage from "../assets/LandingImage.jpg";
 
 const Landing = () => {
-	const { loginWithRedirect } = useAuth0();
-	return (
-		<LandingContainer>
-			<LogoHolder>
-				<Image src={Logo} size="small" />
-				<h1>ALLEGIANCE</h1>
-			</LogoHolder>
-			<Headers>The social network for sports fans</Headers>
-			<ButtonHolder>
-				<Button
-					color="red"
-					content="Get Started"
-					onClick={() => loginWithRedirect({})}
-				/>
-				<Button
-					content="Sign In"
-					onClick={() => loginWithRedirect({})}
-					style={{ border: "none", backgroundColor: "black", color: "white" }}
-				/>
-			</ButtonHolder>
-		</LandingContainer>
-	);
-};
+
+    const { loginWithRedirect } = useAuth0();
+    return (
+        <LandingContainer>
+            <LogoHolder>
+                <Image src={Logo} size='small' />
+                <h1>ALLEGIANCE</h1>
+            </LogoHolder>
+            <Headers>The social network for sports fans</Headers>
+            <ButtonHolder>
+                <Button
+                    color="red"
+                    content='Sign In'
+                    onClick={() => loginWithRedirect({})}
+                    style={{ border: 'none', color: 'white' }} />
+            </ButtonHolder>
+        </LandingContainer>
+    )
+}
 
 const LandingContainer = styled.div`
 	display: flex;
