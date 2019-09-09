@@ -54,7 +54,9 @@ const PostsContainer = props => {
   );
 };
 
-const PostListContainer = styled.div``;
+const PostListContainer = styled.div`
+  width: 100%;
+`;
 const PostsWrapper = styled.div``;
 
 export default PostsContainer;

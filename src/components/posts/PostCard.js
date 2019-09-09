@@ -11,15 +11,17 @@ const PostCard = props => {
 
   return (
     <CardContainer>
-      <PostMember>
-        <Image src={image} avatar />
-        {first_name} {last_name}
-      </PostMember>
-      <PostBubble
-        className={props.post.user_id === id ? "my-post" : "your-post"}
-      >
-        <p>{props.post.post_content}</p>
-      </PostBubble>
+      <Image src={image} avatar />
+      <BubbleContainer>
+        <PostMember>
+          {first_name} {last_name}
+        </PostMember>
+        <PostBubble
+          className={props.post.user_id === id ? "my-post" : "your-post"}
+        >
+          <p>{props.post.post_content}</p>
+        </PostBubble>
+      </BubbleContainer>
 
       <Icon
         name="trash alternate"
@@ -30,34 +32,62 @@ const PostCard = props => {
   );
 };
 
-const CardContainer = styled.div``;
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 80%;
+`;
 
-const PostMember = styled.div``;
+const BubbleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+`;
+
+const PostMember = styled.div`
+  font-size: 1rem;
+  color: black;
+`;
 
 const PostBubble = styled.div`
   background: #efefef;
   -webkit-border-radius: 4px;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 1.2rem;
+  font-weight: bolder;
   line-height: 1.3;
-  margin: 0 auto 5%;
-  max-width: 50%;
-  padding: 3%;
+  //   margin: 0 auto 5%;
+  max-width: 80%;
   position: relative;
   &.my-post {
-    border: 1px solid red;
+    background-color: #3480f1;
+    color: white;
+    &:after {
+      border-radius: 0 0 0 100%;
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      right: 0px;
+      width: 9px;
+      height: 13px;
+      background-color: #3480f1;
+    }
   }
   &.your-post {
-    border: 1px solid yellow;
+    color: black;
+    background-color: #ff5722;
+    &:before {
+      border-radius: 0 0 100% 0;
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0px;
+      width: 9px;
+      height: 13px;
+      background-color: #ff5722;
+    }
   }
-  &:after {
-    border-left: 20px solid transparent;
-    border-top: 20px solid #efefef;
-    bottom: -20px;
-    content: "";
-    position: absolute;
-    right: 20px;
-  }
+
   p {
     font-size: 0.8rem;
     line-height: 1.2rem;

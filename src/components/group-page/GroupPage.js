@@ -12,6 +12,8 @@ import { Divider } from "semantic-ui-react";
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
   const [token] = useGetToken();
+  //   console.log("Token:", token);
+
   // Defines id to be group id from params
   const id = props.match.params.id;
 
