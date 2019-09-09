@@ -72,7 +72,7 @@ function App(props) {
         <NavBar />
       </Switch>
       <Switch>
-        <Route exact path="/" component={UnderConstruction} />
+        <Route exact path="/home" component={UnderConstruction} />
         <PrivateRoute exact path="/makeprofile" component={MakeProfile} />
         <PrivateRoute exact path='/creategroup' component={CreateGroup} />
         <PrivateRoute exact path='/editgroup' component={CreateGroup} />

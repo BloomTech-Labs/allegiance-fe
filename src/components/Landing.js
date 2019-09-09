@@ -16,12 +16,10 @@ const Landing = () => {
             <Headers>The social network for sports fans</Headers>
             <ButtonHolder>
                 <Button
-                    color='red'
-                    content='Get Started' />
-                <Button
+                    color="red"
                     content='Sign In'
                     onClick={() => loginWithRedirect({})}
-                    style={{ border: 'none', backgroundColor: 'black', color: 'white' }} />
+                    style={{ border: 'none', color: 'white' }} />
             </ButtonHolder>
         </LandingContainer>
     )

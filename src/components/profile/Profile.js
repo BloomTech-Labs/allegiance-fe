@@ -25,18 +25,23 @@ const Profile = props => {
 		if (loggedInUser) {
 			const fetchData = async () => {
 				if (token) {
-					const groups = await axiosWithAuth([token]).get(
-						`/groups_users/search/${loggedInUser.id}`
-					);
-					const userGroups = groups.data.groups.map(group => {
-						return {
-							name: group.group_name,
-							image: group.group_image,
-							id: group.group_id,
-							user_type: group.user_type
-						}
-					})
-					dispatch({ type: GET_GROUPS, payload: userGroups })
+					try {
+						const groups = await axiosWithAuth([token]).get(
+							`/groups_users/search/${loggedInUser.id}`
+						);
+						const userGroups = groups.data.groups.map(group => {
+							return {
+								name: group.group_name,
+								image: group.group_image,
+								id: group.group_id,
+								user_type: group.user_type
+							}
+						})
+						dispatch({ type: GET_GROUPS, payload: userGroups })
+					}
+					catch {
+						dispatch({ type: GET_GROUPS, payload: [] })
+					}
 				}
 			};
 
@@ -76,7 +81,7 @@ const Profile = props => {
 					<p>{loggedInUser.bio}</p>
 					<>
 						<H3>MY GROUPS</H3>
-						<MyAllegianceGroups content={loggedInGroups} type={"groups"} />
+						<MyAllegianceGroups content={loggedInGroups || []} type={"groups"} />
 					</>
 				</InfoHolder>
 				<div>
