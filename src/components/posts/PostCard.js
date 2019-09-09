@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
 
 import styled from "styled-components";
+import PostActivity from "./PostActivity";
 
 const PostCard = props => {
   const { first_name, last_name, image, id } = useSelector(
@@ -22,6 +23,7 @@ const PostCard = props => {
           <p>{props.post.post_content}</p>
         </PostBubble>
       </BubbleContainer>
+      <PostActivity post={props.post} />
 
       <Icon
         name="trash alternate"
@@ -33,15 +35,15 @@ const PostCard = props => {
 };
 
 const CardContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  max-width: 80%;
+  //   display: flex;
+  //   flex-direction: row;
+  //   max-width: 80%;
 `;
 
 const BubbleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
+  //   display: flex;
+  //   flex-direction: column;
+  //   max-width: 100%;
 `;
 
 const PostMember = styled.div`
