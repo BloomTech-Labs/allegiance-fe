@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useForm from "../utils/useForm";
-
+import useImageUploader from "../utils/useImageUploader";
 import {
 	Form,
 	Button,
@@ -25,6 +25,9 @@ const CreateGroup = props => {
 	//Fetches Auth0 token for axios call
 	const [token] = useGetToken();
 
+	//Imports image upload functions
+	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
+
 	//Imports form custom hook to handle state, form entry and form submission.
 	const requestType =
 		window.location.pathname === "/editgroup" ? editGroup : createGroup;
@@ -48,6 +51,7 @@ const CreateGroup = props => {
 			setError(false);
 			const newGroup = {
 				...values,
+				image: image,
 				creator_id: loggedInUser.id
 			};
 			const result = await axiosWithAuth([token]).post("/groups/", newGroup);
@@ -76,7 +80,8 @@ const CreateGroup = props => {
 		try {
 			setError(false);
 			const updatedGroup = {
-				...values
+				...values,
+				image: image
 			};
 			const result = await axiosWithAuth([token]).put(
 				`/groups/${group.id}`,
@@ -115,7 +120,7 @@ const CreateGroup = props => {
 	const privacy =
 		values && values.privacy_setting
 			? values.privacy_setting.charAt(0).toUpperCase() +
-			  values.privacy_setting.slice(1)
+			values.privacy_setting.slice(1)
 			: null;
 	return (
 		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
@@ -128,6 +133,7 @@ const CreateGroup = props => {
 							<GroupLogo
 								onClick={() => setModal(true)}
 								src={
+									image ||
 									values.image ||
 									"https://react.semantic-ui.com/images/wireframe/image.png"
 								}
@@ -136,13 +142,14 @@ const CreateGroup = props => {
 					>
 						<Header icon="image" content="Please enter your image's URL" />
 						<Modal.Content>
-							<Form.Input
-								fluid
-								onChange={handleChange}
-								value={values.image || ""}
-								name="image"
-								type="text"
-							/>
+							<div {...getRootProps()}>
+								<input {...getInputProps()} />
+								{
+									isDragActive ?
+										<p>Drop the files here ...</p> :
+										<p>Drag 'n' drop some files here, or click to select files</p>
+								}
+							</div>
 							<Button color="green" onClick={() => setModal(false)}>
 								Done
 							</Button>
@@ -206,10 +213,10 @@ const CreateGroup = props => {
 					{window.location.pathname === "/editgroup" ? (
 						<option value={values.privacy_setting}>{privacy} </option>
 					) : (
-						<option value="" disabled hidden>
-							Choose Privacy setting...
+							<option value="" disabled hidden>
+								Choose Privacy setting...
 						</option>
-					)}
+						)}
 					{privacy !== "Public" && privacy !== undefined ? (
 						<option value="public">Public</option>
 					) : null}
@@ -231,8 +238,8 @@ const CreateGroup = props => {
 					{isLoading ? (
 						<Button loading>Submit</Button>
 					) : (
-						<Button type="submit">Submit</Button>
-					)}
+							<Button type="submit">Submit</Button>
+						)}
 					{window.location.pathname === "/editgroup" ? (
 						<Modal
 							closeIcon
