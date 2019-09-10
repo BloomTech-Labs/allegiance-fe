@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Image, Icon, Loader } from "semantic-ui-react";
+import { Icon, Loader } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
@@ -59,7 +59,7 @@ const Profile = props => {
 		<ProfileContainer>
 			<div style={{ maxWidth: "100%" }}>
 				<Banner>
-					<BannerImage src={loggedInUser.banner_image || defaultBanner} fluid />
+					<BannerImage src={loggedInUser.banner_image || defaultBanner} />
 				</Banner>
 				<ImageCrop>
 					{loggedInUser.image
@@ -113,10 +113,11 @@ const ProfileContainer = styled.div`
 `;
 
 const Banner = styled.div`
-	border-bottom: 10px solid black;
 `;
 
-const BannerImage = styled(Image)`
+const BannerImage = styled.img`
+width: 100%
+border-bottom: 10px solid black;
 `;
 
 const InfoHolder = styled.div`

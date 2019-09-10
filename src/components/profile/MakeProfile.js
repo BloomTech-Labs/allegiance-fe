@@ -6,6 +6,7 @@ import useGetToken from "../utils/useGetToken";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components"
 import { UPDATE_USER } from "../../reducers/userReducer";
+import useImageUploader from "../utils/useImageUploader";
 
 const MakeProfile = props => {
 	//Fetches logged in user's info from redux store.
@@ -21,14 +22,16 @@ const MakeProfile = props => {
 	//Imports form custom hook to handle state, form entry and form submission.
 	const { values, handleChange, handleSubmit, setValues } = useForm(updateUser);
 
+	//Imports image upload functions
+	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
 	//Sends user data as a put request to API to update user info.
 	async function updateUser() {
 		setLoading(true);
 		if (token) {
 			try {
 				setError(false)
+				if (image) values.image = image
 				Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
-				console.log(values)
 				const result = await axiosWithAuth([token]).put(
 					`/users/${loggedInUser.id}`,
 					values
@@ -63,18 +66,17 @@ const MakeProfile = props => {
 					<Modal
 						open={modalOpen}
 						onClose={() => setModal(false)}
-						trigger={<ProfilePic onClick={() => setModal(true)} src={values.image || 'https://react.semantic-ui.com/images/wireframe/image.png'} />}>
+						trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || 'https://react.semantic-ui.com/images/wireframe/image.png'} />}>
 						<Header icon='image' content="Please enter your image's url" />
 						<Modal.Content>
-							<Form.Input
-								fluid
-								label="Profile Image"
-								placeholder="Profile Image"
-								onChange={handleChange}
-								value={values.image || ""}
-								name="image"
-								type="text"
-							/>
+							<div {...getRootProps()}>
+								<input {...getInputProps()} />
+								{
+									isDragActive ?
+										<p>Drop the files here ...</p> :
+										<p>Drag 'n' drop some files here, or click to select files</p>
+								}
+							</div>
 							<Button color='green' onClick={() => setModal(false)}>Done</Button>
 						</Modal.Content>
 					</Modal>
