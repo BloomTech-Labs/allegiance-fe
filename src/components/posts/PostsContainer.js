@@ -7,6 +7,7 @@ import PostCard from "./PostCard";
 import PostForm from "./PostForm";
 
 import styled from "styled-components";
+import MatUiPostCard from "./MatUiPostCard";
 
 const PostsContainer = props => {
   // Fetches Auth0 token for axios call
@@ -23,7 +24,7 @@ const PostsContainer = props => {
         const posts = await axiosWithAuth([token]).get(`/posts/group/${id}`);
         console.log("%c Posts List", "color: orange; font-weight: bold;");
         console.log(posts.data);
-        setPosts(posts.data.posts);
+        setPosts(posts.data.postsWithLikes);
         setSubmitted(false);
       }
     };
@@ -41,21 +42,33 @@ const PostsContainer = props => {
     <PostsWrapper>
       <PostListContainer>
         {posts.map(post => {
-          return <PostCard post={post} key={post.id} deletePost={deletePost} />;
+          return (
+            // <PostCard
+            //   post={post}
+            //   key={post.id}
+            //   deletePost={deletePost}
+            //   setSubmitted={setSubmitted}
+            // />
+            <MatUiPostCard
+              post={post}
+              key={post.id}
+              deletePost={deletePost}
+              setSubmitted={setSubmitted}
+            />
+          );
         })}
       </PostListContainer>
 
-      <PostForm
-        submitted={submitted}
-        setSubmitted={setSubmitted}
-        groupId={props.groupId}
-      />
+      <PostForm setSubmitted={setSubmitted} groupId={props.groupId} />
     </PostsWrapper>
   );
 };
 
 const PostListContainer = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const PostsWrapper = styled.div``;
 
