@@ -109,11 +109,13 @@ const CreateGroup = props => {
 						<Modal.Content>
 							<Uploader {...getRootProps()} >
 								<input {...getInputProps()} />
-								<Icon name='cloud upload' size='huge' color='violet' inverted />
-								{isDragActive
-									? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
-									: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
-										<Button color='violet' inverted >Browse Files</Button></>}
+								<div>
+									<Icon name='cloud upload' size='huge' color='violet' inverted />
+									{isDragActive
+										? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
+										: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
+											<Button color='violet' inverted >Browse Files</Button></>}
+								</div>
 							</Uploader>
 						</Modal.Content>
 					</Modal>
