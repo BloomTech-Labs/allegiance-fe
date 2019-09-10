@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ADD_GROUP, LEAVE_GROUP } from "../../reducers/userReducer";
 
 import styled from "styled-components";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -10,6 +11,7 @@ const MembershipStatus = props => {
 	// const [isLoading, setLoading] = useState(false);
 	const [userType, setUserType] = useState();
 	const [relation, setRelation] = useState();
+	const dispatch = useDispatch();
 
 	// Fetches Auth0 token for axios call
 	const [token] = useGetToken();
@@ -50,6 +52,13 @@ const MembershipStatus = props => {
 			});
 			if (result.data.newGroupUsers) {
 				setUserType("member");
+				const addedGroup = {
+					name: result.data.newGroupUsers.group_name,
+					image: result.data.newGroupUsers.group_image,
+					id: result.data.newGroupUsers.group_id,
+					user_type: result.data.newGroupUsers.user_type
+				};
+				dispatch({ type: ADD_GROUP, payload: addedGroup });
 			}
 		}
 		// setLoading(false);
@@ -85,6 +94,7 @@ const MembershipStatus = props => {
 				result.data.message === "The user to group pairing has been deleted."
 			) {
 				setUserType("non-member");
+				dispatch({ type: LEAVE_GROUP, payload: props.group_id });
 			}
 		}
 		// setLoading(false);
