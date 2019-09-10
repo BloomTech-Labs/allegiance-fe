@@ -11,16 +11,41 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import avi from "../../assets/walter-avi.png";
+import {
+  Favorite,
+  ExpandMore,
+  MoreVert,
+  ChatBubbleOutline,
+  DeleteOutline,
+  FavoriteBorder
+} from "@material-ui/icons";
+
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import useGetToken from "../utils/useGetToken";
 
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 345
+    width: 400,
+    marginBottom: 20
+  },
+  cardHeader: {
+    padding: 0,
+    borderBottom: "1px solid lightgray"
+  },
+  likesCount: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  postActivity: {
+    justifyContent: "space-between",
+    borderTop: "1px solid lightgray",
+    padding: 0,
+    paddingLeft: 10,
+    paddingRight: 20,
+    alignItems: "center"
   },
   media: {
     height: 0,
@@ -36,92 +61,125 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: "rotate(180deg)"
   },
-  avatar: {}
+  avatar: {
+    margin: 3,
+    width: 60,
+    height: 60
+  },
+  typography: {
+    fontSize: 20,
+    color: "black"
+  }
 }));
 
 export default function MatUiPostCard(props) {
-  const { first_name, last_name, image, id } = useSelector(
-    state => state.userReducer.loggedInUser
-  );
+  const {
+    first_name,
+    last_name,
+    image,
+    id,
+    post_content,
+    user_id,
+    likes,
+    replies
+  } = props.post;
+  const userId = useSelector(state => state.userReducer.loggedInUser.id);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [token] = useGetToken();
+  const postLikeId = likes.find(like => like.user_id === userId);
+
+  async function addLike(e) {
+    e.preventDefault();
+    const like = await axiosWithAuth([token]).post(`/posts_likes/post/${id}`, {
+      user_id: userId,
+      post_id: id
+    });
+    if (like.data.likeResult) {
+      props.setSubmitted(true);
+    }
+  }
+
+  async function unLike(e) {
+    e.preventDefault();
+    const unLike = await axiosWithAuth([token]).delete(
+      `/posts_likes/${postLikeId.id}`
+    );
+    if (unLike) {
+      props.setSubmitted(true);
+    }
+  }
 
   function handleExpandClick() {
     setExpanded(!expanded);
   }
-  console.log("MATUI:", props.post);
 
   return (
-    <Card className={classes.card}>
+    <Card raised className={classes.card}>
       <CardHeader
-        avatar={<Avatar src={image} className={classes.avatar} />}
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+        className={classes.cardHeader}
+        avatar={
+          <Avatar src={!image ? avi : image} className={classes.avatar} />
         }
-        title="Shrimp and Chorizo Paella"
+        action={
+          userId === user_id ? (
+            <IconButton
+              onClick={() => props.deletePost(id)}
+              aria-label="settings"
+            >
+              <DeleteOutline />
+            </IconButton>
+          ) : null
+        }
+        title={`${first_name} ${last_name}`}
+        titleTypographyProps={{ fontSize: 25 }}
         subheader="September 14, 2016"
       />
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
         image="/static/images/cards/paella.jpg"
         title="Paella dish"
-      />
+      /> */}
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.post.post_content}
+        <Typography
+          className={classes.typography}
+          variant="body1"
+          color="textSecondary"
+          component="p"
+        >
+          {post_content}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
+      <CardActions className={classes.postActivity} disableSpacing>
+        {!postLikeId && (
+          <div>
+            <IconButton aria-label="add to favorites" onClick={addLike}>
+              <FavoriteBorder />
+            </IconButton>
+            <IconButton className={classes.likesCount}>
+              <h4> {likes.length} </h4>
+            </IconButton>
+          </div>
+        )}
+        {postLikeId && (
+          <div>
+            <IconButton aria-label="add to favorites" onClick={unLike}>
+              <Favorite />
+            </IconButton>
+            <IconButton className={classes.likesCount}>
+              <h4> {likes.length} </h4>
+            </IconButton>
+          </div>
+        )}
+        <div>
+          <IconButton aria-label="share">
+            <ChatBubbleOutline />
+          </IconButton>
+          <IconButton className={classes.likesCount}>
+            <h4> {replies.length} </h4>
+          </IconButton>
+        </div>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
-            set aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-            over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-            stirring occasionally until lightly browned, 6 to 8 minutes.
-            Transfer shrimp to a large plate and set aside, leaving chicken and
-            chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-            onion, salt and pepper, and cook, stirring often until thickened and
-            fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
-            cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is
-            absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
-            shrimp and mussels, tucking them down into the rice, and cook again
-            without stirring, until mussels have opened and rice is just tender,
-            5 to 7 minutes more. (Discard any mussels that don’t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then
-            serve.
-          </Typography>
-        </CardContent>
-      </Collapse>
     </Card>
   );
 }

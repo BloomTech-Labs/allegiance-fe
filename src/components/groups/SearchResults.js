@@ -21,7 +21,9 @@ const SearchResults = props => {
           <Link to={`/group/${group.id}`} key={group.id}>
             <div className={`single-result ${className}`}>
               <ResultImage src={group.image} />{" "}
-              <div className="result-info">{group.group_name}</div>
+              <ResultName className="result-info">
+                {group.group_name}
+              </ResultName>
             </div>
           </Link>
         );
@@ -37,6 +39,9 @@ const ResultImage = styled.img`
   @media ${device.tablet} {
     max-width: 10%;
   }
+`;
+const ResultName = styled.div`
+  color: black;
 `;
 
 export default SearchResults;

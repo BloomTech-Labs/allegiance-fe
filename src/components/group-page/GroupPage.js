@@ -7,7 +7,7 @@ import GroupAllegiances from "./GroupAllegiances";
 import PostsContainer from "../posts/PostsContainer";
 
 import styled from "styled-components";
-import { Divider } from "semantic-ui-react";
+import { Paper } from "@material-ui/core";
 
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
@@ -41,9 +41,10 @@ const GroupPage = props => {
 
   return (
     <GroupPageContainer>
-      <GroupInfo group={group} members={members} />
-      <GroupAllegiances allegiances={allegiances} />
-      <SectionDivider />
+      <PaperContainer elevation={3}>
+        <GroupInfo group={group} members={members} />
+        <GroupAllegiances allegiances={allegiances} />
+      </PaperContainer>
 
       <PostsContainer groupId={group.id} members={members} />
     </GroupPageContainer>
@@ -57,8 +58,8 @@ const GroupPageContainer = styled.div`
   width: 100%;
 `;
 
-const SectionDivider = styled(Divider)`
-  margin: 0rem;
+const PaperContainer = styled(Paper)`
+  margin-bottom: 5%;
 `;
 
 export default GroupPage;

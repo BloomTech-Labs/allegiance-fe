@@ -24,7 +24,7 @@ const PostsContainer = props => {
         const posts = await axiosWithAuth([token]).get(`/posts/group/${id}`);
         console.log("%c Posts List", "color: orange; font-weight: bold;");
         console.log(posts.data);
-        setPosts(posts.data.postsWithLikes);
+        setPosts(posts.data.postsLoaded);
         setSubmitted(false);
       }
     };
@@ -69,6 +69,7 @@ const PostListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: whitesmoke;
 `;
 const PostsWrapper = styled.div``;
 

@@ -6,6 +6,8 @@ import useDebounce from "../utils/useDebounce";
 
 import "../../App.scss";
 import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
 
 import SearchResults from "./SearchResults";
 
@@ -27,6 +29,25 @@ const SearchBar = () => {
       setValues({ group_name: group.group_name });
     }
   }
+  // Material UI
+  const useStyles = makeStyles(theme => ({
+    container: {
+      display: "flex",
+      flexWrap: "wrap"
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1)
+    },
+    dense: {
+      marginTop: theme.spacing(2)
+    },
+    menu: {
+      width: 200
+    }
+  }));
+
+  const classes = useStyles();
 
   // Handle up and down arrow keys
   const onKeyDown = e => {
@@ -89,14 +110,17 @@ const SearchBar = () => {
     <div className="search-form">
       {/* form to handle group search text from user */}
       <form className="form-items" onSubmit={handleSubmit}>
-        <GroupSearch
+        <TextField
+          value={values.group_name || ""}
           onChange={handleChange}
           onKeyDown={onKeyDown}
+          id="outlined-with-placeholder"
+          label="Search Groups"
+          placeholder="Search Groups"
+          className={classes.textField}
+          margin="normal"
+          variant="outlined"
           name="group_name"
-          id="group_name"
-          placeholder="Search For Group..."
-          value={values.group_name || ""}
-          type="search"
         />
       </form>
       {/* search results component handles display of results */}

@@ -65,7 +65,7 @@ const ActivityContainer = styled.div`
   border-top: 1px solid black;
   height: 7vh;
   hr {
-    width: 100%;
+    width: 90%;
     color: lightgray;
     margin: 0;
   }
@@ -77,7 +77,7 @@ const TopContainer = styled.div`
   width: 100%;
   height: 3vh;
   h3 {
-    padding-left: 10px;
+      padding 10px;
   }
 `;
 
