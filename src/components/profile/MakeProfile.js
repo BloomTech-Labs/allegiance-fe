@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useForm from "../utils/useForm";
-import { Form, Button, Segment, Message, Modal, Header } from "semantic-ui-react";
+import { Form, Segment, Message, Modal, Icon, Button } from "semantic-ui-react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { useSelector, useDispatch } from "react-redux";
@@ -67,17 +67,19 @@ const MakeProfile = props => {
 						open={modalOpen}
 						onClose={() => setModal(false)}
 						trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || 'https://react.semantic-ui.com/images/wireframe/image.png'} />}>
-						<Header icon='image' content="Please enter your image's url" />
 						<Modal.Content>
-							<div {...getRootProps()}>
+							<Uploader {...getRootProps()} >
 								<input {...getInputProps()} />
-								{
-									isDragActive ?
-										<p>Drop the files here ...</p> :
-										<p>Drag 'n' drop some files here, or click to select files</p>
-								}
-							</div>
-							<Button color='green' onClick={() => setModal(false)}>Done</Button>
+
+								<div>
+									<Icon name='cloud upload' size='huge' color='violet' inverted />
+									{isDragActive
+										? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
+										: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
+											<Button color='violet' inverted >Browse Files</Button></>}
+								</div>
+
+							</Uploader>
 						</Modal.Content>
 					</Modal>
 					<NameHolder>
@@ -189,5 +191,22 @@ const BoldInput = styled(Form.Input)`
 input:first-child {
     font-weight: bold;
 }`
+
+const Uploader = styled.div`
+background: #fff;
+padding: 16px;
+width: 90%
+border: 2px dashed lightgrey
+display: flex
+justify-content: center
+text-align: center
+margin: auto`
+
+const Text = styled.p`
+margin: 1rem 0 1rem 0;`
+
+const DropText = styled.p`
+font-size: 2rem;
+padding: 10%;`
 
 export default MakeProfile;

@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ADD_GROUP } from "../../reducers/userReducer";
+
 import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
-import {
-	Form,
-	Button,
-	Segment,
-	Modal,
-	Header,
-	Message
-} from "semantic-ui-react";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { useSelector, useDispatch } from "react-redux";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+
+import { Form, Button, Segment, Modal, Header, Message, Icon } from "semantic-ui-react";
 import styled from "styled-components";
-import { ADD_GROUP } from "../../reducers/userReducer";
+
+import Placeholder from '../../assets/Placeholder.png'
 
 const CreateGroup = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -29,11 +26,8 @@ const CreateGroup = props => {
 	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
 
 	//Imports form custom hook to handle state, form entry and form submission.
-	const requestType =
-		window.location.pathname === "/editgroup" ? editGroup : createGroup;
-	const { values, handleChange, handleSubmit, setValues } = useForm(
-		requestType
-	);
+	const requestType = window.location.pathname === "/editgroup" ? editGroup : createGroup;
+	const { values, handleChange, handleSubmit, setValues } = useForm(requestType);
 
 	//If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
 	const group = props.location.state ? props.location.state.group : null;
@@ -49,13 +43,8 @@ const CreateGroup = props => {
 		setLoading(true);
 		try {
 			setError(false);
-			const newGroup = {
-				...values,
-				image: image,
-				creator_id: loggedInUser.id
-			};
+			const newGroup = { ...values, image: image, creator_id: loggedInUser.id };
 			const result = await axiosWithAuth([token]).post("/groups/", newGroup);
-			console.log(result);
 			const addedGroup = {
 				name: result.data.newGroup.group_name,
 				image: result.data.newGroup.image,
@@ -63,11 +52,9 @@ const CreateGroup = props => {
 				user_type: "admin"
 			};
 			dispatch({ type: ADD_GROUP, payload: addedGroup });
-			const push = () => {
-				props.history.push(`/group/${result.data.newGroup.id}`);
-			};
-
+			const push = () => props.history.push(`/group/${result.data.newGroup.id}`);
 			setTimeout(push, 1000);
+			console.log(result);
 		} catch {
 			setLoading(false);
 			setError(true);
@@ -79,20 +66,11 @@ const CreateGroup = props => {
 		setLoading(true);
 		try {
 			setError(false);
-			const updatedGroup = {
-				...values,
-				image: image
-			};
-			const result = await axiosWithAuth([token]).put(
-				`/groups/${group.id}`,
-				updatedGroup
-			);
-			console.log(result);
-			const push = () => {
-				props.history.push(`/group/${group.id}`);
-			};
-
+			const updatedGroup = { ...values, image: image };
+			const result = await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup);
+			const push = () => props.history.push(`/group/${group.id}`);
 			setTimeout(push, 1000);
+			console.log(result);
 		} catch {
 			setLoading(false);
 			setError(true);
@@ -105,23 +83,19 @@ const CreateGroup = props => {
 		try {
 			setError(false);
 			const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`);
-			console.log(result);
-			const push = () => {
-				props.history.push(`/profile`);
-			};
-
+			const push = () => props.history.push(`/profile`);
 			setTimeout(push, 1000);
+			console.log(result);
 		} catch {
 			setLoading(false);
 			setError(true);
 		}
 	}
 
-	const privacy =
-		values && values.privacy_setting
-			? values.privacy_setting.charAt(0).toUpperCase() +
-			values.privacy_setting.slice(1)
-			: null;
+	const privacy = values && values.privacy_setting
+		? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1)
+		: null;
+
 	return (
 		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
 			<Form onSubmit={handleSubmit} error>
@@ -129,30 +103,20 @@ const CreateGroup = props => {
 					<Modal
 						open={modalOpen}
 						onClose={() => setModal(false)}
-						trigger={
-							<GroupLogo
-								onClick={() => setModal(true)}
-								src={
-									image ||
-									values.image ||
-									"https://react.semantic-ui.com/images/wireframe/image.png"
-								}
-							/>
-						}
-					>
-						<Header icon="image" content="Please enter your image's URL" />
+						trigger={<GroupLogo
+							onClick={() => setModal(true)}
+							src={image || values.image || Placeholder} />}>
 						<Modal.Content>
-							<div {...getRootProps()}>
+							<Uploader {...getRootProps()} >
 								<input {...getInputProps()} />
-								{
-									isDragActive ?
-										<p>Drop the files here ...</p> :
-										<p>Drag 'n' drop some files here, or click to select files</p>
-								}
-							</div>
-							<Button color="green" onClick={() => setModal(false)}>
-								Done
-							</Button>
+								<div>
+									<Icon name='cloud upload' size='huge' color='violet' inverted />
+									{isDragActive
+										? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
+										: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
+											<Button color='violet' inverted >Browse Files</Button></>}
+								</div>
+							</Uploader>
 						</Modal.Content>
 					</Modal>
 					<NameHolder>
@@ -165,8 +129,7 @@ const CreateGroup = props => {
 							onChange={handleChange}
 							value={values.group_name || ""}
 							name="group_name"
-							type="text"
-						/>
+							type="text" />
 						<Form.Input
 							required
 							style={{ marginLeft: "7px" }}
@@ -175,8 +138,7 @@ const CreateGroup = props => {
 							onChange={handleChange}
 							value={values.description || ""}
 							name="description"
-							type="text"
-						/>
+							type="text" />
 					</NameHolder>
 				</BasicInfoHolder>
 				<Form.Group widths="equal">
@@ -189,8 +151,7 @@ const CreateGroup = props => {
 						onChange={handleChange}
 						value={values.location || ""}
 						name="location"
-						type="text"
-					/>
+						type="text" />
 					<Form.Input
 						required
 						label="Acronym"
@@ -199,8 +160,7 @@ const CreateGroup = props => {
 						onChange={handleChange}
 						value={values.acronym || ""}
 						name="acronym"
-						type="text"
-					/>
+						type="text" />
 				</Form.Group>
 				<Form.Field
 					required
@@ -208,49 +168,29 @@ const CreateGroup = props => {
 					onChange={handleChange}
 					name="privacy_setting"
 					control="select"
-					defaultValue={values.privacy_setting || ""}
-				>
-					{window.location.pathname === "/editgroup" ? (
-						<option value={values.privacy_setting}>{privacy} </option>
-					) : (
-							<option value="" disabled hidden>
-								Choose Privacy setting...
-						</option>
-						)}
-					{privacy !== "Public" && privacy !== undefined ? (
-						<option value="public">Public</option>
-					) : null}
-					{privacy !== "Private" && privacy !== undefined ? (
-						<option value="private">Private</option>
-					) : null}
-					{privacy !== "Hidden" && privacy !== undefined ? (
-						<option value="hidden">Hidden</option>
-					) : null}
+					defaultValue={values.privacy_setting || ""}>
+
+					<option value={values.privacy_setting}>{privacy || ""}</option>
+					{privacy !== "Public" && privacy !== undefined ? <option value="public">Public</option> : null}
+					{privacy !== "Private" && privacy !== undefined ? <option value="private">Private</option> : null}
+					{privacy !== "Hidden" && privacy !== undefined ? <option value="hidden">Hidden</option> : null}
 				</Form.Field>
+
 				<div>
-					{isError ? (
-						<Message
-							error
-							header="Failed to submit form"
-							content="Please make sure all fields are filled out accurately."
-						/>
-					) : null}
-					{isLoading ? (
-						<Button loading>Submit</Button>
-					) : (
-							<Button type="submit">Submit</Button>
-						)}
-					{window.location.pathname === "/editgroup" ? (
+					{isError && <Message
+						error
+						header="Failed to submit form"
+						content="Please make sure all fields are filled out accurately." />}
+					{isLoading
+						? <Button loading>Submit</Button>
+						: <Button type="submit">Submit</Button>}
+
+					{window.location.pathname === "/editgroup" &&
 						<Modal
 							closeIcon
-							trigger={
-								<Button color="red" type="button">
-									Delete Group
-								</Button>
-							}
+							trigger={<Button color="red" type="button">Delete Group</Button>}
 							basic
-							size="small"
-						>
+							size="small">
 							<Header icon="trash" content="Permanently Delete Group" />
 							<Modal.Content>
 								<p>
@@ -263,8 +203,7 @@ const CreateGroup = props => {
 									Delete
 								</Button>
 							</Modal.Actions>
-						</Modal>
-					) : null}
+						</Modal>}
 				</div>
 			</Form>
 		</Segment>
@@ -297,4 +236,22 @@ const BoldInput = styled(Form.Input)`
 		font-weight: bold;
 	}
 `;
+
+const Uploader = styled.div`
+background: #fff;
+padding: 16px;
+width: 90%
+border: 2px dashed lightgrey
+display: flex
+justify-content: center
+text-align: center
+margin: auto`
+
+const Text = styled.p`
+margin: 1rem 0 1rem 0;`
+
+const DropText = styled.p`
+font-size: 2rem;
+padding: 10%;`
+
 export default CreateGroup;
