@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import Avatar from "@material-ui/core/Avatar";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -69,12 +70,16 @@ const ReplyContainer = props => {
     },
     margin: {
       margin: theme.spacing(1)
+    },
+    avatar: {
+      margin: 3,
+      width: 60,
+      height: 60
     }
   }));
 
   const classes = useStyles();
 
-  console.log(post);
   if (!post) {
     return (
       <Loader active size="large">
@@ -82,6 +87,7 @@ const ReplyContainer = props => {
       </Loader>
     );
   }
+  console.log("POST", post);
   return (
     <>
       <MatUiPostCard post={post} />
@@ -89,7 +95,32 @@ const ReplyContainer = props => {
       <RepliesList>
         <ReplyCard>
           {post.replies.map(reply => {
-            return <>{reply.reply_content}</>;
+            let bubbleClass = "you";
+            let bubbleDirection = "";
+
+            // if (userId === post.user_id) {
+            //   bubbleClass = "me";
+            //   bubbleDirection = "bubble-direction-reverse";
+            // }
+            return (
+              <div>
+                <BubbleContainer
+                  className={"bubble-container"}
+                  className={
+                    userId === post.user_id ? "bubble-direction-reverse" : ""
+                  }
+                  key={post.id}
+                >
+                  <div
+                    className={"bubble"}
+                    className={userId === post.user_id ? "me" : "you"}
+                  >
+                    {reply.reply_content}
+                  </div>
+                  <Avatar className={classes.avatar} src={post.image} />
+                </BubbleContainer>
+              </div>
+            );
           })}
         </ReplyCard>
       </RepliesList>
@@ -115,6 +146,63 @@ const ReplyContainer = props => {
 };
 
 const RepliesList = styled.div``;
+
+const BubbleContainer = styled.div`
+  // margin-top: 8px;
+  // margin-bottom: 8px;
+  // display:flex;
+  // font-family: sans-serif;
+  // font-size: 14px;
+  // align-items: center;
+  // &.bubble-direction-reverse {
+  //     flex-direction: row-reverse;
+  //   }
+  // &.me {
+  //     background-color: #8f5db7;
+  //     margin-left: 18px;
+  //     margin-right:60px;
+  //     &&:before {
+  //         box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );
+  //         left: -9px;
+  //         background-color: #8f5db7;
+  //     }
+  // }
+  // &.you {
+  //     background-color: #087FFE;
+  //     margin-left: 60px;
+  //     margin-right:18px;
+  //     &&:before {
+  //         box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4 );
+  //         right: -9px;
+  //         background-color: #087FFE;
+
+  // }
+  // &.bubble{
+  //     background-color: #F2F2F2;
+  //     border-radius: 5px;
+  //     box-shadow: 0 0 6px #B2B2B2;
+  //     display: block;
+  //     padding: 10px 18px;
+  //     position: relative;
+  //     vertical-align: top;
+  //     color: white;
+  //     word-wrap: break-word;
+  //     &&:before {
+  //         background-color: #F2F2F2;
+  //         content: "\00a0";
+  //         display: block;
+  //         height: 16px;
+  //         position: absolute;
+  //         top: 11px;
+  //         transform:             rotate( 29deg ) skew( -35deg );
+  //             -moz-transform:    rotate( 29deg ) skew( -35deg );
+  //             -ms-transform:     rotate( 29deg ) skew( -35deg );
+  //             -o-transform:      rotate( 29deg ) skew( -35deg );
+  //             -webkit-transform: rotate( 29deg ) skew( -35deg );
+  //         width:  20px;
+  //     }
+  // }
+`;
 
 const ReplyCard = styled.div``;
 
