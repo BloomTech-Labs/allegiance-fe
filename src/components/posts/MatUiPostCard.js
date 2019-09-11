@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -14,9 +15,7 @@ import { red } from "@material-ui/core/colors";
 import avi from "../../assets/walter-avi.png";
 import {
   Favorite,
-  ExpandMore,
-  MoreVert,
-  ChatBubbleOutline,
+  ModeCommentOutlined,
   DeleteOutline,
   FavoriteBorder
 } from "@material-ui/icons";
@@ -122,14 +121,15 @@ export default function MatUiPostCard(props) {
           <Avatar src={!image ? avi : image} className={classes.avatar} />
         }
         action={
-          userId === user_id ? (
+          userId === user_id && (
             <IconButton
               onClick={() => props.deletePost(id)}
               aria-label="settings"
             >
               <DeleteOutline />
             </IconButton>
-          ) : null
+          )
+          //   CHECK ADMIN STATUS
         }
         title={`${first_name} ${last_name}`}
         titleTypographyProps={{ fontSize: 25 }}
@@ -172,9 +172,11 @@ export default function MatUiPostCard(props) {
           </div>
         )}
         <div>
-          <IconButton aria-label="share">
-            <ChatBubbleOutline />
-          </IconButton>
+          <Link to={`/post/${id}`}>
+            <IconButton aria-label="share">
+              <ModeCommentOutlined />
+            </IconButton>
+          </Link>
           <IconButton className={classes.likesCount}>
             <h4> {replies.length} </h4>
           </IconButton>
