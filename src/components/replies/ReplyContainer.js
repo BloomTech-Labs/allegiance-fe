@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
+import "../../styled/Replies.scss";
+
 import { Loader } from "semantic-ui-react";
 import styled from "styled-components";
 import MatUiPostCard from "../posts/MatUiPostCard";
@@ -8,18 +10,20 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import Avatar from "@material-ui/core/Avatar";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
+import { green } from "@material-ui/core/colors";
+import ReplyCard from "./ReplyCard";
 
 const ReplyContainer = props => {
   const [post, setPost] = useState();
   const [submitted, setSubmitted] = useState(false);
   const id = props.match.params.id;
+  const primary = green[500];
   const userId = useSelector(state => state.userReducer.loggedInUser.id);
-  console.log(id);
+
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(
     submitReply
@@ -34,6 +38,7 @@ const ReplyContainer = props => {
         const response = await axiosWithAuth([token]).get(`/posts/${id}`);
         setPost(response.data.postLoaded);
         console.log("data:", response.data.postLoaded);
+        setSubmitted(false);
       }
     };
     fetchData();
@@ -60,7 +65,8 @@ const ReplyContainer = props => {
     },
     textField: {
       marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1)
+      marginRight: theme.spacing(1),
+      backgroundColor: "white"
     },
     dense: {
       marginTop: theme.spacing(2)
@@ -75,6 +81,20 @@ const ReplyContainer = props => {
       margin: 3,
       width: 60,
       height: 60
+    },
+    typography: {
+      fontSize: 13,
+      color: "black",
+      padding: 0
+    },
+    typography2: {
+      fontSize: 15,
+      color: "black",
+      fontWeight: "bold"
+    },
+    root: {
+      background: primary,
+      margin: theme.spacing(1)
     }
   }));
 
@@ -89,121 +109,65 @@ const ReplyContainer = props => {
   }
   console.log("POST", post);
   return (
-    <>
-      <MatUiPostCard post={post} />
+    <ReplyViewContainer>
+      <MatUiPostCard post={post} setSubmitted={setSubmitted} />
 
-      <RepliesList>
-        <ReplyCard>
-          {post.replies.map(reply => {
-            let bubbleClass = "you";
-            let bubbleDirection = "";
+      <ReplyCard1>
+        {post.replies.map(reply => {
+          return (
+            <ReplyCard
+              reply={reply}
+              setSubmitted={setSubmitted}
+              key={reply.id}
+            />
+          );
+        })}
+      </ReplyCard1>
 
-            // if (userId === post.user_id) {
-            //   bubbleClass = "me";
-            //   bubbleDirection = "bubble-direction-reverse";
-            // }
-            return (
-              <div>
-                <BubbleContainer
-                  className={"bubble-container"}
-                  className={
-                    userId === post.user_id ? "bubble-direction-reverse" : ""
-                  }
-                  key={post.id}
-                >
-                  <div
-                    className={"bubble"}
-                    className={userId === post.user_id ? "me" : "you"}
-                  >
-                    {reply.reply_content}
-                  </div>
-                  <Avatar className={classes.avatar} src={post.image} />
-                </BubbleContainer>
-              </div>
-            );
-          })}
-        </ReplyCard>
-      </RepliesList>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          id="outlined-textarea"
-          label="Reply to post"
-          placeholder="Reply..."
-          multiline
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
-          onChange={handleChange}
-          name="reply_content"
-          value={values.reply_content || ""}
-        />
-        <Fab type="submit" aria-label="Reply" className={classes.margin}>
+      <form className={"reply-form"} onSubmit={handleSubmit}>
+        <div className={"input-div"}>
+          <TextField
+            id="outlined-textarea"
+            label="Reply to post"
+            placeholder="Reply..."
+            multiline
+            fullWidth
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            onChange={handleChange}
+            name="reply_content"
+            value={values.reply_content || ""}
+          />
+        </div>
+        <Fab classes={{ root: classes.root }} type="submit" aria-label="Reply">
           <AddIcon />
         </Fab>
       </form>
-    </>
+    </ReplyViewContainer>
   );
 };
 
-const RepliesList = styled.div``;
-
-const BubbleContainer = styled.div`
-  // margin-top: 8px;
-  // margin-bottom: 8px;
-  // display:flex;
-  // font-family: sans-serif;
-  // font-size: 14px;
-  // align-items: center;
-  // &.bubble-direction-reverse {
-  //     flex-direction: row-reverse;
+const ReplyViewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dee4e7;
+  // &.reply-form {
+  //   display: flex;
+  //   flex-direction: row;
+  //   position: sticky;
+  //   bottom: 45px;
+  //   width: 100%;
+  //   background-color: #dee4e7;
+  //   &.input-div {
+  //     width: 75%;
+  //     margin-right: 10px;
   //   }
-  // &.me {
-  //     background-color: #8f5db7;
-  //     margin-left: 18px;
-  //     margin-right:60px;
-  //     &&:before {
-  //         box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );
-  //         left: -9px;
-  //         background-color: #8f5db7;
-  //     }
-  // }
-  // &.you {
-  //     background-color: #087FFE;
-  //     margin-left: 60px;
-  //     margin-right:18px;
-  //     &&:before {
-  //         box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4 );
-  //         right: -9px;
-  //         background-color: #087FFE;
-
-  // }
-  // &.bubble{
-  //     background-color: #F2F2F2;
-  //     border-radius: 5px;
-  //     box-shadow: 0 0 6px #B2B2B2;
-  //     display: block;
-  //     padding: 10px 18px;
-  //     position: relative;
-  //     vertical-align: top;
-  //     color: white;
-  //     word-wrap: break-word;
-  //     &&:before {
-  //         background-color: #F2F2F2;
-  //         content: "\00a0";
-  //         display: block;
-  //         height: 16px;
-  //         position: absolute;
-  //         top: 11px;
-  //         transform:             rotate( 29deg ) skew( -35deg );
-  //             -moz-transform:    rotate( 29deg ) skew( -35deg );
-  //             -ms-transform:     rotate( 29deg ) skew( -35deg );
-  //             -o-transform:      rotate( 29deg ) skew( -35deg );
-  //             -webkit-transform: rotate( 29deg ) skew( -35deg );
-  //         width:  20px;
-  //     }
   // }
 `;
-
-const ReplyCard = styled.div``;
+const ReplyCard1 = styled.div`
+  width: 100%;
+`;
 
 export default ReplyContainer;
