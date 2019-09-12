@@ -54,10 +54,6 @@ export default function MatUiPostCard(props) {
       padding: 0,
       borderBottom: "1px solid lightgray"
     },
-    likesCount: {
-      paddingLeft: 0,
-      paddingRight: 0
-    },
     postActivity: {
       justifyContent: "space-between",
       borderTop: "1px solid lightgray",
@@ -66,40 +62,45 @@ export default function MatUiPostCard(props) {
       paddingRight: 20,
       alignItems: "center"
     },
-    media: {
-      height: 0,
-      paddingTop: "56.25%" // 16:9
+    title: {
+      fontSize: 14,
+      fontWeight: "bold"
     },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest
-      })
-    },
-    expandOpen: {
-      transform: "rotate(180deg)"
-    },
+
     avatar: {
       margin: 3,
+      marginRight: 0,
       width: 60,
-      height: 60
+      height: 60,
+      marginBottom: 2
     },
     typography: {
       fontSize: 20,
       color: "black"
     },
+    buttonDiv: {
+      paddingRight: 1,
+      paddingBottom: 3
+    },
     likedIcon: {
       margin: 0,
       marginBottom: 3,
       padding: 1,
-      color: primary
+      color: primary,
+      paddingRight: 0
     },
     unlikedIcon: {
       margin: 0,
       marginBottom: 3,
       padding: 1,
-      color: primary
+      color: primary,
+      paddingRight: 0
+    },
+    likesCount: {
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingBottom: 4,
+      marginBottom: 1
     },
     countIcon: {
       margin: 0,
@@ -134,6 +135,10 @@ export default function MatUiPostCard(props) {
   return (
     <Card raised className={classes.card}>
       <CardHeader
+        classes={{
+          title: classes.title,
+          avatar: classes.avatar
+        }}
         className={classes.cardHeader}
         avatar={
           <Avatar src={!image ? avi : image} className={classes.avatar} />
@@ -171,27 +176,35 @@ export default function MatUiPostCard(props) {
       <CardActions className={classes.postActivity} disableSpacing>
         {!postLikeId && (
           <div>
-            <IconButton aria-label="add to favorites" onClick={addLike}>
+            <IconButton
+              className={classes.buttonDiv}
+              aria-label="add to favorites"
+              onClick={addLike}
+            >
               <FavoriteBorder className={classes.unlikedIcon} />
             </IconButton>
             <IconButton className={classes.likesCount}>
-              <h4> {likes.length} </h4>
+              <h4 className="likes-count"> {likes.length} </h4>
             </IconButton>
           </div>
         )}
         {postLikeId && (
           <div>
-            <IconButton aria-label="add to favorites" onClick={unLike}>
+            <IconButton
+              className={classes.buttonDiv}
+              aria-label="add to favorites"
+              onClick={unLike}
+            >
               <Favorite className={classes.likedIcon} />
             </IconButton>
             <IconButton className={classes.likesCount}>
-              <h4> {likes.length} </h4>
+              <h4 className="likes-count"> {likes.length} </h4>
             </IconButton>
           </div>
         )}
         <div>
           <Link to={`/post/${id}`}>
-            <IconButton aria-label="share">
+            <IconButton aria-label="share" className={classes.buttonDiv}>
               <ModeCommentOutlined />
             </IconButton>
           </Link>

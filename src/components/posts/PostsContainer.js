@@ -69,8 +69,10 @@ const PostListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: whitesmoke;
+  background-color: #dee4e7;
 `;
-const PostsWrapper = styled.div``;
+const PostsWrapper = styled.div`
+  background-color: #dee4e7;
+`;
 
 export default PostsContainer;
