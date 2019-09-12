@@ -31,7 +31,7 @@ const NavBar = () => {
       <BottomNav>
         {/* If user is authenticated, show links to navigate app */}
         {isAuthenticated && (
-          <Nav style={{ backgroundColor: "#1b4570" }}>
+          <Nav style={{ backgroundColor: "#1b4570", borderRadius: 0 }}>
             <NavLeft>
               <Menu.Item
                 as={Link}
@@ -100,6 +100,7 @@ const TopNav = styled.div`
   z-index: 2;
   -webkit-transition: height 0.2s ease-in-out;
   transition: height 0.2s ease-in-out;
+  border-radius: 0;
 `;
 
 const BottomNav = styled.div`
@@ -109,6 +110,7 @@ const BottomNav = styled.div`
   z-index: 2;
   -webkit-transition: height 0.2s ease-in-out;
   transition: height 0.2s ease-in-out;
+  border-radius: 0;
 `;
 
 const Nav = styled(Menu)`

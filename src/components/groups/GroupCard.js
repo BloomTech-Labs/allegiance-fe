@@ -10,14 +10,12 @@ const GroupCard = props => {
       <Link to={`/group/${props.group.id}`}>
         <CardContainer>
           <TopDiv>
-            {/* <Image src={props.group.image} fluid /> */}
             <CardImage src={props.group.image} alt="GroupAvatar" />
           </TopDiv>
           <MiddleDiv color={props.color}>
             <h4>
               <b>{props.group.group_name}</b>
             </h4>
-            {/* <p>{props.group.privacy_setting.toUpperCase()}</p> */}
           </MiddleDiv>
           <BottomDiv>
             <p>

@@ -3,7 +3,6 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
 import GroupInfo from "./GroupInfo";
-import GroupAllegiances from "./GroupAllegiances";
 import PostsContainer from "../posts/PostsContainer";
 
 import styled from "styled-components";
@@ -12,7 +11,6 @@ import { Paper } from "@material-ui/core";
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
   const [token] = useGetToken();
-  //   console.log("Token:", token);
 
   // Defines id to be group id from params
   const id = props.match.params.id;
@@ -29,7 +27,6 @@ const GroupPage = props => {
         setGroup(response.data.group);
         setAllegiances(response.data.allegiances);
         setMembers(response.data.members);
-        console.log("data:", response.data);
       }
     };
     fetchData();
@@ -42,10 +39,8 @@ const GroupPage = props => {
   return (
     <GroupPageContainer>
       <PaperContainer elevation={3}>
-        <GroupInfo group={group} members={members} />
-        <GroupAllegiances allegiances={allegiances} />
+        <GroupInfo group={group} members={members} allegiances={allegiances} />
       </PaperContainer>
-
       <PostsContainer groupId={group.id} members={members} />
     </GroupPageContainer>
   );
@@ -56,6 +51,9 @@ const GroupPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  background-color: #dee4e7;
+  min-height: 87vh;
+  justify-content: flex-start;
 `;
 
 const PaperContainer = styled(Paper)`

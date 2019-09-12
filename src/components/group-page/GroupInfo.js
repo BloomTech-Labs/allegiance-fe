@@ -1,19 +1,21 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MembershipStatus from "./MembershipStatus";
+import AllegiancePopover from "./AllegiancePopover";
 
 const GroupInfo = props => {
-  console.log("GroupInfo Props", props);
-
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting;
+  console.log(props);
 
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
-  const isAdmin = loggedInGroups ? loggedInGroups.find(group => group.id === props.group.id) : null
+  const isAdmin = loggedInGroups
+    ? loggedInGroups.find(group => group.id === props.group.id)
+    : null;
 
   return (
     <GroupInfoDiv>
@@ -28,19 +30,20 @@ const GroupInfo = props => {
           {props.group.privacy_setting === "private" ? (
             <Icon name="lock" />
           ) : (
-              <Icon name="unlock" />
-            )}
+            <Icon name="unlock" />
+          )}
           {privacy ? privacy.charAt(0).toUpperCase() + privacy.slice(1) : null}{" "}
           Group - {props.members.length} Fans
         </h3>
-
+        <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
       <Settings>
-        {isAdmin && isAdmin.user_type === 'admin'
-          ? <Link to={{ pathname: '/editgroup', state: { group: props.group } }}><Icon name='setting' size='large' /></Link>
-          : null}
+        {isAdmin && isAdmin.user_type === "admin" ? (
+          <Link to={{ pathname: "/editgroup", state: { group: props.group } }}>
+            <Icon name="setting" size="large" />
+          </Link>
+        ) : null}
       </Settings>
-
     </GroupInfoDiv>
   );
 };
@@ -51,31 +54,31 @@ const GroupInfoDiv = styled.div`
   margin: 0 4% 4% 4%;
   justify-content: space-around;
 `;
-const ImageDiv = styled.div`	
-  display: flex;	
-  flex-direction: column;	
+const ImageDiv = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const GroupLogo = styled.img`
-	border-color: black;
-    object-fit: cover;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-	border: 1px solid black;
-	flex: 0 0 auto;
-	`
+  border-color: black;
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid black;
+  flex: 0 0 auto;
+`;
 
 const InfoDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: 57%;	
-	margin: 0 4% 4% 4%;
+  width: 57%;
+  margin: 0 4% 4% 4%;
   justify-content: center;
   h1 {
-		font-size: 1.45rem;	
-		text-align: left;	
-		margin: 0 0 2% 0;
+    font-size: 1.45rem;
+    text-align: left;
+    margin: 0 0 2% 0;
   }
   h2 {
     font-size: 1.45rem;
@@ -85,14 +88,15 @@ const InfoDiv = styled.div`
   }
   h3 {
     font-size: 1rem;
-    text-align: left;	
-		margin: 0 0 2% 0;
+    text-align: left;
+    margin: 0 0 2% 0;
   }
 `;
 
 const Settings = styled.div`
-position: absolute;
-top: 8%;
-right: 2%;`
+  position: absolute;
+  top: 8%;
+  right: 2%;
+`;
 
 export default GroupInfo;

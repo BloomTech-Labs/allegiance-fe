@@ -5,7 +5,6 @@ import useForm from "../utils/useForm";
 import useDebounce from "../utils/useDebounce";
 
 import "../../App.scss";
-import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -14,7 +13,6 @@ import SearchResults from "./SearchResults";
 const SearchBar = () => {
   // useStates for results and is searching status
   const [results, setResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   // token for accessing authentication required backend routes
   const [token] = useGetToken();
   // useForm custom hook and set timeout custom hook
@@ -90,21 +88,13 @@ const SearchBar = () => {
     if (values.group_name === "") setResults([]);
     // Make sure we have a value (user has entered something in input)
     else if (debouncedSearchTerm) {
-      // Set isSearching state
-      setIsSearching(true);
       // Fire off our API call
       fetchData().then(res => {
-        // Set searching state
-        setIsSearching(false);
         // Set results state
         setResults(res.data.groupByFilter);
       });
     }
   }, [values, token, debouncedSearchTerm]);
-
-  console.log(values);
-  console.log(results);
-  console.log(isSearching); // Can use this to determine loading animations
 
   return (
     <div className="search-form">
@@ -132,18 +122,5 @@ const SearchBar = () => {
     </div>
   );
 };
-
-const GroupSearch = styled.input`
-  width: 100%;
-  height: 2.2rem;
-  padding: 1% 2%;
-  border: 1px solid black;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: black;
-  margin-top: 3%;
-  box-shadow: 0px 4px 20px 0px transparent;
-`;
 
 export default SearchBar;

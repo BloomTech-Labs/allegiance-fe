@@ -5,12 +5,13 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 
-import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
+
+import "../../styled/Replies.scss";
 
 const PostForm = props => {
   const primary = green[500];

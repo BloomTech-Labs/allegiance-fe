@@ -12,7 +12,6 @@ import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
-import purple from "@material-ui/core/colors/purple";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
@@ -27,7 +26,6 @@ const ReplyCard = props => {
     replyLikes
   } = props.reply;
   const primary = red[600];
-  const accent = purple[500];
   const userId = useSelector(state => state.userReducer.loggedInUser.id);
   const replyLikeId = replyLikes.find(like => like.user_id === userId);
   // Fetches Auth0 token for axios call

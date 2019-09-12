@@ -5,7 +5,7 @@ import "../../styled/Replies.scss";
 
 import { Loader } from "semantic-ui-react";
 import styled from "styled-components";
-import MatUiPostCard from "../posts/MatUiPostCard";
+import PostCard from "../posts/PostCard";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
@@ -110,7 +110,7 @@ const ReplyContainer = props => {
   console.log("POST", post);
   return (
     <ReplyViewContainer>
-      <MatUiPostCard post={post} setSubmitted={setSubmitted} />
+      <PostCard post={post} setSubmitted={setSubmitted} />
 
       <ReplyCard1>
         {post.replies.map(reply => {
@@ -153,21 +153,12 @@ const ReplyViewContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #dee4e7;
-  // &.reply-form {
-  //   display: flex;
-  //   flex-direction: row;
-  //   position: sticky;
-  //   bottom: 45px;
-  //   width: 100%;
-  //   background-color: #dee4e7;
-  //   &.input-div {
-  //     width: 75%;
-  //     margin-right: 10px;
-  //   }
-  // }
+  min-height: 87vh;
+  justify-content: flex-start;
 `;
 const ReplyCard1 = styled.div`
   width: 100%;
+  height: 100%;
 `;
 
 export default ReplyContainer;
