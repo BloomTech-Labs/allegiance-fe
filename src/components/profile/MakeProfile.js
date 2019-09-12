@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { UPDATE_USER } from "../../reducers/userReducer";
+
+import { Mixpanel } from "../analytics/Mixpanel";
+
 import useForm from "../utils/useForm";
-import { Form, Segment, Message, Modal, Icon, Button } from "semantic-ui-react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components"
-import { UPDATE_USER } from "../../reducers/userReducer";
 import useImageUploader from "../utils/useImageUploader";
+
+import { Form, Segment, Message, Modal, Icon, Button } from "semantic-ui-react";
+import styled from "styled-components"
 
 const MakeProfile = props => {
 	//Fetches logged in user's info from redux store.
@@ -37,7 +41,7 @@ const MakeProfile = props => {
 					values
 				);
 				dispatch({ type: UPDATE_USER, payload: result.data.updated });
-
+				Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
 				const push = () => {
 					props.history.push("/profile");
 				};
@@ -47,6 +51,7 @@ const MakeProfile = props => {
 			catch {
 				setLoading(false)
 				setError(true)
+				Mixpanel.activity(loggedInUser.id, 'Edit Profile Failed')
 			}
 		}
 	}
@@ -55,6 +60,7 @@ const MakeProfile = props => {
 		//Separates user id from user info and then sets the value of each field to the logged in user's info. This auto fills the form fields allowing user's to easily see their current info and enter slight changes without needing to re-enter the entire field.
 		let { id, ...userInfo } = loggedInUser;
 		setValues(userInfo);
+		Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
 	}, [loggedInUser, setValues]);
 
 	console.log(values);

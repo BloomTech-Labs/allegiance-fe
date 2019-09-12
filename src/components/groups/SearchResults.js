@@ -1,5 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom";
+import { Mixpanel } from "../analytics/Mixpanel"
 
 import styled from "styled-components";
 import { device } from "../../styled/device";
@@ -7,6 +9,11 @@ import "../../App.scss";
 
 // Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {
+
+  // Fetches user information from Redux
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+  const mixpanelCheck = () => Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
+
   return (
     <div className="results-container">
       {/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
@@ -18,7 +25,7 @@ const SearchResults = props => {
         return (
           // onClick or enter key calls fillSearch from SearchBar
 
-          <Link to={`/group/${group.id}`} key={group.id}>
+          <Link to={`/group/${group.id}`} key={group.id} onClick={() => mixpanelCheck()}>
             <div className={`single-result ${className}`}>
               <ResultImage src={group.image} />{" "}
               <div className="result-info">{group.group_name}</div>

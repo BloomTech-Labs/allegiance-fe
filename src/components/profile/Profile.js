@@ -81,7 +81,7 @@ const Profile = props => {
 					<p>{loggedInUser.bio}</p>
 					<>
 						<H3>MY GROUPS</H3>
-						<MyAllegianceGroups content={loggedInGroups || []} type={"groups"} />
+						<MyAllegianceGroups content={loggedInGroups || []} type={"groups"} userId={loggedInUser.id} />
 					</>
 				</InfoHolder>
 				<div>

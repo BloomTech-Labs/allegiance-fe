@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_GROUP } from "../../reducers/userReducer";
 
+import { Mixpanel } from '../analytics/Mixpanel'
+
 import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
 import useGetToken from "../utils/useGetToken";
@@ -32,11 +34,13 @@ const CreateGroup = props => {
 	//If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
 	const group = props.location.state ? props.location.state.group : null;
 	useEffect(() => {
+		window.location.pathname === "/creategroup" && Mixpanel.activity(loggedInUser.id, 'Start Create Group')
 		if (group && window.location.pathname === "/editgroup") {
 			let { id, updated_at, created_at, ...groupInfo } = group;
 			setValues(groupInfo);
+			Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
 		}
-	}, [props, setValues, group]);
+	}, [props, setValues, group, loggedInUser.id]);
 
 	//Creates a new group and pushes the user to the group page after submission.
 	async function createGroup() {
@@ -52,10 +56,12 @@ const CreateGroup = props => {
 				user_type: "admin"
 			};
 			dispatch({ type: ADD_GROUP, payload: addedGroup });
+			Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
 			const push = () => props.history.push(`/group/${result.data.newGroup.id}`);
 			setTimeout(push, 1000);
 			console.log(result);
 		} catch {
+			Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
 			setLoading(false);
 			setError(true);
 		}
@@ -68,10 +74,12 @@ const CreateGroup = props => {
 			setError(false);
 			const updatedGroup = { ...values, image: image };
 			const result = await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup);
+			Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
 			const push = () => props.history.push(`/group/${group.id}`);
 			setTimeout(push, 1000);
 			console.log(result);
 		} catch {
+			Mixpanel.activity(loggedInUser.id, 'Group Edit Failed')
 			setLoading(false);
 			setError(true);
 		}
@@ -83,18 +91,18 @@ const CreateGroup = props => {
 		try {
 			setError(false);
 			const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`);
+			Mixpanel.activity(loggedInUser.id, 'Complete Delete Group')
 			const push = () => props.history.push(`/profile`);
 			setTimeout(push, 1000);
 			console.log(result);
 		} catch {
+			Mixpanel.activity(loggedInUser.id, 'Group Deletion Failed')
 			setLoading(false);
 			setError(true);
 		}
 	}
 
-	const privacy = values && values.privacy_setting
-		? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1)
-		: null;
+	const privacy = values && values.privacy_setting ? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1) : null
 
 	return (
 		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
@@ -171,9 +179,9 @@ const CreateGroup = props => {
 					defaultValue={values.privacy_setting || ""}>
 
 					<option value={values.privacy_setting}>{privacy || ""}</option>
-					{privacy !== "Public" && privacy !== undefined ? <option value="public">Public</option> : null}
-					{privacy !== "Private" && privacy !== undefined ? <option value="private">Private</option> : null}
-					{privacy !== "Hidden" && privacy !== undefined ? <option value="hidden">Hidden</option> : null}
+					{privacy !== "Public" && privacy !== undefined && <option value="public">Public</option>}
+					{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
+					{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
 				</Form.Field>
 
 				<div>
@@ -207,7 +215,7 @@ const CreateGroup = props => {
 				</div>
 			</Form>
 		</Segment>
-	);
+	)
 };
 
 const GroupLogo = styled.img`

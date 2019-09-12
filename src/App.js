@@ -10,6 +10,7 @@ import { Loader } from "semantic-ui-react";
 import PrivateRoute from "./components/PrivateRoute";
 
 import { initGA, logPageView } from "./components/analytics/Analytics";
+import { Mixpanel } from "./components/analytics/Mixpanel"
 
 import { useAuth0 } from "./components/auth/react-auth0-wrapper";
 
@@ -38,27 +39,30 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    const pushTo =
-      window.location.pathname !== "/" ? window.location.pathname : "/profile";
-    if (isAuthenticated && !loggedInUser && user) {
+    if (isAuthenticated && !loggedInUser && user && loading) {
       const registerUser = async () => {
-        const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-          email: user.email
-        });
-        console.log(result);
-        dispatch({
-          type: LOGIN,
-          payload: result.data
-        });
-        const { newUser, currentUser } = result.data;
-        if (newUser) {
-          props.history.push("/makeprofile");
+        try {
+          const result = await axios.post(process.env.REACT_APP_AUTHURL, { email: user.email });
+          dispatch({ type: LOGIN, payload: result.data });
+
+          //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
+          const { newUser, currentUser } = result.data;
+          if (newUser) {
+            props.history.push("/makeprofile");
+            Mixpanel.login(newUser, 'New user sign up.')
+          }
+          if (currentUser && currentUser.first_name === null) {
+            props.history.push("/makeprofile");
+            Mixpanel.login(currentUser, 'Successful login, no profile info.')
+          }
+          if (currentUser && currentUser.first_name !== null) {
+            const pushTo = window.location.pathname !== "/" ? window.location.pathname : "/profile";
+            props.history.push(`${pushTo}`);
+            Mixpanel.login(currentUser, 'Successful login.')
+          }
         }
-        if (currentUser && currentUser.first_name === null) {
-          props.history.push("/makeprofile");
-        }
-        if (currentUser && currentUser.first_name !== null) {
-          props.history.push(`${pushTo}`);
+        catch (err) {
+          Mixpanel.track('Unsuccessful login');
         }
       };
       registerUser();
