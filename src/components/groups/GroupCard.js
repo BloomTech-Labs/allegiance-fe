@@ -36,6 +36,7 @@ const GroupInfoCard = styled.div`
   height: 28vh;
   margin: 1%;
   width: 40%;
+  background-color: white;
   min-width: ${props => {
     return props.minWidth || "none";
   }};
