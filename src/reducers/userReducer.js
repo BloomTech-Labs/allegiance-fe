@@ -2,8 +2,7 @@ export const LOGIN = "LOGIN";
 export const UPDATE_USER = "UPDATE_USER";
 export const GET_GROUPS = "GET_GROUPS";
 export const ADD_GROUP = "ADD_GROUP";
-export const GET_POSTS = "GET_POSTS";
-export const ADD_POST = "ADD_POST";
+export const LEAVE_GROUP = "LEAVE_GROUP";
 
 const initialState = {
   loggedInUser: "",
@@ -52,16 +51,12 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loggedInGroups: [...state.loggedInGroups, action.payload]
       };
-    case GET_POSTS:
+    case LEAVE_GROUP:
       return {
         ...state,
-        loggedInPosts: action.payload,
-        error: ""
-      };
-    case ADD_POST:
-      return {
-        ...state,
-        loggedInPosts: [...state.loggedInPosts, action.payload]
+        loggedInGroups: state.loggedInGroups.filter(
+          group => group.id !== action.payload
+        )
       };
     default:
       return state;

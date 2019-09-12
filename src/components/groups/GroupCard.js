@@ -1,13 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom";
-
+import { Mixpanel } from "../analytics/Mixpanel"
 import styled from "styled-components";
 import { device } from "../../styled/device";
 
 const GroupCard = props => {
+
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+  const mixpanelCheck = () => Mixpanel.activity(loggedInUser.id, `Visited Group Using ${props.nearby ? `Nearby Section` : `Group List`}`)
+
   return (
     <GroupInfoCard minWidth={props.minWidth}>
-      <Link to={`/group/${props.group.id}`}>
+      <Link to={`/group/${props.group.id}`} onClick={() => mixpanelCheck()}>
         <CardContainer>
           <TopDiv>
             <CardImage src={props.group.image} alt="GroupAvatar" />

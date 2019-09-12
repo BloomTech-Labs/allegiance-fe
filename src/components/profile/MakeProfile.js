@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { UPDATE_USER } from "../../reducers/userReducer";
+
+import { Mixpanel } from "../analytics/Mixpanel";
+
 import useForm from "../utils/useForm";
-import { Form, Button, Segment, Message, Modal, Header } from "semantic-ui-react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { useSelector, useDispatch } from "react-redux";
+import useImageUploader from "../utils/useImageUploader";
+
+import { Form, Segment, Message, Modal, Icon, Button } from "semantic-ui-react";
 import styled from "styled-components"
-import { UPDATE_USER } from "../../reducers/userReducer";
 
 const MakeProfile = props => {
 	//Fetches logged in user's info from redux store.
@@ -21,20 +26,22 @@ const MakeProfile = props => {
 	//Imports form custom hook to handle state, form entry and form submission.
 	const { values, handleChange, handleSubmit, setValues } = useForm(updateUser);
 
+	//Imports image upload functions
+	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
 	//Sends user data as a put request to API to update user info.
 	async function updateUser() {
 		setLoading(true);
 		if (token) {
 			try {
 				setError(false)
+				if (image) values.image = image
 				Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
-				console.log(values)
 				const result = await axiosWithAuth([token]).put(
 					`/users/${loggedInUser.id}`,
 					values
 				);
 				dispatch({ type: UPDATE_USER, payload: result.data.updated });
-
+				Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
 				const push = () => {
 					props.history.push("/profile");
 				};
@@ -44,6 +51,7 @@ const MakeProfile = props => {
 			catch {
 				setLoading(false)
 				setError(true)
+				Mixpanel.activity(loggedInUser.id, 'Edit Profile Failed')
 			}
 		}
 	}
@@ -52,6 +60,7 @@ const MakeProfile = props => {
 		//Separates user id from user info and then sets the value of each field to the logged in user's info. This auto fills the form fields allowing user's to easily see their current info and enter slight changes without needing to re-enter the entire field.
 		let { id, ...userInfo } = loggedInUser;
 		setValues(userInfo);
+		Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
 	}, [loggedInUser, setValues]);
 
 	console.log(values);
@@ -63,19 +72,20 @@ const MakeProfile = props => {
 					<Modal
 						open={modalOpen}
 						onClose={() => setModal(false)}
-						trigger={<ProfilePic onClick={() => setModal(true)} src={values.image || 'https://react.semantic-ui.com/images/wireframe/image.png'} />}>
-						<Header icon='image' content="Please enter your image's url" />
+						trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || 'https://react.semantic-ui.com/images/wireframe/image.png'} />}>
 						<Modal.Content>
-							<Form.Input
-								fluid
-								label="Profile Image"
-								placeholder="Profile Image"
-								onChange={handleChange}
-								value={values.image || ""}
-								name="image"
-								type="text"
-							/>
-							<Button color='green' onClick={() => setModal(false)}>Done</Button>
+							<Uploader {...getRootProps()} >
+								<input {...getInputProps()} />
+
+								<div>
+									<Icon name='cloud upload' size='huge' color='violet' inverted />
+									{isDragActive
+										? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
+										: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
+											<Button color='violet' inverted >Browse Files</Button></>}
+								</div>
+
+							</Uploader>
 						</Modal.Content>
 					</Modal>
 					<NameHolder>
@@ -187,5 +197,22 @@ const BoldInput = styled(Form.Input)`
 input:first-child {
     font-weight: bold;
 }`
+
+const Uploader = styled.div`
+background: #fff;
+padding: 16px;
+width: 90%
+border: 2px dashed lightgrey
+display: flex
+justify-content: center
+text-align: center
+margin: auto`
+
+const Text = styled.p`
+margin: 1rem 0 1rem 0;`
+
+const DropText = styled.p`
+font-size: 2rem;
+padding: 10%;`
 
 export default MakeProfile;
