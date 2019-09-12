@@ -25,7 +25,6 @@ import UnderConstruction from "./components/UnderConstruction";
 import ReplyContainer from "./components/replies/ReplyContainer";
 
 import { LOGIN } from "./reducers/userReducer";
-import ReplyContainer from "./components/replies/ReplyContainer";
 
 function App(props) {
   const dispatch = useDispatch();
