@@ -102,7 +102,7 @@ const CreateGroup = props => {
 		}
 	}
 
-	const privacy = values && values.privacy_setting && values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1)
+	const privacy = values && values.privacy_setting ? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1) : null
 
 	return (
 		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
@@ -215,7 +215,7 @@ const CreateGroup = props => {
 				</div>
 			</Form>
 		</Segment>
-	);
+	)
 };
 
 const GroupLogo = styled.img`
