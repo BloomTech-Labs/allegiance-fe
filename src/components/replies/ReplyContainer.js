@@ -116,12 +116,14 @@ const ReplyContainer = props => {
 		);
 	}
 
+	const sortedReplies = post.replies.sort((a, b) => a.id - b.id);
+
 	return (
 		<ReplyViewContainer>
 			<PostCard post={post} setSubmitted={setSubmitted} />
 
 			<ReplyCardsContainer>
-				{post.replies.map(reply => {
+				{sortedReplies.map(reply => {
 					return (
 						<ReplyCard
 							reply={reply}
@@ -136,6 +138,7 @@ const ReplyContainer = props => {
 				<div className={"input-div"}>
 					<TextField
 						id="outlined-textarea"
+						required
 						label="Reply to post"
 						placeholder="Reply..."
 						multiline
