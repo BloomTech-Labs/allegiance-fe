@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_GROUP } from "../../reducers/userReducer";
+import { VIEW_GROUP } from "../../reducers/navReducer";
 
 import { Mixpanel } from '../analytics/Mixpanel'
 
@@ -28,19 +29,20 @@ const CreateGroup = props => {
 	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
 
 	//Imports form custom hook to handle state, form entry and form submission.
-	const requestType = window.location.pathname === "/editgroup" ? editGroup : createGroup;
+	const requestType = window.location.pathname.includes("/editgroup/") ? editGroup : createGroup;
 	const { values, handleChange, handleSubmit, setValues } = useForm(requestType);
 
 	//If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
 	const group = props.location.state ? props.location.state.group : null;
 	useEffect(() => {
 		window.location.pathname === "/creategroup" && Mixpanel.activity(loggedInUser.id, 'Start Create Group')
-		if (group && window.location.pathname === "/editgroup") {
+		if (group && window.location.pathname.includes("/editgroup/")) {
 			let { id, updated_at, created_at, ...groupInfo } = group;
 			setValues(groupInfo);
+			dispatch({ type: VIEW_GROUP, payload: id });
 			Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
 		}
-	}, [props, setValues, group, loggedInUser.id]);
+	}, [props, setValues, group, loggedInUser.id, dispatch]);
 
 	//Creates a new group and pushes the user to the group page after submission.
 	async function createGroup() {
@@ -72,7 +74,7 @@ const CreateGroup = props => {
 		setLoading(true);
 		try {
 			setError(false);
-			const updatedGroup = { ...values, image: image };
+			const updatedGroup = { ...values, image };
 			const result = await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup);
 			Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
 			const push = () => props.history.push(`/group/${group.id}`);

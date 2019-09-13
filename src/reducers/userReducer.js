@@ -21,9 +21,9 @@ export const userReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loggedInUser:
-					action.payload.userInfo.currentUser || action.payload.newUser,
-				loggedInGroups: action.payload.userInfo.basicGroupInfo,
-				loggedInAllegiances: action.payload.userInfo.basicAllegianceInfo,
+					action.payload.currentUser || action.payload.newUser,
+				loggedInGroups: action.payload.basicGroupInfo,
+				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
 			};
 		case UPDATE_USER:

@@ -10,7 +10,6 @@ import AllegiancePopover from "./AllegiancePopover";
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting;
-  console.log(props);
 
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
   const isAdmin = loggedInGroups
@@ -30,8 +29,8 @@ const GroupInfo = props => {
           {props.group.privacy_setting === "private" ? (
             <Icon name="lock" />
           ) : (
-            <Icon name="unlock" />
-          )}
+              <Icon name="unlock" />
+            )}
           {privacy ? privacy.charAt(0).toUpperCase() + privacy.slice(1) : null}{" "}
           Group - {props.members.length} Fans
         </h3>
@@ -39,7 +38,7 @@ const GroupInfo = props => {
       </InfoDiv>
       <Settings>
         {isAdmin && isAdmin.user_type === "admin" ? (
-          <Link to={{ pathname: "/editgroup", state: { group: props.group } }}>
+          <Link to={{ pathname: `/editgroup/${props.group.id}`, state: { group: props.group } }}>
             <Icon name="setting" size="large" />
           </Link>
         ) : null}
