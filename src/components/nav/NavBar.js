@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "../auth/react-auth0-wrapper";
 import { Menu, Icon } from "semantic-ui-react";
+import IconButton from "@material-ui/core/IconButton";
 import { ArrowBack } from "@material-ui/icons";
 
 import styled from "styled-components";
@@ -27,7 +28,14 @@ const NavBar = () => {
 				{window.location.pathname === "/profile" && <p>Profile</p>}
 				{window.location.pathname === "/makeprofile" && <p>Edit Profile</p>}
 				{window.location.pathname === "/editgroup" && <p>Edit Group</p>}
-				{window.location.pathname.includes("/post") && <p>Post</p>}
+				{window.location.pathname.includes("/post") && (
+					<>
+						{/* <IconButton aria-label="back to group">
+							<ArrowBack />
+						</IconButton> */}
+						<p>Post</p>
+					</>
+				)}
 			</TopNav>
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
