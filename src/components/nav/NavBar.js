@@ -23,7 +23,7 @@ const NavBar = () => {
 	return (
 		<>
 			<TopNav>
-				{window.location.pathname === "/" && <p>Home</p>}
+				{window.location.pathname === "/home" && <p>Home</p>}
 				{window.location.pathname === "/groups" && <p>Groups</p>}
 				{window.location.pathname.includes("/group/") && (
 					<>
