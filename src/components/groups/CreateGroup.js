@@ -142,7 +142,6 @@ const CreateGroup = props => {
 						<NameHolder>
 							<BoldInput
 								required
-								size="medium"
 								style={{ marginLeft: "7px" }}
 								transparent
 								placeholder="Name Your Group"
