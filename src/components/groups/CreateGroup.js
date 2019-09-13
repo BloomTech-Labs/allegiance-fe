@@ -202,8 +202,8 @@ const CreateGroup = props => {
 							header="Failed to submit form"
 							content="Please make sure all fields are filled out accurately." />}
 						{isLoading
-							? <Button loading color="green">Submit</Button>
-							: <Button type="submit" color="green">Submit</Button>}
+							? <Button loading color="violet">Submit</Button>
+							: <Button type="submit" color="violet">Submit</Button>}
 
 						{window.location.pathname === "/editgroup" &&
 							<Modal
