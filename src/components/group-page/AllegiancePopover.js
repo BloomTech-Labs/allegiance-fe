@@ -24,10 +24,16 @@ const useStyles = makeStyles(theme => ({
   },
   typography: {
     fontSize: 14,
-    color: "black"
+    color: "black",
+    display: "flex",
+    zIndex: 1,
+    margin: 0
   },
   paper: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    display: "flex",
+    zIndex: 1,
+    margin: 0
   }
 }));
 
@@ -42,18 +48,13 @@ const SimpleGrow = props => {
   return (
     <div className={classes.root}>
       <FormControlLabel
-        // control={<Switch checked={checked} onChange={handleChange} />}
         control={<ArrowDropDownIcon checked={checked} onClick={handleChange} />}
         label="Allegiances"
       />
       <div className={classes.container}>
         <Grow in={checked}>
           {props.allegiances.length > 0 ? (
-            <Paper
-              elevation={4}
-              className={classes.paper}
-              style={{ display: "flex", zIndex: 1, margin: "0 auto" }}
-            >
+            <Paper elevation={4} className={classes.paper}>
               {props.allegiances.map(al => (
                 <Avatar key={al.id} src={al.image} className={classes.avatar} />
               ))}
@@ -64,12 +65,6 @@ const SimpleGrow = props => {
               variant="body1"
               color="textSecondary"
               component="p"
-              style={{
-                display: "flex",
-                zIndex: 1,
-                margin: "0 auto",
-                backgroundColor: "white"
-              }}
             >
               No Allegiances Yet!
             </Typography>
