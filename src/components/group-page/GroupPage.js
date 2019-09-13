@@ -9,6 +9,7 @@ import PostsContainer from "../posts/PostsContainer";
 
 import styled from "styled-components";
 import { Paper } from "@material-ui/core";
+import { Loader } from "semantic-ui-react";
 
 const GroupPage = props => {
 	// Fetches Auth0 token for axios call
@@ -43,7 +44,10 @@ const GroupPage = props => {
 	}, [token, id, dispatch]);
 
 	if (Object.keys(group).length === 0) {
-		return <div>Loading Group...</div>;
+		return (
+			<Loader active size="large">
+				Loading
+      		</Loader>)
 	}
 
 	return (
