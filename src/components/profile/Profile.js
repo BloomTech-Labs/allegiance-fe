@@ -6,7 +6,11 @@ import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { GET_GROUPS } from "../../reducers/userReducer";
+import {
+  GET_GROUPS,
+  LEAVE_ALLEGIANCE,
+  GET_ALLEGIANCES
+} from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
 import MyAllegiances from "./MyAllegiances";
 
@@ -39,8 +43,23 @@ const Profile = props => {
               };
             });
             dispatch({ type: GET_GROUPS, payload: userGroups });
+
+            const allegiances = await axiosWithAuth([token]).get(
+              `/users_allegiances/search/${loggedInUser.id}`
+            );
+            const userAllegiances = allegiances.data.allegiances.map(
+              allegiance => {
+                return {
+                  name: allegiance.allegiance_name,
+                  image: allegiance.allegiance_image,
+                  id: allegiance.allegiance_id
+                };
+              }
+            );
+            dispatch({ type: GET_ALLEGIANCES, payload: userAllegiances });
           } catch {
             dispatch({ type: GET_GROUPS, payload: [] });
+            dispatch({ type: GET_ALLEGIANCES, payload: [] });
           }
         }
       };
@@ -48,6 +67,29 @@ const Profile = props => {
       fetchData();
     }
   }, [token, loggedInUser, dispatch]);
+
+  const leaveAllegiance = async id => {
+    if (token) {
+      try {
+        console.log(loggedInUser.id, id);
+        const userAllegiance = await axiosWithAuth([token]).post(
+          `/users_allegiances/search/`,
+          {
+            user_id: loggedInUser.id,
+            allegiance_id: id
+          }
+        );
+        const relation = userAllegiance.data.relationExists;
+        console.log(relation);
+        dispatch({ type: LEAVE_ALLEGIANCE, payload: id });
+        await axiosWithAuth([token]).delete(
+          `/users_allegiances/${relation.id}`
+        );
+      } catch {
+        console.log("Something went wrong.");
+      }
+    }
+  };
 
   if (!loggedInUser) {
     return (
@@ -92,6 +134,7 @@ const Profile = props => {
             <MyAllegiances
               content={loggedInAllegiances || []}
               type={"allegiances"}
+              leaveAllegiance={leaveAllegiance}
             />
           </>
           <>
