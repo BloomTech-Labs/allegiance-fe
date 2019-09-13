@@ -1,17 +1,45 @@
-import React from "react";
-import { Popup, Icon } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Modal, Button, Icon, Popup } from "semantic-ui-react";
 import styled from "styled-components";
 
+import useGetToken from "../utils/useGetToken";
+
 const MyAllegiances = props => {
-  console.log(props);
   return (
     <LogoHolder>
+      {props.type === "allegiances" ? (
+        <div style={{ margin: "1%" }}>
+          <Link to={`/addallegiance`}>
+            <Popup
+              content={"Declare your Allegiance"}
+              trigger={
+                <Icon
+                  name="plus"
+                  size="big"
+                  circular
+                  inverted
+                  color="blue"
+                  style={{ fontSize: "2.16rem" }}
+                />
+              }
+            />
+          </Link>
+        </div>
+      ) : null}
       {props.content.map(allegiance => (
         <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
-          <Popup
-            content={allegiance.name}
-            trigger={<AllegianceLogo src={allegiance.image} />}
-          />
+          <Modal closeIcon trigger={<AllegianceLogo src={allegiance.image} />}>
+            <Modal.Header>{allegiance.name}</Modal.Header>
+            <Modal.Actions>
+              <Button
+                onClick={() => props.leaveAllegiance(allegiance.id)}
+                color="red"
+              >
+                <Icon name="remove" /> Leave Allegiance
+              </Button>
+            </Modal.Actions>
+          </Modal>
         </div>
       ))}
     </LogoHolder>
