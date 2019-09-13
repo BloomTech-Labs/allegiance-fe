@@ -3,6 +3,9 @@ export const UPDATE_USER = "UPDATE_USER";
 export const GET_GROUPS = "GET_GROUPS";
 export const ADD_GROUP = "ADD_GROUP";
 export const LEAVE_GROUP = "LEAVE_GROUP";
+export const GET_ALLEGIANCES = "GET_ALLEGIANCES";
+export const ADD_ALLEGIANCE = "ADD_ALLEGIANCE";
+export const LEAVE_ALLEGIANCE = "LEAVE_ALLEGIANCE";
 
 const initialState = {
   loggedInUser: "",
@@ -58,6 +61,24 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loggedInGroups: state.loggedInGroups.filter(
           group => group.id !== action.payload
+        )
+      };
+    case GET_ALLEGIANCES:
+      return {
+        ...state,
+        loggedInAllegiances: action.payload,
+        error: ""
+      };
+    case ADD_ALLEGIANCE:
+      return {
+        ...state,
+        loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
+      };
+    case LEAVE_ALLEGIANCE:
+      return {
+        ...state,
+        loggedInAllegiances: state.loggedInAllegiances.filter(
+          allegiance => allegiance.id !== action.payload
         )
       };
     default:
