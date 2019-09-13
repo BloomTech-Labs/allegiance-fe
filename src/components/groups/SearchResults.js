@@ -5,7 +5,6 @@ import { Mixpanel } from "../analytics/Mixpanel";
 
 import styled from "styled-components";
 import { device } from "../../styled/device";
-import "../../App.scss";
 
 // Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {

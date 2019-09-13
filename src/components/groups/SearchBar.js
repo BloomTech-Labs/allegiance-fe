@@ -4,7 +4,6 @@ import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 import useDebounce from "../utils/useDebounce";
 
-import "../../App.scss";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";

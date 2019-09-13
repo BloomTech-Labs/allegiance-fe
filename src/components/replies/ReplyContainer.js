@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import "../../styled/Replies.scss";
-
-import { Loader } from "semantic-ui-react";
 import styled from "styled-components";
-import PostCard from "../posts/PostCard";
+import "../../styled/Replies.scss";
+import { Loader } from "semantic-ui-react";
+import { green } from "@material-ui/core/colors";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
@@ -14,7 +13,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
-import { green } from "@material-ui/core/colors";
+
+import PostCard from "../posts/PostCard";
 import ReplyCard from "./ReplyCard";
 
 const ReplyContainer = props => {

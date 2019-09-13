@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_GROUP, LEAVE_GROUP } from "../../reducers/userReducer";
-
-import { Mixpanel } from "../analytics/Mixpanel"
-
-import styled from "styled-components";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
+
+import { Mixpanel } from "../analytics/Mixpanel";
+
+import styled from "styled-components";
 
 const MembershipStatus = props => {
 	// const [isLoading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const MembershipStatus = props => {
 					user_type: result.data.newGroupUsers.user_type
 				};
 				dispatch({ type: ADD_GROUP, payload: addedGroup });
-				Mixpanel.activity(loggedInUser.id, 'Joined Group')
+				Mixpanel.activity(loggedInUser.id, "Joined Group");
 			}
 		}
 		// setLoading(false);
@@ -98,7 +98,7 @@ const MembershipStatus = props => {
 			) {
 				setUserType("non-member");
 				dispatch({ type: LEAVE_GROUP, payload: props.group_id });
-				Mixpanel.activity(loggedInUser.id, 'Left Group')
+				Mixpanel.activity(loggedInUser.id, "Left Group");
 			}
 		}
 		// setLoading(false);
