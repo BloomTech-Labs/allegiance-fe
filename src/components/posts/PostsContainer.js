@@ -18,7 +18,7 @@ const PostsContainer = props => {
 			if (token)
 				try {
 					const posts = await axiosWithAuth([token]).get(`/posts/group/${id}`);
-					setPosts(posts.data.postsLoaded);
+					setPosts(posts.data.postsLoaded.sort((a, b) => a.id - b.id));
 					setSubmitted(false);
 				} catch {
 					setPosts([]);
