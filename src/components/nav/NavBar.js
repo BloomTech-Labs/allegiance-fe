@@ -183,7 +183,7 @@ const BottomNav = styled.div`
 	-webkit-transition: height 0.2s ease-in-out;
 	transition: height 0.2s ease-in-out;
 	border-radius: 0;
-	height: 8%;
+	max-height: 8%;
 	@media (max-width: 320px) {
 		max-width: 320px
 	}

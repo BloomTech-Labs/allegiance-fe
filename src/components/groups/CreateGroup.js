@@ -232,7 +232,7 @@ const CreateGroup = props => {
 
 const FormHolder = styled.div`
 background-color: #dee4e7;
-height: 87vh;
+height: 90vh;
 padding-top: 5%;
 overflow-y: hidden;
 margin-top: -1%;
