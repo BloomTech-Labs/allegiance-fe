@@ -3,25 +3,15 @@ export const UPDATE_USER = "UPDATE_USER";
 export const GET_GROUPS = "GET_GROUPS";
 export const ADD_GROUP = "ADD_GROUP";
 export const LEAVE_GROUP = "LEAVE_GROUP";
+export const GET_ALLEGIANCES = "GET_ALLEGIANCES";
+export const ADD_ALLEGIANCE = "ADD_ALLEGIANCE";
+export const LEAVE_ALLEGIANCE = "LEAVE_ALLEGIANCE";
 
 const initialState = {
 	loggedInUser: "",
-	loggedInPosts: [],
+	loggedInPosts: "",
 	loggedInGroups: [],
-	loggedInAllegiances: [
-		{
-			id: "1",
-			name: "Atlanta Braves",
-			image:
-				"https://cdn.bleacherreport.net/images/team_logos/328x328/atlanta_braves.png"
-		},
-		{
-			id: "2",
-			name: "San Francisco 49ers",
-			image:
-				"https://cdn.shopify.com/s/files/1/0257/6087/products/ca69f5096dd5a70ee8a7b86be09b148e.png?v=1558129992"
-		}
-	],
+	loggedInAllegiances: [],
 	error: ""
 };
 
@@ -60,6 +50,25 @@ export const userReducer = (state = initialState, action) => {
 					group => group.id !== action.payload
 				)
 			};
+		case GET_ALLEGIANCES:
+			return {
+				...state,
+				loggedInAllegiances: action.payload,
+				error: ""
+			};
+		case ADD_ALLEGIANCE:
+			return {
+				...state,
+				loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
+			};
+		case LEAVE_ALLEGIANCE:
+			return {
+				...state,
+				loggedInAllegiances: state.loggedInAllegiances.filter(
+					Allegiance => Allegiance.id !== action.payload
+				)
+			};
+
 		default:
 			return state;
 	}
