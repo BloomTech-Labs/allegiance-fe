@@ -150,19 +150,25 @@ const MembershipStatus = props => {
 					{userType === "admin" && (
 						<>
 							<Membership>Admin</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							<Button action={"leave"} onClick={e => leaveGroup(e)}>
+								Leave
+							</Button>
 						</>
 					)}
 					{userType === "invited" && (
 						<>
 							<Membership>Invited</Membership>
-							<Button onClick={e => joinGroupInvite(e)}>Join</Button>
+							<Button action={"join"} onClick={e => joinGroupInvite(e)}>
+								Join
+							</Button>
 						</>
 					)}
 					{userType === "member" && (
 						<>
 							<Membership>Member</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							<Button action={"leave"} onClick={e => leaveGroup(e)}>
+								Leave
+							</Button>
 							{/* Test buttons to change status to invite or admin */}
 							{/* <button onClick={e => invite(e)}>Invite</button>
 							<button onClick={e => admin(e)}>Admin</button> */}
@@ -173,7 +179,9 @@ const MembershipStatus = props => {
 			{userType === "non-member" && (
 				<>
 					<NotMember>Holder</NotMember>
-					<Button onClick={e => joinGroup(e)}>Join</Button>
+					<Button action={"join"} onClick={e => joinGroup(e)}>
+						Join
+					</Button>
 				</>
 			)}
 		</GroupMemberStatus>
@@ -205,7 +213,10 @@ const Button = styled.div`
 	width: 80%;
 	color: #f2f2f2;
 	border-radius: 10%;
-	background-color: #5eaeff;
+	background-color: ${props => {
+		if (props.action === "join") return "#5eaeff";
+		if (props.action === "leave") return "#F03737";
+	}};
 	padding: 1% 0;
 `;
 
