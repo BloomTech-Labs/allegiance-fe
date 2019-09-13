@@ -18,7 +18,9 @@ const GroupCard = props => {
 			<Link to={`/group/${props.group.id}`} onClick={() => mixpanelCheck()}>
 				<CardContainer>
 					<TopDiv>
-						<CardImage src={props.group.image} alt="GroupAvatar" />
+						{props.group.image && (
+							<CardImage src={props.group.image} alt="GroupAvatar" />
+						)}
 					</TopDiv>
 					<MiddleDiv color={props.color}>
 						<h4>
