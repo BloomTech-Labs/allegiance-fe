@@ -1,0 +1,60 @@
+//Reply bubbles
+
+.MuiCardContent-root {
+  margin: 10px 0;
+
+  display: block;
+  position: relative;
+  word-wrap: break-word;
+  padding: 10px !important;
+  &:last-child {
+    padding-bottom: 10px !important;
+  }
+}
+
+.yours {
+  // display: flex;
+  // align-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.mine {
+  // display: flex;
+  // align-content: center;
+  flex-direction: row-reverse;
+}
+.me {
+  background-color: #8f5db7;
+  // padding-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 6px #b2b2b2;
+  padding: 10px;
+  &:last-child {
+    padding-bottom: 0px;
+  }
+}
+.you {
+  // padding-bottom: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 6px #b2b2b2;
+  padding: 10px;
+  &:last-child {
+    padding-bottom: 0px;
+  }
+}
+
+.reply-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: fixed;
+  bottom: 6.5%;
+  width: 100%;
+  background-color: #dee4e7;
+  align-items: center;
+  .input-div {
+    width: 75%;
+    margin-right: 10px;
+  }
+}

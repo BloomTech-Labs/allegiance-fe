@@ -62,7 +62,7 @@ const NearbyGroups = () => {
 			<NearbyGroupsContainer>
 				{data.groups.length > 0 &&
 					data.groups.map(group => {
-						return <GroupCard minWidth="40%" group={group} key={group.id} />;
+						return <GroupCard minWidth="40%" group={group} key={group.id} nearby={true} />;
 					})}
 				{data.groups.length === 0 && (
 					<h4 style={{ margin: "3% auto" }}>No Nearby Groups Detected</h4>
