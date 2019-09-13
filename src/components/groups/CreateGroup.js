@@ -108,7 +108,7 @@ const CreateGroup = props => {
 
 	return (
 		<FormHolder>
-			<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
+			<Segment raised color="violet" style={{ width: "90%", margin: "1rem auto" }}>
 				<Form onSubmit={handleSubmit} error>
 					<BasicInfoHolder>
 						<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />

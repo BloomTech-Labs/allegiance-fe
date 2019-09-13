@@ -66,7 +66,7 @@ const MakeProfile = props => {
 
 	return (
 		<FormHolder>
-			<Segment raised color="blue" style={{ width: "90%", margin: 'auto', marginBottom: "15%" }} >
+			<Segment raised color="violet" style={{ width: "90%", margin: 'auto', marginBottom: "15%" }} >
 				<Form onSubmit={handleSubmit} error>
 					<BasicInfoHolder>
 						<div>
