@@ -70,11 +70,11 @@ const MakeProfile = props => {
 				<Form onSubmit={handleSubmit} error>
 					<BasicInfoHolder>
 						<div>
-							<Icon name='edit' corner size='large' color='blue' style={{ position: 'absolute', top: '5.5rem', left: '5rem' }} onClick={() => setModal(true)} />
+							<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
 							<Modal
 								open={modalOpen}
 								onClose={() => setModal(false)}
-								trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
+								trigger={<ProfilePic style={{ opacity: '.6' }} onClick={() => setModal(true)} src={image || values.image || Default} />}>
 								<UploadModal>
 									<Uploader {...getRootProps()} >
 										<input {...getInputProps()} />

@@ -111,13 +111,14 @@ const CreateGroup = props => {
 			<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
 				<Form onSubmit={handleSubmit} error>
 					<BasicInfoHolder>
-						<Icon name='edit' corner size='large' color='blue' style={{ position: 'absolute', top: '5.5rem', left: '5rem' }} onClick={() => setModal(true)} />
+						<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
 						<Modal
 							open={modalOpen}
 							onClose={() => setModal(false)}
 							trigger={<GroupLogo
 								onClick={() => setModal(true)}
-								src={image || values.image || Placeholder} />}>
+								src={image || values.image || Placeholder}
+								style={{ opacity: '.6' }} />}>
 							<UploadModal>
 								<Uploader {...getRootProps()} >
 									<input {...getInputProps()} />
