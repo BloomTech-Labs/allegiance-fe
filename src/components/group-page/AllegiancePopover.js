@@ -5,6 +5,8 @@ import Paper from "@material-ui/core/Paper";
 import Grow from "@material-ui/core/Grow";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Avatar from "@material-ui/core/Avatar";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,6 +21,10 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     display: "flex"
+  },
+  typography: {
+    fontSize: 14,
+    color: "black"
   },
   paper: {
     margin: theme.spacing(1)
@@ -36,16 +42,38 @@ const SimpleGrow = props => {
   return (
     <div className={classes.root}>
       <FormControlLabel
-        control={<Switch checked={checked} onChange={handleChange} />}
+        // control={<Switch checked={checked} onChange={handleChange} />}
+        control={<ArrowDropDownIcon checked={checked} onClick={handleChange} />}
         label="Allegiances"
       />
       <div className={classes.container}>
         <Grow in={checked}>
-          <Paper elevation={4} className={classes.paper}>
-            {props.allegiances.map(al => (
-              <Avatar key={al.id} src={al.image} className={classes.avatar} />
-            ))}
-          </Paper>
+          {props.allegiances.length > 0 ? (
+            <Paper
+              elevation={4}
+              className={classes.paper}
+              style={{ display: "flex", zIndex: 1, margin: "0 auto" }}
+            >
+              {props.allegiances.map(al => (
+                <Avatar key={al.id} src={al.image} className={classes.avatar} />
+              ))}
+            </Paper>
+          ) : (
+            <Typography
+              className={classes.typography}
+              variant="body1"
+              color="textSecondary"
+              component="p"
+              style={{
+                display: "flex",
+                zIndex: 1,
+                margin: "0 auto",
+                backgroundColor: "white"
+              }}
+            >
+              No Allegiances Yet!
+            </Typography>
+          )}
         </Grow>
       </div>
     </div>

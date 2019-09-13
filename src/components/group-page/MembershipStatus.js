@@ -8,6 +8,7 @@ import useGetToken from "../utils/useGetToken";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
 import blue from "@material-ui/core/colors/blue";
+import Chip from "@material-ui/core/Chip";
 
 import { Mixpanel } from "../analytics/Mixpanel";
 
@@ -112,10 +113,15 @@ const MembershipStatus = props => {
     },
     join: {
       margin: theme.spacing(1),
-      backgroundColor: accent
+      backgroundColor: accent,
+      marginTop: 1
     },
     extendedIcon: {
       marginRight: theme.spacing(1)
+    },
+    chip: {
+      margin: theme.spacing(1),
+      marginBottom: 1
     }
   }));
 
@@ -128,6 +134,12 @@ const MembershipStatus = props => {
           {userType === "admin" && (
             <>
               <Membership>Admin</Membership>
+              <Chip
+                variant="outlined"
+                size="small"
+                label="Admin"
+                className={classes.chip}
+              />
               {/* <Button action={"leave"} >
 								Leave
 							</Button> */}
@@ -144,6 +156,12 @@ const MembershipStatus = props => {
           {userType === "invited" && (
             <>
               <Membership>Invited</Membership>
+              <Chip
+                variant="outlined"
+                size="small"
+                label="Invited"
+                className={classes.chip}
+              />
               <Button1 action={"join"} onClick={e => joinGroupInvite(e)}>
                 Join
               </Button1>
@@ -151,7 +169,13 @@ const MembershipStatus = props => {
           )}
           {userType === "member" && (
             <>
-              <Membership>Member</Membership>
+              {/* <Membership>Member</Membership> */}
+              <Chip
+                variant="outlined"
+                size="small"
+                label="Member"
+                className={classes.chip}
+              />
               {/* <Button1 action={"leave"} onClick={e => leaveGroup(e)}>
                 Leave
               </Button1> */}
