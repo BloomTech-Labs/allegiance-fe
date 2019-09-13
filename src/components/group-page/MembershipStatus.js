@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_GROUP, LEAVE_GROUP } from "../../reducers/userReducer";
-
-import { Mixpanel } from "../analytics/Mixpanel"
-
-import styled from "styled-components";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
+
+import { Mixpanel } from "../analytics/Mixpanel";
+
+import styled from "styled-components";
 
 const MembershipStatus = props => {
 	// const [isLoading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const MembershipStatus = props => {
 					user_type: result.data.newGroupUsers.user_type
 				};
 				dispatch({ type: ADD_GROUP, payload: addedGroup });
-				Mixpanel.activity(loggedInUser.id, 'Joined Group')
+				Mixpanel.activity(loggedInUser.id, "Joined Group");
 			}
 		}
 		// setLoading(false);
@@ -98,7 +98,7 @@ const MembershipStatus = props => {
 			) {
 				setUserType("non-member");
 				dispatch({ type: LEAVE_GROUP, payload: props.group_id });
-				Mixpanel.activity(loggedInUser.id, 'Left Group')
+				Mixpanel.activity(loggedInUser.id, "Left Group");
 			}
 		}
 		// setLoading(false);
@@ -150,19 +150,25 @@ const MembershipStatus = props => {
 					{userType === "admin" && (
 						<>
 							<Membership>Admin</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							<Button action={"leave"} onClick={e => leaveGroup(e)}>
+								Leave
+							</Button>
 						</>
 					)}
 					{userType === "invited" && (
 						<>
 							<Membership>Invited</Membership>
-							<Button onClick={e => joinGroupInvite(e)}>Join</Button>
+							<Button action={"join"} onClick={e => joinGroupInvite(e)}>
+								Join
+							</Button>
 						</>
 					)}
 					{userType === "member" && (
 						<>
 							<Membership>Member</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							<Button action={"leave"} onClick={e => leaveGroup(e)}>
+								Leave
+							</Button>
 							{/* Test buttons to change status to invite or admin */}
 							{/* <button onClick={e => invite(e)}>Invite</button>
 							<button onClick={e => admin(e)}>Admin</button> */}
@@ -173,7 +179,9 @@ const MembershipStatus = props => {
 			{userType === "non-member" && (
 				<>
 					<NotMember>Holder</NotMember>
-					<Button onClick={e => joinGroup(e)}>Join</Button>
+					<Button action={"join"} onClick={e => joinGroup(e)}>
+						Join
+					</Button>
 				</>
 			)}
 		</GroupMemberStatus>
@@ -205,7 +213,10 @@ const Button = styled.div`
 	width: 80%;
 	color: #f2f2f2;
 	border-radius: 10%;
-	background-color: #5eaeff;
+	background-color: ${props => {
+		if (props.action === "join") return "#5eaeff";
+		if (props.action === "leave") return "#F03737";
+	}};
 	padding: 1% 0;
 `;
 
