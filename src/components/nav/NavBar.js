@@ -56,7 +56,7 @@ const NavBar = () => {
 						<TopNavRight></TopNavRight>
 					</>
 				)}
-				{window.location.pathname === "/editgroup" && (
+				{window.location.pathname.includes("/editgroup/") && (
 					<>
 						<IconBut
 							aria-label="back to group"

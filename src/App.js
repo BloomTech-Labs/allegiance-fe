@@ -46,10 +46,10 @@ function App(props) {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: user.email
           });
-          dispatch({ type: LOGIN, payload: result.data });
+          dispatch({ type: LOGIN, payload: result.data.userInfo });
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
-          const { newUser, currentUser } = result.data;
+          const { newUser, currentUser } = result.data.userInfo;
           if (newUser) {
             props.history.push("/makeprofile");
             Mixpanel.login(newUser, "New user sign up.");
@@ -92,7 +92,7 @@ function App(props) {
         <Route exact path="/home" component={UnderConstruction} />
         <PrivateRoute exact path="/makeprofile" component={MakeProfile} />
         <PrivateRoute exact path="/creategroup" component={CreateGroup} />
-        <PrivateRoute exact path="/editgroup" component={CreateGroup} />
+        <PrivateRoute exact path="/editgroup/:id" component={CreateGroup} />
         <PrivateRoute
           exact
           path="/notifications"
