@@ -10,7 +10,7 @@ import { Loader } from "semantic-ui-react";
 import PrivateRoute from "./components/PrivateRoute";
 
 import { initGA, logPageView } from "./components/analytics/Analytics";
-import { Mixpanel } from "./components/analytics/Mixpanel"
+import { Mixpanel } from "./components/analytics/Mixpanel";
 
 import { useAuth0 } from "./components/auth/react-auth0-wrapper";
 
@@ -22,6 +22,7 @@ import MakeProfile from "./components/profile/MakeProfile";
 import GroupPage from "./components/group-page/GroupPage";
 import CreateGroup from "./components/groups/CreateGroup";
 import UnderConstruction from "./components/UnderConstruction";
+import AddAllegiance from "./components/allegiances/AddAllegiance";
 
 import { LOGIN } from "./reducers/userReducer";
 
@@ -42,27 +43,31 @@ function App(props) {
     if (isAuthenticated && !loggedInUser && user && loading) {
       const registerUser = async () => {
         try {
-          const result = await axios.post(process.env.REACT_APP_AUTHURL, { email: user.email });
+          const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+            email: user.email
+          });
           dispatch({ type: LOGIN, payload: result.data });
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data;
           if (newUser) {
             props.history.push("/makeprofile");
-            Mixpanel.login(newUser, 'New user sign up.')
+            Mixpanel.login(newUser, "New user sign up.");
           }
           if (currentUser && currentUser.first_name === null) {
             props.history.push("/makeprofile");
-            Mixpanel.login(currentUser, 'Successful login, no profile info.')
+            Mixpanel.login(currentUser, "Successful login, no profile info.");
           }
           if (currentUser && currentUser.first_name !== null) {
-            const pushTo = window.location.pathname !== "/" ? window.location.pathname : "/profile";
+            const pushTo =
+              window.location.pathname !== "/"
+                ? window.location.pathname
+                : "/profile";
             props.history.push(`${pushTo}`);
-            Mixpanel.login(currentUser, 'Successful login.')
+            Mixpanel.login(currentUser, "Successful login.");
           }
-        }
-        catch (err) {
-          Mixpanel.track('Unsuccessful login');
+        } catch (err) {
+          Mixpanel.track("Unsuccessful login");
         }
       };
       registerUser();
@@ -73,7 +78,7 @@ function App(props) {
     return (
       <Loader active size="large">
         Loading
-			</Loader>
+      </Loader>
     );
   }
 
@@ -96,6 +101,7 @@ function App(props) {
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/group/:id" component={GroupPage} />
+        <PrivateRoute exact path="/addallegiance" component={AddAllegiance} />
       </Switch>
     </div>
   );
