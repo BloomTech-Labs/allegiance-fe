@@ -162,6 +162,9 @@ const TopNav = styled.div`
 		width: 70%;
 		margin: 0;
 	}
+	@media (max-width: 320px) {
+		max-width: 320px
+	}
 `;
 
 const IconBut = styled(IconButton)`
@@ -180,6 +183,10 @@ const BottomNav = styled.div`
 	-webkit-transition: height 0.2s ease-in-out;
 	transition: height 0.2s ease-in-out;
 	border-radius: 0;
+	max-height: 8%;
+	@media (max-width: 320px) {
+		max-width: 320px
+	}
 `;
 
 const Nav = styled(Menu)`
