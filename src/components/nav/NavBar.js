@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "../auth/react-auth0-wrapper";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
 import { Menu, Icon } from "semantic-ui-react";
@@ -10,7 +11,9 @@ import { ArrowBack } from "@material-ui/icons";
 const NavBar = () => {
 	const { isAuthenticated, logout } = useAuth0();
 	const [activeItem, setActiveItem] = useState("");
-	console.log("navbar props:", window.location.pathname);
+	// Obtain last viewed replies thread's group_id
+	const groupId = useSelector(state => state.navReducer.groupID);
+	console.log(groupId);
 
 	const logoutWithRedirect = () =>
 		logout({
@@ -39,11 +42,42 @@ const NavBar = () => {
 				{window.location.pathname === "/creategroup" && <p>Create Group</p>}
 				{window.location.pathname === "/notifications" && <p>Notifications</p>}
 				{window.location.pathname === "/profile" && <p>Profile</p>}
-				{window.location.pathname === "/makeprofile" && <p>Edit Profile</p>}
-				{window.location.pathname === "/editgroup" && <p>Edit Group</p>}
+				{window.location.pathname === "/makeprofile" && (
+					<>
+						<IconBut
+							aria-label="back to profile"
+							as={Link}
+							to="/profile"
+							style={{ color: "white", marginTop: "1%" }}
+						>
+							<ArrowBack />
+						</IconBut>
+						<p>Edit Profile</p>
+						<TopNavRight></TopNavRight>
+					</>
+				)}
+				{window.location.pathname === "/editgroup" && (
+					<>
+						<IconBut
+							aria-label="back to group"
+							as={Link}
+							to={groupId === 0 ? "/groups" : `/group/${groupId}`}
+							style={{ color: "white", marginTop: "1%" }}
+						>
+							<ArrowBack />
+						</IconBut>
+						<p>Edit Group</p>
+						<TopNavRight></TopNavRight>
+					</>
+				)}
 				{window.location.pathname.includes("/post") && (
 					<>
-						<IconBut aria-label="back to group" style={{ color: "white" }}>
+						<IconBut
+							aria-label="back to group"
+							as={Link}
+							to={`/group/${groupId}`}
+							style={{ color: "white", marginTop: "1%" }}
+						>
 							<ArrowBack />
 						</IconBut>
 						<p>Post</p>

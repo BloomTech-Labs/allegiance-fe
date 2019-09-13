@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { VIEW_REPLIES } from "../../reducers/navReducer";
 
 import styled from "styled-components";
 import "../../styled/Replies.scss";
@@ -21,8 +22,9 @@ const ReplyContainer = props => {
 	const [post, setPost] = useState();
 	const [submitted, setSubmitted] = useState(false);
 	const id = props.match.params.id;
-	const primary = green[500];
+
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
+	const dispatch = useDispatch();
 
 	// useForm custom hook and set timeout custom hook
 	const { values, setValues, handleChange, handleSubmit } = useForm(
@@ -35,14 +37,19 @@ const ReplyContainer = props => {
 		// Fetch group related data
 		const fetchData = async () => {
 			if (token) {
-				const response = await axiosWithAuth([token]).get(`/posts/${id}`);
-				setPost(response.data.postLoaded);
-				console.log("data:", response.data.postLoaded);
-				setSubmitted(false);
+				try {
+					const response = await axiosWithAuth([token]).get(`/posts/${id}`);
+					setPost(response.data.postLoaded);
+					const groupId = response.data.postLoaded.group_id;
+					setSubmitted(false);
+					dispatch({ type: VIEW_REPLIES, payload: groupId });
+				} catch {
+					dispatch({ type: VIEW_REPLIES, payload: 0 });
+				}
 			}
 		};
 		fetchData();
-	}, [token, id, submitted]);
+	}, [token, id, submitted, dispatch]);
 
 	// callback function to handle submit
 	async function submitReply(e) {
@@ -58,6 +65,7 @@ const ReplyContainer = props => {
 	}
 
 	// Material UI
+	const primary = green[500];
 	const useStyles = makeStyles(theme => ({
 		container: {
 			display: "flex",
@@ -107,7 +115,7 @@ const ReplyContainer = props => {
 			</Loader>
 		);
 	}
-	console.log("POST", post);
+
 	return (
 		<ReplyViewContainer>
 			<PostCard post={post} setSubmitted={setSubmitted} />
