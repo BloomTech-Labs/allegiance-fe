@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "../auth/react-auth0-wrapper";
+
+import styled from "styled-components";
 import { Menu, Icon } from "semantic-ui-react";
 import IconButton from "@material-ui/core/IconButton";
 import { ArrowBack } from "@material-ui/icons";
-
-import styled from "styled-components";
 
 const NavBar = () => {
 	const { isAuthenticated, logout } = useAuth0();
@@ -22,7 +22,20 @@ const NavBar = () => {
 			<TopNav>
 				{window.location.pathname === "/" && <p>Home</p>}
 				{window.location.pathname === "/groups" && <p>Groups</p>}
-				{window.location.pathname.includes("/group/") && <p>Group</p>}
+				{window.location.pathname.includes("/group/") && (
+					<>
+						<IconBut
+							aria-label="back to groups"
+							as={Link}
+							to="/groups"
+							style={{ color: "white", marginTop: "1%" }}
+						>
+							<ArrowBack />
+						</IconBut>
+						<p>Group</p>
+						<TopNavRight></TopNavRight>
+					</>
+				)}
 				{window.location.pathname === "/creategroup" && <p>Create Group</p>}
 				{window.location.pathname === "/notifications" && <p>Notifications</p>}
 				{window.location.pathname === "/profile" && <p>Profile</p>}
@@ -30,10 +43,11 @@ const NavBar = () => {
 				{window.location.pathname === "/editgroup" && <p>Edit Group</p>}
 				{window.location.pathname.includes("/post") && (
 					<>
-						{/* <IconButton aria-label="back to group">
+						<IconBut aria-label="back to group" style={{ color: "white" }}>
 							<ArrowBack />
-						</IconButton> */}
+						</IconBut>
 						<p>Post</p>
+						<TopNavRight></TopNavRight>
 					</>
 				)}
 			</TopNav>
@@ -110,6 +124,18 @@ const TopNav = styled.div`
 	-webkit-transition: height 0.2s ease-in-out;
 	transition: height 0.2s ease-in-out;
 	border-radius: 0;
+	p {
+		width: 70%;
+		margin: 0;
+	}
+`;
+
+const IconBut = styled(IconButton)`
+	width: 15%;
+`;
+
+const TopNavRight = styled.div`
+	width: 15%;
 `;
 
 const BottomNav = styled.div`
