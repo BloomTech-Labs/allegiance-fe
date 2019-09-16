@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Segment, Button, Modal, Icon, Loader } from "semantic-ui-react";
+import { Segment, Button, Modal, Icon, Loader, Tab } from "semantic-ui-react";
 import styled from "styled-components";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -50,9 +50,9 @@ const AddAllegiance = props => {
         const relation = userAllegiance.data.relationExists;
         console.log(relation);
         const newAllegiance = {
-          id: allegiance.allegiance_id,
+          id: allegiance.id,
           name: allegiance.allegiance_name,
-          image: allegiance.allegiance_image
+          image: allegiance.image
         };
         dispatch({ type: ADD_ALLEGIANCE, payload: newAllegiance });
         const push = () => props.history.push(`/profile`);
@@ -63,6 +63,129 @@ const AddAllegiance = props => {
     }
   };
 
+  const panes = [
+    {
+      menuItem: "NFL",
+      render: () => (
+        <Tab.Pane attached={false}>
+          <LogoHolder>
+            {data.allegiances
+              .filter(allegiance => allegiance.sport === "NFL")
+              .map(allegiance => (
+                <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
+                  <Modal
+                    closeIcon
+                    trigger={<AllegianceLogo src={allegiance.image} />}
+                  >
+                    <Modal.Header>{allegiance.allegiance_name}</Modal.Header>
+                    <Modal.Actions>
+                      <Button
+                        onClick={() => addAllegiance(allegiance)}
+                        color="green"
+                        inverted
+                      >
+                        <Icon name="add" /> Declare Allegiance
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </div>
+              ))}
+          </LogoHolder>
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: "MLB",
+      render: () => (
+        <Tab.Pane attached={false}>
+          <LogoHolder>
+            {data.allegiances
+              .filter(allegiance => allegiance.sport === "MLB")
+              .map(allegiance => (
+                <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
+                  <Modal
+                    closeIcon
+                    trigger={<AllegianceLogo src={allegiance.image} />}
+                  >
+                    <Modal.Header>{allegiance.allegiance_name}</Modal.Header>
+                    <Modal.Actions>
+                      <Button
+                        onClick={() => addAllegiance(allegiance)}
+                        color="green"
+                        inverted
+                      >
+                        <Icon name="add" /> Declare Allegiance
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </div>
+              ))}
+          </LogoHolder>
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: "NBA",
+      render: () => (
+        <Tab.Pane attached={false}>
+          <LogoHolder>
+            {data.allegiances
+              .filter(allegiance => allegiance.sport === "NBA")
+              .map(allegiance => (
+                <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
+                  <Modal
+                    closeIcon
+                    trigger={<AllegianceLogo src={allegiance.image} />}
+                  >
+                    <Modal.Header>{allegiance.allegiance_name}</Modal.Header>
+                    <Modal.Actions>
+                      <Button
+                        onClick={() => addAllegiance(allegiance)}
+                        color="green"
+                        inverted
+                      >
+                        <Icon name="add" /> Declare Allegiance
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </div>
+              ))}
+          </LogoHolder>
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: "NHL",
+      render: () => (
+        <Tab.Pane attached={false}>
+          <LogoHolder>
+            {data.allegiances
+              .filter(allegiance => allegiance.sport === "NHL")
+              .map(allegiance => (
+                <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
+                  <Modal
+                    closeIcon
+                    trigger={<AllegianceLogo src={allegiance.image} />}
+                  >
+                    <Modal.Header>{allegiance.allegiance_name}</Modal.Header>
+                    <Modal.Actions>
+                      <Button
+                        onClick={() => addAllegiance(allegiance)}
+                        color="green"
+                        inverted
+                      >
+                        <Icon name="add" /> Declare Allegiance
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </div>
+              ))}
+          </LogoHolder>
+        </Tab.Pane>
+      )
+    }
+  ];
+
   return (
     <Segment
       raised
@@ -70,27 +193,7 @@ const AddAllegiance = props => {
       style={{ width: "90%", margin: "auto", marginBottom: "15%" }}
     >
       {data.allegiances.length ? (
-        <LogoHolder>
-          {data.allegiances.map(allegiance => (
-            <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
-              <Modal
-                closeIcon
-                trigger={<AllegianceLogo src={allegiance.image} />}
-              >
-                <Modal.Header>{allegiance.allegiance_name}</Modal.Header>
-                <Modal.Actions>
-                  <Button
-                    onClick={() => addAllegiance(allegiance)}
-                    color="green"
-                    inverted
-                  >
-                    <Icon name="add" /> Declare Allegiance
-                  </Button>
-                </Modal.Actions>
-              </Modal>
-            </div>
-          ))}
-        </LogoHolder>
+        <Tab menu={{ borderless: true, pointing: true }} panes={panes} />
       ) : (
         <Loader active size="large">
           Loading
