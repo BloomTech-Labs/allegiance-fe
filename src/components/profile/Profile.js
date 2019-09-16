@@ -128,6 +128,7 @@ const Banner = styled.div``;
 const BannerImage = styled.img`
 width: 100%
 border-bottom: 10px solid black;
+max-height: 225px;
 `;
 
 const InfoHolder = styled.div`
