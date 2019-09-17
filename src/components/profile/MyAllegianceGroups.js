@@ -6,15 +6,14 @@ import { Mixpanel } from "../analytics/Mixpanel"
 
 const MyAllegianceGroups = props => {
 
-	const mixpanelCheck = () => Mixpanel.activity(props.userId, 'Visited Group From Profile Page')
+	const mixpanelCheck = () => props.type === "group" ? Mixpanel.activity(props.userId, 'Visited Group From Profile Page') : null
 
 	return (
 		<LogoHolder>
-			{props.type === "groups" && (
+			{props.type === "group" && (
 				<div style={{ margin: "1%" }}>
 					<Link to={`/creategroup`}>
-						<Popup
-							content={"Create a Group"}
+						<Popup content={"Create a Group"}
 							trigger={
 								<Icon
 									name="plus"
@@ -22,27 +21,18 @@ const MyAllegianceGroups = props => {
 									circular
 									inverted
 									color="blue"
-									style={{ fontSize: "2.86rem" }}
-								/>
-							}
-						/>
+									style={{ fontSize: "2.86rem" }} />} />
 					</Link>
 				</div>
 			)}
 			{props.content.map(item => (
 				<div key={item.id} style={{ margin: "1%" }}>
-					{props.type === "groups"
-						? <Link to={`/group/${item.id}`} onClick={() => mixpanelCheck()}>
-							<Popup
-								content={item.name}
-								trigger={<GroupLogo src={item.image} />}
-							/>
-						</Link>
-						:
+					<Link to={`/${props.type}/${item.id}`} onClick={() => mixpanelCheck()}>
 						<Popup
 							content={item.name}
 							trigger={<GroupLogo src={item.image} />}
-						/>}
+						/>
+					</Link>
 					<Nickname>{item.acronym && item.acronym}</Nickname>
 				</div>
 			))}

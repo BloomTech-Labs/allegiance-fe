@@ -73,19 +73,3 @@ const AddAllegiance = props => {
 };
 
 export default AddAllegiance;
-
-/*<Modal
-closeIcon
-trigger={<AllegianceLogo src={allegiance.image} onClick={() => addAllegiance(allegiance)}/>}
->
-<Modal.Header>{allegiance.allegiance_name}</Modal.Header>
-<Modal.Actions>
-  <Button
-    onClick={() => addAllegiance(allegiance)}
-    color="green"
-    inverted
-  >
-    <Icon name="add" /> Declare Allegiance
-  </Button>
-</Modal.Actions>
-</Modal>*/

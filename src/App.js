@@ -102,6 +102,7 @@ function App(props) {
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/group/:id" component={GroupPage} />
+        <PrivateRoute exact path="/allegiance/:id" component={UnderConstruction} />
         <PrivateRoute exact path="/addallegiance" component={AddAllegiance} />
         <PrivateRoute exact path="/post/:id" component={ReplyContainer} />
       </Switch>

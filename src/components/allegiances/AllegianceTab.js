@@ -44,9 +44,7 @@ const AllegianceTab = props => {
             const deletedAllegiance = await axiosWithAuth([token]).delete("/users_allegiances/", { data: deleted });
             console.log(deletedAllegiance)
             dispatch({ type: LEAVE_ALLEGIANCE, payload: id });
-        } catch {
-            console.log("Something went wrong.");
-        }
+        } catch { console.log("Something went wrong.") }
     };
 
     return (
