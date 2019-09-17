@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Button, Message } from "semantic-ui-react"
+import { Button, Message, Segment, Form, Modal, Icon } from "semantic-ui-react"
+import styled from "styled-components"
+import useImageUploader from "../utils/useImageUploader";
+import Default from "../../assets/walter-avi.png"
 
 const useForm = callback => {
 	const [values, setValues] = useState({});
 	const [isLoading, setLoading] = useState();
 	const [isError, setError] = useState();
+
+	//Imports image upload functions
+	const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
 	const handleSubmit = event => {
 		if (event) event.preventDefault();
@@ -42,18 +48,18 @@ const useForm = callback => {
 			: null
 	}
 
-	/*const FormPage = props => {
+	const FormPage = props => {
 		return (
 			<FormHolder>
-				<Segment raised color="violet" style={{ width: "90%", margin: 'auto', marginBottom: "15%" }} >
+				<FormSegment raised color="violet">
 					<Form onSubmit={handleSubmit} error>
 						<BasicInfoHolder>
 							<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
 							<Modal
-							open={modalOpen}
-							onClose={() => setModal(false)}
-							trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
-							<UploaderUI displayImage={image || values.image} />
+								open={modalOpen}
+								onClose={() => setModal(false)}
+								trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
+								<UploaderUI displayImage={image || values.image} />
 							</Modal>
 							<NameHolder>
 								{props.nameHolder}
@@ -63,10 +69,10 @@ const useForm = callback => {
 						<ErrorMessage />
 						<SubmitButton />
 					</Form>
-				</Segment>
+				</FormSegment>
 			</FormHolder>
 		)
-	}*/
+	}
 
 	return {
 		handleChange,
@@ -74,8 +80,46 @@ const useForm = callback => {
 		setValues,
 		values,
 		SubmitButton,
-		ErrorMessage
+		ErrorMessage,
+		FormPage
 	};
 };
+
+const FormHolder = styled.div`
+background-color: #dee4e7;
+min-height: 90vh;
+padding-top: 5%;
+margin-top: -1.5%;
+@media (max-width: 320px) {
+	height: 87vh
+}`
+
+const FormSegment = styled(Segment)`
+width: 90%;
+margin: auto;
+marginBottom: 15%;
+`
+
+const ProfilePic = styled.img`
+border-color: black;
+object-fit: cover;
+width: 100px;
+height: 100px;
+border-radius: 50%;
+border: 1px solid black;
+flex: 0 0 auto;
+opacity: .6; `
+
+const BasicInfoHolder = styled.div`
+display: flex;
+flex-direction: row; `
+
+const NameHolder = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space - evenly;
+margin-left: 7px;
+margin-bottom: 1rem;
+`
 
 export default useForm;
