@@ -38,7 +38,7 @@ const PostsContainer = props => {
             );
           })
         ) : (
-          <h2>No Posts have been Created yet. Be the First!</h2>
+          <h2>Nobody has made a post yet</h2>
         )}
       </PostListContainer>
       <PostForm setSubmitted={setSubmitted} groupId={props.groupId} />
