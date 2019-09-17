@@ -14,6 +14,8 @@ import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
+import Moment from "react-moment";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const ReplyCard = props => {
   const {
@@ -23,7 +25,8 @@ const ReplyCard = props => {
     id,
     reply_content,
     user_id,
-    replyLikes
+    replyLikes,
+    created_at
   } = props.reply;
   const primary = red[600];
   const userId = useSelector(state => state.userReducer.loggedInUser.id);
@@ -131,25 +134,26 @@ const ReplyCard = props => {
         key={id}
       >
         <Avatar className={classes.avatar} src={!image ? avi : image} />
-        <Content className={userId === user_id ? "me" : "you"}>
-          <Typography
-            className={classes.typography2}
-            variant="body1"
-            color="textPrimary"
-            component="p"
-          >
-            {first_name}
-            {last_name}
-          </Typography>
-          <Typography
-            className={classes.typography}
-            variant="body2"
-            color="textSecondary"
-            component="p"
-          >
-            {reply_content}
-          </Typography>
-        </Content>
+        <Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+          <Content className={userId === user_id ? "me" : "you"}>
+            <Typography
+              className={classes.typography2}
+              variant="body1"
+              color="textPrimary"
+              component="p"
+            >
+              {first_name} {last_name}
+            </Typography>
+            <Typography
+              className={classes.typography}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
+              {reply_content}
+            </Typography>
+          </Content>
+        </Tooltip>
         <Activity>
           {!replyLikeId && (
             <div>

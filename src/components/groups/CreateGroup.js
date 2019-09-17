@@ -107,124 +107,143 @@ const CreateGroup = props => {
 	const privacy = values && values.privacy_setting ? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1) : null
 
 	return (
-		<Segment raised color="blue" style={{ width: "90%", margin: "1rem auto" }}>
-			<Form onSubmit={handleSubmit} error>
-				<BasicInfoHolder>
-					<Modal
-						open={modalOpen}
-						onClose={() => setModal(false)}
-						trigger={<GroupLogo
-							onClick={() => setModal(true)}
-							src={image || values.image || Placeholder} />}>
-						<Modal.Content>
-							<Uploader {...getRootProps()} >
-								<input {...getInputProps()} />
-								<div>
-									<Icon name='cloud upload' size='huge' color='violet' inverted />
-									{isDragActive
-										? <DropText style={{ fontSize: '2rem', padding: '10%' }}>Drop the files here ...</DropText>
-										: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
-											<Button color='violet' inverted >Browse Files</Button></>}
-								</div>
-							</Uploader>
-						</Modal.Content>
-					</Modal>
-					<NameHolder>
-						<BoldInput
+		<FormHolder>
+			<Segment raised color="violet" style={{ width: "90%", margin: "1rem auto" }}>
+				<Form onSubmit={handleSubmit} error>
+					<BasicInfoHolder>
+						<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
+						<Modal
+							open={modalOpen}
+							onClose={() => setModal(false)}
+							trigger={<GroupLogo
+								onClick={() => setModal(true)}
+								src={image || values.image || Placeholder}
+								style={{ opacity: '.6' }} />}>
+							<UploadModal>
+								<Uploader {...getRootProps()} >
+									<input {...getInputProps()} />
+									<div>
+										<Icon name='cloud upload' size='huge' color='violet' inverted />
+										{isDragActive
+											? <DropText>Drop the files here ...</DropText>
+											: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
+												<Button color='violet' inverted >Browse Files</Button></>}
+									</div>
+								</Uploader>
+								<PreviewHolder>
+									Preview of Your New Group Image:
+							<GroupLogo src={image || values.image || Placeholder} />
+								</PreviewHolder>
+								<DoneButton>
+									<Button onClick={() => setModal(false)} color='violet' fluid>Done</Button>
+								</DoneButton>
+							</UploadModal>
+						</Modal>
+						<NameHolder>
+							<BoldInput
+								required
+								style={{ marginLeft: "7px" }}
+								transparent
+								placeholder="Name Your Group"
+								onChange={handleChange}
+								value={values.group_name || ""}
+								name="group_name"
+								type="text" />
+							<Form.Input
+								required
+								style={{ marginLeft: "7px" }}
+								transparent
+								placeholder="Group Slogan"
+								onChange={handleChange}
+								value={values.description || ""}
+								name="description"
+								type="text" />
+						</NameHolder>
+					</BasicInfoHolder>
+					<Form.Group widths="equal">
+						<Form.Input
 							required
-							size="large"
-							style={{ marginLeft: "7px" }}
-							transparent
-							placeholder="Name Your Group"
+							label="Zip Code"
+							placeholder="Zip Code"
+							minLength="5"
+							maxLength="5"
 							onChange={handleChange}
-							value={values.group_name || ""}
-							name="group_name"
+							value={values.location || ""}
+							name="location"
 							type="text" />
 						<Form.Input
 							required
-							style={{ marginLeft: "7px" }}
-							transparent
-							placeholder="Group Slogan"
+							label="Acronym"
+							placeholder="Acronym"
+							maxLength="4"
 							onChange={handleChange}
-							value={values.description || ""}
-							name="description"
+							value={values.acronym || ""}
+							name="acronym"
 							type="text" />
-					</NameHolder>
-				</BasicInfoHolder>
-				<Form.Group widths="equal">
-					<Form.Input
+					</Form.Group>
+					<Form.Field
 						required
-						label="Zip Code"
-						placeholder="Zip Code"
-						minLength="5"
-						maxLength="5"
+						label="Privacy Setting"
 						onChange={handleChange}
-						value={values.location || ""}
-						name="location"
-						type="text" />
-					<Form.Input
-						required
-						label="Acronym"
-						placeholder="Acronym"
-						maxLength="4"
-						onChange={handleChange}
-						value={values.acronym || ""}
-						name="acronym"
-						type="text" />
-				</Form.Group>
-				<Form.Field
-					required
-					label="Privacy Setting"
-					onChange={handleChange}
-					name="privacy_setting"
-					control="select"
-					defaultValue={values.privacy_setting || ""}>
+						name="privacy_setting"
+						control="select"
+						defaultValue={values.privacy_setting || ""}>
 
-					<option value={values.privacy_setting}>{privacy || ""}</option>
-					{privacy !== "Public" && privacy !== undefined && <option value="public">Public</option>}
-					{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
-					{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
-				</Form.Field>
+						<option value={values.privacy_setting}>{privacy || ""}</option>
+						{privacy !== "Public" && privacy !== undefined && <option value="public">Public</option>}
+						{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
+						{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
+					</Form.Field>
 
-				<div>
-					{isError && <Message
-						error
-						header="Failed to submit form"
-						content="Please make sure all fields are filled out accurately." />}
-					{isLoading
-						? <Button loading>Submit</Button>
-						: <Button type="submit">Submit</Button>}
+					<div>
+						{isError && <Message
+							error
+							header="Failed to submit form"
+							content="Please make sure all fields are filled out accurately." />}
+						{isLoading
+							? <Button loading color="violet">Submit</Button>
+							: <Button type="submit" color="violet">Submit</Button>}
 
-					{window.location.pathname === "/editgroup" &&
-						<Modal
-							closeIcon
-							trigger={<Button color="red" type="button">Delete Group</Button>}
-							basic
-							size="small">
-							<Header icon="trash" content="Permanently Delete Group" />
-							<Modal.Content>
-								<p>
-									Clicking Delete will permanently delete your group. Clicking
-									the X will cancel the deletion.
+						{window.location.pathname === "/editgroup" &&
+							<Modal
+								closeIcon
+								trigger={<Button color="red" type="button">Delete Group</Button>}
+								basic
+								size="small">
+								<Header icon="trash" content="Permanently Delete Group" />
+								<Modal.Content>
+									<p>
+										Clicking Delete will permanently delete your group. Clicking
+										the X will cancel the deletion.
 								</p>
-							</Modal.Content>
-							<Modal.Actions>
-								<Button color="red" onClick={() => deleteGroup()}>
-									Delete
+								</Modal.Content>
+								<Modal.Actions>
+									<Button color="red" onClick={() => deleteGroup()}>
+										Delete
 								</Button>
-							</Modal.Actions>
-						</Modal>}
-				</div>
-			</Form>
-		</Segment>
+								</Modal.Actions>
+							</Modal>}
+					</div>
+				</Form>
+			</Segment>
+		</FormHolder>
 	)
 };
+
+const FormHolder = styled.div`
+background-color: #dee4e7;
+height: 90vh;
+padding-top: 5%;
+margin-top: -1%;
+@media (max-width: 320px) {
+	height: 87vh
+}`
 
 const GroupLogo = styled.img`
 	border-color: black;
 	object-fit: cover;
-	width: 80px;
-	height: 80px;
+	width: 100px;
+	height: 100px;
 	border-radius: 50%;
 	border: 1px solid black;
 	flex: 0 0 auto;
@@ -239,6 +258,8 @@ const NameHolder = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
+	margin-left: 7px;
+	margin-bottom: 1rem;
 `;
 
 const BoldInput = styled(Form.Input)`
@@ -263,5 +284,23 @@ margin: 1rem 0 1rem 0;`
 const DropText = styled.p`
 font-size: 2rem;
 padding: 10%;`
+
+const PreviewHolder = styled.div`
+	display: flex;
+	align-items: center;
+	width: 70%;
+	margin: 5% auto;`
+
+const DoneButton = styled.div`
+	width: 50%;
+	display: flex;
+	justify-content: center
+	margin: auto;`
+
+const UploadModal = styled(Modal.Content)`
+:first-child {
+				display: flex;
+			flex-direction: column;
+		}`
 
 export default CreateGroup;

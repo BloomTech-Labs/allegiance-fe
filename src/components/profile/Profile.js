@@ -127,7 +127,11 @@ const Profile = props => {
             </H3>
           </PostHeader>
           <div>
-            {loggedInPosts ? loggedInPosts : <NoPosts>You haven't posted yet!</NoPosts>}
+            {loggedInPosts ? (
+              loggedInPosts
+            ) : (
+                <NoPosts>You haven't posted yet!</NoPosts>
+              )}
           </div>
         </div>
       </div>
@@ -139,7 +143,7 @@ const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: -4.5%;
-  margin-bottom: 15%;
+  margin-bottom: 10%;
 `;
 
 const Banner = styled.div``;
