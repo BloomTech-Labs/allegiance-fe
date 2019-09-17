@@ -1,32 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button, Icon, Popup } from "semantic-ui-react";
 import styled from "styled-components";
 
-import useGetToken from "../utils/useGetToken";
-
 const MyAllegiances = props => {
   return (
     <LogoHolder>
-      {props.type === "allegiances" ? (
-        <div style={{ margin: "1%" }}>
-          <Link to={`/addallegiance`}>
-            <Popup
-              content={"Declare your Allegiance"}
-              trigger={
-                <Icon
-                  name="plus"
-                  size="big"
-                  circular
-                  inverted
-                  color="blue"
-                  style={{ fontSize: "2.16rem" }}
-                />
-              }
-            />
-          </Link>
-        </div>
-      ) : null}
       {props.content.map(allegiance => (
         <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
           <Modal closeIcon trigger={<AllegianceLogo src={allegiance.image} />}>
@@ -50,7 +29,6 @@ const LogoHolder = styled.div`
   width: 98%;
   display: flex;
   flex-wrap: nowrap;
-  justify-content: center;
   overflow-x: auto;
   margin-left: 1%;
   &::-webkit-scrollbar {

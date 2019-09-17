@@ -10,7 +10,7 @@ const MyAllegianceGroups = props => {
 
 	return (
 		<LogoHolder>
-			{props.type === "groups" ? (
+			{props.type === "groups" && (
 				<div style={{ margin: "1%" }}>
 					<Link to={`/creategroup`}>
 						<Popup
@@ -28,16 +28,22 @@ const MyAllegianceGroups = props => {
 						/>
 					</Link>
 				</div>
-			) : null}
+			)}
 			{props.content.map(item => (
 				<div key={item.id} style={{ margin: "1%" }}>
-					<Link to={`/group/${item.id}`} onClick={() => mixpanelCheck()}>
+					{props.type === "groups"
+						? <Link to={`/group/${item.id}`} onClick={() => mixpanelCheck()}>
+							<Popup
+								content={item.name}
+								trigger={<GroupLogo src={item.image} />}
+							/>
+						</Link>
+						:
 						<Popup
 							content={item.name}
 							trigger={<GroupLogo src={item.image} />}
-						/>
-					</Link>
-					<Nickname>{item.acronym ? item.acronym : null}</Nickname>
+						/>}
+					<Nickname>{item.acronym && item.acronym}</Nickname>
 				</div>
 			))}
 		</LogoHolder>
