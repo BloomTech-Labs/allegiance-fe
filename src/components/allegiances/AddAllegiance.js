@@ -4,13 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
-import AllegianceTab from "./AllegianceTab"
+import AllegianceTab from "./AllegianceTab";
+import { Link } from "react-router-dom";
 
 const AddAllegiance = props => {
   const [data, setData] = useState();
 
   //Fetches logged in user's info from redux store.
-  const loggedInAllegiances = useSelector(state => state.userReducer.loggedInAllegiances)
+  const loggedInAllegiances = useSelector(
+    state => state.userReducer.loggedInAllegiances
+  );
   const dispatch = useDispatch();
 
   //Fetches Auth0 token for axios call
@@ -22,14 +25,19 @@ const AddAllegiance = props => {
         try {
           const allegiances = await axiosWithAuth([token]).get(`/allegiances`);
           //Sorts allegiances into arrays by sport.
-          const sortBySport = allegiances.data.allegiances.reduce((accumulator, object) => {
-            const key = object["sport"];
-            if (!accumulator[key]) accumulator[key] = [];
-            (accumulator[key].push(object));
-            return accumulator;
-          }, {})
-          setData(sortBySport)
-        } catch { console.log("Something went wrong") }
+          const sortBySport = allegiances.data.allegiances.reduce(
+            (accumulator, object) => {
+              const key = object["sport"];
+              if (!accumulator[key]) accumulator[key] = [];
+              accumulator[key].push(object);
+              return accumulator;
+            },
+            {}
+          );
+          setData(sortBySport);
+        } catch {
+          console.log("Something went wrong");
+        }
       }
     };
 
@@ -63,11 +71,21 @@ const AddAllegiance = props => {
     }
   ];
 
-  if (!data) return <Loader active size="large">Loading</Loader>
+  if (!data)
+    return (
+      <Loader active size="large">
+        Loading
+      </Loader>
+    );
 
   return (
-    <Segment raised color="blue" style={{ width: "90%", margin: "auto", marginBottom: "15%" }}>
+    <Segment
+      raised
+      color="blue"
+      style={{ width: "90%", margin: "auto", marginBottom: "15%" }}
+    >
       <Tab menu={{ borderless: true, pointing: true }} panes={panes} />
+      <Link to="/makeallegiance">Can't find your Allegiance? Click here!</Link>
     </Segment>
   );
 };

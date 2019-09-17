@@ -26,6 +26,7 @@ import AddAllegiance from "./components/allegiances/AddAllegiance";
 import ReplyContainer from "./components/replies/ReplyContainer";
 
 import { LOGIN } from "./reducers/userReducer";
+import MakeAllegiance from "./components/allegiances/MakeAllegiance";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -102,8 +103,13 @@ function App(props) {
         <PrivateRoute exact path="/groups" component={GroupContainer} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/group/:id" component={GroupPage} />
-        <PrivateRoute exact path="/allegiance/:id" component={UnderConstruction} />
+        <PrivateRoute
+          exact
+          path="/allegiance/:id"
+          component={UnderConstruction}
+        />
         <PrivateRoute exact path="/addallegiance" component={AddAllegiance} />
+        <PrivateRoute exact path="/makeallegiance" component={MakeAllegiance} />
         <PrivateRoute exact path="/post/:id" component={ReplyContainer} />
       </Switch>
     </div>
