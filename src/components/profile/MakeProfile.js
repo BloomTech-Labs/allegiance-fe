@@ -28,22 +28,20 @@ const MakeProfile = props => {
 
 	//Sends user data as a put request to API to update user info.
 	async function updateUser() {
-		if (token) {
-			try {
-				if (image) values.image = image
-				Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
-				const result = await axiosWithAuth([token]).put(
-					`/users/${loggedInUser.id}`,
-					values
-				);
-				dispatch({ type: UPDATE_USER, payload: result.data.updated });
-				Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
-				const push = () => props.history.push("/profile")
-				setTimeout(push, 1000);
-			}
-			catch {
-				Mixpanel.activity(loggedInUser.id, 'Edit Profile Failed')
-			}
+		try {
+			if (image) values.image = image
+			Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
+			const result = await axiosWithAuth([token]).put(
+				`/users/${loggedInUser.id}`,
+				values
+			);
+			dispatch({ type: UPDATE_USER, payload: result.data.updated });
+			Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
+			const push = () => props.history.push("/profile")
+			setTimeout(push, 1000);
+		}
+		catch {
+			Mixpanel.activity(loggedInUser.id, 'Edit Profile Failed')
 		}
 	}
 

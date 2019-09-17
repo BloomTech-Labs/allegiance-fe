@@ -1,14 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Modal, Tab, Form, Icon } from "semantic-ui-react";
-import styled from "styled-components";
+import { Form } from "semantic-ui-react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
 import { ADD_ALLEGIANCE } from "../../reducers/userReducer";
-import Placeholder from '../../assets/Placeholder.png'
 
 const MakeAllegiance = props => {
   //Fetches logged in user's info from redux store.
@@ -19,10 +17,10 @@ const MakeAllegiance = props => {
   const [token] = useGetToken();
 
   //Imports form custom hook to handle state, form entry and form submission.
-  const { values, handleChange, handleSubmit, SubmitButton, ErrorMessage } = useForm(createAllegiance);
+  const { values, handleChange, FormPage } = useForm(createAllegiance);
 
   //Imports image upload functions
-  const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
+  const { image } = useImageUploader()
 
   const addAllegiance = async allegiance => {
     try {
@@ -62,63 +60,33 @@ const MakeAllegiance = props => {
     { text: "Other", value: "Other" }
   ]
 
-  return (
-    <Tab.Pane attached={false}>
-      <Form onSubmit={handleSubmit} error>
-        <BasicInfoHolder>
-          <Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
-          <Modal
-            open={modalOpen}
-            onClose={() => setModal(false)}
-            trigger={
-              <ProfilePic
-                onClick={() => setModal(true)}
-                src={image || values.image || Placeholder} />}>
-            <UploaderUI displayImage={image || values.image} />
-          </Modal>
-        </BasicInfoHolder>
-        <Form.Input
-          required
-          label="Allegiance Name"
-          placeholder="Allegiance Name"
-          onChange={handleChange}
-          value={values.allegiance_name || ""}
-          name="allegiance_name"
-          type="text"
-        />
-        <Form.Field
-          required
-          label="Sport"
-          placeholder="Sport"
-          onChange={handleChange}
-          value={values.sport || ""}
-          name="sport"
-          control="select"
-          type="text"
-          options={selectOptions}
-        >
-        </Form.Field>
-        <ErrorMessage />
-        <SubmitButton />
-      </Form>
-    </Tab.Pane>
-  );
+  //Inputs to add to the form.
+  const inputs = (
+    <>
+      <Form.Input
+        required
+        label="Allegiance Name"
+        placeholder="Allegiance Name"
+        onChange={handleChange}
+        value={values.allegiance_name || ""}
+        name="allegiance_name"
+        type="text"
+      />
+      <Form.Field
+        required
+        label="Sport"
+        placeholder="Sport"
+        onChange={handleChange}
+        value={values.sport || ""}
+        name="sport"
+        control="select"
+        type="text"
+        options={selectOptions}
+      />
+    </>
+  )
+
+  return <FormPage inputs={inputs} />
 };
 
 export default MakeAllegiance;
-
-const ProfilePic = styled.img`
-  border-color: black;
-  object-fit: cover;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 1px solid black;
-  flex: 0 0 auto;
-  opacity: .6;
-`;
-
-const BasicInfoHolder = styled.div`
-  display: flex;
-  flex-direction: row;
-`;

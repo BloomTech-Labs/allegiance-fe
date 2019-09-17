@@ -48,22 +48,24 @@ const useForm = callback => {
 			: null
 	}
 
+	//Creates a standard form. Send props for inputs. Any input placed in nameHolder appears at the top next to the image. inputs is the standard form and appear between the image and submit.
 	const FormPage = props => {
 		return (
 			<FormHolder>
-				<FormSegment raised color="violet">
+				<FormSegment raised color="violet" style={{ margin: 'auto' }}>
 					<Form onSubmit={handleSubmit} error>
 						<BasicInfoHolder>
-							<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
+							<UploadIcon name='edit' size='large' color='black' onClick={() => setModal(true)} />
 							<Modal
 								open={modalOpen}
 								onClose={() => setModal(false)}
 								trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
 								<UploaderUI displayImage={image || values.image} />
 							</Modal>
-							<NameHolder>
-								{props.nameHolder}
-							</NameHolder>
+							{props.nameHolder &&
+								<NameHolder>
+									{props.nameHolder}
+								</NameHolder>}
 						</BasicInfoHolder>
 						{props.inputs}
 						<ErrorMessage />
@@ -100,6 +102,11 @@ margin: auto;
 marginBottom: 15%;
 `
 
+const UploadIcon = styled(Icon)`
+position: absolute;
+top: 2.8rem;
+left: 2.8rem`
+
 const ProfilePic = styled.img`
 border-color: black;
 object-fit: cover;
@@ -112,7 +119,7 @@ opacity: .6; `
 
 const BasicInfoHolder = styled.div`
 display: flex;
-flex-direction: row; `
+flex-direction: row;`
 
 const NameHolder = styled.div`
 display: flex;

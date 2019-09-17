@@ -9,11 +9,10 @@ import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
 import useGetToken from "../utils/useGetToken";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import DeleteGroup from "./DeleteGroup"
 
-import { Form, Button, Segment, Modal, Header, Icon } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import styled from "styled-components";
-
-import Placeholder from '../../assets/Placeholder.png'
 
 const CreateGroup = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -23,11 +22,11 @@ const CreateGroup = props => {
 	const [token] = useGetToken();
 
 	//Imports image upload functions
-	const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
+	const { image } = useImageUploader();
 
 	//Imports form custom hook to handle state, form entry and form submission.
 	const requestType = window.location.pathname.includes("/editgroup/") ? editGroup : createGroup;
-	const { values, handleChange, handleSubmit, setValues, SubmitButton, ErrorMessage } = useForm(requestType);
+	const { values, handleChange, setValues, FormPage } = useForm(requestType);
 
 	//If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
 	const group = props.location.state ? props.location.state.group : null;
@@ -90,138 +89,71 @@ const CreateGroup = props => {
 
 	const privacy = values && values.privacy_setting ? values.privacy_setting.charAt(0).toUpperCase() + values.privacy_setting.slice(1) : null
 
-	return (
-		<FormHolder>
-			<Segment raised color="violet" style={{ width: "90%", margin: "1rem auto" }}>
-				<Form onSubmit={handleSubmit} error>
-					<BasicInfoHolder>
-						<Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
-						<Modal
-							open={modalOpen}
-							onClose={() => setModal(false)}
-							trigger={<GroupLogo
-								onClick={() => setModal(true)}
-								src={image || values.image || Placeholder} />}>
-							<UploaderUI displayImage={image || values.image} />
-						</Modal>
-						<NameHolder>
-							<BoldInput
-								required
-								style={{ marginLeft: "7px" }}
-								transparent
-								placeholder="Name Your Group"
-								onChange={handleChange}
-								value={values.group_name || ""}
-								name="group_name"
-								type="text" />
-							<Form.Input
-								required
-								style={{ marginLeft: "7px" }}
-								transparent
-								placeholder="Group Slogan"
-								onChange={handleChange}
-								value={values.description || ""}
-								name="description"
-								type="text" />
-						</NameHolder>
-					</BasicInfoHolder>
-					<Form.Group widths="equal">
-						<Form.Input
-							required
-							label="Zip Code"
-							placeholder="Zip Code"
-							minLength="5"
-							maxLength="5"
-							onChange={handleChange}
-							value={values.location || ""}
-							name="location"
-							type="text" />
-						<Form.Input
-							required
-							label="Acronym"
-							placeholder="Acronym"
-							maxLength="4"
-							onChange={handleChange}
-							value={values.acronym || ""}
-							name="acronym"
-							type="text" />
-					</Form.Group>
-					<Form.Field
-						required
-						label="Privacy Setting"
-						onChange={handleChange}
-						name="privacy_setting"
-						control="select"
-						defaultValue={values.privacy_setting || ""}>
-
-						<option value={values.privacy_setting}>{privacy || ""}</option>
-						{privacy !== "Public" && privacy !== undefined && <option value="public">Public</option>}
-						{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
-						{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
-					</Form.Field>
-
-					<div>
-						<ErrorMessage />
-						<SubmitButton />
-
-						{window.location.pathname === "/editgroup" &&
-							<Modal
-								closeIcon
-								trigger={<Button color="red" type="button">Delete Group</Button>}
-								basic
-								size="small">
-								<Header icon="trash" content="Permanently Delete Group" />
-								<Modal.Content>
-									<p>
-										Clicking Delete will permanently delete your group. Clicking
-										the X will cancel the deletion.
-								</p>
-								</Modal.Content>
-								<Modal.Actions>
-									<Button color="red" onClick={() => deleteGroup()}>
-										Delete
-								</Button>
-								</Modal.Actions>
-							</Modal>}
-					</div>
-				</Form>
-			</Segment>
-		</FormHolder>
+	const nameHolder = (
+		<>
+			<BoldInput
+				required
+				style={{ marginLeft: "7px" }}
+				transparent
+				placeholder="Name Your Group"
+				onChange={handleChange}
+				value={values.group_name || ""}
+				name="group_name"
+				type="text" />
+			<Form.Input
+				required
+				style={{ marginLeft: "7px" }}
+				transparent
+				placeholder="Group Slogan"
+				onChange={handleChange}
+				value={values.description || ""}
+				name="description"
+				type="text" />
+		</>
 	)
-};
 
-const FormHolder = styled.div`
-background-color: #dee4e7;
-min-height: 90vh;
-padding-top: 5%;
-margin-top: -1.5%;
-@media (max-width: 320px) {
-	height: 87vh
-}`
+	const inputs = (
+		<>
+			<Form.Group widths="equal">
+				<Form.Input
+					required
+					label="Zip Code"
+					placeholder="Zip Code"
+					minLength="5"
+					maxLength="5"
+					onChange={handleChange}
+					value={values.location || ""}
+					name="location"
+					type="text" />
+				<Form.Input
+					required
+					label="Acronym"
+					placeholder="Acronym"
+					maxLength="4"
+					onChange={handleChange}
+					value={values.acronym || ""}
+					name="acronym"
+					type="text" />
+			</Form.Group>
+			<Form.Field
+				required
+				label="Privacy Setting"
+				onChange={handleChange}
+				name="privacy_setting"
+				control="select"
+				defaultValue={values.privacy_setting || ""}>
 
-const GroupLogo = styled.img`
-	border-color: black;
-	object-fit: cover;
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	border: 1px solid black;
-	flex: 0 0 auto;
-	opacity: .6;
-`;
+				<option value={values.privacy_setting}>{privacy || ""}</option>
+				{privacy !== "Public" && privacy !== undefined && <option value="public">Public</option>}
+				{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
+				{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
+			</Form.Field>
+			{window.location.pathname === "/editgroup" && <DeleteGroup delete={deleteGroup} />}
+		</>
+	)
 
-const BasicInfoHolder = styled.div`
-	display: flex;
-	flex-direction: row;
-`;
-
-const NameHolder = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	margin-left: 7px;
-	margin-bottom: 1rem;
-`;
+	return <FormPage nameHolder={nameHolder} inputs={inputs} />
+}
 
 const BoldInput = styled(Form.Input)`
 	input:first-child {
