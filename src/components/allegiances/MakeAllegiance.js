@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Button,
-  Modal,
-  Icon,
-  Tab,
-  Form,
-  Message
-} from "semantic-ui-react";
+import { Modal, Tab, Form, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -15,32 +8,24 @@ import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
 import { ADD_ALLEGIANCE } from "../../reducers/userReducer";
+import Placeholder from '../../assets/Placeholder.png'
 
 const MakeAllegiance = props => {
   //Fetches logged in user's info from redux store.
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState();
-  const [isError, setError] = useState();
-  const [modalOpen, setModal] = useState(false);
 
   //Fetches Auth0 token for axios call
   const [token] = useGetToken();
 
   //Imports form custom hook to handle state, form entry and form submission.
-  const { values, handleChange, handleSubmit } = useForm(createAllegiance);
+  const { values, handleChange, handleSubmit, SubmitButton, ErrorMessage } = useForm(createAllegiance);
 
   //Imports image upload functions
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    image
-  } = useImageUploader();
+  const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
   const addAllegiance = async allegiance => {
     try {
-      console.log(allegiance);
       const userAllegiance = await axiosWithAuth([token]).post(
         `/users_allegiances/`,
         {
@@ -48,98 +33,48 @@ const MakeAllegiance = props => {
           allegiance_id: allegiance.id
         }
       );
-      const {
-        allegiance_id,
-        allegiance_name,
-        allegiance_image
-      } = userAllegiance.data.newUserAllegiances;
+      const { allegiance_id, allegiance_name, allegiance_image } = userAllegiance.data.newUserAllegiances;
       const newAllegiance = {
         id: allegiance_id,
         name: allegiance_name,
         image: allegiance_image
       };
       dispatch({ type: ADD_ALLEGIANCE, payload: newAllegiance });
-      const push = () => {
-        props.history.push("/profile");
-      };
+      const push = () => props.history.push("/profile");
 
       setTimeout(push, 1000);
-    } catch {
-      console.log("Something went wrong.");
-    }
+    } catch { console.log("Something went wrong.") }
   };
 
   async function createAllegiance() {
-    setLoading(true);
-    if (token) {
-      try {
-        setError(false);
-        if (image) values.image = image;
-        Object.keys(values).forEach(
-          key => values[key] === "" && (values[key] = null)
-        );
-        console.log(values);
-        const result = await axiosWithAuth([token]).post(
-          `/allegiances`,
-          values
-        );
-        console.log(result);
-        addAllegiance(result.data.newAllegiance);
-      } catch {
-        console.log("Something went wrong when creating that allegiance.");
-        setLoading(false);
-        setError(true);
-      }
-    }
+    try {
+      if (image) values.image = image;
+      const result = await axiosWithAuth([token]).post(`/allegiances`, values);
+      addAllegiance(result.data.newAllegiance);
+    } catch { console.log("Something went wrong when creating that allegiance.") }
   }
+
+  const selectOptions = [
+    { text: "NFL", value: "NFL" },
+    { text: "MLB", value: "MLB" },
+    { text: "NBA", value: "NBA" },
+    { text: "NHL", value: "NHL" },
+    { text: "Other", value: "Other" }
+  ]
 
   return (
     <Tab.Pane attached={false}>
       <Form onSubmit={handleSubmit} error>
         <BasicInfoHolder>
+          <Icon name='edit' size='large' color='black' style={{ position: 'absolute', top: '2.8rem', left: '2.8rem' }} onClick={() => setModal(true)} />
           <Modal
             open={modalOpen}
             onClose={() => setModal(false)}
             trigger={
               <ProfilePic
                 onClick={() => setModal(true)}
-                src={
-                  image ||
-                  values.image ||
-                  "https://react.semantic-ui.com/images/wireframe/image.png"
-                }
-                style={{ margin: "1% auto" }}
-              />
-            }
-          >
-            <Modal.Content>
-              <Uploader {...getRootProps()}>
-                <input {...getInputProps()} />
-                <div>
-                  <Icon
-                    name="cloud upload"
-                    size="huge"
-                    color="violet"
-                    inverted
-                  />
-                  {isDragActive ? (
-                    <DropText style={{ fontSize: "2rem", padding: "10%" }}>
-                      Drop the files here ...
-                    </DropText>
-                  ) : (
-                      <>
-                        <Text style={{ fontSize: "2rem" }}>
-                          Drop your image here...
-                      </Text>{" "}
-                        <Text>or</Text>
-                        <Button color="violet" inverted>
-                          Browse Files
-                      </Button>
-                      </>
-                    )}
-                </div>
-              </Uploader>
-            </Modal.Content>
+                src={image || values.image || Placeholder} />}>
+            <UploaderUI displayImage={image || values.image} />
           </Modal>
         </BasicInfoHolder>
         <Form.Input
@@ -160,25 +95,11 @@ const MakeAllegiance = props => {
           name="sport"
           control="select"
           type="text"
+          options={selectOptions}
         >
-          <option value="NFL">NFL</option>
-          <option value="MLB">MLB</option>
-          <option value="NBA">NBA</option>
-          <option value="NHL">NHL</option>
-          <option value="Other">Other</option>
         </Form.Field>
-        {isError ? (
-          <Message
-            error
-            header="Failed to submit form"
-            content="Please make sure all fields are filled out accurately."
-          />
-        ) : null}
-        {isLoading ? (
-          <Button loading>Submit</Button>
-        ) : (
-            <Button type="submit">Submit</Button>
-          )}
+        <ErrorMessage />
+        <SubmitButton />
       </Form>
     </Tab.Pane>
   );
@@ -194,28 +115,10 @@ const ProfilePic = styled.img`
   border-radius: 50%;
   border: 1px solid black;
   flex: 0 0 auto;
+  opacity: .6;
 `;
 
 const BasicInfoHolder = styled.div`
   display: flex;
   flex-direction: row;
-`;
-
-const Uploader = styled.div`
-background: #fff;
-padding: 16px;
-width: 90%
-border: 2px dashed lightgrey
-display: flex
-justify-content: center
-text-align: center
-margin: auto`;
-
-const Text = styled.p`
-  margin: 1rem 0 1rem 0;
-`;
-
-const DropText = styled.p`
-  font-size: 2rem;
-  padding: 10%;
 `;

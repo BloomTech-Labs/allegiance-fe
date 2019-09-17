@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_GROUP } from "../../reducers/userReducer";
 import { VIEW_GROUP } from "../../reducers/navReducer";
@@ -10,7 +10,7 @@ import useImageUploader from "../utils/useImageUploader";
 import useGetToken from "../utils/useGetToken";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-import { Form, Button, Segment, Modal, Header, Message, Icon } from "semantic-ui-react";
+import { Form, Button, Segment, Modal, Header, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 
 import Placeholder from '../../assets/Placeholder.png'
@@ -18,19 +18,16 @@ import Placeholder from '../../assets/Placeholder.png'
 const CreateGroup = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 	const dispatch = useDispatch();
-	const [isLoading, setLoading] = useState();
-	const [modalOpen, setModal] = useState(false);
-	const [isError, setError] = useState();
 
 	//Fetches Auth0 token for axios call
 	const [token] = useGetToken();
 
 	//Imports image upload functions
-	const { getRootProps, getInputProps, isDragActive, image } = useImageUploader()
+	const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
 	//Imports form custom hook to handle state, form entry and form submission.
 	const requestType = window.location.pathname.includes("/editgroup/") ? editGroup : createGroup;
-	const { values, handleChange, handleSubmit, setValues } = useForm(requestType);
+	const { values, handleChange, handleSubmit, setValues, SubmitButton, ErrorMessage } = useForm(requestType);
 
 	//If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
 	const group = props.location.state ? props.location.state.group : null;
@@ -46,9 +43,7 @@ const CreateGroup = props => {
 
 	//Creates a new group and pushes the user to the group page after submission.
 	async function createGroup() {
-		setLoading(true);
 		try {
-			setError(false);
 			const newGroup = { ...values, image: image, creator_id: loggedInUser.id };
 			const result = await axiosWithAuth([token]).post("/groups/", newGroup);
 			const addedGroup = {
@@ -61,19 +56,14 @@ const CreateGroup = props => {
 			Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
 			const push = () => props.history.push(`/group/${result.data.newGroup.id}`);
 			setTimeout(push, 1000);
-			console.log(result);
 		} catch {
 			Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
-			setLoading(false);
-			setError(true);
 		}
 	}
 
 	//Edits existing group and pushes the user to the group page after submission.
 	async function editGroup() {
-		setLoading(true);
 		try {
-			setError(false);
 			const updatedGroup = { ...values, image };
 			const result = await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup);
 			Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
@@ -82,16 +72,12 @@ const CreateGroup = props => {
 			console.log(result);
 		} catch {
 			Mixpanel.activity(loggedInUser.id, 'Group Edit Failed')
-			setLoading(false);
-			setError(true);
 		}
 	}
 
 	//Deletes a group.
 	async function deleteGroup() {
-		setLoading(true);
 		try {
-			setError(false);
 			const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`);
 			Mixpanel.activity(loggedInUser.id, 'Complete Delete Group')
 			const push = () => props.history.push(`/profile`);
@@ -99,8 +85,6 @@ const CreateGroup = props => {
 			console.log(result);
 		} catch {
 			Mixpanel.activity(loggedInUser.id, 'Group Deletion Failed')
-			setLoading(false);
-			setError(true);
 		}
 	}
 
@@ -117,27 +101,8 @@ const CreateGroup = props => {
 							onClose={() => setModal(false)}
 							trigger={<GroupLogo
 								onClick={() => setModal(true)}
-								src={image || values.image || Placeholder}
-								style={{ opacity: '.6' }} />}>
-							<UploadModal>
-								<Uploader {...getRootProps()} >
-									<input {...getInputProps()} />
-									<div>
-										<Icon name='cloud upload' size='huge' color='violet' inverted />
-										{isDragActive
-											? <DropText>Drop the files here ...</DropText>
-											: <><Text style={{ fontSize: '2rem' }}>Drop your image here...</Text> <Text>or</Text>
-												<Button color='violet' inverted >Browse Files</Button></>}
-									</div>
-								</Uploader>
-								<PreviewHolder>
-									Preview of Your New Group Image:
-							<GroupLogo src={image || values.image || Placeholder} />
-								</PreviewHolder>
-								<DoneButton>
-									<Button onClick={() => setModal(false)} color='violet' fluid>Done</Button>
-								</DoneButton>
-							</UploadModal>
+								src={image || values.image || Placeholder} />}>
+							<UploaderUI displayImage={image || values.image} />
 						</Modal>
 						<NameHolder>
 							<BoldInput
@@ -196,13 +161,8 @@ const CreateGroup = props => {
 					</Form.Field>
 
 					<div>
-						{isError && <Message
-							error
-							header="Failed to submit form"
-							content="Please make sure all fields are filled out accurately." />}
-						{isLoading
-							? <Button loading color="violet">Submit</Button>
-							: <Button type="submit" color="violet">Submit</Button>}
+						<ErrorMessage />
+						<SubmitButton />
 
 						{window.location.pathname === "/editgroup" &&
 							<Modal
@@ -247,6 +207,7 @@ const GroupLogo = styled.img`
 	border-radius: 50%;
 	border: 1px solid black;
 	flex: 0 0 auto;
+	opacity: .6;
 `;
 
 const BasicInfoHolder = styled.div`
@@ -267,40 +228,5 @@ const BoldInput = styled(Form.Input)`
 		font-weight: bold;
 	}
 `;
-
-const Uploader = styled.div`
-background: #fff;
-padding: 16px;
-width: 90%
-border: 2px dashed lightgrey
-display: flex
-justify-content: center
-text-align: center
-margin: auto`
-
-const Text = styled.p`
-margin: 1rem 0 1rem 0;`
-
-const DropText = styled.p`
-font-size: 2rem;
-padding: 10%;`
-
-const PreviewHolder = styled.div`
-	display: flex;
-	align-items: center;
-	width: 70%;
-	margin: 5% auto;`
-
-const DoneButton = styled.div`
-	width: 50%;
-	display: flex;
-	justify-content: center
-	margin: auto;`
-
-const UploadModal = styled(Modal.Content)`
-:first-child {
-				display: flex;
-			flex-direction: column;
-		}`
 
 export default CreateGroup;
