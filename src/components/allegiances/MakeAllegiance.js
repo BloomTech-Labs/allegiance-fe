@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  Segment,
   Button,
   Modal,
   Icon,
-  Loader,
   Tab,
   Form,
   Message
@@ -129,16 +127,16 @@ const MakeAllegiance = props => {
                       Drop the files here ...
                     </DropText>
                   ) : (
-                    <>
-                      <Text style={{ fontSize: "2rem" }}>
-                        Drop your image here...
+                      <>
+                        <Text style={{ fontSize: "2rem" }}>
+                          Drop your image here...
                       </Text>{" "}
-                      <Text>or</Text>
-                      <Button color="violet" inverted>
-                        Browse Files
+                        <Text>or</Text>
+                        <Button color="violet" inverted>
+                          Browse Files
                       </Button>
-                    </>
-                  )}
+                      </>
+                    )}
                 </div>
               </Uploader>
             </Modal.Content>
@@ -179,8 +177,8 @@ const MakeAllegiance = props => {
         {isLoading ? (
           <Button loading>Submit</Button>
         ) : (
-          <Button type="submit">Submit</Button>
-        )}
+            <Button type="submit">Submit</Button>
+          )}
       </Form>
     </Tab.Pane>
   );
