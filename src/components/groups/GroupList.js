@@ -25,6 +25,7 @@ const GroupList = () => {
           column: "group_name",
           row: ""
         });
+        console.log(groups.data);
 
         // Get array of ids for groups the user already is a member of
         const loggedInIDs = loggedInGroups.map(group => group.id);
@@ -32,10 +33,14 @@ const GroupList = () => {
         const uniqueGroups = groups.data.groupByFilter.filter(
           group => !loggedInIDs.includes(group.id)
         );
+        // filtering group list to remove hidden groups from public display
+        const accessGroups = uniqueGroups.filter(
+          group => group.privacy_setting !== "hidden"
+        );
+        // sorting groups by number of members
+        accessGroups.sort((a, b) => b.members.length - a.members.length);
 
-        uniqueGroups.sort((a, b) => b.members.length - a.members.length);
-
-        setData({ groups: uniqueGroups });
+        setData({ groups: accessGroups });
       }
     };
 

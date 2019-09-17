@@ -17,8 +17,9 @@ const GroupPage = props => {
   const [token] = useGetToken();
 
   // Defines id to be group id from params
-  const id = props.match.params.id;
+  const id = parseInt(props.match.params.id);
   const userId = useSelector(state => state.userReducer.loggedInUser.id);
+  const userGroups = useSelector(state => state.userReducer.loggedInGroups);
 
   const [group, setGroup] = useState({});
   const [allegiances, setAllegiances] = useState([]);
@@ -52,32 +53,26 @@ const GroupPage = props => {
       </Loader>
     );
   }
-  const currentUserType = members.find(member => member.id === userId);
-  console.log("USERTYPE", currentUserType);
-
+  const currentUserType = userGroups.find(group => group.id === id);
+  // console.log("USERTYPE", currentUserType.user_type);
+  let membership;
+  if (currentUserType === undefined) {
+    membership = "non-member";
+  } else {
+    membership = currentUserType.user_type;
+  }
   return (
     <GroupPageContainer>
       <PaperContainer elevation={3}>
         <GroupInfo group={group} members={members} allegiances={allegiances} />
       </PaperContainer>
-      <PostsContainer groupId={group.id} members={members} />
-      {/* {group.privacy_setting === "private" ||
-      ((group.privacy_setting === "hidden" &&
-        currentUserType &&
-        currentUserType.status !== "member") ||
-        currentUserType.status !== "admin") ? (
-        <BlockedView />
-      ) : (
+      {group.privacy_setting === "public" ||
+      membership === "member" ||
+      membership === "admin" ? (
         <PostsContainer groupId={group.id} members={members} />
-	  )} */}
-      {/* {group.privacy_setting === "private" ||
-      ((group.privacy_setting === "hidden" &&
-        currentUserType.status !== "member") ||
-        currentUserType.status !== "admin") ? (
-        <BlockedView />
       ) : (
-        <PostsContainer groupId={group.id} members={members} />
-      )} */}
+        <BlockedView />
+      )}
     </GroupPageContainer>
   );
 };
