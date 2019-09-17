@@ -272,6 +272,9 @@ const AddAllegiance = props => {
     {
       menuItem: (
         <Icon
+          // key and active props added to defuse React errors
+          key="icon"
+          active=""
           name="plus"
           size="small"
           circular
