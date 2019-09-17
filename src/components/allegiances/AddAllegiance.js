@@ -36,8 +36,6 @@ const AddAllegiance = props => {
     fetchData();
   }, [token, dispatch]);
 
-  if (!data) return <Loader active size="large">Loading</Loader>
-
   const panes = [
     {
       menuItem: { icon: "football ball", key: "NFL" },
@@ -64,6 +62,8 @@ const AddAllegiance = props => {
       render: () => <AllegianceTab allegiances={loggedInAllegiances} />
     }
   ];
+
+  if (!data) return <Loader active size="large">Loading</Loader>
 
   return (
     <Segment raised color="blue" style={{ width: "90%", margin: "auto", marginBottom: "15%" }}>
