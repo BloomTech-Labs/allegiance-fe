@@ -20,71 +20,33 @@ const NavBar = () => {
 			returnTo: window.location.origin
 		});
 
+	const { pathname } = window.location
+	const TopNavItem = (label, link, title) => (
+		<>
+			<IconBut
+				aria-label={label}
+				as={Link}
+				to={link}
+				style={{ color: "white", marginTop: "1%" }}>
+				<ArrowBack />
+			</IconBut>
+			<p>{title}</p>
+			<TopNavRight />
+		</>)
+
 	return (
 		<>
 			<TopNav>
-				{window.location.pathname === "/home" && <p>Home</p>}
-				{window.location.pathname === "/groups" && <p>Groups</p>}
-				{window.location.pathname.includes("/group/") && (
-					<>
-						<IconBut
-							aria-label="back to groups"
-							as={Link}
-							to="/groups"
-							style={{ color: "white", marginTop: "1%" }}
-						>
-							<ArrowBack />
-						</IconBut>
-						<p>Group</p>
-						<TopNavRight></TopNavRight>
-					</>
-				)}
-				{window.location.pathname === "/creategroup" && <p>Create Group</p>}
-				{window.location.pathname === "/notifications" && <p>Notifications</p>}
-				{window.location.pathname === "/profile" && <p>Profile</p>}
-				{window.location.pathname === "/makeprofile" && (
-					<>
-						<IconBut
-							aria-label="back to profile"
-							as={Link}
-							to="/profile"
-							style={{ color: "white", marginTop: "1%" }}
-						>
-							<ArrowBack />
-						</IconBut>
-						<p>Edit Profile</p>
-						<TopNavRight></TopNavRight>
-					</>
-				)}
-				{window.location.pathname.includes("/editgroup/") && (
-					<>
-						<IconBut
-							aria-label="back to group"
-							as={Link}
-							to={groupId === 0 ? "/groups" : `/group/${groupId}`}
-							style={{ color: "white", marginTop: "1%" }}
-						>
-							<ArrowBack />
-						</IconBut>
-						<p>Edit Group</p>
-						<TopNavRight></TopNavRight>
-					</>
-				)}
-				{window.location.pathname.includes("/post") && (
-					<>
-						<IconBut
-							aria-label="back to group"
-							as={Link}
-							to={`/group/${groupId}`}
-							style={{ color: "white", marginTop: "1%" }}
-						>
-							<ArrowBack />
-						</IconBut>
-						<p>Post</p>
-						<TopNavRight></TopNavRight>
-					</>
-				)}
-				{window.location.pathname === "/addallegiance" && <p>Edit Allegiances</p>}
+				{pathname === "/home" && <p>Home</p>}
+				{pathname === "/groups" && <p>Groups</p>}
+				{pathname.includes("/group/") && TopNavItem("back to groups", "/groups", "Group")}
+				{pathname === "/creategroup" && <p>Create Group</p>}
+				{pathname === "/notifications" && <p>Notifications</p>}
+				{pathname === "/profile" && <p>Profile</p>}
+				{pathname === "/makeprofile" && TopNavItem("back to profile", "/profile", "Edit Profile")}
+				{pathname.includes("/editgroup/") && TopNavItem("back to group", groupId === 0 ? "/groups" : `/group/${groupId}`, "Edit Group")}
+				{pathname.includes("/post") && TopNavItem("back to group", `/group/${groupId}`, "Post")}
+				{pathname === "/addallegiance" && <p>Edit Allegiances</p>}
 			</TopNav>
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
