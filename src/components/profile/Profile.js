@@ -108,13 +108,13 @@ const Profile = props => {
                 <Icon name="edit outline" color="blue" size="small" style={{ marginBottom: "1.5rem" }} />
               </Link>
             </div>
-            <MyAllegianceGroups content={loggedInAllegiances || []} />
+            <MyAllegianceGroups content={loggedInAllegiances || []} type="allegiance" />
           </>
           <>
             <H3>MY GROUPS</H3>
             <MyAllegianceGroups
               content={loggedInGroups || []}
-              type={"group"}
+              type="group"
             />
           </>
         </InfoHolder>
