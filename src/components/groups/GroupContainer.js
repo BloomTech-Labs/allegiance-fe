@@ -20,7 +20,7 @@ function GroupContainer() {
           <H3>MY GROUPS</H3>
         </GroupTitleHolder>
         <>
-          <MyAllegianceGroups content={loggedInGroups} type={"groups"} />
+          <MyAllegianceGroups content={loggedInGroups} type={"group"} />
         </>
       </MyGroups>
       <Divider />

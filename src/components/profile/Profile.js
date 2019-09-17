@@ -6,15 +6,15 @@ import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { GET_GROUPS } from "../../reducers/userReducer";
+import { GET_GROUPS, GET_ALLEGIANCES } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
-  /*const loggedInAllegiances = useSelector(
-		state => state.userReducer.loggedInAllegiances
-	);*/
+  const loggedInAllegiances = useSelector(
+    state => state.userReducer.loggedInAllegiances
+  );
   const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
   const dispatch = useDispatch();
 
@@ -38,8 +38,23 @@ const Profile = props => {
               };
             });
             dispatch({ type: GET_GROUPS, payload: userGroups });
+
+            const allegiances = await axiosWithAuth([token]).get(
+              `/users_allegiances/search/${loggedInUser.id}`
+            );
+            const userAllegiances = allegiances.data.allegiances.map(
+              allegiance => {
+                return {
+                  name: allegiance.allegiance_name,
+                  image: allegiance.allegiance_image,
+                  id: allegiance.allegiance_id
+                };
+              }
+            );
+            dispatch({ type: GET_ALLEGIANCES, payload: userAllegiances });
           } catch {
             dispatch({ type: GET_GROUPS, payload: [] });
+            dispatch({ type: GET_ALLEGIANCES, payload: [] });
           }
         }
       };
@@ -87,11 +102,19 @@ const Profile = props => {
           </Name>
           <p>{loggedInUser.bio}</p>
           <>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+              <H3>MY ALLEGIANCES</H3>
+              <Link to="/addallegiance">
+                <Icon name="edit outline" color="blue" size="small" style={{ marginBottom: "1.5rem" }} />
+              </Link>
+            </div>
+            <MyAllegianceGroups content={loggedInAllegiances || []} type="allegiance" />
+          </>
+          <>
             <H3>MY GROUPS</H3>
             <MyAllegianceGroups
               content={loggedInGroups || []}
-              type={"groups"}
-              userId={loggedInUser.id}
+              type="group"
             />
           </>
         </InfoHolder>

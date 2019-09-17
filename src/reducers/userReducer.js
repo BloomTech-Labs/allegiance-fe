@@ -50,25 +50,24 @@ export const userReducer = (state = initialState, action) => {
 					group => group.id !== action.payload
 				)
 			};
-		case GET_ALLEGIANCES:
-			return {
-				...state,
-				loggedInAllegiances: action.payload,
-				error: ""
-			};
-		case ADD_ALLEGIANCE:
-			return {
-				...state,
-				loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
-			};
-		case LEAVE_ALLEGIANCE:
-			return {
-				...state,
-				loggedInAllegiances: state.loggedInAllegiances.filter(
-					Allegiance => Allegiance.id !== action.payload
-				)
-			};
-
+    case GET_ALLEGIANCES:
+      return {
+        ...state,
+        loggedInAllegiances: action.payload,
+        error: ""
+      };
+    case ADD_ALLEGIANCE:
+      return {
+        ...state,
+        loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
+      };
+    case LEAVE_ALLEGIANCE:
+      return {
+        ...state,
+        loggedInAllegiances: state.loggedInAllegiances.filter(
+          allegiance => allegiance.id !== action.payload
+        )
+      };
 		default:
 			return state;
 	}
