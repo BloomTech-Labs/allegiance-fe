@@ -84,6 +84,7 @@ const NavBar = () => {
 						<TopNavRight></TopNavRight>
 					</>
 				)}
+				{window.location.pathname === "/addallegiance" && <p>Edit Allegiances</p>}
 			</TopNav>
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
