@@ -35,8 +35,8 @@ const LandingContainer = styled.div`
 	background-size: cover;
 	color: white;
 	height: 100vh;
-	margin-top: -15%;
-	margin-bottom: -15%;
+	margin-top: -11%;
+	margin-bottom: -12%;
 	align-items: center;
 `;
 

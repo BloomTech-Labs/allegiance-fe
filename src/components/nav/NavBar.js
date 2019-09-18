@@ -46,7 +46,7 @@ const NavBar = () => {
 				{pathname === "/makeprofile" && TopNavItem("back to profile", "/profile", "Edit Profile")}
 				{pathname.includes("/editgroup/") && TopNavItem("back to group", groupId === 0 ? "/groups" : `/group/${groupId}`, "Edit Group")}
 				{pathname.includes("/post") && TopNavItem("back to group", `/group/${groupId}`, "Post")}
-				{pathname === "/addallegiance" && <p>Edit Allegiances</p>}
+				{pathname === "/makeallegiance" && <p>Edit Allegiances</p>}
 			</TopNav>
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
