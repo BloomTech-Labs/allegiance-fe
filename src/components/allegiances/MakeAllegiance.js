@@ -65,7 +65,7 @@ const MakeAllegiance = props => {
   return (
     <FormHolder>
       <FormSegment raised color="violet" style={{ margin: 'auto' }}>
-        <Form onSubmit={handleSubmit} errors>
+        <Form onSubmit={handleSubmit} error>
           <BasicInfoHolder>
             <UploadIcon name='edit' size='large' color='black' onClick={() => setModal(true)} />
             <Modal

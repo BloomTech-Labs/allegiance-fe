@@ -93,7 +93,7 @@ const CreateGroup = props => {
 	return (
 		<FormHolder>
 			<FormSegment raised color="violet" style={{ margin: 'auto' }}>
-				<Form onSubmit={handleSubmit} errors>
+				<Form onSubmit={handleSubmit} error>
 					<BasicInfoHolder>
 						<UploadIcon name='edit' size='large' color='black' onClick={() => setModal(true)} />
 						<Modal
@@ -105,7 +105,6 @@ const CreateGroup = props => {
 						<NameHolder>
 							<BoldInput
 								required
-								style={{ marginLeft: "7px" }}
 								transparent
 								placeholder="Name Your Group"
 								onChange={handleChange}
@@ -114,7 +113,6 @@ const CreateGroup = props => {
 								type="text" />
 							<Form.Input
 								required
-								style={{ marginLeft: "7px" }}
 								transparent
 								placeholder="Group Slogan"
 								onChange={handleChange}
@@ -166,12 +164,6 @@ const CreateGroup = props => {
 	)
 }
 
-const BoldInput = styled(Form.Input)`
-	input:first-child {
-				font - weight: bold;
-		}
-	`;
-
 const FormHolder = styled.div`
 background-color: #dee4e7;
 min-height: 90vh;
@@ -186,6 +178,12 @@ width: 90%;
 margin: auto;
 marginBottom: 15%;
 `
+
+const BoldInput = styled(Form.Input)`
+	input:first-child {
+				font-weight: bold;
+		}
+	`;
 
 const UploadIcon = styled(Icon)`
 position: absolute;
