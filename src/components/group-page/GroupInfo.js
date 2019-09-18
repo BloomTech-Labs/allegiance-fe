@@ -25,6 +25,7 @@ const GroupInfo = props => {
           group_id={props.group.id}
           members={props.members}
           privacy={privacy}
+          setTrigger={props.setTrigger}
         />
       </ImageDiv>
       <InfoDiv>
@@ -42,7 +43,7 @@ const GroupInfo = props => {
               : null}{" "}
             Group
           </h3>
-          <MembersList members={props.members} />
+          <MembersList members={props.members} setTrigger={props.setTrigger} />
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>

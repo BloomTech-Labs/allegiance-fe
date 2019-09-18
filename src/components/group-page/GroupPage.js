@@ -24,6 +24,7 @@ const GroupPage = props => {
   const [group, setGroup] = useState({});
   const [allegiances, setAllegiances] = useState([]);
   const [members, setMembers] = useState([]);
+  const [trigger, setTrigger] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -38,13 +39,15 @@ const GroupPage = props => {
           setMembers(response.data.members);
           const groupId = response.data.group.id;
           dispatch({ type: VIEW_GROUP, payload: groupId });
+          setTrigger(false);
         } catch {
           dispatch({ type: VIEW_GROUP, payload: 0 });
+          setTrigger(false);
         }
       }
     };
     fetchData();
-  }, [token, id, dispatch]);
+  }, [token, id, dispatch, trigger]);
 
   if (Object.keys(group).length === 0) {
     return (
@@ -62,10 +65,16 @@ const GroupPage = props => {
   } else {
     membership = currentUserType.user_type;
   }
+
   return (
     <GroupPageContainer>
       <PaperContainer elevation={3}>
-        <GroupInfo group={group} members={members} allegiances={allegiances} />
+        <GroupInfo
+          group={group}
+          members={members}
+          allegiances={allegiances}
+          setTrigger={setTrigger}
+        />
       </PaperContainer>
       {group.privacy_setting === "public" ||
       membership === "member" ||

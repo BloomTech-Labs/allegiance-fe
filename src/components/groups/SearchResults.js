@@ -27,8 +27,6 @@ const SearchResults = props => {
           className = "suggestion-active";
         }
         return (
-          // onClick or enter key calls fillSearch from SearchBar
-
           <Link
             to={`/group/${group.id}`}
             key={group.id}

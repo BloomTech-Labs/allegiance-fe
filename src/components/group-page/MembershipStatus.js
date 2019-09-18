@@ -70,6 +70,7 @@ const MembershipStatus = props => {
           user_type: user_type
         };
         dispatch({ type: ADD_GROUP, payload: addedGroup });
+        props.setTrigger(true);
         Mixpanel.activity(loggedInUser.id, "Joined Group");
       }
     }
@@ -86,6 +87,7 @@ const MembershipStatus = props => {
       ) {
         setUserType("non-member");
         dispatch({ type: LEAVE_GROUP, payload: props.group_id });
+        props.setTrigger(true);
         Mixpanel.activity(loggedInUser.id, "Left Group");
       }
     }
