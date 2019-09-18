@@ -129,6 +129,7 @@ const ReplyContainer = props => {
               reply={reply}
               setSubmitted={setSubmitted}
               key={reply.id}
+              post={post}
             />
           );
         })}
