@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import MembershipStatus from "./MembershipStatus";
 import AllegiancePopover from "./AllegiancePopover";
+import MembersList from "../groups/MembersList";
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
@@ -29,15 +30,20 @@ const GroupInfo = props => {
       <InfoDiv>
         <h1>{props.group.group_name}</h1>
         <h2>{props.group.description}</h2>
-        <h3>
-          {props.group.privacy_setting === "private" ? (
-            <Icon name="lock" />
-          ) : (
-            <Icon name="unlock" />
-          )}
-          {privacy ? privacy.charAt(0).toUpperCase() + privacy.slice(1) : null}{" "}
-          Group - {props.members.length} Fans
-        </h3>
+        <SubInfo>
+          <h3>
+            {props.group.privacy_setting === "private" ? (
+              <Icon name="lock" />
+            ) : (
+              <Icon name="unlock" />
+            )}
+            {privacy
+              ? privacy.charAt(0).toUpperCase() + privacy.slice(1)
+              : null}{" "}
+            Group
+          </h3>
+          <MembersList members={props.members} />
+        </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
       <Settings>
@@ -65,6 +71,12 @@ const GroupInfoDiv = styled.div`
 const ImageDiv = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const SubInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const GroupLogo = styled.img`
