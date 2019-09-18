@@ -4,17 +4,15 @@ import { Icon, Loader } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import axios from "axios"
 import useGetToken from "../utils/useGetToken";
-import { GET_GROUPS, GET_ALLEGIANCES } from "../../reducers/userReducer";
+import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
-  const loggedInAllegiances = useSelector(
-    state => state.userReducer.loggedInAllegiances
-  );
+  const loggedInAllegiances = useSelector(state => state.userReducer.loggedInAllegiances);
   const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
   const dispatch = useDispatch();
 
@@ -22,46 +20,19 @@ const Profile = props => {
   const [token] = useGetToken();
 
   useEffect(() => {
-    if (loggedInUser) {
+    if (loggedInUser && token) {
       const fetchData = async () => {
-        if (token) {
-          try {
-            const groups = await axiosWithAuth([token]).get(
-              `/groups_users/search/${loggedInUser.id}`
-            );
-            const userGroups = groups.data.groups.map(group => {
-              return {
-                name: group.group_name,
-                image: group.group_image,
-                id: group.group_id,
-                user_type: group.user_type
-              };
-            });
-            dispatch({ type: GET_GROUPS, payload: userGroups });
-
-            const allegiances = await axiosWithAuth([token]).get(
-              `/users_allegiances/search/${loggedInUser.id}`
-            );
-            const userAllegiances = allegiances.data.allegiances.map(
-              allegiance => {
-                return {
-                  name: allegiance.allegiance_name,
-                  image: allegiance.allegiance_image,
-                  id: allegiance.allegiance_id
-                };
-              }
-            );
-            dispatch({ type: GET_ALLEGIANCES, payload: userAllegiances });
-          } catch {
-            dispatch({ type: GET_GROUPS, payload: [] });
-            dispatch({ type: GET_ALLEGIANCES, payload: [] });
-          }
-        }
-      };
+        try {
+          const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+            email: loggedInUser.email
+          });
+          dispatch({ type: ENTER_PROFILE, payload: result.data.userInfo })
+        } catch { console.log("There was an issue retrieving the user's profile.") }
+      }
 
       fetchData();
     }
-  }, [token, loggedInUser, dispatch]);
+  }, [loggedInUser, token, dispatch]);
 
   if (!loggedInUser) {
     return (
@@ -78,27 +49,21 @@ const Profile = props => {
           <BannerImage src={loggedInUser.banner_image || defaultBanner} />
         </Banner>
         <ImageCrop>
-          {loggedInUser.image ? (
-            <ProfileImage src={loggedInUser.image} alt="Profile" />
-          ) : (
-              <Icon
-                name="football ball"
-                size="huge"
-                circular
-                style={{ fontSize: "5.3rem" }}
-              />
-            )}
+          {loggedInUser.image
+            ? <ProfileImage src={loggedInUser.image} alt="Profile" />
+            : <Icon
+              name="football ball"
+              size="huge"
+              circular
+              style={{ fontSize: "5.3rem" }} />}
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.first_name ? (
-              <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>
-            ) : null}
-            {props.match.url === "/profile" ? (
+            {loggedInUser.first_name && <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>}
+            {props.match.url === "/profile" &&
               <Link to="/makeprofile">
                 <Icon name="edit outline" />
-              </Link>
-            ) : null}
+              </Link>}
           </Name>
           <p>{loggedInUser.bio}</p>
           <>
@@ -114,8 +79,7 @@ const Profile = props => {
             <H3>MY GROUPS</H3>
             <MyAllegianceGroups
               content={loggedInGroups || []}
-              type="group"
-            />
+              type="group" />
           </>
         </InfoHolder>
         <div>
@@ -127,11 +91,7 @@ const Profile = props => {
             </H3>
           </PostHeader>
           <div>
-            {loggedInPosts ? (
-              loggedInPosts
-            ) : (
-                <NoPosts>You haven't posted yet!</NoPosts>
-              )}
+            {loggedInPosts ? loggedInPosts : <NoPosts>You haven't posted yet!</NoPosts>}
           </div>
         </div>
       </div>

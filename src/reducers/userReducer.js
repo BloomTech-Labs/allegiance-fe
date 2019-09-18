@@ -6,6 +6,7 @@ export const LEAVE_GROUP = "LEAVE_GROUP";
 export const GET_ALLEGIANCES = "GET_ALLEGIANCES";
 export const ADD_ALLEGIANCE = "ADD_ALLEGIANCE";
 export const LEAVE_ALLEGIANCE = "LEAVE_ALLEGIANCE";
+export const ENTER_PROFILE = "ENTER PROFILE"
 
 const initialState = {
 	loggedInUser: "",
@@ -22,6 +23,13 @@ export const userReducer = (state = initialState, action) => {
 				...state,
 				loggedInUser:
 					action.payload.currentUser || action.payload.newUser,
+				loggedInGroups: action.payload.basicGroupInfo,
+				loggedInAllegiances: action.payload.basicAllegianceInfo,
+				error: ""
+			};
+		case ENTER_PROFILE:
+			return {
+				...state,
 				loggedInGroups: action.payload.basicGroupInfo,
 				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
@@ -50,24 +58,24 @@ export const userReducer = (state = initialState, action) => {
 					group => group.id !== action.payload
 				)
 			};
-    case GET_ALLEGIANCES:
-      return {
-        ...state,
-        loggedInAllegiances: action.payload,
-        error: ""
-      };
-    case ADD_ALLEGIANCE:
-      return {
-        ...state,
-        loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
-      };
-    case LEAVE_ALLEGIANCE:
-      return {
-        ...state,
-        loggedInAllegiances: state.loggedInAllegiances.filter(
-          allegiance => allegiance.id !== action.payload
-        )
-      };
+		case GET_ALLEGIANCES:
+			return {
+				...state,
+				loggedInAllegiances: action.payload,
+				error: ""
+			};
+		case ADD_ALLEGIANCE:
+			return {
+				...state,
+				loggedInAllegiances: [...state.loggedInAllegiances, action.payload]
+			};
+		case LEAVE_ALLEGIANCE:
+			return {
+				...state,
+				loggedInAllegiances: state.loggedInAllegiances.filter(
+					allegiance => allegiance.id !== action.payload
+				)
+			};
 		default:
 			return state;
 	}
