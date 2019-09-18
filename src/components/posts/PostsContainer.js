@@ -40,7 +40,6 @@ const PostsContainer = props => {
           })
         ) : (
           <PaperContainer elevation={20}>
-            {" "}
             <h2>Nobody has posted yet!</h2>
           </PaperContainer>
         )}
