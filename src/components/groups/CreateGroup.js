@@ -155,9 +155,9 @@ const CreateGroup = props => {
 						{privacy !== "Private" && privacy !== undefined && <option value="private">Private</option>}
 						{privacy !== "Hidden" && privacy !== undefined && <option value="hidden">Hidden</option>}
 					</Form.Field>
-					{window.location.pathname === "/editgroup" && <DeleteGroup delete={deleteGroup} />}
 					<ErrorMessage />
 					<SubmitButton />
+					{window.location.pathname.includes("/editgroup") && <DeleteGroup delete={deleteGroup} />}
 				</Form>
 			</FormSegment>
 		</FormHolder>
