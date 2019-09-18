@@ -16,7 +16,7 @@ const DeleteGroup = props => {
                 </p>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="red" onClick={() => props.deleteGroup()}>
+                <Button color="red" onClick={() => props.delete()}>
                     Delete
                 </Button>
             </Modal.Actions>
