@@ -6,7 +6,7 @@ import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
 import axios from "axios"
 import useGetToken from "../utils/useGetToken";
-import { LOGIN } from "../../reducers/userReducer";
+import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
 
 const Profile = props => {
@@ -20,21 +20,19 @@ const Profile = props => {
   const [token] = useGetToken();
 
   useEffect(() => {
-    if (loggedInUser) {
+    if (loggedInUser && token) {
       const fetchData = async () => {
-        if (token) {
-          try {
-            const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-              email: loggedInUser.email
-            });
-            dispatch({ type: LOGIN, payload: result.data.userInfo })
-          } catch { console.log("There was an issue retrieving the user's profile.") }
-        }
-      };
+        try {
+          const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+            email: loggedInUser.email
+          });
+          dispatch({ type: ENTER_PROFILE, payload: result.data.userInfo })
+        } catch { console.log("There was an issue retrieving the user's profile.") }
+      }
 
       fetchData();
     }
-  }, [token, loggedInUser, dispatch]);
+  }, [loggedInUser, token, dispatch]);
 
   if (!loggedInUser) {
     return (
