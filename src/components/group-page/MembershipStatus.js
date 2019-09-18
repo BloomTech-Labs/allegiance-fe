@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ADD_GROUP, LEAVE_GROUP } from "../../reducers/userReducer";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { makeStyles } from "@material-ui/core/styles";
+import useGetToken from "../utils/useGetToken";
+import Button from "@material-ui/core/Button";
+import red from "@material-ui/core/colors/red";
+import blue from "@material-ui/core/colors/blue";
+import Chip from "@material-ui/core/Chip";
+
+import { Mixpanel } from "../analytics/Mixpanel";
 
 import styled from "styled-components";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
-import useGetToken from "../utils/useGetToken";
 
 const MembershipStatus = props => {
-	// const [isLoading, setLoading] = useState(false);
 	const [userType, setUserType] = useState();
 	const [relation, setRelation] = useState();
+	const dispatch = useDispatch();
 
 	// Fetches Auth0 token for axios call
 	const [token] = useGetToken();
@@ -41,7 +49,6 @@ const MembershipStatus = props => {
 
 	async function joinGroup(e) {
 		e.preventDefault();
-		// setLoading(true);
 		if (token) {
 			const result = await axiosWithAuth([token]).post(`/groups_users`, {
 				user_id: loggedInUser.id,
@@ -50,33 +57,26 @@ const MembershipStatus = props => {
 			});
 			if (result.data.newGroupUsers) {
 				setUserType("member");
+				const {
+					group_name,
+					group_image,
+					group_id,
+					user_type
+				} = result.data.newGroupUsers;
+				const addedGroup = {
+					name: group_name,
+					image: group_image,
+					id: group_id,
+					user_type: user_type
+				};
+				dispatch({ type: ADD_GROUP, payload: addedGroup });
+				Mixpanel.activity(loggedInUser.id, "Joined Group");
 			}
 		}
-		// setLoading(false);
-	}
-
-	async function joinGroupInvite(e) {
-		e.preventDefault();
-		// setLoading(true);
-		if (token) {
-			const result = await axiosWithAuth([token]).put(
-				`/groups_users/${relation}`,
-				{
-					user_id: loggedInUser.id,
-					group_id: props.group_id,
-					user_type: "member"
-				}
-			);
-			if (result.data.updated) {
-				setUserType("member");
-			}
-		}
-		// setLoading(false);
 	}
 
 	async function leaveGroup(e) {
 		e.preventDefault();
-		// setLoading(true);
 		if (token) {
 			const result = await axiosWithAuth([token]).delete(
 				`/groups_users/${relation}`
@@ -85,49 +85,34 @@ const MembershipStatus = props => {
 				result.data.message === "The user to group pairing has been deleted."
 			) {
 				setUserType("non-member");
+				dispatch({ type: LEAVE_GROUP, payload: props.group_id });
+				Mixpanel.activity(loggedInUser.id, "Left Group");
 			}
 		}
-		// setLoading(false);
 	}
 
-	// Test functions to change status to invite or admin
-	// async function invite(e) {
-	// 	e.preventDefault();
-	// 	// setLoading(true);
-	// 	if (token) {
-	// 		const result = await axiosWithAuth([token]).put(
-	// 			`/groups_users/${relation}`,
-	// 			{
-	// 				user_id: loggedInUser.id,
-	// 				group_id: props.group_id,
-	// 				user_type: "invited"
-	// 			}
-	// 		);
-	// 		if (result.data.updated) {
-	// 			setUserType("invited");
-	// 		}
-	// 	}
-	// 	// setLoading(false);
-	// }
+	const primary = red[600];
+	const accent = blue[400];
+	const useStyles = makeStyles(theme => ({
+		leave: {
+			margin: theme.spacing(1),
+			backgroundColor: primary
+		},
+		join: {
+			margin: theme.spacing(1),
+			backgroundColor: accent,
+			marginTop: 1
+		},
+		extendedIcon: {
+			marginRight: theme.spacing(1)
+		},
+		chip: {
+			margin: theme.spacing(1),
+			marginBottom: 1
+		}
+	}));
 
-	// async function admin(e) {
-	// 	e.preventDefault();
-	// 	// setLoading(true);
-	// 	if (token) {
-	// 		const result = await axiosWithAuth([token]).put(
-	// 			`/groups_users/${relation}`,
-	// 			{
-	// 				user_id: loggedInUser.id,
-	// 				group_id: props.group_id,
-	// 				user_type: "admin"
-	// 			}
-	// 		);
-	// 		if (result.data.updated) {
-	// 			setUserType("admin");
-	// 		}
-	// 	}
-	// 	// setLoading(false);
-	// }
+	const classes = useStyles();
 
 	return (
 		<GroupMemberStatus>
@@ -135,23 +120,56 @@ const MembershipStatus = props => {
 				<>
 					{userType === "admin" && (
 						<>
-							<Membership>Admin</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
+							<Chip
+								variant="outlined"
+								size="small"
+								label="Admin"
+								className={classes.chip}
+							/>
+							<Button
+								onClick={e => leaveGroup(e)}
+								variant="contained"
+								size="small"
+								className={classes.leave}
+							>
+								Leave
+							</Button>
 						</>
 					)}
 					{userType === "invited" && (
 						<>
-							<Membership>Invited</Membership>
-							<Button onClick={e => joinGroupInvite(e)}>Join</Button>
+							<Chip
+								variant="outlined"
+								size="small"
+								label="Invited"
+								className={classes.chip}
+							/>
+							<Button
+								onClick={e => joinGroup(e)}
+								variant="contained"
+								size="small"
+								className={classes.join}
+							>
+								Join
+							</Button>
 						</>
 					)}
 					{userType === "member" && (
 						<>
-							<Membership>Member</Membership>
-							<Button onClick={e => leaveGroup(e)}>Leave</Button>
-							{/* Test buttons to change status to invite or admin */}
-							{/* <button onClick={e => invite(e)}>Invite</button>
-							<button onClick={e => admin(e)}>Admin</button> */}
+							<Chip
+								variant="outlined"
+								size="small"
+								label="Member"
+								className={classes.chip}
+							/>
+							<Button
+								onClick={e => leaveGroup(e)}
+								variant="contained"
+								size="small"
+								className={classes.leave}
+							>
+								Leave
+							</Button>
 						</>
 					)}
 				</>
@@ -159,7 +177,14 @@ const MembershipStatus = props => {
 			{userType === "non-member" && (
 				<>
 					<NotMember>Holder</NotMember>
-					<Button onClick={e => joinGroup(e)}>Join</Button>
+					<Button
+						onClick={e => joinGroup(e)}
+						variant="contained"
+						size="small"
+						className={classes.join}
+					>
+						Join
+					</Button>
 				</>
 			)}
 		</GroupMemberStatus>
@@ -172,27 +197,10 @@ const GroupMemberStatus = styled.div`
 	justify-content: center;
 `;
 
-const Membership = styled.div`
-  margin: 4% auto;
-  width: 80%;  
-  color: grey;
-  border: 1px solid grey
-  border-radius: 10%;
-`;
-
 const NotMember = styled.div`
-	margin: 4% auto;
+	margin: 13.1% auto;
 	width: 80%;
 	color: white;
-`;
-
-const Button = styled.div`
-	margin: 4% auto;
-	width: 80%;
-	color: #f2f2f2;
-	border-radius: 10%;
-	background-color: #5eaeff;
-	padding: 1% 0;
 `;
 
 export default MembershipStatus;

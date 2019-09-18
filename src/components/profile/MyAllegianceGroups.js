@@ -2,15 +2,18 @@ import React from "react";
 import { Popup, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Mixpanel } from "../analytics/Mixpanel"
 
 const MyAllegianceGroups = props => {
+
+	const mixpanelCheck = () => props.type === "group" ? Mixpanel.activity(props.userId, 'Visited Group From Profile Page') : null
+
 	return (
 		<LogoHolder>
-			{props.type === "groups" ? (
+			{props.type === "group" && (
 				<div style={{ margin: "1%" }}>
 					<Link to={`/creategroup`}>
-						<Popup
-							content={"Create a Group"}
+						<Popup content={"Create a Group"}
 							trigger={
 								<Icon
 									name="plus"
@@ -18,22 +21,19 @@ const MyAllegianceGroups = props => {
 									circular
 									inverted
 									color="blue"
-									style={{ fontSize: "2.86rem" }}
-								/>
-							}
-						/>
+									style={{ fontSize: "2.86rem" }} />} />
 					</Link>
 				</div>
-			) : null}
+			)}
 			{props.content.map(item => (
 				<div key={item.id} style={{ margin: "1%" }}>
-					<Link to={`/group/${item.id}`}>
+					<Link to={`/${props.type}/${item.id}`} onClick={() => mixpanelCheck()}>
 						<Popup
 							content={item.name}
 							trigger={<GroupLogo src={item.image} />}
 						/>
 					</Link>
-					<Nickname>{item.acronym ? item.acronym : null}</Nickname>
+					<Nickname>{item.acronym && item.acronym}</Nickname>
 				</div>
 			))}
 		</LogoHolder>
