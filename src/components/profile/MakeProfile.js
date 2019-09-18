@@ -9,8 +9,10 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useImageUploader from "../utils/useImageUploader";
 
-import { Form } from "semantic-ui-react";
+import { Form, Icon, Modal, Segment } from "semantic-ui-react";
 import styled from "styled-components"
+import Default from "../../assets/walter-avi.png"
+
 
 const MakeProfile = props => {
 	//Fetches logged in user's info from redux store.
@@ -21,10 +23,10 @@ const MakeProfile = props => {
 	const [token] = useGetToken();
 
 	//Imports form custom hook to handle state, form entry and form submission.
-	const { values, handleChange, setValues, FormPage } = useForm(updateUser);
+	const { values, handleChange, handleSubmit, setValues, SubmitButton, ErrorMessage } = useForm(updateUser);
 
 	//Imports image upload functions
-	const { image } = useImageUploader()
+	const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
 	//Sends user data as a put request to API to update user info.
 	async function updateUser() {
@@ -50,90 +52,140 @@ const MakeProfile = props => {
 		let { id, ...userInfo } = loggedInUser;
 		setValues(userInfo);
 		Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
-	}, [loggedInUser, setValues]);
-
-	const nameHolder = (
-		<>
-			<Form.Group inline style={{ fontSize: '1.2rem' }}>
-				<BoldInput
-					required
-					placeholder="First Name"
-					transparent
-					onChange={handleChange}
-					value={values.first_name || ""}
-					name="first_name"
-					type="text"
-				/>
-				<BoldInput
-					required
-					placeholder="Last Name"
-					transparent
-					onChange={handleChange}
-					value={values.last_name || ""}
-					name="last_name"
-					type="text"
-				/>
-			</Form.Group>
-			<Form.Input
-				placeholder="Bio"
-				transparent
-				onChange={handleChange}
-				value={values.bio || ""}
-				name="bio"
-				type="text"
-			/>
-		</>
-	)
-
-	const inputs = (
-		<>
-			<Form.Input
-				required
-				label="E-mail Address"
-				placeholder="E-Mail"
-				onChange={handleChange}
-				value={values.email || ""}
-				name="email"
-				type="text" />
-			<Form.Input
-				required
-				label="Username"
-				placeholder="Username"
-				onChange={handleChange}
-				value={values.username || ""}
-				name="username"
-				type="text"
-			/>
-			<Form.Input
-				required
-				label="Zip Code"
-				placeholder="Zip Code (To Discover Local Groups)"
-				minLength="5"
-				maxLength="5"
-				onChange={handleChange}
-				value={values.location || ""}
-				name="location"
-				type="text"
-			/>
-			<Form.Input
-				label="Banner Image"
-				placeholder="Banner Image"
-				onChange={handleChange}
-				value={values.banner_image || ""}
-				name="banner_image"
-				type="text"
-			/>
-		</>
-	)
+	}, [setValues, loggedInUser]);
 
 	return (
-		<FormPage nameHolder={nameHolder} inputs={inputs} />
-	);
+		<FormHolder>
+			<FormSegment raised color="violet" style={{ margin: 'auto' }}>
+				<Form onSubmit={handleSubmit} errors>
+					<BasicInfoHolder>
+						<UploadIcon name='edit' size='large' color='black' onClick={() => setModal(true)} />
+						<Modal
+							open={modalOpen}
+							onClose={() => setModal(false)}
+							trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
+							<UploaderUI displayImage={image || values.image} />
+						</Modal>
+						<NameHolder>
+							<Form.Group inline style={{ fontSize: '1.2rem' }}>
+								<BoldInput
+									required
+									placeholder="First Name"
+									transparent
+									onChange={handleChange}
+									value={values.first_name || ""}
+									name="first_name"
+									type="text"
+								/>
+								<BoldInput
+									required
+									placeholder="Last Name"
+									transparent
+									onChange={handleChange}
+									value={values.last_name || ""}
+									name="last_name"
+									type="text"
+								/>
+							</Form.Group>
+							<Form.Input
+								placeholder="Bio"
+								transparent
+								onChange={handleChange}
+								value={values.bio || ""}
+								name="bio"
+								type="text"
+							/>
+						</NameHolder>
+					</BasicInfoHolder>
+					<Form.Input
+						key={'email'}
+						required
+						label="E-mail Address"
+						placeholder="E-Mail"
+						onChange={handleChange}
+						value={values.email || ""}
+						name="email"
+						type="text" />
+					<Form.Input
+						required
+						label="Username"
+						placeholder="Username"
+						onChange={handleChange}
+						value={values.username || ""}
+						name="username"
+						type="text"
+					/>
+					<Form.Input
+						required
+						label="Zip Code"
+						placeholder="Zip Code (To Discover Local Groups)"
+						minLength="5"
+						maxLength="5"
+						onChange={handleChange}
+						value={values.location || ""}
+						name="location"
+						type="text"
+					/>
+					<Form.Input
+						label="Banner Image"
+						placeholder="Banner Image"
+						onChange={handleChange}
+						value={values.banner_image || ""}
+						name="banner_image"
+						type="text"
+					/>
+					<ErrorMessage />
+					<SubmitButton />
+				</Form>
+			</FormSegment>
+		</FormHolder>
+	)
 };
+
+const FormHolder = styled.div`
+background-color: #dee4e7;
+min-height: 90vh;
+padding-top: 5%;
+margin-top: -1.5%;
+@media (max-width: 320px) {
+	height: 87vh
+}`
+
+const FormSegment = styled(Segment)`
+width: 90%;
+margin: auto;
+marginBottom: 15%;
+`
 
 const BoldInput = styled(Form.Input)`
 input: first-child {
 	font-weight: bold;
 } `
 
-export default MakeProfile;
+const UploadIcon = styled(Icon)`
+position: absolute;
+top: 2.8rem;
+left: 2.8rem`
+
+const ProfilePic = styled.img`
+border-color: black;
+object-fit: cover;
+width: 100px;
+height: 100px;
+border-radius: 50%;
+border: 1px solid black;
+flex: 0 0 auto;
+opacity: .6; `
+
+const BasicInfoHolder = styled.div`
+display: flex;
+flex-direction: row;`
+
+const NameHolder = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space - evenly;
+margin-left: 7px;
+margin-bottom: 1rem;
+`
+export default MakeProfile
