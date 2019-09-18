@@ -21,7 +21,6 @@ const BlockedContainer = styled.div`
   background: url(${replies}) !important;
   background-size: cover;
   overflow: hidden;
-  //   filter: blur(13px);
   position: absolute;
   height: 47vh;
   bottom: 169px;

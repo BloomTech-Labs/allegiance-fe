@@ -53,8 +53,9 @@ const GroupPage = props => {
       </Loader>
     );
   }
+  // checking to see if current user is a member of current group
   const currentUserType = userGroups.find(group => group.id === id);
-  // console.log("USERTYPE", currentUserType.user_type);
+  // if they are undefined, we set membership to a string so we don't get an error
   let membership;
   if (currentUserType === undefined) {
     membership = "non-member";

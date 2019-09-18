@@ -89,7 +89,8 @@ const MembersList = props => {
         size="small"
         className={classes.trigger}
       >
-        {props.members.length} Members
+        {props.members.length}{" "}
+        {props.members.length === 1 ? "Member" : "Members"}
       </Button>
       <SwipeableDrawer
         anchor="right"
