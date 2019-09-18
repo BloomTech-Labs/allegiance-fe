@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Icon, Modal, Segment } from "semantic-ui-react";
+import { Form, Icon, Modal, Segment, Select } from "semantic-ui-react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -55,11 +55,11 @@ const MakeAllegiance = props => {
   }
 
   const selectOptions = [
-    { text: "NFL", value: "NFL" },
-    { text: "MLB", value: "MLB" },
-    { text: "NBA", value: "NBA" },
-    { text: "NHL", value: "NHL" },
-    { text: "Other", value: "Other" }
+    { key: "NFL", text: "NFL", value: "NFL" },
+    { key: "MLB", text: "MLB", value: "MLB" },
+    { key: "NBA", text: "NBA", value: "NBA" },
+    { key: "NHL", text: "NHL", value: "NHL" },
+    { key: "Other", text: "Other", value: "Other" }
   ]
 
   return (
@@ -89,10 +89,9 @@ const MakeAllegiance = props => {
             label="Sport"
             placeholder="Sport"
             onChange={handleChange}
-            value={values.sport || ""}
+            defaultValue={values.sport || ""}
             name="sport"
-            control="select"
-            type="text"
+            control={Select}
             options={selectOptions}
           />
           <ErrorMessage />
