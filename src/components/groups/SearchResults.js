@@ -8,38 +8,41 @@ import { device } from "../../styled/device";
 
 // Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {
-	// Fetches user information from Redux
-	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
-	const mixpanelCheck = () =>
-		Mixpanel.activity(loggedInUser.id, "Visited Group Using Search");
+  // Fetches user information from Redux
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+  const mixpanelCheck = () =>
+    Mixpanel.activity(loggedInUser.id, "Visited Group Using Search");
 
-	return (
-		<ResultsContainer>
-			{/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
-			{props.results.map((group, index) => {
-				let className;
-				if (index === props.activeSuggestion) {
-					className = "suggestion-active";
-				}
-				return (
-					// onClick or enter key calls fillSearch from SearchBar
+  // filtering search results to not include hidden groups
+  const filteredResults = props.results.filter(
+    result => result.privacy_setting !== "hidden"
+  );
 
-					<Link
-						to={`/group/${group.id}`}
-						key={group.id}
-						onClick={() => mixpanelCheck()}
-					>
-						<div className={`single-result ${className}`}>
-							<ResultImage src={group.image} />{" "}
-							<ResultName className="result-info">
-								{group.group_name}
-							</ResultName>
-						</div>
-					</Link>
-				);
-			})}
-		</ResultsContainer>
-	);
+  return (
+    <ResultsContainer>
+      {/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
+      {filteredResults.map((group, index) => {
+        let className;
+        if (index === props.activeSuggestion) {
+          className = "suggestion-active";
+        }
+        return (
+          <Link
+            to={`/group/${group.id}`}
+            key={group.id}
+            onClick={() => mixpanelCheck()}
+          >
+            <div className={`single-result ${className}`}>
+              <ResultImage src={group.image} />{" "}
+              <ResultName className="result-info">
+                {group.group_name}
+              </ResultName>
+            </div>
+          </Link>
+        );
+      })}
+    </ResultsContainer>
+  );
 };
 
 const ResultsContainer = styled.div`
@@ -55,7 +58,8 @@ display: flex;
     }
     .single-result {
       display: flex;
-      align-self: center;
+	  align-self: center;
+	  align-items: center;
       justify-content: space-between;
       padding: 0 5%;
       text-decoration: none;
@@ -72,15 +76,16 @@ display: flex;
       }
 `;
 const ResultImage = styled.img`
-	width: auto;
-	height: 85%;
-	border-radius: 50%;
-	@media ${device.tablet} {
-		max-width: 10%;
-	}
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  @media ${device.tablet} {
+    max-width: 10%;
+  }
 `;
 const ResultName = styled.div`
-	color: black;
+  color: black;
 `;
 
 export default SearchResults;
