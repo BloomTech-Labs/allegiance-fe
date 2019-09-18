@@ -43,7 +43,11 @@ const GroupInfo = props => {
               : null}{" "}
             Group
           </h3>
-          <MembersList members={props.members} setTrigger={props.setTrigger} />
+          <MembersList
+            group_id={props.group.id}
+            members={props.members}
+            setTrigger={props.setTrigger}
+          />
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
