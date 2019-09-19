@@ -3,10 +3,12 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import { Paper } from "@material-ui/core";
 import { Loader } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import ContentFeedCard from "./ContentFeedCard";
 import LikeFeedCard from "./LikeFeedCard";
+import MyAllegianceGroups from "../profile/MyAllegianceGroups";
 
 const Feed = () => {
   const [feed, setFeed] = useState();
@@ -50,7 +52,17 @@ const Feed = () => {
   }
 
   return (
-    <div>
+    <Container>
+      <MyGroups elevation={10}>
+        <GroupTitleHolder>
+          <H3>MY GROUPS</H3>
+        </GroupTitleHolder>
+        <>
+          <MyAllegianceGroups content={userGroups} type={"group"} />
+        </>
+      </MyGroups>
+      <H3>MY FEED</H3>
+
       {feed.map(activity => {
         return (
           <FeedContainer>
@@ -63,9 +75,34 @@ const Feed = () => {
           </FeedContainer>
         );
       })}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  background-color: #dee4e7;
+`;
+
+const MyGroups = styled(Paper)`
+  background-color: white;
+  margin-bottom: 3rem;
+`;
+
+const GroupTitleHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  h3 {
+    margin: 0 1%;
+  }
+`;
+
+const H3 = styled.h3`
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1% 0;
+`;
 
 const FeedContainer = styled.div``;
 
