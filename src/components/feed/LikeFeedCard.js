@@ -36,6 +36,12 @@ const useStyles = makeStyles({
   content: {
     color: "black",
     fontSize: 18
+  },
+  headerAvatar: {
+    marginRight: 4,
+    marginLeft: 0,
+    height: 20,
+    width: 20
   }
 });
 
@@ -66,6 +72,7 @@ const LikeFeedCard = props => {
       <Card className={classes.card}>
         <HeaderDiv>
           <ThumbUpOutlinedIcon className={classes.avatar} />
+          <Avatar className={classes.headerAvatar} src={liker_image} />
 
           {tag === "postLike" && (
             <p>

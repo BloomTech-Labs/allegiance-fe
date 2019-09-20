@@ -2,15 +2,12 @@ import React, { createRef } from "react";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
-import ReplyIcon from "@material-ui/icons/Reply";
 import indigo from "@material-ui/core/colors/indigo";
 import { Link } from "react-router-dom";
 
@@ -35,6 +32,12 @@ const useStyles = makeStyles({
   },
   groupAvatar: {
     marginRight: 15,
+    marginLeft: 0,
+    height: 20,
+    width: 20
+  },
+  headerAvatar: {
+    marginRight: 4,
     marginLeft: 0,
     height: 20,
     width: 20
@@ -92,8 +95,8 @@ const ContentFeedCard = props => {
       <Card className={classes.card}>
         <HeaderDiv>
           <SmsOutlinedIcon className={classes.avatar} />
+          <Avatar className={classes.headerAvatar} src={image} />
           <p>
-            {" "}
             {fullName} {tag === "post" && "created a post..."}{" "}
             {tag === "reply" && "replied..."}{" "}
           </p>
