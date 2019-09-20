@@ -67,7 +67,7 @@ const ContentFeedCard = props => {
     updated_at,
     first_name,
     last_name,
-    image,
+    user_image,
     tag,
     group_image,
     acronym
