@@ -13,6 +13,7 @@ import MyAllegianceGroups from "../profile/MyAllegianceGroups";
 const Feed = () => {
   const [feed, setFeed] = useState();
   const userGroups = useSelector(state => state.userReducer.loggedInGroups);
+  const userId = useSelector(state => state.userReducer.loggedInUser.id);
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken();
@@ -50,6 +51,16 @@ const Feed = () => {
       </Loader>
     );
   }
+  const filteredFeed = feed.filter(act => {
+    if ((act.tag === "post" || act.tag === "reply") && userId !== act.user_id) {
+      return act;
+    } else if (
+      (act.tag === "postLike" || act.tag === "replyLike") &&
+      userId !== act.liker_id
+    ) {
+      return act;
+    }
+  });
 
   return (
     <Container>
@@ -61,9 +72,8 @@ const Feed = () => {
           <MyAllegianceGroups content={userGroups} type={"group"} />
         </>
       </MyGroups>
-      <H3>MY FEED</H3>
 
-      {feed.map(activity => {
+      {filteredFeed.map(activity => {
         return (
           <FeedContainer>
             {(activity.tag === "post" || activity.tag === "reply") && (
