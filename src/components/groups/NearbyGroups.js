@@ -78,7 +78,11 @@ const NearbyGroups = () => {
             );
           })}
         {data.groups.length === 0 && (
-          <h4 style={{ margin: "3% auto" }}>No Nearby Groups Detected</h4>
+          <h4 style={{ margin: "3% auto" }}>
+            {loggedInUser.location &&
+              `No Groups Found Near ${loggedInUser.location}`}
+            {!loggedInUser.location && "No Groups Found Near You"}
+          </h4>
         )}
       </NearbyGroupsContainer>
     </SectionContainer>
