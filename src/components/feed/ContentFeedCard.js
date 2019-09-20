@@ -95,7 +95,7 @@ const ContentFeedCard = props => {
       <Card className={classes.card}>
         <HeaderDiv>
           <SmsOutlinedIcon className={classes.avatar} />
-          <Avatar className={classes.headerAvatar} src={image} />
+          <Avatar className={classes.headerAvatar} src={user_image} />
           <p>
             {fullName} {tag === "post" && "created a post..."}{" "}
             {tag === "reply" && "replied..."}{" "}
