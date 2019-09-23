@@ -112,6 +112,7 @@ const BannerImage = styled.img`
 width: 100%
 border-bottom: 10px solid black;
 max-height: 225px;
+object-fit: cover;
 `;
 
 const InfoHolder = styled.div`
@@ -139,11 +140,9 @@ const ImageCrop = styled.div`
   background-color: white;
 `;
 const ProfileImage = styled.img`
-  display: inline;
-  margin-left: -25%; //centers the image
-  height: 100%;
-  width: auto;
-  max-width: none;
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
 `;
 
 const H3 = styled.h3`
