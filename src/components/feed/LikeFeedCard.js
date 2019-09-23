@@ -94,8 +94,10 @@ const LikeFeedCard = props => {
 					</HeaderIcon>
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={liker_image} />
-						{liker_name} {tag === "postLike" && "liked a post..."}
-						{tag === "replyLike" && "liked a reply..."}
+						<p>
+							{liker_name} {tag === "postLike" && "liked a post..."}
+							{tag === "replyLike" && "liked a reply..."}
+						</p>
 					</HeaderContent>
 					<HeaderTimeStamp>
 						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
