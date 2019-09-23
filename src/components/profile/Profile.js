@@ -8,6 +8,7 @@ import axios from "axios"
 import useGetToken from "../utils/useGetToken";
 import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
+import { Typography } from "@material-ui/core"
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -59,7 +60,7 @@ const Profile = props => {
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.first_name && <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>}
+            {loggedInUser.first_name && <Typography variant="h5" noWrap={true} style={{ fontWeight: 'bold' }}>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</Typography>}
             {props.match.url === "/profile" &&
               <Link to="/makeprofile">
                 <Icon name="edit outline" />
@@ -125,6 +126,7 @@ const Name = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const ImageCrop = styled.div`

@@ -106,9 +106,10 @@ const CreateGroup = props => {
 							<BoldInput
 								required
 								transparent
-								placeholder="Name Your Group"
+								placeholder="Name Your Group (Max 50)"
 								onChange={handleChange}
 								value={values.group_name || ""}
+								maxLength="50"
 								name="group_name"
 								type="text" />
 							<Form.Input
@@ -210,6 +211,7 @@ flex-direction: column;
 justify-content: space - evenly;
 margin-left: 7px;
 margin-bottom: 1rem;
+width: 100%;
 `
 
 export default CreateGroup;
