@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import MembershipStatus from "./MembershipStatus";
 import AllegiancePopover from "./AllegiancePopover";
-import MembersList from "../groups/MembersList";
+import MembersList from "./MembersList";
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
