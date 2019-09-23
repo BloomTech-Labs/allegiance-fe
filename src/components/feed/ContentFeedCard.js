@@ -78,7 +78,10 @@ const ContentFeedCard = props => {
 
 	const goToPost = e => {
 		e.stopPropagation();
-		props.history.push(`/post/${postId}`)
+		props.history.push({
+			pathname: `/post/${postId}`,
+			replyNumber: tag === "reply" ? id : null
+		})
 	}
 
 	// defining post id for conditional render

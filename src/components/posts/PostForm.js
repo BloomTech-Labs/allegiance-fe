@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
+import styled from "styled-components";
 
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
+import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
 
 import "../../styled/Replies.scss";
 
@@ -40,67 +42,71 @@ const PostForm = props => {
 
 	// Material UI
 	const useStyles = makeStyles(theme => ({
-		container: {
-			display: "flex",
-			flexWrap: "wrap"
-		},
 		textField: {
 			marginLeft: theme.spacing(1),
 			marginRight: theme.spacing(1),
 			backgroundColor: "white"
 		},
-
-		margin: {
-			margin: theme.spacing(1)
-		},
-		typography: {
-			fontSize: 13,
-			color: "black",
-			padding: 0
-		},
-		typography2: {
-			fontSize: 15,
-			color: "black",
-			fontWeight: "bold"
-		},
 		root: {
 			background: primary,
 			margin: theme.spacing(1)
+		},
+		button: {
+			marginTop: 10,
+			height: 30,
+			width: 30
 		}
 	}));
 
 	const classes = useStyles();
 
 	return (
-		<form className={"reply-form"} onSubmit={handleSubmit}>
-			<div className={"input-div"}>
-				<TextField
-					id="outlined-textarea"
-					required
-					label="Post"
-					placeholder="Write a post to the group..."
-					multiline
-					fullWidth
-					className={classes.textField}
-					margin="normal"
-					variant="outlined"
-					onChange={handleChange}
-					name="post_content"
-					value={values.post_content || ""}
+		<FormContainer>
+			<DownNav>
+				<VerticalAlignBottomIcon
+					className={classes.button}
+					onClick={props.scrollToBottom}
 				/>
-			</div>
-			<Fab classes={{ root: classes.root }} type="submit" aria-label="Reply">
-				<AddIcon />
-			</Fab>
-		</form>
+			</DownNav>
+			<form className={"reply-form"} onSubmit={handleSubmit}>
+				<div className={"input-div"}>
+					<TextField
+						id="outlined-textarea"
+						required
+						label="Post"
+						placeholder="Write a post to the group..."
+						multiline
+						fullWidth
+						className={classes.textField}
+						margin="normal"
+						variant="outlined"
+						onChange={handleChange}
+						name="post_content"
+						value={values.post_content || ""}
+					/>
+				</div>
+				<Fab classes={{ root: classes.root }} type="submit" aria-label="Reply">
+					<AddIcon />
+				</Fab>
+			</form>
+		</FormContainer>
 	);
 };
 
-// const FormContainer = styled(Form)`
-//   margin-top: 5vh;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-// `;
+const FormContainer = styled.div`
+	display: flex;
+	position: fixed;
+	bottom: 6.5%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	background-color: #dee4e7;
+`;
+const DownNav = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 10%;
+`;
 
 export default PostForm;

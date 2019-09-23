@@ -6,25 +6,31 @@ import Logo from "../assets/Logo.png";
 import LandingImage from "../assets/LandingImage.jpg";
 
 const Landing = () => {
-
 	const { loginWithRedirect } = useAuth0();
 	return (
 		<LandingContainer>
 			<LogoHolder>
-				<Image src={Logo} size='small' />
+				<Image src={Logo} size="small" />
 				<h1>ALLEGIANCE</h1>
 			</LogoHolder>
 			<Headers>The social network for sports fans</Headers>
 			<ButtonHolder>
 				<Button
 					color="red"
-					content='Sign In'
+					content="Sign In"
 					onClick={() => loginWithRedirect({})}
-					style={{ border: 'none', color: 'white', borderRadius: '20px', fontSize: '1.25rem', margin: '3%' }} />
+					style={{
+						border: "none",
+						color: "white",
+						borderRadius: "20px",
+						fontSize: "1.25rem",
+						margin: "3%"
+					}}
+				/>
 			</ButtonHolder>
 		</LandingContainer>
-	)
-}
+	);
+};
 
 const LandingContainer = styled.div`
 	display: flex;

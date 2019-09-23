@@ -29,19 +29,12 @@ const Feed = () => {
 						group_id: mappedGroupIds,
 						interval: 48
 					});
-					console.log("res.data", response.data);
 					setFeed(response.data.allActivity);
 				} catch {}
 			}
 		};
 		fetchData();
 	}, [token, userGroups]);
-
-	useEffect(() => {
-		return () => {
-			console.log("cleaned up");
-		};
-	}, []);
 
 	if (!feed) {
 		return (
@@ -50,17 +43,10 @@ const Feed = () => {
 			</Loader>
 		);
 	}
-	const filteredFeed = feed.filter(act => {
-		if ((act.tag === "post" || act.tag === "reply") && userId !== act.user_id)
-			return act;
-		if (
-			(act.tag === "postLike" || act.tag === "replyLike") &&
-			userId !== act.liker_id
-		)
-			return act;
-		// If no activity, return empty array
-		return [];
-	});
+	// Filter feed for activity by user
+	const filteredFeed = feed.filter(
+		act => userId !== act.user_id && userId !== act.liker_id
+	);
 
 	return (
 		<Container>
@@ -75,7 +61,7 @@ const Feed = () => {
 
 			{filteredFeed.map(activity => {
 				return (
-					<FeedContainer key={activity.id}>
+					<FeedContainer key={activity.tag + activity.id}>
 						{(activity.tag === "post" || activity.tag === "reply") && (
 							<ContentFeedCard activity={activity} />
 						)}
