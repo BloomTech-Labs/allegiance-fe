@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Moment from "react-moment";
+import moment from "moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -46,24 +47,50 @@ const useStyles = makeStyles({
 	}
 });
 
-const LikeFeedCard = props => {
+const NotificationsCard = props => {
 	const classes = useStyles();
 
 	// Destructure props to gain access to keys
 	const {
 		// note: various other key/value pairs available, see postman documentation
+		// id,
+		// first_name,
+		// last_name,
+		// user_image,
 		liker_name,
 		liker_image,
+		// poster_id,
+		// poster_name,
 		group_id,
 		post_id,
 		post_content,
-		reply_id,
+		// reply_id,
 		reply_content,
 		created_at,
 		tag,
 		group_image,
 		acronym
 	} = props.activity;
+
+	// Define moment display
+	moment.updateLocale("en", {
+		relativeTime: {
+			future: "in %s",
+			past: "%s ago",
+			s: "seconds",
+			ss: "%ss",
+			m: "a minute",
+			mm: "%dm",
+			h: "an hour",
+			hh: "%dh",
+			d: "a day",
+			dd: "%dd",
+			M: "a month",
+			MM: "%dM",
+			y: "a year",
+			yy: "%dY"
+		}
+	});
 
 	return (
 		<LikeCardDiv>
@@ -101,12 +128,7 @@ const LikeFeedCard = props => {
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<Link
-						to={{
-							pathname: `/post/${post_id}`,
-							replyNumber: reply_id
-						}}
-					>
+					<Link to={`/post/${post_id}`}>
 						<Button variant="contained" size="small" className={classes.button}>
 							{tag === "postLike" && "See Post"}{" "}
 							{tag === "replyLike" && "See Reply"}
@@ -176,4 +198,4 @@ const GroupFooter = styled.div`
 	}
 `;
 
-export default LikeFeedCard;
+export default NotificationsCard;

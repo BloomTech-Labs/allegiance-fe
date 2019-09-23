@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Moment from "react-moment";
-import moment from "moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -77,26 +76,6 @@ const ContentFeedCard = props => {
 			  last_name.slice(1)
 			: null;
 
-	// Define moment display
-	moment.updateLocale("en", {
-		relativeTime: {
-			future: "in %s",
-			past: "%s ago",
-			s: "seconds",
-			ss: "%ss",
-			m: "a minute",
-			mm: "%dm",
-			h: "an hour",
-			hh: "%dh",
-			d: "a day",
-			dd: "%dd",
-			M: "a month",
-			MM: "%dM",
-			y: "a year",
-			yy: "%dY"
-		}
-	});
-
 	// defining post id for conditional render
 	let postId;
 	if (tag === "post") {
@@ -140,7 +119,12 @@ const ContentFeedCard = props => {
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<Link to={`/post/${postId}`}>
+					<Link
+						to={{
+							pathname: `/post/${postId}`,
+							replyNumber: tag === "reply" ? id : null
+						}}
+					>
 						<Button variant="contained" size="small" className={classes.button}>
 							{tag === "post" && "See Post"} {tag === "reply" && "See Reply"}
 						</Button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, createRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { VIEW_REPLIES } from "../../reducers/navReducer";
 
@@ -52,15 +52,6 @@ const ReplyContainer = props => {
 		fetchData();
 	}, [token, id, submitted, dispatch]);
 
-	// Create ref and scrollToBottom function to align view upon entering tab and on new replies
-	const repliesEndRef = useRef(null);
-
-	const scrollToBottom = () => {
-		if (repliesEndRef.current) {
-			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
-		}
-	};
-
 	// callback function to handle submit
 	async function submitReply(e) {
 		const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
@@ -95,6 +86,48 @@ const ReplyContainer = props => {
 
 	const classes = useStyles();
 
+	// CreateRef for scrolling from Links
+	const replyRefs = post
+		? post.replies.reduce((acc, value) => {
+				acc[value.id] = createRef();
+				return acc;
+		  }, {})
+		: null;
+
+	// On component mount, if a replyNumber is received from props, scroll the reply into view
+	useEffect(() => {
+		let yCoordinate;
+		const scrollRef = () => {
+			// Subtract 50 px to account for padding top from top nav bar
+			const yOffset = -50;
+			window.scrollTo({
+				top: yCoordinate + yOffset,
+				behavior: "smooth"
+			});
+		};
+
+		if (
+			props.location.replyNumber &&
+			replyRefs !== null &&
+			replyRefs[props.location.replyNumber].current !== null
+		)
+			// Position of reply using replyNumber from props
+			yCoordinate =
+				replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+					.top + window.pageYOffset;
+		scrollRef();
+	}, [props.location.replyNumber, replyRefs]);
+	console.log(props.location.replyNumber);
+
+	// Create ref and scrollToBottom function to allow scroll to bottom
+	const repliesEndRef = useRef(null);
+
+	const scrollToBottom = () => {
+		if (repliesEndRef.current) {
+			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	};
+
 	if (!post) {
 		return (
 			<Loader active size="large">
@@ -112,12 +145,13 @@ const ReplyContainer = props => {
 			<ReplyCardsContainer>
 				{sortedReplies.map(reply => {
 					return (
-						<ReplyCard
-							reply={reply}
-							setSubmitted={setSubmitted}
-							key={reply.id}
-							post={post}
-						/>
+						<div ref={replyRefs[reply.id]} key={reply.id}>
+							<ReplyCard
+								reply={reply}
+								setSubmitted={setSubmitted}
+								post={post}
+							/>
+						</div>
 					);
 				})}
 			</ReplyCardsContainer>
