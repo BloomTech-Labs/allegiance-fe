@@ -40,8 +40,6 @@ const PostsContainer = props => {
 
 	return (
 		<PostsWrapper>
-			<div onClick={scrollToBottom}>Down</div>
-
 			<PostListContainer>
 				{posts.length > 0 ? (
 					posts.map(post => {
