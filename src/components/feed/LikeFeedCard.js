@@ -95,7 +95,8 @@ const LikeFeedCard = props => {
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={liker_image} />
 						<p>
-							{liker_name} {tag === "postLike" && "liked a post..."}
+							<span>{liker_name}</span>{" "}
+							{tag === "postLike" && "liked a post..."}
 							{tag === "replyLike" && "liked a reply..."}
 						</p>
 					</HeaderContent>
