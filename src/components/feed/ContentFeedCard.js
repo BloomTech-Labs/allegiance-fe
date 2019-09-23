@@ -1,19 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Moment from "react-moment";
-import moment from "moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import { Card, CardActionArea, CardContent, Avatar, Typography, Tooltip } from "@material-ui/core"
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
 	card: {
@@ -71,31 +64,22 @@ const ContentFeedCard = props => {
 	const fullName =
 		first_name && last_name
 			? first_name.charAt(0).toUpperCase() +
-			  first_name.slice(1) +
-			  " " +
-			  last_name.charAt(0).toUpperCase() +
-			  last_name.slice(1)
+			first_name.slice(1) +
+			" " +
+			last_name.charAt(0).toUpperCase() +
+			last_name.slice(1)
 			: null;
 
-	// Define moment display
-	moment.updateLocale("en", {
-		relativeTime: {
-			future: "in %s",
-			past: "%s ago",
-			s: "seconds",
-			ss: "%ss",
-			m: "a minute",
-			mm: "%dm",
-			h: "an hour",
-			hh: "%dh",
-			d: "a day",
-			dd: "%dd",
-			M: "a month",
-			MM: "%dM",
-			y: "a year",
-			yy: "%dY"
-		}
-	});
+	const goToGroup = e => {
+		e.preventDefault();
+		e.stopPropagation();
+		props.history.push(`/group/${group_id}`)
+	}
+
+	const goToPost = e => {
+		e.stopPropagation();
+		props.history.push(`/post/${postId}`)
+	}
 
 	// defining post id for conditional render
 	let postId;
@@ -106,7 +90,7 @@ const ContentFeedCard = props => {
 		postId = post_id;
 	}
 	return (
-		<CardDiv>
+		<CardDiv onClick={(e) => goToPost(e)}>
 			<Card className={classes.card}>
 				<HeaderDiv>
 					<HeaderIcon>
@@ -114,16 +98,11 @@ const ContentFeedCard = props => {
 					</HeaderIcon>
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={user_image} />
-						<p>
+						<Typography>
 							{fullName} {tag === "post" && "created a post..."}
 							{tag === "reply" && "replied..."}
-						</p>
+						</Typography>
 					</HeaderContent>
-					<HeaderTimeStamp>
-						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-							<Moment fromNow>{created_at}</Moment>
-						</Tooltip>
-					</HeaderTimeStamp>
 				</HeaderDiv>
 
 				<CardActionArea>
@@ -140,21 +119,19 @@ const ContentFeedCard = props => {
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<Link to={`/post/${postId}`}>
-						<Button variant="contained" size="small" className={classes.button}>
-							{tag === "post" && "See Post"} {tag === "reply" && "See Reply"}
-						</Button>
-					</Link>
-					<Link to={`/group/${group_id}`}>
-						<GroupFooter>
-							<Avatar
-								aria-label="recipe"
-								className={classes.groupAvatar}
-								src={group_image}
-							/>
-							<p>{acronym}</p>
-						</GroupFooter>
-					</Link>
+					<HeaderTimeStamp>
+						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+							<Moment fromNow>{created_at}</Moment>
+						</Tooltip>
+					</HeaderTimeStamp>
+					<GroupFooter onClick={(e) => goToGroup(e)}>
+						<Avatar
+							aria-label="recipe"
+							className={classes.groupAvatar}
+							src={group_image}
+						/>
+						<p>{acronym}</p>
+					</GroupFooter>
 				</Footer>
 			</Card>
 		</CardDiv>
@@ -181,14 +158,14 @@ const HeaderIcon = styled.div`
 `;
 
 const HeaderContent = styled.div`
-	width: 67%;
+	width: 80%;
 	display: flex;
 	margin-right: 2%;
 	overflow: hidden;
 `;
 
 const HeaderTimeStamp = styled.div`
-	width: 18%;
+	width: 22%;
 `;
 
 const Footer = styled.div`
@@ -206,4 +183,4 @@ const GroupFooter = styled.div`
 	}
 `;
 
-export default ContentFeedCard;
+export default withRouter(ContentFeedCard)
