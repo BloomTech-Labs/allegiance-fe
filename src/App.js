@@ -27,6 +27,7 @@ import ReplyContainer from "./components/replies/ReplyContainer";
 
 import { LOGIN } from "./reducers/userReducer";
 import MakeAllegiance from "./components/allegiances/MakeAllegiance";
+import Feed from "./components/feed/Feed";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -91,7 +92,7 @@ function App(props) {
         <NavBar />
       </Switch>
       <Switch>
-        <Route exact path="/home" component={UnderConstruction} />
+        <Route exact path="/home" component={Feed} />
         <PrivateRoute exact path="/makeprofile" component={MakeProfile} />
         <PrivateRoute exact path="/creategroup" component={CreateGroup} />
         <PrivateRoute exact path="/editgroup/:id" component={CreateGroup} />

@@ -6,7 +6,7 @@ export const LEAVE_GROUP = "LEAVE_GROUP";
 export const GET_ALLEGIANCES = "GET_ALLEGIANCES";
 export const ADD_ALLEGIANCE = "ADD_ALLEGIANCE";
 export const LEAVE_ALLEGIANCE = "LEAVE_ALLEGIANCE";
-export const ENTER_PROFILE = "ENTER PROFILE"
+export const ENTER_PROFILE = "ENTER PROFILE";
 
 const initialState = {
 	loggedInUser: "",
@@ -21,16 +21,19 @@ export const userReducer = (state = initialState, action) => {
 		case LOGIN:
 			return {
 				...state,
-				loggedInUser:
-					action.payload.currentUser || action.payload.newUser,
-				loggedInGroups: action.payload.basicGroupInfo,
+				loggedInUser: action.payload.currentUser || action.payload.newUser,
+				loggedInGroups: action.payload.basicGroupInfo.filter(
+					group => group.user_type !== "invited"
+				),
 				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
 			};
 		case ENTER_PROFILE:
 			return {
 				...state,
-				loggedInGroups: action.payload.basicGroupInfo,
+				loggedInGroups: action.payload.basicGroupInfo.filter(
+					group => group.user_type !== "invited"
+				),
 				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
 			};
@@ -43,7 +46,10 @@ export const userReducer = (state = initialState, action) => {
 		case GET_GROUPS:
 			return {
 				...state,
-				loggedInGroups: action.payload,
+				// This case is not currently being used - filter might not be necessary
+				loggedInGroups: action.payload.filter(
+					group => group.user_type !== "invited"
+				),
 				error: ""
 			};
 		case ADD_GROUP:
