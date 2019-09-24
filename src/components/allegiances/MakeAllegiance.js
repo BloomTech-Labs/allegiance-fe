@@ -19,7 +19,7 @@ const MakeAllegiance = props => {
   const [token] = useGetToken();
 
   //Imports form custom hook to handle state, form entry and form submission.
-  const { values, handleChange, handleSubmit, SubmitButton, ErrorMessage } = useForm(createAllegiance);
+  const { values, handleChange, handleSubmit, SubmitButton, ErrorMessage, setError, setLoading } = useForm(createAllegiance);
 
   //Imports image upload functions
   const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
@@ -43,7 +43,10 @@ const MakeAllegiance = props => {
       const push = () => props.history.push("/profile");
 
       setTimeout(push, 1000);
-    } catch { console.log("Something went wrong.") }
+    } catch {
+      setError(true)
+      setLoading(false)
+    }
   };
 
   async function createAllegiance() {
@@ -51,7 +54,10 @@ const MakeAllegiance = props => {
       if (image) values.image = image;
       const result = await axiosWithAuth([token]).post(`/allegiances`, values);
       addAllegiance(result.data.newAllegiance);
-    } catch { console.log("Something went wrong when creating that allegiance.") }
+    } catch {
+      setError(true)
+      setLoading(false)
+    }
   }
 
   const selectOptions = [
