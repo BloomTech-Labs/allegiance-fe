@@ -47,7 +47,8 @@ const Notifications = () => {
 	console.log(email, location);
 
 	const dispatch = useDispatch();
-	// Cleanup useEffect to change notification check time
+	// Cleanup useEffect to change notification check time, we do this on component un-mount
+	// instead of mount so that different styling can be applied to new vs old notifications
 	useEffect(() => {
 		return async () => {
 			console.log("cleaned up");
@@ -78,12 +79,10 @@ const Notifications = () => {
 		);
 	}
 
-	// Filter out activity performed by the user
+	// Filter out activity performed by the user, future versions should combine likes
 	const filteredNotifications = notifications.filter(
 		act => userId !== act.user_id && userId !== act.liker_id
 	);
-
-	console.log(filteredNotifications);
 
 	return (
 		<Container>

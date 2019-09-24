@@ -6,7 +6,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
 import styled from "styled-components";
-import { Menu, Icon } from "semantic-ui-react";
+import { Menu, Icon, Loader } from "semantic-ui-react";
 import IconButton from "@material-ui/core/IconButton";
 import { ArrowBack } from "@material-ui/icons";
 
@@ -59,7 +59,7 @@ const NavBar = () => {
 			}
 		};
 		fetchData();
-	}, [token, userGroups, userId]);
+	}, [token, userGroups, userId, timeStamp]);
 
 	if (notifications) console.log("notifications length", notifications.length);
 
@@ -80,6 +80,14 @@ const NavBar = () => {
 			<TopNavRight />
 		</>
 	);
+
+	if (!notifications) {
+		return (
+			<Loader active size="large">
+				Loading
+			</Loader>
+		);
+	}
 
 	return (
 		<>
@@ -130,10 +138,19 @@ const NavBar = () => {
 								as={Link}
 								name="Notifications"
 								to="/notifications"
-								onClick={() => setActiveItem("Notifications")}
+								onClick={() => {
+									setActiveItem("Notifications");
+									// Upon click notification count on icon should reset to zero
+									setNotifications([]);
+								}}
 								active={activeItem === "Notifications"}
 							>
-								<NavIcon size="large" name="bell outline" />
+								<NavIcon
+									size="large"
+									name="bell outline"
+									number={notifications.length}
+								/>
+								<NotificationNumber>{notifications.length}</NotificationNumber>
 							</Menu.Item>
 							<Menu.Item
 								as={Link}
@@ -216,12 +233,23 @@ const Nav = styled(Menu)`
 	}
 `;
 
+const NavLeft = styled.div`
+	display: flex;
+	flex: 1 1 0;
+`;
+
 const NavIcon = styled(Icon)`
 	color: white;
 `;
 
-const NavLeft = styled.div`
-	display: flex;
+const NotificationNumber = styled.div`
+	padding: 2px 5px;
+	color: whitesmoke;
+	background-color: #f03737;
+	border-radius: 50%;
+	position: relative;
+	top: -10px;
+	left: -15px;
 `;
 
 const NavRight = styled.div`
