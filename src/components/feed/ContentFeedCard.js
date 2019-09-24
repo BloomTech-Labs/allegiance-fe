@@ -10,9 +10,8 @@ import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 
 const useStyles = makeStyles({
 	card: {
-		width: "80%",
-		marginTop: 15,
-		marginBottom: 15
+		width: "90%",
+		marginBottom: 20,
 	},
 	avatar: {
 		marginRight: 15,
@@ -41,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 const ContentFeedCard = props => {
-	const classes = useStyles();
+	const classes = useStyles(props);
 
 	// Destructure props to gain access to keys
 	const {
@@ -94,7 +93,7 @@ const ContentFeedCard = props => {
 	}
 	return (
 		<CardDiv onClick={(e) => goToPost(e)}>
-			<Card className={classes.card}>
+			<Card className={classes.card} raised={true}>
 				<HeaderDiv>
 					<HeaderIcon>
 						<SmsOutlinedIcon className={classes.avatar} />
@@ -102,31 +101,28 @@ const ContentFeedCard = props => {
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={user_image} />
 						<Typography>
-							{fullName} {tag === "post" && "created a post..."}
-							{tag === "reply" && "replied..."}
+							{fullName} {tag === "post" && "created a post..."}{tag === "reply" && "replied..."}
 						</Typography>
 					</HeaderContent>
 				</HeaderDiv>
-
 				<CardActionArea>
 					<CardContent>
 						<Typography
 							variant="body2"
 							color="textSecondary"
 							component="p"
-							className={classes.content}
-						>
+							className={classes.content}>
 							{tag === "post" && post_content}
 							{tag === "reply" && reply_content}
 						</Typography>
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<HeaderTimeStamp>
+					<FooterTimeStamp>
 						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-							<Moment fromNow>{created_at}</Moment>
+							<Moment fromNow style={{ color: "grey" }}>{created_at}</Moment>
 						</Tooltip>
-					</HeaderTimeStamp>
+					</FooterTimeStamp>
 					<GroupFooter onClick={(e) => goToGroup(e)}>
 						<Avatar
 							aria-label="recipe"
@@ -151,6 +147,7 @@ const HeaderDiv = styled.div`
 	justify-content: flex-start;
 	padding: 0.4rem 0;
 	text-align: left;
+	border-bottom: 1px solid lightgrey;
 	p {
 		color: gray;
 	}
@@ -167,14 +164,17 @@ const HeaderContent = styled.div`
 	overflow: hidden;
 `;
 
-const HeaderTimeStamp = styled.div`
+const FooterTimeStamp = styled.div`
 	width: 22%;
+	color: grey;
+	text-align: left;
 `;
 
 const Footer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	padding: 0 6% 2% 4%;
+	padding: 1% 6% 2% 4%;
+	border-top: 1px solid lightgrey
 `;
 
 const GroupFooter = styled.div`

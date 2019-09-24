@@ -89,9 +89,9 @@ const ReplyContainer = props => {
 	// CreateRef for scrolling from Links
 	const replyRefs = post
 		? post.replies.reduce((acc, value) => {
-				acc[value.id] = createRef();
-				return acc;
-		  }, {})
+			acc[value.id] = createRef();
+			return acc;
+		}, {})
 		: null;
 
 	// On component mount, if a replyNumber is received from props, scroll the reply into view
@@ -117,23 +117,16 @@ const ReplyContainer = props => {
 					.top + window.pageYOffset;
 		scrollRef();
 	}, [props.location.replyNumber, replyRefs]);
-	console.log(props.location.replyNumber);
 
 	// Create ref and scrollToBottom function to allow scroll to bottom
 	const repliesEndRef = useRef(null);
 
 	const scrollToBottom = () => {
-		if (repliesEndRef.current) {
-			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
-		}
+		if (repliesEndRef.current) repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
 	};
 
 	if (!post) {
-		return (
-			<Loader active size="large">
-				Loading
-			</Loader>
-		);
+		return <Loader active size="large"> Loading </Loader>
 	}
 
 	const sortedReplies = post.replies.sort((a, b) => a.id - b.id);

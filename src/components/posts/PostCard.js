@@ -72,11 +72,9 @@ export default function PostCard(props) {
     },
 
     avatar: {
-      margin: 3,
-      marginRight: 0,
+      margin: "1%",
       width: 60,
-      height: 60,
-      marginBottom: 2
+      height: 60
     },
     typography: {
       fontSize: 20,
