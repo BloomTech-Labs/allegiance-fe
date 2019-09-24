@@ -110,7 +110,7 @@ function App(props) {
 	return (
 		<div className="App">
 			<Switch>
-				<Route exact path="/" component={!isAuthenticated ? Landing : NavBar} />
+				<Route exact path="/" component={!isAuthenticated && Landing} />
 				<NavBar />
 			</Switch>
 			<Switch>
