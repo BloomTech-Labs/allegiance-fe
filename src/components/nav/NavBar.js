@@ -140,8 +140,6 @@ const NavBar = () => {
 								to="/notifications"
 								onClick={() => {
 									setActiveItem("Notifications");
-									// Upon click notification count on icon should reset to zero
-									setNotifications([]);
 								}}
 								active={activeItem === "Notifications"}
 							>
@@ -150,7 +148,13 @@ const NavBar = () => {
 									name="bell outline"
 									number={notifications.length}
 								/>
-								<NotificationNumber>{notifications.length}</NotificationNumber>
+								{/* Notification count only shows when not navigated to notification 
+                component and when there is more than zero notifications to show */}
+								{pathname !== "/notifications" && notifications.length > 0 && (
+									<NotificationNumber>
+										{notifications.length}
+									</NotificationNumber>
+								)}
 							</Menu.Item>
 							<Menu.Item
 								as={Link}
