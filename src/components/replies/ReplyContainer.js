@@ -129,17 +129,8 @@ const ReplyContainer = props => {
 			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
 	};
 
-	// Obtain groups the user has a relation to
+	// Obtain groups the user has a relation to, check for membership after post is loaded
 	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
-	// checking to see if current user is a member of current group
-	const currentUserType = userGroups.find(group => group.id === id);
-	// if they are undefined, we set membership to a string so we don't get an error
-	let membership;
-	if (currentUserType === undefined) {
-		membership = "non-member";
-	} else {
-		membership = currentUserType.user_type;
-	}
 
 	if (!post) {
 		return (
@@ -147,6 +138,16 @@ const ReplyContainer = props => {
 				Loading
 			</Loader>
 		);
+	}
+
+	// Checking to see if current user is a member of current group
+	const currentUserType = userGroups.find(group => group.id === post.group_id);
+	// If they are undefined, we set membership to a string so we don't get an error
+	let membership;
+	if (currentUserType === undefined) {
+		membership = "non-member";
+	} else {
+		membership = currentUserType.user_type;
 	}
 
 	// Sort replies by id (which is chronological)
