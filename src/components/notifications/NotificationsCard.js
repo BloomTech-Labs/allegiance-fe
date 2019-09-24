@@ -1,49 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Moment from "react-moment";
-import moment from "moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
 	card: {
-		width: "80%",
-		marginTop: 15,
-		marginBottom: 15
+		display: "flex",
+		width: "90%"
 	},
 	avatar: {
-		marginRight: 15,
-		marginLeft: 15
-	},
-	headerAvatar: {
-		marginRight: 4,
+		marginRight: 0,
 		marginLeft: 0,
-		height: 20,
-		width: 20
-	},
-	button: {
-		color: "white",
-		backgroundColor: "#1B4570"
+		height: 50,
+		width: 50
 	},
 	content: {
 		color: "black",
-		fontSize: 18
-	},
-	groupAvatar: {
-		marginRight: 15,
-		marginLeft: 0,
-		height: 20,
-		width: 20
+		fontSize: 16
 	}
 });
 
@@ -53,18 +32,20 @@ const NotificationsCard = props => {
 	// Destructure props to gain access to keys
 	const {
 		// note: various other key/value pairs available, see postman documentation
-		// id,
-		// first_name,
-		// last_name,
-		// user_image,
+		id,
+		first_name,
+		last_name,
+		user_image,
+		liker_id,
 		liker_name,
 		liker_image,
-		// poster_id,
-		// poster_name,
-		group_id,
+		poster_id,
+		poster_name,
+		replier_id,
+		replier_name,
 		post_id,
 		post_content,
-		// reply_id,
+		reply_id,
 		reply_content,
 		created_at,
 		tag,
@@ -72,130 +53,130 @@ const NotificationsCard = props => {
 		acronym
 	} = props.activity;
 
-	// Define moment display
-	moment.updateLocale("en", {
-		relativeTime: {
-			future: "in %s",
-			past: "%s ago",
-			s: "seconds",
-			ss: "%ss",
-			m: "a minute",
-			mm: "%dm",
-			h: "an hour",
-			hh: "%dh",
-			d: "a day",
-			dd: "%dd",
-			M: "a month",
-			MM: "%dM",
-			y: "a year",
-			yy: "%dY"
-		}
-	});
+	// fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
+	const fullName = first_name + " " + last_name;
+
+	// Streamline post id and reply id for linking
+	let postId;
+	if (tag === "post") {
+		postId = id;
+	}
+	if (tag === "reply" || tag === "replyLike" || tag === "postLike") {
+		postId = post_id;
+	}
+	let replyId;
+	if (tag === "reply") {
+		replyId = id;
+	}
+	if (tag === "replyLike") {
+		replyId = reply_id;
+	}
+
+	// Maintain max allowable content length for posts and replies
+	let postContent, replyContent;
+	if (post_content) postContent = post_content.slice(0, 20);
+	if (reply_content) replyContent = reply_content.slice(0, 20);
+	if (post_content && post_content.length > 20) postContent += "...";
+	if (reply_content && reply_content.length > 20) replyContent += "...";
+
+	// Onclick handler for notifications to direct user to correct app path
+	const goToPost = e => {
+		e.stopPropagation();
+		props.history.push({
+			pathname: `/post/${postId}`,
+			replyNumber: replyId || null
+		});
+	};
 
 	return (
-		<LikeCardDiv>
+		<NotificationCardDiv onClick={e => goToPost(e)}>
 			<Card className={classes.card}>
-				<HeaderDiv>
-					<HeaderIcon>
-						<ThumbUpOutlinedIcon className={classes.avatar} />
-					</HeaderIcon>
-					<HeaderContent>
-						<Avatar className={classes.headerAvatar} src={liker_image} />
+				<CardIcon>
+					<Avatar
+						aria-label="author_avatar"
+						className={classes.avatar}
+						src={liker_image || user_image}
+					/>
+				</CardIcon>
+				<CardMessage>
+					<div>
+						<span>{liker_name || fullName}</span>{" "}
+						{tag === "post" && <>made a post: {postContent}</>}
+						{tag === "reply" && <>replied to a post: {replyContent}</>}
+						{tag === "postLike" && (
+							<>
+								liked {liker_id === poster_id && "their own"}
+								{liker_id !== poster_id && (
+									<span>{poster_name}'s</span>
+								)} post: {postContent}
+							</>
+						)}
+						{tag === "replyLike" && (
+							<>
+								liked {liker_id === replier_id && "their own"}
+								{liker_id !== replier_id && <span>{replier_name}'s</span>}{" "}
+								reply: {replyContent}
+							</>
+						)}{" "}
 						<p>
-							<span>{liker_name}</span>{" "}
-							{tag === "postLike" && "liked a post..."}
-							{tag === "replyLike" && "liked a reply..."}
+							<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+								<Moment fromNow>{created_at}</Moment>
+							</Tooltip>
 						</p>
-					</HeaderContent>
-					<HeaderTimeStamp>
-						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-							<Moment fromNow>{created_at}</Moment>
-						</Tooltip>
-					</HeaderTimeStamp>
-				</HeaderDiv>
-
-				<CardActionArea>
-					<CardContent>
-						<Typography
-							variant="body2"
-							color="textSecondary"
-							component="p"
-							className={classes.content}
-						>
-							{tag === "postLike" && post_content}
-							{tag === "replyLike" && reply_content}
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-				<Footer>
-					<Link to={`/post/${post_id}`}>
-						<Button variant="contained" size="small" className={classes.button}>
-							{tag === "postLike" && "See Post"}{" "}
-							{tag === "replyLike" && "See Reply"}
-						</Button>
-					</Link>
-					<Link to={`/group/${group_id}`}>
-						<GroupFooter>
-							<Avatar
-								aria-label="recipe"
-								className={classes.groupAvatar}
-								src={group_image}
-							/>
-							<p>{acronym}</p>
-						</GroupFooter>
-					</Link>
-				</Footer>
+					</div>
+				</CardMessage>
+				<CardGroup>
+					<Avatar
+						aria-label="group_avatar"
+						className={classes.avatar}
+						src={group_image}
+					/>
+					<p>{acronym}</p>
+				</CardGroup>
 			</Card>
-		</LikeCardDiv>
+		</NotificationCardDiv>
 	);
 };
 
-const LikeCardDiv = styled.div`
+const NotificationCardDiv = styled.div`
 	display: flex;
 	justify-content: center;
-`;
-
-const HeaderDiv = styled.div`
-	display: flex;
-	justify-content: flex-start;
 	padding-top: 0.4rem;
 	text-align: left;
-	p {
-		color: gray;
+	div {
+		color: black;
 		span {
 			text-transform: capitalize;
+			font-weight: bold;
+		}
+		p {
+			color: gray;
+			font-size: 12;
+			margin: 0;
 		}
 	}
 `;
 
-const HeaderIcon = styled.div`
-	width: 15%;
+const CardIcon = styled.div`
+	display: flex;
+	justify-content: center;
+	width: 20%;
+	margin: 1%;
 `;
 
-const HeaderContent = styled.div`
-	width: 67%;
+const CardMessage = styled.div`
+	width: 60%;
 	display: flex;
-	margin-right: 2%;
+	margin: 1%;
 	overflow: hidden;
 `;
 
-const HeaderTimeStamp = styled.div`
-	width: 18%;
-`;
-
-const Footer = styled.div`
+const CardGroup = styled.div`
 	display: flex;
-	justify-content: space-between;
-	padding: 0 6% 2% 4%;
-`;
-
-const GroupFooter = styled.div`
-	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	align-items: center;
-	p {
-		color: black;
-	}
+	width: 20%;
+	margin: 1%;
 `;
 
-export default NotificationsCard;
+export default withRouter(NotificationsCard);

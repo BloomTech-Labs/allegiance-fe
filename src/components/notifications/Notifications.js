@@ -49,29 +49,26 @@ const Notifications = () => {
 	}
 
 	// Filter out activity performed by the user
-	const filteredNotifications = notifications.filter(act => {
-		if ((act.tag === "post" || act.tag === "reply") && userId !== act.user_id)
-			return act;
-		if (
-			(act.tag === "postLike" || act.tag === "replyLike") &&
-			userId !== act.liker_id
-		)
-			return act;
-		// If no activity, return empty array
-		return [];
-	});
+	const filteredNotifications = notifications.filter(
+		act => userId !== act.user_id && userId !== act.liker_id
+	);
+
+	console.log(filteredNotifications);
 
 	return (
 		<Container>
 			{filteredNotifications.map(activity => (
-				<NotificationsCard activity={activity} key={activity.id} />
+				<NotificationsCard
+					activity={activity}
+					key={activity.tag + activity.id}
+				/>
 			))}
 		</Container>
 	);
 };
 
 const Container = styled.div`
-	background-color: #dee4e7;
+	background-color: whitesmoke;
 `;
 
 export default Notifications;
