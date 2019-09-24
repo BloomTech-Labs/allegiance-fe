@@ -43,7 +43,6 @@ const Notifications = () => {
 	const { email, location } = useSelector(
 		state => state.userReducer.loggedInUser
 	);
-	console.log(email, location);
 
 	const dispatch = useDispatch();
 	// Cleanup useEffect to change notification check time, we do this on component un-mount
