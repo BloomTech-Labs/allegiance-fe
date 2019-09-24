@@ -108,35 +108,36 @@ const ReplyContainer = props => {
 					});
 				};
 
-				// Position of reply using replyNumber from props
+				// Set ycoord to position of reply using replyNumber from props
 				yCoordinate =
 					replyRefs[props.location.replyNumber].current.getBoundingClientRect()
 						.top + window.pageYOffset;
 
 				scrollRef();
+				// Set replyNumber to null to prevent re-render and scrollRef() when typing
 				props.location.replyNumber = null;
 			}
 		}
 		// No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
 	);
 
-	// Create ref and scrollToBottom function to allow scroll to bottom
+	// Create ref and scrollToBottom function to allow scroll to bottom button
 	const repliesEndRef = useRef(null);
-
 	const scrollToBottom = () => {
-		if (repliesEndRef.current) {
+		if (repliesEndRef.current)
 			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
-		}
 	};
 
 	if (!post) {
 		return (
 			<Loader active size="large">
-				Loading
+				{" "}
+				Loading{" "}
 			</Loader>
 		);
 	}
 
+	// Sort replies by id (which is chronological)
 	const sortedReplies = post.replies.sort((a, b) => a.id - b.id);
 
 	return (

@@ -67,7 +67,7 @@ function App(props) {
 						const pushTo =
 							window.location.pathname !== "/"
 								? window.location.pathname
-								: "/profile";
+								: "/home";
 						props.history.push(`${pushTo}`);
 						Mixpanel.login(currentUser, "Successful login.");
 					}
@@ -100,11 +100,7 @@ function App(props) {
 	});
 
 	if (loading) {
-		return (
-			<Loader active size="large">
-				Loading
-			</Loader>
-		);
+		return <Loader active size="large"> Loading </Loader>
 	}
 
 	return (

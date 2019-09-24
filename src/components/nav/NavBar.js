@@ -60,8 +60,6 @@ const NavBar = () => {
 		fetchData();
 	}, [token, userGroups, userId, timeStamp]);
 
-	if (notifications) console.log("notifications length", notifications.length);
-
 	// Define location for conditional top nav bar rendering
 	const { pathname } = window.location;
 	// Helper for conditional top nav bar rendering when using id params in pathname
@@ -87,6 +85,10 @@ const NavBar = () => {
 			</Loader>
 		);
 	}
+
+	// Setting notifications to empty array gets rid of user put lag when notifications unmounts
+	if (pathname === "/notifications" && notifications.length > 0)
+		setNotifications([]);
 
 	return (
 		<>
@@ -122,6 +124,7 @@ const NavBar = () => {
 								<NavIcon size="large" name="group" />
 							</MenuItem>
 							<MenuItem to="/notifications">
+								{/* Placeholder to keep alignment of icon center as desired */}
 								<PlaceHolder />
 								<NavIcon
 									size="large"
@@ -135,6 +138,7 @@ const NavBar = () => {
 										{notifications.length}
 									</NotificationNumber>
 								)}
+								{/* Placeholder to keep alignment of icon center as desired */}
 								{(pathname === "/notifications" ||
 									notifications.length === 0) && <PlaceHolder />}
 							</MenuItem>
