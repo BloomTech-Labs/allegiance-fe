@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Loader } from "semantic-ui-react";
+import moment from "moment";
+
+import { UPDATE_USER } from "../../reducers/userReducer";
+
 import NotificationsCard from "./NotificationsCard";
 
 const Notifications = () => {
@@ -28,17 +32,43 @@ const Notifications = () => {
 					});
 					console.log("res.data", response.data);
 					setNotifications(response.data.allActivity);
-				} catch {}
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		};
 		fetchData();
 	}, [token, userGroups]);
 
+	// Retrieve email and location as those are required by JOI check on backend
+	const { email, location } = useSelector(
+		state => state.userReducer.loggedInUser
+	);
+	console.log(email, location);
+
+	const dispatch = useDispatch();
+	// Cleanup useEffect to change notification check time
 	useEffect(() => {
-		return () => {
+		return async () => {
 			console.log("cleaned up");
+			if (token) {
+				try {
+					const response = await axiosWithAuth([token]).put(
+						`/users/${userId}`,
+						{
+							email,
+							location,
+							notification_check: moment().toISOString()
+						}
+					);
+					console.log(response);
+					dispatch({ type: UPDATE_USER, payload: response.data.updated });
+				} catch (error) {
+					console.log(error);
+				}
+			}
 		};
-	}, []);
+	}, [dispatch, email, location, userId, token]);
 
 	if (!notifications) {
 		return (

@@ -25,6 +25,9 @@ const NavBar = () => {
 	const [notifications, setNotifications] = useState();
 	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
+	const timeStamp = useSelector(
+		state => state.userReducer.loggedInUser.notification_check
+	);
 	const [token] = useGetToken();
 
 	useEffect(() => {
@@ -40,9 +43,13 @@ const NavBar = () => {
 						interval: 48
 					});
 					// Filter out activity performed by the user
+					// Currently uses created_at - in future if allowing content updates, use updated_at
 					if (response) {
 						const filtered = response.data.allActivity.filter(
-							act => userId !== act.user_id && userId !== act.liker_id
+							act =>
+								userId !== act.user_id &&
+								userId !== act.liker_id &&
+								act.created_at > timeStamp
 						);
 						setNotifications(filtered);
 					}
@@ -53,6 +60,8 @@ const NavBar = () => {
 		};
 		fetchData();
 	}, [token, userGroups, userId]);
+
+	if (notifications) console.log("notifications length", notifications.length);
 
 	// Define location for conditional top nav bar rendering
 	const { pathname } = window.location;
