@@ -8,6 +8,7 @@ import axios from "axios"
 import useGetToken from "../utils/useGetToken";
 import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
+import { Typography } from "@material-ui/core"
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -59,7 +60,7 @@ const Profile = props => {
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.first_name && <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>}
+            {loggedInUser.first_name && <Typography variant="h5" noWrap={true} style={{ fontWeight: 'bold' }}>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</Typography>}
             {props.match.url === "/profile" &&
               <Link to="/makeprofile">
                 <Icon name="edit outline" />
@@ -112,6 +113,7 @@ const BannerImage = styled.img`
 width: 100%
 border-bottom: 10px solid black;
 max-height: 225px;
+object-fit: cover;
 `;
 
 const InfoHolder = styled.div`
@@ -124,6 +126,7 @@ const Name = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const ImageCrop = styled.div`
@@ -139,11 +142,9 @@ const ImageCrop = styled.div`
   background-color: white;
 `;
 const ProfileImage = styled.img`
-  display: inline;
-  margin-left: -25%; //centers the image
-  height: 100%;
-  width: auto;
-  max-width: none;
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
 `;
 
 const H3 = styled.h3`

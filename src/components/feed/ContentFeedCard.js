@@ -1,24 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Moment from "react-moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import { Card, CardActionArea, CardContent, Avatar, Typography, Tooltip } from "@material-ui/core"
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
 	card: {
-		width: "80%",
-		marginTop: 15,
-		marginBottom: 15
+		width: "90%",
+		marginBottom: 20,
 	},
 	avatar: {
 		marginRight: 15,
@@ -47,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 const ContentFeedCard = props => {
-	const classes = useStyles();
+	const classes = useStyles(props);
 
 	// Destructure props to gain access to keys
 	const {
@@ -70,11 +63,25 @@ const ContentFeedCard = props => {
 	const fullName =
 		first_name && last_name
 			? first_name.charAt(0).toUpperCase() +
-			  first_name.slice(1) +
-			  " " +
-			  last_name.charAt(0).toUpperCase() +
-			  last_name.slice(1)
+			first_name.slice(1) +
+			" " +
+			last_name.charAt(0).toUpperCase() +
+			last_name.slice(1)
 			: null;
+
+	const goToGroup = e => {
+		e.preventDefault();
+		e.stopPropagation();
+		props.history.push(`/group/${group_id}`)
+	}
+
+	const goToPost = e => {
+		e.stopPropagation();
+		props.history.push({
+			pathname: `/post/${postId}`,
+			replyNumber: tag === "reply" ? id : null
+		})
+	}
 
 	// defining post id for conditional render
 	let postId;
@@ -85,60 +92,45 @@ const ContentFeedCard = props => {
 		postId = post_id;
 	}
 	return (
-		<CardDiv>
-			<Card className={classes.card}>
+		<CardDiv onClick={(e) => goToPost(e)}>
+			<Card className={classes.card} raised={true}>
 				<HeaderDiv>
 					<HeaderIcon>
 						<SmsOutlinedIcon className={classes.avatar} />
 					</HeaderIcon>
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={user_image} />
-						<p>
-							{fullName} {tag === "post" && "created a post..."}
-							{tag === "reply" && "replied..."}
-						</p>
+						<Typography>
+							{fullName} {tag === "post" && "created a post..."}{tag === "reply" && "replied..."}
+						</Typography>
 					</HeaderContent>
-					<HeaderTimeStamp>
-						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-							<Moment fromNow>{created_at}</Moment>
-						</Tooltip>
-					</HeaderTimeStamp>
 				</HeaderDiv>
-
 				<CardActionArea>
 					<CardContent>
 						<Typography
 							variant="body2"
 							color="textSecondary"
 							component="p"
-							className={classes.content}
-						>
+							className={classes.content}>
 							{tag === "post" && post_content}
 							{tag === "reply" && reply_content}
 						</Typography>
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<Link
-						to={{
-							pathname: `/post/${postId}`,
-							replyNumber: tag === "reply" ? id : null
-						}}
-					>
-						<Button variant="contained" size="small" className={classes.button}>
-							{tag === "post" && "See Post"} {tag === "reply" && "See Reply"}
-						</Button>
-					</Link>
-					<Link to={`/group/${group_id}`}>
-						<GroupFooter>
-							<Avatar
-								aria-label="recipe"
-								className={classes.groupAvatar}
-								src={group_image}
-							/>
-							<p>{acronym}</p>
-						</GroupFooter>
-					</Link>
+					<FooterTimeStamp>
+						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+							<Moment fromNow style={{ color: "grey" }}>{created_at}</Moment>
+						</Tooltip>
+					</FooterTimeStamp>
+					<GroupFooter onClick={(e) => goToGroup(e)}>
+						<Avatar
+							aria-label="recipe"
+							className={classes.groupAvatar}
+							src={group_image}
+						/>
+						<p>{acronym}</p>
+					</GroupFooter>
 				</Footer>
 			</Card>
 		</CardDiv>
@@ -155,6 +147,7 @@ const HeaderDiv = styled.div`
 	justify-content: flex-start;
 	padding: 0.4rem 0;
 	text-align: left;
+	border-bottom: 1px solid lightgrey;
 	p {
 		color: gray;
 	}
@@ -165,20 +158,23 @@ const HeaderIcon = styled.div`
 `;
 
 const HeaderContent = styled.div`
-	width: 67%;
+	width: 80%;
 	display: flex;
 	margin-right: 2%;
 	overflow: hidden;
 `;
 
-const HeaderTimeStamp = styled.div`
-	width: 18%;
+const FooterTimeStamp = styled.div`
+	width: 22%;
+	color: grey;
+	text-align: left;
 `;
 
 const Footer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	padding: 0 6% 2% 4%;
+	padding: 1% 6% 2% 4%;
+	border-top: 1px solid lightgrey
 `;
 
 const GroupFooter = styled.div`
@@ -190,4 +186,4 @@ const GroupFooter = styled.div`
 	}
 `;
 
-export default ContentFeedCard;
+export default withRouter(ContentFeedCard)
