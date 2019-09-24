@@ -49,7 +49,7 @@ const Notifications = () => {
 	// instead of mount so that different styling can be applied to new vs old notifications
 	useEffect(() => {
 		return async () => {
-			if (token) {
+			if (token && userId) {
 				try {
 					const response = await axiosWithAuth([token]).put(
 						`/users/${userId}`,
