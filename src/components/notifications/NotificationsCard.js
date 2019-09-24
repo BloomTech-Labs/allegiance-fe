@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { useSelector } from "react-redux";
 
 import Moment from "react-moment";
 
@@ -10,6 +11,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
+	newCard: {
+		display: "flex",
+		width: "90%",
+		backgroundColor: "#FFFFE0"
+	},
 	card: {
 		display: "flex",
 		width: "90%"
@@ -88,9 +94,17 @@ const NotificationsCard = props => {
 		});
 	};
 
+	// Grab notification timestamp from user
+	const timeStamp = useSelector(
+		state => state.userReducer.loggedInUser.notification_check
+	);
+	let checkIfNew;
+	if (created_at <= timeStamp) checkIfNew = false;
+	if (created_at > timeStamp) checkIfNew = true;
+
 	return (
 		<NotificationCardDiv onClick={e => goToPost(e)}>
-			<Card className={classes.card}>
+			<Card className={checkIfNew ? classes.newCard : classes.card}>
 				<CardIcon>
 					<Avatar
 						aria-label="author_avatar"

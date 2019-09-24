@@ -30,7 +30,6 @@ const Notifications = () => {
 						group_id: mappedGroupIds,
 						interval: 48
 					});
-					console.log("res.data", response.data);
 					setNotifications(response.data.allActivity);
 				} catch (error) {
 					console.log(error);
@@ -51,7 +50,6 @@ const Notifications = () => {
 	// instead of mount so that different styling can be applied to new vs old notifications
 	useEffect(() => {
 		return async () => {
-			console.log("cleaned up");
 			if (token) {
 				try {
 					const response = await axiosWithAuth([token]).put(
@@ -62,7 +60,6 @@ const Notifications = () => {
 							notification_check: moment().toISOString()
 						}
 					);
-					console.log(response);
 					dispatch({ type: UPDATE_USER, payload: response.data.updated });
 				} catch (error) {
 					console.log(error);

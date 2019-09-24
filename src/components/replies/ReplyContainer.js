@@ -25,6 +25,7 @@ const ReplyContainer = props => {
 	const id = props.match.params.id;
 
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
+
 	const dispatch = useDispatch();
 
 	// useForm custom hook and set timeout custom hook
@@ -128,11 +129,22 @@ const ReplyContainer = props => {
 			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
 	};
 
+	// Obtain groups the user has a relation to
+	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
+	// checking to see if current user is a member of current group
+	const currentUserType = userGroups.find(group => group.id === id);
+	// if they are undefined, we set membership to a string so we don't get an error
+	let membership;
+	if (currentUserType === undefined) {
+		membership = "non-member";
+	} else {
+		membership = currentUserType.user_type;
+	}
+
 	if (!post) {
 		return (
 			<Loader active size="large">
-				{" "}
-				Loading{" "}
+				Loading
 			</Loader>
 		);
 	}
@@ -160,39 +172,41 @@ const ReplyContainer = props => {
 
 			<div ref={repliesEndRef} />
 
-			<ContainerBottom>
-				<DownNav>
-					<VerticalAlignBottomIcon
-						className={classes.button}
-						onClick={scrollToBottom}
-					/>
-				</DownNav>
-				<form className={"reply-form"} onSubmit={handleSubmit}>
-					<div className={"input-div"}>
-						<TextField
-							id="outlined-textarea"
-							required
-							label="Reply to post"
-							placeholder="Reply..."
-							multiline
-							fullWidth
-							className={classes.textField}
-							margin="normal"
-							variant="outlined"
-							onChange={handleChange}
-							name="reply_content"
-							value={values.reply_content || ""}
+			{(membership === "admin" || membership === "member") && (
+				<ContainerBottom>
+					<DownNav>
+						<VerticalAlignBottomIcon
+							className={classes.button}
+							onClick={scrollToBottom}
 						/>
-					</div>
-					<Fab
-						classes={{ root: classes.root }}
-						type="submit"
-						aria-label="Reply"
-					>
-						<AddIcon />
-					</Fab>
-				</form>
-			</ContainerBottom>
+					</DownNav>
+					<form className={"reply-form"} onSubmit={handleSubmit}>
+						<div className={"input-div"}>
+							<TextField
+								id="outlined-textarea"
+								required
+								label="Reply to post"
+								placeholder="Reply..."
+								multiline
+								fullWidth
+								className={classes.textField}
+								margin="normal"
+								variant="outlined"
+								onChange={handleChange}
+								name="reply_content"
+								value={values.reply_content || ""}
+							/>
+						</div>
+						<Fab
+							classes={{ root: classes.root }}
+							type="submit"
+							aria-label="Reply"
+						>
+							<AddIcon />
+						</Fab>
+					</form>
+				</ContainerBottom>
+			)}
 		</ReplyViewContainer>
 	);
 };
