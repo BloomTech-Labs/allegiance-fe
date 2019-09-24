@@ -1,14 +1,19 @@
 import React from "react";
+import { withRouter } from "react-router";
 import { Popup, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Mixpanel } from "../analytics/Mixpanel";
 
 const MyAllegianceGroups = props => {
-  const mixpanelCheck = () =>
-    props.type === "group"
-      ? Mixpanel.activity(props.userId, "Visited Group From Profile Page")
-      : null;
+  const mixpanelCheck = (link) => {
+    if (props.type === "group") {
+      Mixpanel.activity(props.userId, "Visited Group From Profile Page")
+      props.history.push(link)
+    }
+  }
+
+
 
   return (
     <LogoHolder>
@@ -32,16 +37,11 @@ const MyAllegianceGroups = props => {
         </div>
       )}
       {props.content.map(item => (
-        <div key={item.id} style={{ margin: "1%" }}>
-          <Link
-            to={`/${props.type}/${item.id}`}
-            onClick={() => mixpanelCheck()}
-          >
-            <Popup
-              content={item.name}
-              trigger={<GroupLogo src={item.image} />}
-            />
-          </Link>
+        <div key={item.id} style={{ margin: "1%" }} onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}>
+          <Popup
+            content={item.name}
+            trigger={<GroupLogo src={item.image} />}
+          />
           <Nickname>{item.acronym && item.acronym}</Nickname>
         </div>
       ))}
@@ -78,4 +78,4 @@ const GroupLogo = styled.img`
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `;
 
-export default MyAllegianceGroups;
+export default withRouter(MyAllegianceGroups);
