@@ -3,14 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { VIEW_REPLIES } from "../../reducers/navReducer";
 
 import styled from "styled-components";
-import "../../styled/Replies.scss";
 import { Loader } from "semantic-ui-react";
 import { green } from "@material-ui/core/colors";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Fab } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
+import { Add, VerticalAlignBottom } from "@material-ui/icons/";
+
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -90,9 +88,9 @@ const ReplyContainer = props => {
 	// CreateRef for scrolling from Links
 	const replyRefs = post
 		? post.replies.reduce((acc, value) => {
-				acc[value.id] = createRef();
-				return acc;
-		  }, {})
+			acc[value.id] = createRef();
+			return acc;
+		}, {})
 		: null;
 
 	// On component mount, if a replyNumber is received from props, scroll the reply into view
@@ -176,13 +174,13 @@ const ReplyContainer = props => {
 			{(membership === "admin" || membership === "member") && (
 				<ContainerBottom>
 					<DownNav>
-						<VerticalAlignBottomIcon
+						<VerticalAlignBottom
 							className={classes.button}
 							onClick={scrollToBottom}
 						/>
 					</DownNav>
-					<form className={"reply-form"} onSubmit={handleSubmit}>
-						<div className={"input-div"}>
+					<ReplyForm onSubmit={handleSubmit}>
+						<InputDiv>
 							<TextField
 								id="outlined-textarea"
 								required
@@ -197,15 +195,15 @@ const ReplyContainer = props => {
 								name="reply_content"
 								value={values.reply_content || ""}
 							/>
-						</div>
+						</InputDiv>
 						<Fab
 							classes={{ root: classes.root }}
 							type="submit"
 							aria-label="Reply"
 						>
-							<AddIcon />
+							<Add />
 						</Fab>
-					</form>
+					</ReplyForm>
 				</ContainerBottom>
 			)}
 		</ReplyViewContainer>
@@ -240,5 +238,19 @@ const DownNav = styled.div`
 	align-items: center;
 	width: 10%;
 `;
+
+const ReplyForm = styled.form`
+display: flex;
+flex-direction: row;
+justify-content: center;
+width: 100%;
+background-color: #dee4e7;
+align-items: center;
+`
+
+const InputDiv = styled.div`
+width: 75%;
+margin-right: 10px;
+`
 
 export default ReplyContainer;

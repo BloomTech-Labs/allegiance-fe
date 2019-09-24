@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import "../../styled/Replies.scss";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -47,6 +46,20 @@ const ReplyCard = props => {
     container: {
       display: "flex",
       flexWrap: "wrap"
+    },
+    content: {
+      maxWidth: "70%",
+      margin: "10px 0",
+      padding: "10px",
+      display: "block",
+      position: "relative",
+      wordWrap: "break-word",
+      borderRadius: "5px",
+      boxShadow: "0 0 6px #b2b2b2",
+      padding: "10px",
+      '&:last-child': {
+        paddingBottom: "10px"
+      }
     },
     textField: {
       marginLeft: theme.spacing(1),
@@ -143,7 +156,7 @@ const ReplyCard = props => {
       >
         <Avatar className={classes.avatar} src={!image ? avi : image} />
         <Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-          <Content className={userId === user_id ? "me" : "you"}>
+          <Content className={classes.content} color={userId === user_id ? "me" : "you"}>
             <Typography
               className={classes.typography2}
               variant="body1"
@@ -222,12 +235,10 @@ const BubbleContainer = styled.div`
 `;
 
 const Content = styled(CardContent)`
-  max-width: 70%;
-  padding: 10px;
-  &:last-child {
-    padding-bottom: 0;
-  }
-`;
+background-color: ${props => {
+    return props.color === "me" ? "#8f5db7" : "#f2f2f2"
+  }}`
+
 const Activity = styled.div`
   display: flex;
   flex-direction: column;
