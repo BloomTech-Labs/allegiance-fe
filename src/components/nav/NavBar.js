@@ -12,7 +12,6 @@ import { ArrowBack } from "@material-ui/icons";
 
 const NavBar = () => {
 	const { isAuthenticated, logout } = useAuth0();
-	const [activeItem, setActiveItem] = useState("");
 	// Obtain last viewed replies thread's group_id
 	const groupId = useSelector(state => state.navReducer.groupID);
 
@@ -114,35 +113,16 @@ const NavBar = () => {
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
 				{isAuthenticated && (
-					<Nav style={{ backgroundColor: "#1b4570", borderRadius: 0 }}>
+					<Nav>
 						<NavLeft>
-							<Menu.Item
-								as={Link}
-								name="Home"
-								to="/home"
-								onClick={() => setActiveItem("Home")}
-								active={activeItem === "Home"}
-							>
+							<MenuItem to="/home">
 								<NavIcon size="large" name="home" />
-							</Menu.Item>
-							<Menu.Item
-								as={Link}
-								name="Groups"
-								to="/groups"
-								onClick={() => setActiveItem("Groups")}
-								active={activeItem === "Groups"}
-							>
+							</MenuItem>
+							<MenuItem to="/groups">
 								<NavIcon size="large" name="group" />
-							</Menu.Item>
-							<Menu.Item
-								as={Link}
-								name="Notifications"
-								to="/notifications"
-								onClick={() => {
-									setActiveItem("Notifications");
-								}}
-								active={activeItem === "Notifications"}
-							>
+							</MenuItem>
+							<MenuItem to="/notifications">
+								<PlaceHolder />
 								<NavIcon
 									size="large"
 									name="bell outline"
@@ -155,25 +135,15 @@ const NavBar = () => {
 										{notifications.length}
 									</NotificationNumber>
 								)}
-							</Menu.Item>
-							<Menu.Item
-								as={Link}
-								name="Profile"
-								to="/profile"
-								onClick={() => setActiveItem("Profile")}
-								active={activeItem === "Profile"}
-							>
+								{(pathname === "/notifications" ||
+									notifications.length === 0) && <PlaceHolder />}
+							</MenuItem>
+							<MenuItem to="/profile">
 								<NavIcon size="large" name="user" />
-							</Menu.Item>
+							</MenuItem>
 						</NavLeft>
 						<NavRight>
-							<Menu.Item
-								style={{ color: "white", fontWeight: "bold" }}
-								name="Logout"
-								onClick={() => logoutWithRedirect()}
-							>
-								Logout
-							</Menu.Item>
+							<LogOut onClick={() => logoutWithRedirect()}>Logout</LogOut>
 						</NavRight>
 					</Nav>
 				)}
@@ -228,37 +198,60 @@ const BottomNav = styled.div`
 	}
 `;
 
-const Nav = styled(Menu)`
+const Nav = styled.div`
 	display: flex;
 	justify-content: space-between;
-	// targeting pseudo element from semantic ui Menu element to remove empty string
-	&&:after {
-		display: none;
-	}
+	align-content: center;
+	height: 6.5vh;
+	background-color: #1b4570;
 `;
 
 const NavLeft = styled.div`
 	display: flex;
 	flex: 1 1 0;
+	width: 85%;
+`;
+
+const MenuItem = styled(Link)`
+	width: 20%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 const NavIcon = styled(Icon)`
 	color: white;
 `;
 
+const PlaceHolder = styled.div`
+	width: 30%;
+	text-decoration: none;
+	background-color: #1b4570;
+	color: #1b4570;
+`;
+
 const NotificationNumber = styled.div`
-	padding: 2px 5px;
+	width: 30%;
+	padding: 1 3px;
 	color: whitesmoke;
 	background-color: #f03737;
 	border-radius: 50%;
 	position: relative;
-	top: -10px;
-	left: -15px;
+	top: -11px;
+	left: -14px;
 `;
 
 const NavRight = styled.div`
 	display: flex;
 	color: white;
+	width: 15%;
+`;
+
+const LogOut = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
 `;
 
 export default NavBar;
