@@ -6,7 +6,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 
 import styled from "styled-components";
-import { Menu, Icon, Loader } from "semantic-ui-react";
+import { Icon, Loader } from "semantic-ui-react";
 import IconButton from "@material-ui/core/IconButton";
 import { ArrowBack } from "@material-ui/icons";
 

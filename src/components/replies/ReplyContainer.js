@@ -115,7 +115,8 @@ const ReplyContainer = props => {
 			yCoordinate =
 				replyRefs[props.location.replyNumber].current.getBoundingClientRect()
 					.top + window.pageYOffset;
-		scrollRef();
+		// If no replyNumber (i.e. not navigated from feed or notifications), do not scroll on input
+		if (props.location.replyNumber !== undefined) scrollRef();
 	}, [props.location.replyNumber, replyRefs]);
 	console.log(props.location.replyNumber);
 
