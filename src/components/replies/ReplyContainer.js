@@ -89,46 +89,55 @@ const ReplyContainer = props => {
 	// CreateRef for scrolling from Links
 	const replyRefs = post
 		? post.replies.reduce((acc, value) => {
-			acc[value.id] = createRef();
-			return acc;
-		}, {})
+				acc[value.id] = createRef();
+				return acc;
+		  }, {})
 		: null;
 
 	// On component mount, if a replyNumber is received from props, scroll the reply into view
-	useEffect(() => {
-		let yCoordinate;
-		const scrollRef = () => {
-			// Subtract 50 px to account for padding top from top nav bar
-			const yOffset = -50;
-			window.scrollTo({
-				top: yCoordinate + yOffset,
-				behavior: "smooth"
-			});
-		};
+	useEffect(
+		() => {
+			if (props.location.replyNumber && replyRefs !== null) {
+				let yCoordinate;
+				const scrollRef = () => {
+					// Subtract 50 px to account for padding top from top nav bar
+					const yOffset = -50;
+					window.scrollTo({
+						top: yCoordinate + yOffset,
+						behavior: "smooth"
+					});
+				};
 
-		if (
-			props.location.replyNumber &&
-			replyRefs !== null &&
-			replyRefs[props.location.replyNumber].current !== null
-		)
-			// Position of reply using replyNumber from props
-			yCoordinate =
-				replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-					.top + window.pageYOffset;
-		scrollRef();
-	}, [props.location.replyNumber, replyRefs]);
+				// Set ycoord to position of reply using replyNumber from props
+				yCoordinate =
+					replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+						.top + window.pageYOffset;
 
-	// Create ref and scrollToBottom function to allow scroll to bottom
+				scrollRef();
+				// Set replyNumber to null to prevent re-render and scrollRef() when typing
+				props.location.replyNumber = null;
+			}
+		}
+		// No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
+	);
+
+	// Create ref and scrollToBottom function to allow scroll to bottom button
 	const repliesEndRef = useRef(null);
-
 	const scrollToBottom = () => {
-		if (repliesEndRef.current) repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
+		if (repliesEndRef.current)
+			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
 	};
 
 	if (!post) {
-		return <Loader active size="large"> Loading </Loader>
+		return (
+			<Loader active size="large">
+				{" "}
+				Loading{" "}
+			</Loader>
+		);
 	}
 
+	// Sort replies by id (which is chronological)
 	const sortedReplies = post.replies.sort((a, b) => a.id - b.id);
 
 	return (

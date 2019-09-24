@@ -27,7 +27,7 @@ import AddAllegiance from "./components/allegiances/AddAllegiance";
 import ReplyContainer from "./components/replies/ReplyContainer";
 import MakeAllegiance from "./components/allegiances/MakeAllegiance";
 import Feed from "./components/feed/Feed";
-// import Notifications from "./components/notifications/Notifications";
+import Notifications from "./components/notifications/Notifications";
 
 import { LOGIN } from "./reducers/userReducer";
 
@@ -106,7 +106,7 @@ function App(props) {
 	return (
 		<div className="App">
 			<Switch>
-				<Route exact path="/" component={!isAuthenticated ? Landing : NavBar} />
+				<Route exact path="/" component={!isAuthenticated && Landing} />
 				<NavBar />
 			</Switch>
 			<Switch>
@@ -114,11 +114,7 @@ function App(props) {
 				<PrivateRoute exact path="/makeprofile" component={MakeProfile} />
 				<PrivateRoute exact path="/creategroup" component={CreateGroup} />
 				<PrivateRoute exact path="/editgroup/:id" component={CreateGroup} />
-				<PrivateRoute
-					exact
-					path="/notifications"
-					component={UnderConstruction}
-				/>
+				<PrivateRoute exact path="/notifications" component={Notifications} />
 				<PrivateRoute exact path="/groups" component={GroupContainer} />
 				<PrivateRoute exact path="/profile" component={Profile} />
 				<PrivateRoute exact path="/group/:id" component={GroupPage} />
