@@ -30,23 +30,17 @@ const Feed = () => {
 						interval: 48
 					});
 					setFeed(response.data.allActivity);
-				} catch {}
+				} catch { }
 			}
 		};
 		fetchData();
 	}, [token, userGroups]);
 
 	if (!feed) {
-		return (
-			<Loader active size="large">
-				Loading
-			</Loader>
-		);
+		return <Loader active size="large"> Loading </Loader>
 	}
 	// Filter feed for activity by user
-	const filteredFeed = feed.filter(
-		act => userId !== act.user_id && userId !== act.liker_id
-	);
+	const filteredFeed = feed.filter(act => userId !== act.user_id && userId !== act.liker_id);
 
 	return (
 		<Container>

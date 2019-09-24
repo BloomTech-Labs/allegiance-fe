@@ -1,24 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
+import { withRouter } from "react-router-dom";
 import Moment from "react-moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import { Card, CardActionArea, CardContent, Avatar, Typography, Tooltip } from "@material-ui/core"
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles({
 	card: {
-		width: "80%",
-		marginTop: 15,
-		marginBottom: 15
+		width: "90%",
+		marginBottom: 20
 	},
 	avatar: {
 		marginRight: 15,
@@ -36,7 +28,7 @@ const useStyles = makeStyles({
 	},
 	content: {
 		color: "black",
-		fontSize: 18
+		fontSize: 18,
 	},
 	groupAvatar: {
 		marginRight: 15,
@@ -65,26 +57,35 @@ const LikeFeedCard = props => {
 		acronym
 	} = props.activity;
 
+	const goToGroup = e => {
+		e.preventDefault();
+		e.stopPropagation();
+		props.history.push(`/group/${group_id}`)
+	}
+
+	const goToPost = e => {
+		e.stopPropagation();
+		props.history.push({
+			pathname: `/post/${post_id}`,
+			replyNumber: reply_id
+		})
+	}
+
 	return (
-		<LikeCardDiv>
-			<Card className={classes.card}>
+		<LikeCardDiv onClick={(e) => goToPost(e)}>
+			<Card className={classes.card} raised={true}>
 				<HeaderDiv>
 					<HeaderIcon>
 						<ThumbUpOutlinedIcon className={classes.avatar} />
 					</HeaderIcon>
 					<HeaderContent>
 						<Avatar className={classes.headerAvatar} src={liker_image} />
-						<p>
+						<Typography>
 							<span>{liker_name}</span>{" "}
 							{tag === "postLike" && "liked a post..."}
 							{tag === "replyLike" && "liked a reply..."}
-						</p>
+						</Typography>
 					</HeaderContent>
-					<HeaderTimeStamp>
-						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-							<Moment fromNow>{created_at}</Moment>
-						</Tooltip>
-					</HeaderTimeStamp>
 				</HeaderDiv>
 
 				<CardActionArea>
@@ -101,27 +102,18 @@ const LikeFeedCard = props => {
 					</CardContent>
 				</CardActionArea>
 				<Footer>
-					<Link
-						to={{
-							pathname: `/post/${post_id}`,
-							replyNumber: reply_id
-						}}
-					>
-						<Button variant="contained" size="small" className={classes.button}>
-							{tag === "postLike" && "See Post"}{" "}
-							{tag === "replyLike" && "See Reply"}
-						</Button>
-					</Link>
-					<Link to={`/group/${group_id}`}>
-						<GroupFooter>
-							<Avatar
-								aria-label="recipe"
-								className={classes.groupAvatar}
-								src={group_image}
-							/>
-							<p>{acronym}</p>
-						</GroupFooter>
-					</Link>
+					<FooterTimeStamp>
+						<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+							<Moment fromNow>{created_at}</Moment>
+						</Tooltip>
+					</FooterTimeStamp>
+					<GroupFooter onClick={(e) => goToGroup(e)}>
+						<Avatar
+							aria-label="recipe"
+							className={classes.groupAvatar}
+							src={group_image} />
+						<p>{acronym}</p>
+					</GroupFooter>
 				</Footer>
 			</Card>
 		</LikeCardDiv>
@@ -138,6 +130,7 @@ const HeaderDiv = styled.div`
 	justify-content: flex-start;
 	padding-top: 0.4rem;
 	text-align: left;
+	border-bottom: 1px solid lightgrey;
 	p {
 		color: gray;
 		span {
@@ -151,20 +144,24 @@ const HeaderIcon = styled.div`
 `;
 
 const HeaderContent = styled.div`
-	width: 67%;
+	width: 80%;
 	display: flex;
 	margin-right: 2%;
 	overflow: hidden;
 `;
 
-const HeaderTimeStamp = styled.div`
-	width: 18%;
+const FooterTimeStamp = styled.div`
+	width: 22%;
+	text-align: left;
+	color: grey;
 `;
 
 const Footer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	padding: 0 6% 2% 4%;
+	padding: 1% 6% 2% 4%;
+	margin-top: 2px;
+	border-top: 1px solid lightgrey;
 `;
 
 const GroupFooter = styled.div`
@@ -176,4 +173,4 @@ const GroupFooter = styled.div`
 	}
 `;
 
-export default LikeFeedCard;
+export default withRouter(LikeFeedCard);
