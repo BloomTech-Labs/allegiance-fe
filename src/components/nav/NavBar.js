@@ -43,12 +43,18 @@ const NavBar = () => {
 					});
 					// Filter out activity performed by the user
 					// Currently uses created_at - in future if allowing content updates, use updated_at
-					if (response) {
+					if (response && timeStamp !== null) {
 						const filtered = response.data.allActivity.filter(
 							act =>
 								userId !== act.user_id &&
 								userId !== act.liker_id &&
 								act.created_at > timeStamp
+						);
+						setNotifications(filtered);
+					}
+					if (response && timeStamp === null) {
+						const filtered = response.data.allActivity.filter(
+							act => userId !== act.user_id && userId !== act.liker_id
 						);
 						setNotifications(filtered);
 					}
