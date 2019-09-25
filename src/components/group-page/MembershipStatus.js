@@ -5,10 +5,9 @@ import { ADD_GROUP, LEAVE_GROUP } from "../../reducers/userReducer";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { makeStyles } from "@material-ui/core/styles";
 import useGetToken from "../utils/useGetToken";
-import Button from "@material-ui/core/Button";
+import { Button, Chip } from "@material-ui/core/";
 import red from "@material-ui/core/colors/red";
 import blue from "@material-ui/core/colors/blue";
-import Chip from "@material-ui/core/Chip";
 
 import { Mixpanel } from "../analytics/Mixpanel";
 
