@@ -8,6 +8,7 @@ import { green } from "@material-ui/core/colors";
 import { TextField, Fab } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add, VerticalAlignBottom } from "@material-ui/icons/";
+import { Mixpanel } from "../analytics/Mixpanel"
 
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
@@ -61,6 +62,7 @@ const ReplyContainer = props => {
 		if (post.data.reply) {
 			setValues("");
 			setSubmitted(true);
+			Mixpanel.activity(userId, 'Reply Successfully Created.')
 		}
 	}
 
