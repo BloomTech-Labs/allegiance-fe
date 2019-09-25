@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import "../../styled/Replies.scss";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import { Mixpanel } from '../analytics/Mixpanel'
 
 import avi from "../../assets/walter-avi.png";
 import { Favorite, DeleteOutline, FavoriteBorder } from "@material-ui/icons";
@@ -115,7 +114,6 @@ const ReplyCard = props => {
     );
     if (like.data.likeResult) {
       props.setSubmitted(true);
-      Mixpanel.activity(loggedInUser.id, 'Reply Successfully Created.')
     }
   }
 

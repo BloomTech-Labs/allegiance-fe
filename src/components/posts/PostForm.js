@@ -5,7 +5,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 import styled from "styled-components";
-import { Mixpanel } from '../analytics/Mixpanel'
+import { Mixpanel } from "../analytics/Mixpanel"
 
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -38,7 +38,7 @@ const PostForm = props => {
 		if (post.data.postResult) {
 			setValues("");
 			props.setSubmitted(true);
-			Mixpanel.activity(loggedInUser.id, 'Post Successfully Created.')
+			Mixpanel.activity(userId, 'Post Successfully Created.')
 		}
 	}
 

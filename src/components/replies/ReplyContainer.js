@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
+import { Mixpanel } from "../analytics/Mixpanel"
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -62,6 +63,7 @@ const ReplyContainer = props => {
 		if (post.data.reply) {
 			setValues("");
 			setSubmitted(true);
+			Mixpanel.activity(userId, 'Reply Successfully Created.')
 		}
 	}
 
@@ -89,9 +91,9 @@ const ReplyContainer = props => {
 	// CreateRef for scrolling from Links
 	const replyRefs = post
 		? post.replies.reduce((acc, value) => {
-				acc[value.id] = createRef();
-				return acc;
-		  }, {})
+			acc[value.id] = createRef();
+			return acc;
+		}, {})
 		: null;
 
 	// On component mount, if a replyNumber is received from props, scroll the reply into view
