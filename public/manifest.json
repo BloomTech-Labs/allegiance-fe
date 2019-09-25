@@ -8,18 +8,18 @@
       "type": "image/x-icon"
     },
     {
-      "src": "favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "64x64 32x32 24x24 16x16"
+      "src": "logo192.png",
+      "type": "png",
+      "sizes": "192px"
     },
     {
-      "src": "favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "64x64 32x32 24x24 16x16"
+      "src": "Logo.png",
+      "type": "png",
+      "sizes": "512px"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "##1B4570",
+  "theme_color": "#1B4570",
   "background_color": "#ffffff"
 }

@@ -24,7 +24,7 @@ const useImageUploader = type => {
                 process.env.REACT_APP_CLOUDINARY_URL,
                 formData
             )
-            type === 'banner' ? setBanner(result.data.url) : setImage(result.data.url)
+            type === 'banner' ? setBanner(result.data.secure_url) : setImage(result.data.secure_url)
         }
         uploadImage()
     }, [type])
