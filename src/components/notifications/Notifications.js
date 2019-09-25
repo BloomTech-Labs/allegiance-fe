@@ -30,7 +30,6 @@ const Notifications = () => {
 						group_id: mappedGroupIds,
 						interval: 48
 					});
-					console.log("res.data", response.data);
 					setNotifications(response.data.allActivity);
 				} catch (error) {
 					console.log(error);
@@ -44,15 +43,13 @@ const Notifications = () => {
 	const { email, location } = useSelector(
 		state => state.userReducer.loggedInUser
 	);
-	console.log(email, location);
 
 	const dispatch = useDispatch();
 	// Cleanup useEffect to change notification check time, we do this on component un-mount
 	// instead of mount so that different styling can be applied to new vs old notifications
 	useEffect(() => {
 		return async () => {
-			console.log("cleaned up");
-			if (token) {
+			if (token && userId) {
 				try {
 					const response = await axiosWithAuth([token]).put(
 						`/users/${userId}`,
@@ -62,7 +59,6 @@ const Notifications = () => {
 							notification_check: moment().toISOString()
 						}
 					);
-					console.log(response);
 					dispatch({ type: UPDATE_USER, payload: response.data.updated });
 				} catch (error) {
 					console.log(error);

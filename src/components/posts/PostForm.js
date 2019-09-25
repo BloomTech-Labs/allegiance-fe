@@ -7,14 +7,11 @@ import useForm from "../utils/useForm";
 import styled from "styled-components";
 import { Mixpanel } from "../analytics/Mixpanel"
 
-import TextField from "@material-ui/core/TextField";
+import { TextField, Fab } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
 import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
-
-import "../../styled/Replies.scss";
 
 const PostForm = props => {
 	const primary = green[500];
@@ -70,8 +67,8 @@ const PostForm = props => {
 					onClick={props.scrollToBottom}
 				/>
 			</DownNav>
-			<form className={"reply-form"} onSubmit={handleSubmit}>
-				<div className={"input-div"}>
+			<ReplyForm onSubmit={handleSubmit}>
+				<InputDiv>
 					<TextField
 						id="outlined-textarea"
 						required
@@ -86,11 +83,11 @@ const PostForm = props => {
 						name="post_content"
 						value={values.post_content || ""}
 					/>
-				</div>
+				</InputDiv>
 				<Fab classes={{ root: classes.root }} type="submit" aria-label="Reply">
 					<AddIcon />
 				</Fab>
-			</form>
+			</ReplyForm>
 		</FormContainer>
 	);
 };
@@ -109,6 +106,18 @@ const DownNav = styled.div`
 	justify-content: flex-end;
 	align-items: center;
 	width: 10%;
+`;
+const ReplyForm = styled.form`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+	background-color: #dee4e7;
+	align-items: center;
+`;
+const InputDiv = styled.div`
+	width: 75%;
+	margin-right: 10px;
 `;
 
 export default PostForm;

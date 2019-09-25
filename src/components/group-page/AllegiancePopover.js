@@ -1,11 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grow from "@material-ui/core/Grow";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Avatar from "@material-ui/core/Avatar";
+import { Paper, Grow, FormControlLabel, Avatar, Typography } from "@material-ui/core/";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -58,15 +54,15 @@ const SimpleGrow = props => {
 							))}
 						</Paper>
 					) : (
-						<Typography
-							className={classes.typography}
-							variant="body1"
-							color="textSecondary"
-							component="p"
-						>
-							No Allegiances Yet!
+							<Typography
+								className={classes.typography}
+								variant="body1"
+								color="textSecondary"
+								component="p"
+							>
+								No Allegiances Yet!
 						</Typography>
-					)}
+						)}
 				</Grow>
 			</div>
 		</div>

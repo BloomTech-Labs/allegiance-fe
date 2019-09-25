@@ -3,15 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { VIEW_REPLIES } from "../../reducers/navReducer";
 
 import styled from "styled-components";
-import "../../styled/Replies.scss";
 import { Loader } from "semantic-ui-react";
 import { green } from "@material-ui/core/colors";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Fab } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
+import { Add, VerticalAlignBottom } from "@material-ui/icons/";
 import { Mixpanel } from "../analytics/Mixpanel"
+
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
@@ -26,6 +24,7 @@ const ReplyContainer = props => {
 	const id = props.match.params.id;
 
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
+
 	const dispatch = useDispatch();
 
 	// useForm custom hook and set timeout custom hook
@@ -130,13 +129,25 @@ const ReplyContainer = props => {
 			repliesEndRef.current.scrollIntoView({ behavior: "smooth" });
 	};
 
+	// Obtain groups the user has a relation to, check for membership after post is loaded
+	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
+
 	if (!post) {
 		return (
 			<Loader active size="large">
-				{" "}
-				Loading{" "}
+				Loading
 			</Loader>
 		);
+	}
+
+	// Checking to see if current user is a member of current group
+	const currentUserType = userGroups.find(group => group.id === post.group_id);
+	// If they are undefined, we set membership to a string so we don't get an error
+	let membership;
+	if (currentUserType === undefined) {
+		membership = "non-member";
+	} else {
+		membership = currentUserType.user_type;
 	}
 
 	// Sort replies by id (which is chronological)
@@ -162,39 +173,41 @@ const ReplyContainer = props => {
 
 			<div ref={repliesEndRef} />
 
-			<ContainerBottom>
-				<DownNav>
-					<VerticalAlignBottomIcon
-						className={classes.button}
-						onClick={scrollToBottom}
-					/>
-				</DownNav>
-				<form className={"reply-form"} onSubmit={handleSubmit}>
-					<div className={"input-div"}>
-						<TextField
-							id="outlined-textarea"
-							required
-							label="Reply to post"
-							placeholder="Reply..."
-							multiline
-							fullWidth
-							className={classes.textField}
-							margin="normal"
-							variant="outlined"
-							onChange={handleChange}
-							name="reply_content"
-							value={values.reply_content || ""}
+			{(membership === "admin" || membership === "member") && (
+				<ContainerBottom>
+					<DownNav>
+						<VerticalAlignBottom
+							className={classes.button}
+							onClick={scrollToBottom}
 						/>
-					</div>
-					<Fab
-						classes={{ root: classes.root }}
-						type="submit"
-						aria-label="Reply"
-					>
-						<AddIcon />
-					</Fab>
-				</form>
-			</ContainerBottom>
+					</DownNav>
+					<ReplyForm onSubmit={handleSubmit}>
+						<InputDiv>
+							<TextField
+								id="outlined-textarea"
+								required
+								label="Reply to post"
+								placeholder="Reply..."
+								multiline
+								fullWidth
+								className={classes.textField}
+								margin="normal"
+								variant="outlined"
+								onChange={handleChange}
+								name="reply_content"
+								value={values.reply_content || ""}
+							/>
+						</InputDiv>
+						<Fab
+							classes={{ root: classes.root }}
+							type="submit"
+							aria-label="Reply"
+						>
+							<Add />
+						</Fab>
+					</ReplyForm>
+				</ContainerBottom>
+			)}
 		</ReplyViewContainer>
 	);
 };
@@ -227,5 +240,19 @@ const DownNav = styled.div`
 	align-items: center;
 	width: 10%;
 `;
+
+const ReplyForm = styled.form`
+display: flex;
+flex-direction: row;
+justify-content: center;
+width: 100%;
+background-color: #dee4e7;
+align-items: center;
+`
+
+const InputDiv = styled.div`
+width: 75%;
+margin-right: 10px;
+`
 
 export default ReplyContainer;
