@@ -56,7 +56,6 @@ const ReplyCard = props => {
       wordWrap: "break-word",
       borderRadius: "5px",
       boxShadow: "0 0 6px #b2b2b2",
-      padding: "10px",
       '&:last-child': {
         paddingBottom: "10px"
       }
@@ -150,7 +149,6 @@ const ReplyCard = props => {
   return (
     <div className={"reply-div"}>
       <BubbleContainer
-        // className={userId === user_id ? "mine" : "yours"}
         user={userId === user_id ? "mine" : "yours"}
         key={id}
       >

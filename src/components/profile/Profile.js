@@ -47,7 +47,7 @@ const Profile = props => {
     <ProfileContainer>
       <div style={{ maxWidth: "100%" }}>
         <Banner>
-          <BannerImage src={loggedInUser.banner_image || defaultBanner} />
+          <BannerImage src={loggedInUser.banner_image || defaultBanner} alt="Banner" />
         </Banner>
         <ImageCrop>
           {loggedInUser.image

@@ -6,9 +6,7 @@ import Moment from "react-moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
+import { Card, Avatar, Tooltip } from "@material-ui/core/";
 
 const useStyles = makeStyles({
 	newCard: {
