@@ -108,6 +108,7 @@ const NotificationsCard = props => {
 						aria-label="author_avatar"
 						className={classes.avatar}
 						src={liker_image || user_image}
+						alt={"Avatar"}
 					/>
 				</CardIcon>
 				<CardMessage>
@@ -142,6 +143,7 @@ const NotificationsCard = props => {
 						aria-label="group_avatar"
 						className={classes.avatar}
 						src={group_image}
+						alt={"Avatar"}
 					/>
 					<p>{acronym}</p>
 				</CardGroup>

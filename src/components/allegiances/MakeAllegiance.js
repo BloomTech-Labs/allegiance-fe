@@ -77,7 +77,7 @@ const MakeAllegiance = props => {
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
-              trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
+              trigger={<ProfilePic alt={"Image Preview"} onClick={() => setModal(true)} src={image || values.image || Default} />}>
               <UploaderUI displayImage={image || values.image} />
             </Modal>
           </BasicInfoHolder>

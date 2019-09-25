@@ -113,6 +113,7 @@ const MembersList = props => {
               <Avatar
                 className={classes.avatar}
                 src={!member.image ? avi : member.image}
+                alt={"User Avatar"}
               />
             </ListItemIcon>
             <ListItemText primary={member.name} className={classes.text} />

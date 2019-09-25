@@ -65,7 +65,7 @@ const MakeProfile = props => {
 						<Modal
 							open={modalOpen}
 							onClose={() => setModal(false)}
-							trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} />}>
+							trigger={<ProfilePic onClick={() => setModal(true)} src={image || values.image || Default} alt={"Image Preview"} />}>
 							<UploaderUI displayImage={image || values.image} />
 						</Modal>
 						<NameHolder>

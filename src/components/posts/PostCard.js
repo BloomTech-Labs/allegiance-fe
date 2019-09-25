@@ -132,7 +132,7 @@ export default function PostCard(props) {
 				}}
 				className={classes.cardHeader}
 				avatar={
-					<Avatar src={!image ? avi : image} className={classes.avatar} />
+					<Avatar src={!image ? avi : image} className={classes.avatar} alt={"Avatar"} />
 				}
 				action={
 					(userId === user_id || userStatus === "admin") &&

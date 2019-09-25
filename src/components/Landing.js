@@ -10,7 +10,7 @@ const Landing = () => {
 	return (
 		<LandingContainer>
 			<LogoHolder>
-				<Image src={Logo} size="small" />
+				<Image src={Logo} size="small" alt={"Logo"} />
 				<h1>ALLEGIANCE</h1>
 			</LogoHolder>
 			<Headers>The social network for sports fans</Headers>
