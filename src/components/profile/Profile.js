@@ -14,7 +14,6 @@ const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
   const loggedInAllegiances = useSelector(state => state.userReducer.loggedInAllegiances);
-  const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
   const dispatch = useDispatch();
 
   //Fetches Auth0 token for axios call
@@ -83,18 +82,6 @@ const Profile = props => {
               type="group" />
           </>
         </InfoHolder>
-        <div>
-          <PostHeader>
-            <H3>POSTS</H3>
-            <H3 style={{ color: "lightgrey" }} onClick={() => console.log(10)}>
-              {" "}
-              MANAGE POSTS
-            </H3>
-          </PostHeader>
-          <div>
-            {loggedInPosts ? loggedInPosts : <NoPosts>You haven't posted yet!</NoPosts>}
-          </div>
-        </div>
       </div>
     </ProfileContainer>
   );
@@ -154,64 +141,4 @@ const H3 = styled.h3`
   margin-bottom: 0;
 `;
 
-const PostHeader = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between
-	align-items: center;
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: .5rem;`;
-
-const NoPosts = styled.p`
-  color: lightgrey;
-  font-weight: bold;
-  font-size: 1rem;
-`;
-
 export default Profile;
-
-//Code for future release
-/*					<ImageHolder>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-					</ImageHolder>
-
-						<div>
-							<H3>MY ALLEGIANCES</H3>
-							<AllegianceHolder>
-								<MyAllegianceGroups content={loggedInAllegiances} type={'allegiances'} />
-							</AllegianceHolder>
-						</div>*/
