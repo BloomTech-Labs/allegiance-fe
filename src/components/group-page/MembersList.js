@@ -3,7 +3,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { SwipeableDrawer, Button, List, ListItem, ListItemText, ListItemIcon, Avatar } from "@material-ui/core/SwipeableDrawer";
+import { SwipeableDrawer, Button, List, ListItem, ListItemText, ListItemIcon, Avatar } from "@material-ui/core/";
 import avi from "../../assets/walter-avi.png";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import red from "@material-ui/core/colors/red";
