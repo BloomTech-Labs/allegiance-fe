@@ -9,17 +9,18 @@
     },
     {
       "src": "logo192.png",
-      "type": "png",
-      "sizes": "192px"
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
       "src": "Logo.png",
-      "type": "png",
-      "sizes": "512px"
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1B4570",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation": "portrait"
 }
