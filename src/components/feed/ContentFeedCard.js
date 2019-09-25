@@ -99,7 +99,7 @@ const ContentFeedCard = props => {
 						<SmsOutlinedIcon className={classes.avatar} />
 					</HeaderIcon>
 					<HeaderContent>
-						<Avatar className={classes.headerAvatar} src={user_image} />
+						<Avatar className={classes.headerAvatar} src={user_image} alt={`${fullName}'s Image`} />
 						<Typography>
 							{fullName} {tag === "post" && "created a post..."}{tag === "reply" && "replied..."}
 						</Typography>
@@ -128,6 +128,7 @@ const ContentFeedCard = props => {
 							aria-label="recipe"
 							className={classes.groupAvatar}
 							src={group_image}
+							alt={"Group Image"}
 						/>
 						<p>{acronym}</p>
 					</GroupFooter>

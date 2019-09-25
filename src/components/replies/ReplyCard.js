@@ -152,7 +152,7 @@ const ReplyCard = props => {
         user={userId === user_id ? "mine" : "yours"}
         key={id}
       >
-        <Avatar className={classes.avatar} src={!image ? avi : image} />
+        <Avatar className={classes.avatar} src={!image ? avi : image} alt={"Avatar"} />
         <Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
           <Content className={classes.content} color={userId === user_id ? "me" : "you"}>
             <Typography

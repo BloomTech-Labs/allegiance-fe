@@ -79,7 +79,7 @@ const LikeFeedCard = props => {
 						<ThumbUpOutlinedIcon className={classes.avatar} />
 					</HeaderIcon>
 					<HeaderContent>
-						<Avatar className={classes.headerAvatar} src={liker_image} />
+						<Avatar className={classes.headerAvatar} src={liker_image} alt={`${liker_name}'s Image`} />
 						<Typography>
 							<span>{liker_name}</span>{" "}
 							{tag === "postLike" && "liked a post..."}
@@ -111,7 +111,8 @@ const LikeFeedCard = props => {
 						<Avatar
 							aria-label="recipe"
 							className={classes.groupAvatar}
-							src={group_image} />
+							src={group_image}
+							alt={"Group Image"} />
 						<p>{acronym}</p>
 					</GroupFooter>
 				</Footer>

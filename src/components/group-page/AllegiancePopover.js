@@ -50,7 +50,7 @@ const SimpleGrow = props => {
 					{props.allegiances.length > 0 ? (
 						<Paper elevation={4} className={classes.paper}>
 							{props.allegiances.map(al => (
-								<Avatar key={al.id} src={al.image} className={classes.avatar} />
+								<Avatar key={al.id} src={al.image} className={classes.avatar} alt={al.name} />
 							))}
 						</Paper>
 					) : (

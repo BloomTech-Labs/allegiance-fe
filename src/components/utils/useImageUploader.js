@@ -47,7 +47,7 @@ const useImageUploader = type => {
                 </Uploader>
                 <PreviewHolder>
                     {`Preview of Your New ${'Profile'} Image:`}
-                    <ProfilePic src={props.displayImage || Default} />
+                    <ProfilePic src={props.displayImage || Default} alt={"Preview"} />
                 </PreviewHolder>
                 <DoneButton>
                     <Button onClick={() => setModal(false)} color='violet' fluid>Done</Button>
