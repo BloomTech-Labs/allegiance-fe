@@ -98,58 +98,58 @@ const NotificationsCard = props => {
 	);
 	let checkIfNew;
 	if (created_at <= timeStamp) checkIfNew = false;
-	if (created_at > timeStamp || timeStamp === null)
+	if (created_at > timeStamp || timeStamp === null) checkIfNew = true;
 
-		return (
-			<NotificationCardDiv onClick={e => goToPost(e)}>
-				<Card className={checkIfNew ? classes.newCard : classes.card}>
-					<CardIcon>
-						<Avatar
-							aria-label="author_avatar"
-							className={classes.avatar}
-							src={liker_image || user_image}
-							alt={"Avatar"}
-						/>
-					</CardIcon>
-					<CardMessage>
-						<div>
-							<span>{liker_name || fullName}</span>{" "}
-							{tag === "post" && <>made a post: {postContent}</>}
-							{tag === "reply" && <>replied to a post: {replyContent}</>}
-							{tag === "postLike" && (
-								<>
-									liked {liker_id === poster_id && "their own"}
-									{liker_id !== poster_id && (
-										<span>{poster_name}'s</span>
-									)} post: {postContent}
-								</>
-							)}
-							{tag === "replyLike" && (
-								<>
-									liked {liker_id === replier_id && "their own"}
-									{liker_id !== replier_id && <span>{replier_name}'s</span>}{" "}
-									reply: {replyContent}
-								</>
-							)}{" "}
-							<p>
-								<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
-									<Moment fromNow>{created_at}</Moment>
-								</Tooltip>
-							</p>
-						</div>
-					</CardMessage>
-					<CardGroup>
-						<Avatar
-							aria-label="group_avatar"
-							className={classes.avatar}
-							src={group_image}
-							alt={"Avatar"}
-						/>
-						<p>{acronym}</p>
-					</CardGroup>
-				</Card>
-			</NotificationCardDiv>
-		);
+	return (
+		<NotificationCardDiv onClick={e => goToPost(e)}>
+			<Card className={checkIfNew ? classes.newCard : classes.card}>
+				<CardIcon>
+					<Avatar
+						aria-label="author_avatar"
+						className={classes.avatar}
+						src={liker_image || user_image}
+						alt={"Avatar"}
+					/>
+				</CardIcon>
+				<CardMessage>
+					<div>
+						<span>{liker_name || fullName}</span>{" "}
+						{tag === "post" && <>made a post: {postContent}</>}
+						{tag === "reply" && <>replied to a post: {replyContent}</>}
+						{tag === "postLike" && (
+							<>
+								liked {liker_id === poster_id && "their own"}
+								{liker_id !== poster_id && (
+									<span>{poster_name}'s</span>
+								)} post: {postContent}
+							</>
+						)}
+						{tag === "replyLike" && (
+							<>
+								liked {liker_id === replier_id && "their own"}
+								{liker_id !== replier_id && <span>{replier_name}'s</span>}{" "}
+								reply: {replyContent}
+							</>
+						)}{" "}
+						<p>
+							<Tooltip title={<Moment format="LLLL">{created_at}</Moment>}>
+								<Moment fromNow>{created_at}</Moment>
+							</Tooltip>
+						</p>
+					</div>
+				</CardMessage>
+				<CardGroup>
+					<Avatar
+						aria-label="group_avatar"
+						className={classes.avatar}
+						src={group_image}
+						alt={"Avatar"}
+					/>
+					<p>{acronym}</p>
+				</CardGroup>
+			</Card>
+		</NotificationCardDiv>
+	);
 };
 
 const NotificationCardDiv = styled.div`
