@@ -1,35 +1,15 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { useSelector } from "react-redux";
 
 import Moment from "react-moment";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
-
-const useStyles = makeStyles({
-	card: {
-		display: "flex",
-		width: "90%"
-	},
-	avatar: {
-		marginRight: 0,
-		marginLeft: 0,
-		height: 50,
-		width: 50
-	},
-	content: {
-		color: "black",
-		fontSize: 16
-	}
-});
+import { Card, Avatar, Tooltip } from "@material-ui/core/";
 
 const NotificationsCard = props => {
-	const classes = useStyles();
-
-	// Destructure props to gain access to keys
+	// De-structure props to gain access to keys
 	const {
 		// note: various other key/value pairs available, see postman documentation
 		id,
@@ -52,6 +32,31 @@ const NotificationsCard = props => {
 		group_image,
 		acronym
 	} = props.activity;
+
+	// Material UI styling
+	const useStyles = makeStyles({
+		newCard: {
+			display: "flex",
+			width: "90%",
+			backgroundColor: "#FFFFE0"
+		},
+		card: {
+			display: "flex",
+			width: "90%"
+		},
+		avatar: {
+			marginRight: 0,
+			marginLeft: 0,
+			height: 50,
+			width: 50
+		},
+		content: {
+			color: "black",
+			fontSize: 16
+		}
+	});
+
+	const classes = useStyles();
 
 	// fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
 	const fullName = first_name + " " + last_name;
@@ -84,18 +89,29 @@ const NotificationsCard = props => {
 		e.stopPropagation();
 		props.history.push({
 			pathname: `/post/${postId}`,
+			// Provide replyId if appropriate for scrolling into focus upon navigation
 			replyNumber: replyId || null
 		});
 	};
 
+	// Grab notification timestamp from user
+	const timeStamp = useSelector(
+		state => state.userReducer.loggedInUser.notification_check
+	);
+	let checkIfNew;
+	if (created_at <= timeStamp) checkIfNew = false;
+	// Notification_checks default to null for new users, thus the need for control flow here
+	if (created_at > timeStamp || timeStamp === null) checkIfNew = true;
+
 	return (
 		<NotificationCardDiv onClick={e => goToPost(e)}>
-			<Card className={classes.card}>
+			<Card className={checkIfNew ? classes.newCard : classes.card}>
 				<CardIcon>
 					<Avatar
 						aria-label="author_avatar"
 						className={classes.avatar}
 						src={liker_image || user_image}
+						alt={"Avatar"}
 					/>
 				</CardIcon>
 				<CardMessage>
@@ -130,6 +146,7 @@ const NotificationsCard = props => {
 						aria-label="group_avatar"
 						className={classes.avatar}
 						src={group_image}
+						alt={"Avatar"}
 					/>
 					<p>{acronym}</p>
 				</CardGroup>
