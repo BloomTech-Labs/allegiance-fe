@@ -63,7 +63,8 @@ const MakeAllegiance = props => {
 
   async function createAllegiance() {
     try {
-      if (image) values.image = image;
+      // Checks if user provided an image; uses default image if not
+      values.image = image ? image : Default;
       const result = await axiosWithAuth([token]).post(`/allegiances`, values);
       console.log(values);
       addAllegiance(result.data.newAllegiance);
