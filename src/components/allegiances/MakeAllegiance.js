@@ -65,6 +65,8 @@ const MakeAllegiance = props => {
     try {
       // Checks if user provided an image; uses default image if not
       values.image = image ? image : Default;
+      // If user doesn't interact with sport dropdown, supplies Other value
+      values.sport = values.sport ? values.sport : "Other";
       const result = await axiosWithAuth([token]).post(`/allegiances`, values);
       console.log(values);
       addAllegiance(result.data.newAllegiance);
@@ -126,6 +128,7 @@ const MakeAllegiance = props => {
           <SubmitButton />
         </Form>
       </FormSegment>
+      <button onClick={() => console.log(values)}>Log Me!</button>
     </FormHolder>
   );
 };
