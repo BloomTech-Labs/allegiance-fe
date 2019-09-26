@@ -1,14 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Icon, Modal, Segment, Select } from "semantic-ui-react";
+import { Form, Icon, Modal, Segment } from "semantic-ui-react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import useForm from "../utils/useForm";
 import useImageUploader from "../utils/useImageUploader";
 import { ADD_ALLEGIANCE } from "../../reducers/userReducer";
-import styled from "styled-components"
-import Default from "../../assets/walter-avi.png"
+import styled from "styled-components";
+import Default from "../../assets/walter-avi.png";
 
 const MakeAllegiance = props => {
   //Fetches logged in user's info from redux store.
@@ -19,10 +19,18 @@ const MakeAllegiance = props => {
   const [token] = useGetToken();
 
   //Imports form custom hook to handle state, form entry and form submission.
-  const { values, handleChange, handleSubmit, SubmitButton, ErrorMessage, setError, setLoading } = useForm(createAllegiance);
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    SubmitButton,
+    ErrorMessage,
+    setError,
+    setLoading
+  } = useForm(createAllegiance);
 
   //Imports image upload functions
-  const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
+  const { image, UploaderUI, modalOpen, setModal } = useImageUploader();
 
   const addAllegiance = async allegiance => {
     try {
@@ -33,7 +41,11 @@ const MakeAllegiance = props => {
           allegiance_id: allegiance.id
         }
       );
-      const { allegiance_id, allegiance_name, allegiance_image } = userAllegiance.data.newUserAllegiances;
+      const {
+        allegiance_id,
+        allegiance_name,
+        allegiance_image
+      } = userAllegiance.data.newUserAllegiances;
       const newAllegiance = {
         id: allegiance_id,
         name: allegiance_name,
@@ -44,40 +56,47 @@ const MakeAllegiance = props => {
 
       setTimeout(push, 1000);
     } catch {
-      setError(true)
-      setLoading(false)
+      setError(true);
+      setLoading(false);
     }
   };
 
   async function createAllegiance() {
     try {
-      if (image) values.image = image;
+      // Checks if user provided an image; uses default image if not
+      values.image = image ? image : Default;
+      // If user doesn't interact with sport dropdown, supplies Other value
+      values.sport = values.sport ? values.sport : "Other";
       const result = await axiosWithAuth([token]).post(`/allegiances`, values);
       addAllegiance(result.data.newAllegiance);
     } catch {
-      setError(true)
-      setLoading(false)
+      setError(true);
+      setLoading(false);
     }
   }
 
-  const selectOptions = [
-    { key: "NFL", text: "NFL", value: "NFL" },
-    { key: "MLB", text: "MLB", value: "MLB" },
-    { key: "NBA", text: "NBA", value: "NBA" },
-    { key: "NHL", text: "NHL", value: "NHL" },
-    { key: "Other", text: "Other", value: "Other" }
-  ]
-
   return (
     <FormHolder>
-      <FormSegment raised color="violet" style={{ margin: 'auto' }}>
+      <FormSegment raised color="violet" style={{ margin: "auto" }}>
         <Form onSubmit={handleSubmit} error>
           <BasicInfoHolder>
-            <UploadIcon name='edit' size='large' color='black' onClick={() => setModal(true)} />
+            <UploadIcon
+              name="edit"
+              size="large"
+              color="black"
+              onClick={() => setModal(true)}
+            />
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
-              trigger={<ProfilePic alt={"Image Preview"} onClick={() => setModal(true)} src={image || values.image || Default} />}>
+              trigger={
+                <ProfilePic
+                  alt={"Image Preview"}
+                  onClick={() => setModal(true)}
+                  src={image || values.image || Default}
+                />
+              }
+            >
               <UploaderUI displayImage={image || values.image} />
             </Modal>
           </BasicInfoHolder>
@@ -93,51 +112,59 @@ const MakeAllegiance = props => {
           <Form.Field
             required
             label="Sport"
-            placeholder="Sport"
             onChange={handleChange}
-            defaultValue={values.sport || ""}
+            value={values.sport || ""}
             name="sport"
-            control={Select}
-            options={selectOptions}
-          />
+            control="select"
+          >
+            <option value="Other">Other</option>
+            <option value="NFL">NFL</option>
+            <option value="MLB">MLB</option>
+            <option value="NBA">NBA</option>
+            <option value="NHL">NHL</option>
+          </Form.Field>
           <ErrorMessage />
           <SubmitButton />
         </Form>
       </FormSegment>
     </FormHolder>
-  )
+  );
 };
 const FormHolder = styled.div`
-background-color: #dee4e7;
-min-height: 90vh;
-padding-top: 5%;
-margin-top: -1.5%;
-@media (max-width: 320px) {
-	height: 87vh
-}`
+  background-color: #dee4e7;
+  min-height: 90vh;
+  padding-top: 5%;
+  margin-top: -1.5%;
+  @media (max-width: 320px) {
+    height: 87vh;
+  }
+`;
 
 const FormSegment = styled(Segment)`
-width: 90%;
-margin: auto;
-marginBottom: 15%;
-`
+  width: 90%;
+  margin: auto;
+  marginbottom: 15%;
+`;
 
 const UploadIcon = styled(Icon)`
-position: absolute;
-top: 2.8rem;
-left: 2.8rem`
+  position: absolute;
+  top: 2.8rem;
+  left: 2.8rem;
+`;
 
 const ProfilePic = styled.img`
-border-color: black;
-object-fit: cover;
-width: 100px;
-height: 100px;
-border-radius: 50%;
-border: 1px solid black;
-flex: 0 0 auto;
-opacity: .6; `
+  border-color: black;
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid black;
+  flex: 0 0 auto;
+  opacity: 0.6;
+`;
 
 const BasicInfoHolder = styled.div`
-display: flex;
-flex-direction: row;`
+  display: flex;
+  flex-direction: row;
+`;
 export default MakeAllegiance;
