@@ -122,10 +122,10 @@ const NavBar = () => {
 					<Nav>
 						<NavLeft>
 							<MenuItem to="/home">
-								<NavIcon size="large" name="home" />
+								<NavIcon size="large" name="home" alt={"Home"} />
 							</MenuItem>
 							<MenuItem to="/groups">
-								<NavIcon size="large" name="group" />
+								<NavIcon size="large" name="group" alt={"Groups"} />
 							</MenuItem>
 							<MenuItem to="/notifications">
 								{/* Placeholder to keep alignment of icon center as desired */}
@@ -134,6 +134,7 @@ const NavBar = () => {
 									size="large"
 									name="bell outline"
 									number={navNotifications.length}
+									alt={"Notifications"}
 								/>
 								{/* Notification count only shows when not navigated to notification 
                 component and when there is more than zero notifications to show */}
@@ -148,7 +149,7 @@ const NavBar = () => {
 									navNotifications.length === 0) && <PlaceHolder />}
 							</MenuItem>
 							<MenuItem to="/profile">
-								<NavIcon size="large" name="user" />
+								<NavIcon size="large" name="user" alt={"Profile"} />
 							</MenuItem>
 						</NavLeft>
 						<NavRight>

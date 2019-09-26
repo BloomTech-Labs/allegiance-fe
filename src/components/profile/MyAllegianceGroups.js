@@ -40,7 +40,7 @@ const MyAllegianceGroups = props => {
         <div key={item.id} style={{ margin: "1%" }} onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}>
           <Popup
             content={item.name}
-            trigger={<GroupLogo src={item.image} />}
+            trigger={<GroupLogo src={item.image} alt="Logo" />}
           />
           <Nickname>{item.acronym && item.acronym}</Nickname>
         </div>

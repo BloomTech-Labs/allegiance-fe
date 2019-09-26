@@ -5,7 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
-import "./App.scss";
+import styled from "styled-components";
 import { Loader } from "semantic-ui-react";
 
 import PrivateRoute from "./components/PrivateRoute";
@@ -100,11 +100,16 @@ function App(props) {
 	});
 
 	if (loading) {
-		return <Loader active size="large"> Loading </Loader>
+		return (
+			<Loader active size="large">
+				{" "}
+				Loading{" "}
+			</Loader>
+		);
 	}
 
 	return (
-		<div className="App">
+		<AppContainer>
 			<Switch>
 				<Route exact path="/" component={!isAuthenticated && Landing} />
 				<NavBar />
@@ -127,8 +132,14 @@ function App(props) {
 				<PrivateRoute exact path="/makeallegiance" component={MakeAllegiance} />
 				<PrivateRoute exact path="/post/:id" component={ReplyContainer} />
 			</Switch>
-		</div>
+		</AppContainer>
 	);
 }
+
+const AppContainer = styled.div`
+	text-align: center;
+	padding-top: 11%;
+	padding-bottom: 12%;
+`;
 
 export default withRouter(App);
