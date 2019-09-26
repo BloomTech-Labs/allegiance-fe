@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Icon, Modal, Segment, Select } from "semantic-ui-react";
+import { Form, Icon, Modal, Segment } from "semantic-ui-react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
