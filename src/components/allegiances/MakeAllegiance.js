@@ -68,7 +68,6 @@ const MakeAllegiance = props => {
       // If user doesn't interact with sport dropdown, supplies Other value
       values.sport = values.sport ? values.sport : "Other";
       const result = await axiosWithAuth([token]).post(`/allegiances`, values);
-      console.log(values);
       addAllegiance(result.data.newAllegiance);
     } catch {
       setError(true);
@@ -128,7 +127,6 @@ const MakeAllegiance = props => {
           <SubmitButton />
         </Form>
       </FormSegment>
-      <button onClick={() => console.log(values)}>Log Me!</button>
     </FormHolder>
   );
 };
