@@ -12,6 +12,9 @@ import NotificationsCard from "./NotificationsCard";
 
 const Notifications = () => {
 	const [notifications, setNotifications] = useState();
+	// Keep track of when notifications component mounts so that timestamp
+	// can be passed to the put in the cleanup useEffect
+	const [mountTime, setMountTime] = useState();
 	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
 
@@ -31,6 +34,8 @@ const Notifications = () => {
 						interval: 48
 					});
 					setNotifications(response.data.allActivity);
+					// Record timestamp upon component mount
+					setMountTime(moment().toISOString());
 				} catch (error) {
 					console.log(error);
 				}
@@ -49,14 +54,16 @@ const Notifications = () => {
 	// instead of mount so that different styling can be applied to new vs old notifications
 	useEffect(() => {
 		return async () => {
-			if (token && userId) {
+			if (token && userId && mountTime) {
 				try {
 					const response = await axiosWithAuth([token]).put(
 						`/users/${userId}`,
 						{
 							email,
 							location,
-							notification_check: moment().toISOString()
+							// Set timestamp to when component mounted in case activity occurred while
+							// user was in the notifications tab, so that those activities aren't missed
+							notification_check: mountTime
 						}
 					);
 					dispatch({ type: UPDATE_USER, payload: response.data.updated });
@@ -65,7 +72,7 @@ const Notifications = () => {
 				}
 			}
 		};
-	}, [dispatch, email, location, userId, token]);
+	}, [dispatch, email, location, userId, token, mountTime]);
 
 	if (!notifications) {
 		return (
@@ -75,7 +82,7 @@ const Notifications = () => {
 		);
 	}
 
-	// Filter out activity performed by the user, future versions should combine likes
+	// Filter out activity performed by the user, future versions should combine likes on same post/reply
 	const filteredNotifications = notifications.filter(
 		act => userId !== act.user_id && userId !== act.liker_id
 	);

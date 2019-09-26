@@ -8,32 +8,8 @@ import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Avatar, Tooltip } from "@material-ui/core/";
 
-const useStyles = makeStyles({
-	newCard: {
-		display: "flex",
-		width: "90%",
-		backgroundColor: "#FFFFE0"
-	},
-	card: {
-		display: "flex",
-		width: "90%"
-	},
-	avatar: {
-		marginRight: 0,
-		marginLeft: 0,
-		height: 50,
-		width: 50
-	},
-	content: {
-		color: "black",
-		fontSize: 16
-	}
-});
-
 const NotificationsCard = props => {
-	const classes = useStyles();
-
-	// Destructure props to gain access to keys
+	// De-structure props to gain access to keys
 	const {
 		// note: various other key/value pairs available, see postman documentation
 		id,
@@ -56,6 +32,31 @@ const NotificationsCard = props => {
 		group_image,
 		acronym
 	} = props.activity;
+
+	// Material UI styling
+	const useStyles = makeStyles({
+		newCard: {
+			display: "flex",
+			width: "90%",
+			backgroundColor: "#FFFFE0"
+		},
+		card: {
+			display: "flex",
+			width: "90%"
+		},
+		avatar: {
+			marginRight: 0,
+			marginLeft: 0,
+			height: 50,
+			width: 50
+		},
+		content: {
+			color: "black",
+			fontSize: 16
+		}
+	});
+
+	const classes = useStyles();
 
 	// fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
 	const fullName = first_name + " " + last_name;
@@ -88,6 +89,7 @@ const NotificationsCard = props => {
 		e.stopPropagation();
 		props.history.push({
 			pathname: `/post/${postId}`,
+			// Provide replyId if appropriate for scrolling into focus upon navigation
 			replyNumber: replyId || null
 		});
 	};
@@ -98,6 +100,7 @@ const NotificationsCard = props => {
 	);
 	let checkIfNew;
 	if (created_at <= timeStamp) checkIfNew = false;
+	// Notification_checks default to null for new users, thus the need for control flow here
 	if (created_at > timeStamp || timeStamp === null) checkIfNew = true;
 
 	return (

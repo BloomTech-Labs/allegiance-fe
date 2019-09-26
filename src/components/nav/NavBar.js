@@ -12,7 +12,7 @@ import { ArrowBack } from "@material-ui/icons";
 
 const NavBar = () => {
 	const { isAuthenticated, logout } = useAuth0();
-	// Obtain last viewed replies thread's group_id
+	// Obtain last viewed replies thread's group_id from redux
 	const groupId = useSelector(state => state.navReducer.groupID);
 
 	const logoutWithRedirect = () =>
@@ -21,7 +21,8 @@ const NavBar = () => {
 		});
 
 	// Retrieve notifications while not on notifications tab to update number counter on icon
-	const [notifications, setNotifications] = useState();
+	const [navNotifications, setNavNotifications] = useState();
+	// Retrieve all groups where user has a relation
 	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
 	const userId = useSelector(state => state.userReducer.loggedInUser.id);
 	const timeStamp = useSelector(
@@ -30,10 +31,11 @@ const NavBar = () => {
 	const [token] = useGetToken();
 
 	useEffect(() => {
-		// Fetch notifications related data
+		// Obtain array of group ids where user has a relation for axios feed call
 		const mappedGroupIds = userGroups.map(group => {
 			return group.id;
 		});
+		// Fetch notifications related data
 		const fetchData = async () => {
 			if (token) {
 				try {
@@ -41,22 +43,17 @@ const NavBar = () => {
 						group_id: mappedGroupIds,
 						interval: 48
 					});
-					// Filter out activity performed by the user
-					// Currently uses created_at - in future if allowing content updates, use updated_at
-					if (response && timeStamp !== null) {
+					// Filter out activity performed by the user, current filter uses activity's
+					// created_at - in future if allowing content updates, use updated_at
+					if (response) {
 						const filtered = response.data.allActivity.filter(
 							act =>
 								userId !== act.user_id &&
 								userId !== act.liker_id &&
-								act.created_at > timeStamp
+								// Notification_checks default to null for new users, thus the need for || check
+								(act.created_at > timeStamp || timeStamp === null)
 						);
-						setNotifications(filtered);
-					}
-					if (response && timeStamp === null) {
-						const filtered = response.data.allActivity.filter(
-							act => userId !== act.user_id && userId !== act.liker_id
-						);
-						setNotifications(filtered);
+						setNavNotifications(filtered);
 					}
 				} catch (error) {
 					console.log(error);
@@ -84,7 +81,7 @@ const NavBar = () => {
 		</>
 	);
 
-	if (!notifications) {
+	if (!navNotifications) {
 		return (
 			<Loader active size="large">
 				Loading
@@ -92,9 +89,10 @@ const NavBar = () => {
 		);
 	}
 
-	// Setting notifications to empty array gets rid of user put lag when notifications unmounts
-	if (pathname === "/notifications" && notifications.length > 0)
-		setNotifications([]);
+	// Setting notifications to empty array allows for elimination of notification
+	// icon number upon mount and solves axios PUT lag upon notifications un-mount
+	if (pathname === "/notifications" && navNotifications.length > 0)
+		setNavNotifications([]);
 
 	return (
 		<>
@@ -135,19 +133,20 @@ const NavBar = () => {
 								<NavIcon
 									size="large"
 									name="bell outline"
-									number={notifications.length}
+									number={navNotifications.length}
 									alt={"Notifications"}
 								/>
 								{/* Notification count only shows when not navigated to notification 
                 component and when there is more than zero notifications to show */}
-								{pathname !== "/notifications" && notifications.length > 0 && (
-									<NotificationNumber>
-										{notifications.length}
-									</NotificationNumber>
-								)}
+								{pathname !== "/notifications" &&
+									navNotifications.length > 0 && (
+										<NotificationNumber>
+											{navNotifications.length}
+										</NotificationNumber>
+									)}
 								{/* Placeholder to keep alignment of icon center as desired */}
 								{(pathname === "/notifications" ||
-									notifications.length === 0) && <PlaceHolder />}
+									navNotifications.length === 0) && <PlaceHolder />}
 							</MenuItem>
 							<MenuItem to="/profile">
 								<NavIcon size="large" name="user" alt={"Profile"} />
