@@ -22,18 +22,18 @@ export const userReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loggedInUser: action.payload.currentUser || action.payload.newUser,
-				loggedInGroups: action.payload.basicGroupInfo.filter(
-					group => group.user_type !== "invited"
-				),
+				loggedInGroups: action.payload.basicGroupInfo
+					? action.payload.basicGroupInfo.filter(group => group.user_type !== "invited")
+					: [],
 				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
 			};
 		case ENTER_PROFILE:
 			return {
 				...state,
-				loggedInGroups: action.payload.basicGroupInfo.filter(
-					group => group.user_type !== "invited"
-				),
+				loggedInGroups: action.payload.basicGroupInfo
+					? action.payload.basicGroupInfo.filter(group => group.user_type !== "invited")
+					: [],
 				loggedInAllegiances: action.payload.basicAllegianceInfo,
 				error: ""
 			};
