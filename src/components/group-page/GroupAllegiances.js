@@ -10,11 +10,10 @@ const GroupInfo = props => {
       <LogoHolder>
         {props.allegiances.map(al => (
           <ImageHolder key={al.id}>
-            {/* <Image src={al.image} size="mini" circular /> */}
             <Popup
               content="Allegiance"
               header={al.name}
-              trigger={<Image src={al.image} size="mini" circular bordered />}
+              trigger={<Image src={al.image} size="mini" circular bordered alt={al.name} />}
             />
           </ImageHolder>
         ))}

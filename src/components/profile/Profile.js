@@ -8,12 +8,12 @@ import axios from "axios"
 import useGetToken from "../utils/useGetToken";
 import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
+import { Typography } from "@material-ui/core"
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
   const loggedInAllegiances = useSelector(state => state.userReducer.loggedInAllegiances);
-  const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
   const dispatch = useDispatch();
 
   //Fetches Auth0 token for axios call
@@ -46,7 +46,7 @@ const Profile = props => {
     <ProfileContainer>
       <div style={{ maxWidth: "100%" }}>
         <Banner>
-          <BannerImage src={loggedInUser.banner_image || defaultBanner} />
+          <BannerImage src={loggedInUser.banner_image || defaultBanner} alt="Banner" />
         </Banner>
         <ImageCrop>
           {loggedInUser.image
@@ -59,7 +59,7 @@ const Profile = props => {
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.first_name && <h1>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</h1>}
+            {loggedInUser.first_name && <Typography variant="h5" noWrap={true} style={{ fontWeight: 'bold' }}>{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</Typography>}
             {props.match.url === "/profile" &&
               <Link to="/makeprofile">
                 <Icon name="edit outline" />
@@ -82,18 +82,6 @@ const Profile = props => {
               type="group" />
           </>
         </InfoHolder>
-        <div>
-          <PostHeader>
-            <H3>POSTS</H3>
-            <H3 style={{ color: "lightgrey" }} onClick={() => console.log(10)}>
-              {" "}
-              MANAGE POSTS
-            </H3>
-          </PostHeader>
-          <div>
-            {loggedInPosts ? loggedInPosts : <NoPosts>You haven't posted yet!</NoPosts>}
-          </div>
-        </div>
       </div>
     </ProfileContainer>
   );
@@ -112,6 +100,7 @@ const BannerImage = styled.img`
 width: 100%
 border-bottom: 10px solid black;
 max-height: 225px;
+object-fit: cover;
 `;
 
 const InfoHolder = styled.div`
@@ -124,6 +113,7 @@ const Name = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const ImageCrop = styled.div`
@@ -139,11 +129,9 @@ const ImageCrop = styled.div`
   background-color: white;
 `;
 const ProfileImage = styled.img`
-  display: inline;
-  margin-left: -25%; //centers the image
-  height: 100%;
-  width: auto;
-  max-width: none;
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
 `;
 
 const H3 = styled.h3`
@@ -153,64 +141,4 @@ const H3 = styled.h3`
   margin-bottom: 0;
 `;
 
-const PostHeader = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between
-	align-items: center;
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: .5rem;`;
-
-const NoPosts = styled.p`
-  color: lightgrey;
-  font-weight: bold;
-  font-size: 1rem;
-`;
-
 export default Profile;
-
-//Code for future release
-/*					<ImageHolder>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-					</ImageHolder>
-
-						<div>
-							<H3>MY ALLEGIANCES</H3>
-							<AllegianceHolder>
-								<MyAllegianceGroups content={loggedInAllegiances} type={'allegiances'} />
-							</AllegianceHolder>
-						</div>*/

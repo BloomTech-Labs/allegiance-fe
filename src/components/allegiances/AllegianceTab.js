@@ -53,8 +53,8 @@ const AllegianceTab = props => {
                 {props.allegiances.map(allegiance => (
                     <div key={allegiance.id} style={{ margin: "1% 2% 2%" }}>
                         {loggedInIDs.includes(allegiance.id)
-                            ? <AllegianceLogo src={allegiance.image} onClick={() => leaveAllegiance(allegiance.id)} style={{ border: "3px solid #00FF00" }} />
-                            : <AllegianceLogo src={allegiance.image} onClick={() => addAllegiance(allegiance)} />}
+                            ? <AllegianceLogo src={allegiance.image} alt={allegiance.name} onClick={() => leaveAllegiance(allegiance.id)} style={{ border: "3px solid #00FF00" }} />
+                            : <AllegianceLogo src={allegiance.image} alt={allegiance.name} onClick={() => addAllegiance(allegiance)} />}
                     </div>
                 ))}
             </LogoHolder>
