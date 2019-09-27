@@ -1,8 +1,8 @@
-# 1️⃣ Allegiance
+# Allegiance
 
-1️⃣ You can find the deployed project at (https://www.teamsallegiance.com).
+You can find the deployed project at (https://labs15-allegiance.netlify.com).
 
-## 4️⃣ Contributors
+## Contributors
 
 | ![Jarred Stanford](https://github.com/JarredStanford.png) | ![Derek Schwantner](https://github.com/DerekSchwantner.png) | ![Adam McKenney](https://github.com/DaftBeowulf.png) | ![Ang Xu](https://github.com/AngXuDev.png) | ![Dan O'Neill](https://github.com/danpatrickoneill.png)  |
 | --------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------- |
@@ -10,15 +10,15 @@
 
 ## Project Overview
 
-1️⃣ [Trello Board](https://trello.com/b/2L0hcHSc/labs-15-allegiance)
+[Trello Board](https://trello.com/b/2L0hcHSc/labs-15-allegiance)
 
-1️⃣ [Product Canvas](https://www.notion.so/Allegiance-2973bfcc17f34daa8f6786dd2ad2146d)
+[Product Canvas](https://www.notion.so/Allegiance-2973bfcc17f34daa8f6786dd2ad2146d)
 
-1️⃣ [UX Design files](https://www.figma.com/file/2IOo1GVvRaR7FkxpeU8xFq/%F0%9F%8F%80-Allegiance?node-id=0%3A12)
+[UX Design files](https://www.figma.com/file/2IOo1GVvRaR7FkxpeU8xFq/%F0%9F%8F%80-Allegiance?node-id=0%3A12)
 
 Allegiance is a sports social media platform that allows sports fans to to support their favorite teams, talk about sports, and interact with other fans.
 
-### 4️⃣ Key Features
+### Key Features
 
 - feature one
 - feature two
@@ -26,7 +26,7 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 - feature four
 - feature five
 
-## 1️⃣ Tech Stack
+## Tech Stack
 
 ### Front end built using:
 
@@ -55,17 +55,17 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 
 # APIs
 
-## 2️⃣Auth0
+## Auth0
 
 Allegiance uses Auth0 for its authentication and API call processes. Please find Auth0 documentation here, along with the step by step tutorial used in this project here.
 
-## 3️⃣ Misc API here
+## Misc API here
 
 🚫Replace text below with a description of the API
 
 You can do anything your heart can imagine. In life you need colors. This is where you take out all your hostilities and frustrations. It's better than kicking the puppy dog around and all that so. I'm sort of a softy, I couldn't shoot Bambi except with a camera. Trees get lonely too, so we'll give him a little friend. We'll lay all these little funky little things in there.
 
-# 3️⃣ Environment Variables
+# Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables. There should be a .env file containing the following:
 
@@ -82,7 +82,7 @@ In order for the app to function correctly, the user must set up their own envir
     *  REACT_APP_clientid - this is the Stripe_connect clientID, generated in Stripe_connect settings
     *  REACT_APP_stripe_plan - this is the ID for a second Stripe subscription plan, generated under Stripe products
 
-# 5️⃣ Content Licenses
+# Content Licenses
 
 🚫For all content - images, icons, etc, use this table to document permission of use. Remove the two placeholders and add you content to this table
 
@@ -91,11 +91,11 @@ In order for the app to function correctly, the user must set up their own envir
 | doodles.png    | Nicole Bennett   | [Creative Commons](https://www.toptal.com/designers/subtlepatterns/doodles/) |
 | rings.svg      | Sam Herbert      | [MIT](https://github.com/SamHerbert/SVG-Loaders)                             |
 
-# 4️⃣ Testing
+# Testing
 
 🚫Document what you used for testing and why
 
-# 4️⃣ Installation Instructions
+# Installation Instructions
 
 🚫explain how to install the required dependencies to get this project up and running with yarn and NPM
 
