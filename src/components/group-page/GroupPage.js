@@ -1,58 +1,87 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
+import { useDispatch, useSelector } from "react-redux";
+import { VIEW_GROUP } from "../../reducers/navReducer";
 
 import GroupInfo from "./GroupInfo";
-import GroupAllegiances from "./GroupAllegiances";
+import PostsContainer from "../posts/PostsContainer";
 
 import styled from "styled-components";
-import { Form, Button, TextArea, Divider } from "semantic-ui-react";
+import { Paper } from "@material-ui/core";
+import { Loader } from "semantic-ui-react";
+import BlockedView from "../posts/BlockedView";
 
 const GroupPage = props => {
 	// Fetches Auth0 token for axios call
 	const [token] = useGetToken();
+
 	// Defines id to be group id from params
-	const id = props.match.params.id;
+	const id = parseInt(props.match.params.id);
+	const userGroups = useSelector(state => state.userReducer.loggedInGroups);
 
 	const [group, setGroup] = useState({});
 	const [allegiances, setAllegiances] = useState([]);
 	const [members, setMembers] = useState([]);
+	const [trigger, setTrigger] = useState(false);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		// Fetch group related data
 		const fetchData = async () => {
 			if (token) {
-				const response = await axiosWithAuth([token]).get(`/groups/${id}`);
-				setGroup(response.data.group);
-				setAllegiances(response.data.allegiances);
-				setMembers(response.data.members);
-				console.log("data:", response.data);
+				try {
+					const response = await axiosWithAuth([token]).get(`/groups/${id}`);
+					setGroup(response.data.group);
+					setAllegiances(response.data.allegiances);
+					setMembers(response.data.members);
+					const groupId = response.data.group.id;
+					dispatch({ type: VIEW_GROUP, payload: groupId });
+					setTrigger(false);
+				} catch {
+					dispatch({ type: VIEW_GROUP, payload: 0 });
+					setTrigger(false);
+				}
 			}
 		};
 		fetchData();
-	}, [token, id]);
+	}, [token, id, dispatch, trigger]);
 
 	if (Object.keys(group).length === 0) {
-		return <div>Loading Group...</div>;
+		return (
+			<Loader active size="large">
+				Loading
+			</Loader>
+		);
+	}
+	// checking to see if current user is a member of current group
+	const currentUserType = userGroups.find(group => group.id === id);
+	// if they are undefined, we set membership to a string so we don't get an error
+	let membership;
+	if (currentUserType === undefined) {
+		membership = "non-member";
+	} else {
+		membership = currentUserType.user_type;
 	}
 
 	return (
 		<GroupPageContainer>
-			<GroupInfo group={group} members={members} />
-			<GroupAllegiances allegiances={allegiances} />
-			<SectionDivider />
-
-			<PostsContainer>{/* posts go here */}</PostsContainer>
-
-			{/* Form for adding posts to group */}
-			<FormContainer>
-				<Form.Field
-					control={TextArea}
-					label="Post"
-					placeholder="Write a post to the group..."
+			<PaperContainer elevation={3}>
+				<GroupInfo
+					group={group}
+					members={members}
+					allegiances={allegiances}
+					setTrigger={setTrigger}
 				/>
-				<Form.Field control={Button}>Submit Post</Form.Field>
-			</FormContainer>
+			</PaperContainer>
+			{group.privacy_setting === "public" ||
+			membership === "member" ||
+			membership === "admin" ? (
+				<PostsContainer groupId={group.id} members={members} />
+			) : (
+				<BlockedView />
+			)}
 		</GroupPageContainer>
 	);
 };
@@ -62,21 +91,13 @@ const GroupPageContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	width: 100%;
+	background-color: #dee4e7;
+	min-height: 87vh;
+	justify-content: flex-start;
 `;
 
-const FormContainer = styled(Form)`
-	margin-top: 5vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-`;
-
-const SectionDivider = styled(Divider)`
-	margin: 0rem;
-`;
-
-const PostsContainer = styled.div`
-	display: flex;
+const PaperContainer = styled(Paper)`
+	margin-bottom: 5%;
 `;
 
 export default GroupPage;

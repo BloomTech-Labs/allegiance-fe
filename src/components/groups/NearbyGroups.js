@@ -36,8 +36,14 @@ const NearbyGroups = () => {
 						group => !loggedInIDs.includes(group.id)
 					);
 
-					uniqueGroups.sort((a, b) => b.members.length - a.members.length);
-					setData({ groups: uniqueGroups });
+					// filtering group list to remove hidden groups from public display
+					const accessGroups = uniqueGroups.filter(
+						group => group.privacy_setting !== "hidden"
+					);
+					// sorting groups by number of members
+					accessGroups.sort((a, b) => b.members.length - a.members.length);
+
+					setData({ groups: accessGroups });
 				} catch {
 					setData({ groups: [] });
 				}
@@ -62,10 +68,20 @@ const NearbyGroups = () => {
 			<NearbyGroupsContainer>
 				{data.groups.length > 0 &&
 					data.groups.map(group => {
-						return <GroupCard minWidth="40%" group={group} key={group.id} />;
+						return (
+							<GroupCard
+								minWidth="40%"
+								group={group}
+								key={group.id}
+								nearby={true}
+							/>
+						);
 					})}
 				{data.groups.length === 0 && (
-					<h4 style={{ margin: "3% auto" }}>No Nearby Groups Detected</h4>
+					<h4 style={{ margin: "3% auto" }}>
+						{loggedInUser.location && `No Groups Found Near Your Location`}
+						{!loggedInUser.location && "Please Provide A Location In Profile!"}
+					</h4>
 				)}
 			</NearbyGroupsContainer>
 		</SectionContainer>
