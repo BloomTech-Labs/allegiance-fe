@@ -20,11 +20,11 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 
 ### Key Features
 
-- feature one
-- feature two
-- feature three
-- feature four
-- feature five
+- Users can view, join and create groups based on allegiances and location
+- Users can choose and display their allegiances on profile page
+- Groups feature posting, replying, likes, etc. for lively sports discussion
+- Group privacy controls and moderation controls
+- User-specific activity feed and notifications
 
 ## Tech Stack
 
@@ -34,12 +34,8 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 
 🚫 Why did you choose this framework?
 
-- point one
-- point two
-- point three
-- point four
-
-🚫List the rest of the front end features and libraries in the same format as the framework above.
+- React's virtual DOM in ReactJS makes for faster development and better user experience
+- Designed for an app like ours featuring various configs of reusable user-specific components
 
 #### Front end deployed to `Netlify`
 
@@ -47,17 +43,15 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 
 #### 🚫 Node/Express
 
-- point one
-- point two
-- point three
-
-🚫 List the rest of the back end end features and libraries in the same format as the framework above
+- Allows for quick building of scalable network applications
+- REST APP is predictable, and doesn't expose database architecture to FE
+- Very clean, DRY code using packages/middleware for validation, error handling, etc.
 
 # APIs
 
 ## Auth0
 
-Allegiance uses Auth0 for its authentication and API call processes. Please find Auth0 documentation here, along with the step by step tutorial used in this project here.
+Allegiance uses [Auth0](https://auth0.com/) for its authentication and API call processes. Please find Auth0 documentation [here](https://auth0.com/docs), along with the step by step tutorial used in this project [here](https://auth0.com/docs/quickstart/spa/react).
 
 ## Misc API here
 
@@ -69,44 +63,26 @@ You can do anything your heart can imagine. In life you need colors. This is whe
 
 In order for the app to function correctly, the user must set up their own environment variables. There should be a .env file containing the following:
 
-🚫These are just examples, replace them with the specifics for your app
+    *  REACT_APP_DOMAIN - Can be found in Auth0 account info
+    *  REACT_APP_CLIENTID - Can be found in Auth0 account info
+    *  REACT_APP_AUDIENCE - Can be found in Auth0 account info
+    *  REACT_APP_AUTHURL - URL variable for auth calls
+    *  REACT_APP_BASEURL - Staging server URL
+    *  REACT_APP_LOCALURL - Local server URL
+    *  REACT_APP_PRODURL - Production server URL
+    *  REACT_APP_CLOUDINARY_APIKEY - Can be found in Cloudinary account info
+    *  REACT_APP_CLOUDINARY_PRESET - Can be found in Cloudinary account info
+    *  REACT_APP_CLOUDINARY_URL - Can be found in Cloudinary account info
 
-    *  REACT_APP_apiKey - this is your Google API key, which can be generated in the Google Cloud Console
-    *  REACT_APP_authDomain - when you set up your Firebase project, this information will be in the dashboard
-    *  REACT_APP_databaseURL - in the Firebase dashboard
-    *  REACT_APP_projectID - in the Firebase dashboard
-    *  REACT_APP_storageBucket - in the Firebase dashboard
-    *  REACT_APP_messagingSenderId - in the Firebase dashboard
-    *  REACT_APP_stripe_API - this is your public Stripe API key, generated in the Stripe dashboard
-    *  REACT_APP_backendURL - optional for your local development server
-    *  REACT_APP_clientid - this is the Stripe_connect clientID, generated in Stripe_connect settings
-    *  REACT_APP_stripe_plan - this is the ID for a second Stripe subscription plan, generated under Stripe products
+## License
 
-# Content Licenses
-
-🚫For all content - images, icons, etc, use this table to document permission of use. Remove the two placeholders and add you content to this table
-
-| Image Filename | Source / Creator | License                                                                      |
-| -------------- | ---------------- | ---------------------------------------------------------------------------- |
-| doodles.png    | Nicole Bennett   | [Creative Commons](https://www.toptal.com/designers/subtlepatterns/doodles/) |
-| rings.svg      | Sam Herbert      | [MIT](https://github.com/SamHerbert/SVG-Loaders)                             |
-
-# Testing
-
-🚫Document what you used for testing and why
+MIT © 2019 Allegiance |
 
 # Installation Instructions
 
-🚫explain how to install the required dependencies to get this project up and running with yarn and NPM
-
-## Other Scripts
-
-🚫replace these examples with your own
-
-    * typecheck - runs the TypeScript compiler
-    * build - creates a build of the application
-    * start - starts the production server after a build is created
-    * test - runs tests in **tests** directory \* eject - copy the configuration files and dependencies into the project so you have full control over them
+- Clone this repository
+- **npm install** to install all required dependencies
+- **npm start** to run React app locally
 
 # Contributing
 
