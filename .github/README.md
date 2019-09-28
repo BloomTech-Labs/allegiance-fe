@@ -67,9 +67,8 @@ In order for the app to function correctly, the user must set up their own envir
     *  REACT_APP_CLIENTID - Can be found in Auth0 account info
     *  REACT_APP_AUDIENCE - Can be found in Auth0 account info
     *  REACT_APP_AUTHURL - URL variable for auth calls
-    *  REACT_APP_BASEURL - Staging server URL
+    *  REACT_APP_BASEURL - Production server URL
     *  REACT_APP_LOCALURL - Local server URL
-    *  REACT_APP_PRODURL - Production server URL
     *  REACT_APP_CLOUDINARY_APIKEY - Can be found in Cloudinary account info
     *  REACT_APP_CLOUDINARY_PRESET - Can be found in Cloudinary account info
     *  REACT_APP_CLOUDINARY_URL - Can be found in Cloudinary account info
@@ -82,7 +81,7 @@ MIT © 2019 Allegiance |
 
 - Clone this repository
 - **npm install** to install all required dependencies
-- **npm start** to run React app locally
+- **npm run start** to run React app locally
 
 # Contributing
 
