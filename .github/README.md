@@ -53,12 +53,6 @@ Allegiance is a sports social media platform that allows sports fans to to suppo
 
 Allegiance uses [Auth0](https://auth0.com/) for its authentication and API call processes. Please find Auth0 documentation [here](https://auth0.com/docs), along with the step by step tutorial used in this project [here](https://auth0.com/docs/quickstart/spa/react).
 
-## Misc API here
-
-🚫Replace text below with a description of the API
-
-You can do anything your heart can imagine. In life you need colors. This is where you take out all your hostilities and frustrations. It's better than kicking the puppy dog around and all that so. I'm sort of a softy, I couldn't shoot Bambi except with a camera. Trees get lonely too, so we'll give him a little friend. We'll lay all these little funky little things in there.
-
 # Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables. There should be a .env file containing the following:
