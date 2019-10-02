@@ -1,6 +1,6 @@
 # Allegiance
 
-You can find the deployed project at (https://labs15-allegiance.netlify.com).
+You can find the deployed project at (https://labs17allegiance.netlify.com).
 
 ## Contributors
 
