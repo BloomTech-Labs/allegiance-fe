@@ -1,7 +1,7 @@
-import { combineReducers } from "redux";
-import { userReducer } from "./userReducer";
-import { navReducer } from "./navReducer";
+import { combineReducers } from 'redux'
+import { userReducer } from './userReducer'
+import { navReducer } from './navReducer'
 
-const rootReducer = combineReducers({ userReducer, navReducer });
+const rootReducer = combineReducers({ userReducer, navReducer })
 
-export default rootReducer;
+export default rootReducer
