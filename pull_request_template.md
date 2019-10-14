@@ -2,6 +2,11 @@
 
 Describe change or new feature here.
 
+## Change status
+
+- [ ] Complete, tested, ready to review and merge
+- [ ] Work-in-Progress, PR is for discussion/feedback
+
 ## Checklist
 
 Remove any items which are not applicable.
