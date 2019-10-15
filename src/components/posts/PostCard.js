@@ -117,12 +117,19 @@ export default function PostCard(props) {
   }
 
   async function addLike(e) {
+    console.log('it will work this time')
     e.preventDefault()
     const like = await axiosWithAuth([token]).post(`/posts_likes/post/${id}`, {
       user_id: userId,
       post_id: id,
     })
     if (like.data.likeResult) {
+      // axiosWithAuth([token]).post(`/users/${}/notifications`, {
+      //   user_id: "",
+      //   invoker: "",
+      //   type_id: "",
+      //   type: 'like'
+      // })
       props.setSubmitted(true)
     }
   }
