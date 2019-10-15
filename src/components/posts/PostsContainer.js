@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { useSelector, useDispatch } from 'react-redux'
+
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
@@ -8,24 +8,19 @@ import { Paper } from '@material-ui/core'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
+import { fetchGroupPosts } from 'actions'
+
 const PostsContainer = props => {
   // Fetches Auth0 token for axios call
+  const dispatch = useDispatch()
   const [token] = useGetToken()
-  const [posts, setPosts] = useState([])
+  const posts = useSelector(state => state.group.posts) 
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       const id = props.groupId
-      if (token)
-        try {
-          const posts = await axiosWithAuth([token]).get(`/posts/group/${id}`)
-          setPosts(posts.data.postsLoaded.sort((a, b) => a.id - b.id))
-          setSubmitted(false)
-        } catch {
-          setPosts([])
-          setSubmitted(false)
-        }
+      await dispatch(fetchGroupPosts(token, id))
     }
     fetchData()
   }, [token, submitted, props.groupId])
