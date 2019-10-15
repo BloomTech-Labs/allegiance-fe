@@ -37,3 +37,26 @@ export const createGroupPost = (token, data) => async dispatch => {
     }
   }
 }
+
+export const likePost = (token, data) => async dispatch => {
+  const { userId, id } = data
+  if (token) {
+    try {
+      dispatch({ type: actionTypes.POST_LIKE_REQUEST })
+      const like = await axiosWithAuth([token]).post(
+        `/posts_likes/post/${id}`,
+        {
+          user_id: userId,
+          post_id: id,
+        }
+      )
+      dispatch({
+        type: actionTypes.POST_LIKE_SUCCESS,
+        payload: like.data.likeResult,
+      })
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: actionTypes.POST_LIKE_FAILURE })
+    }
+  }
+}

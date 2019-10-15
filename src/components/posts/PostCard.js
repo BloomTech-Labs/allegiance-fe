@@ -20,11 +20,11 @@ import {
   DeleteOutline,
   FavoriteBorder,
 } from '@material-ui/icons'
-
+import { likePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function PostCard(props) {
   const {
@@ -39,6 +39,7 @@ export default function PostCard(props) {
     created_at,
     group_id,
   } = props.post
+  const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
@@ -117,21 +118,21 @@ export default function PostCard(props) {
   }
 
   async function addLike(e) {
-    console.log('it will work this time')
     e.preventDefault()
-    const like = await axiosWithAuth([token]).post(`/posts_likes/post/${id}`, {
-      user_id: userId,
-      post_id: id,
-    })
-    if (like.data.likeResult) {
-      // axiosWithAuth([token]).post(`/users/${}/notifications`, {
-      //   user_id: "",
-      //   invoker: "",
-      //   type_id: "",
-      //   type: 'like'
-      // })
-      props.setSubmitted(true)
+    const data = {
+      userId,
+      id,
     }
+    await dispatch(likePost(token, data))
+    // if (like.data.likeResult) {
+    // axiosWithAuth([token]).post(`/users/${}/notifications`, {
+    //   user_id: "",
+    //   invoker: "",
+    //   type_id: "",
+    //   type: 'like'
+    // })
+    // props.setSubmitted(true)
+    // }
   }
 
   async function unLike(e) {
