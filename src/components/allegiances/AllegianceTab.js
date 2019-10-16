@@ -39,8 +39,9 @@ const AllegianceTab = props => {
         name: allegiance_name,
         image: allegiance_image,
       }
-      dispatch({ type: types.ADD_ALLEGIANCE, payload: newAllegiance })
-    } catch {
+      dispatch({ type: types.ADD_ALLEGIANCES_SUCCESS, payload: newAllegiance })
+    } catch (err) {
+      dispatch({ type: types.ADD_ALLEGIANCES_FAILURE, payload: err })
       console.log('Something went wrong.')
     }
   }

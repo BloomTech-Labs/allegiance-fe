@@ -52,11 +52,12 @@ const MakeAllegiance = props => {
         name: allegiance_name,
         image: allegiance_image,
       }
-      dispatch({ type: types.ADD_ALLEGIANCE, payload: newAllegiance })
+      dispatch({ type: types.ADD_ALLEGIANCES_SUCCESS, payload: newAllegiance })
       const push = () => props.history.push('/profile')
 
       setTimeout(push, 1000)
     } catch {
+      dispatch({ type: types.ADD_ALLEGIANCES_FAILURE})
       setError(true)
       setLoading(false)
     }

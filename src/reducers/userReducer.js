@@ -64,14 +64,14 @@ export const userReducer = (state = initialState, action) => {
           group => group.id !== action.payload
         ),
       }
-    case types.GET_ALLEGIANCES:
+    case types.ADD_ALLEGIANCES_SUCCESS:
       //Updates allegiances when entering the allegiance page.
       return {
         ...state,
         loggedInAllegiances: action.payload,
         error: '',
       }
-    case types.ADD_ALLEGIANCE:
+    case types.ADD_ALLEGIANCES_SUCCESS:
       //Updates logged in user's allegiances when they add a new one to their list.
       return {
         ...state,
