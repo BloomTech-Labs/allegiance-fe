@@ -2,7 +2,8 @@ import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
-import { ADD_ALLEGIANCE, LEAVE_ALLEGIANCE } from '../../reducers/userReducer'
+// import { ADD_ALLEGIANCE, LEAVE_ALLEGIANCE } from '../../reducers/userReducer'
+import * as types from 'actions/actionTypes'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 
@@ -38,7 +39,7 @@ const AllegianceTab = props => {
         name: allegiance_name,
         image: allegiance_image,
       }
-      dispatch({ type: ADD_ALLEGIANCE, payload: newAllegiance })
+      dispatch({ type: types.ADD_ALLEGIANCE, payload: newAllegiance })
     } catch {
       console.log('Something went wrong.')
     }
@@ -55,7 +56,7 @@ const AllegianceTab = props => {
         { data: deleted }
       )
       console.log(deletedAllegiance)
-      dispatch({ type: LEAVE_ALLEGIANCE, payload: id })
+      dispatch({ type: types.LEAVE_ALLEGIANCE, payload: id })
     } catch {
       console.log('Something went wrong.')
     }

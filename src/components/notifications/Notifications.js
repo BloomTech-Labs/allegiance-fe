@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import moment from 'moment'
 
-import { UPDATE_USER } from '../../reducers/userReducer'
+// import { UPDATE_USER } from '../../reducers/userReducer'
+import * as types from 'actions/actionTypes'
 
 import NotificationsCard from './NotificationsCard'
 
@@ -66,7 +67,7 @@ const Notifications = () => {
               notification_check: mountTime,
             }
           )
-          dispatch({ type: UPDATE_USER, payload: response.data.updated })
+          dispatch({ type: types.UPDATE_USER, payload: response.data.updated })
         } catch (error) {
           console.log(error)
         }

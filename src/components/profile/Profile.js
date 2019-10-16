@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
-import { ENTER_PROFILE } from 'reducers/userReducer'
+// import { ENTER_PROFILE } from 'reducers/userReducer'
+import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 
@@ -28,7 +29,7 @@ const Profile = props => {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: loggedInUser.email,
           })
-          dispatch({ type: ENTER_PROFILE, payload: result.data.userInfo })
+          dispatch({ type: types.ENTER_PROFILE, payload: result.data.userInfo })
         } catch {
           console.log("There was an issue retrieving the user's profile.")
         }

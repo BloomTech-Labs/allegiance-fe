@@ -6,7 +6,8 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'
-import { ADD_ALLEGIANCE } from '../../reducers/userReducer'
+// import { ADD_ALLEGIANCE } from '../../reducers/userReducer'
+import * as types from 'actions/actionTypes'
 import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 
@@ -51,7 +52,7 @@ const MakeAllegiance = props => {
         name: allegiance_name,
         image: allegiance_image,
       }
-      dispatch({ type: ADD_ALLEGIANCE, payload: newAllegiance })
+      dispatch({ type: types.ADD_ALLEGIANCE, payload: newAllegiance })
       const push = () => props.history.push('/profile')
 
       setTimeout(push, 1000)
