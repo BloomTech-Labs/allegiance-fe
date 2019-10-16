@@ -82,3 +82,16 @@ export const dislikePost = (token, data) => async dispatch => {
     }
   }
 }
+export const fetchPost = (token, id) => async dispatch => {
+  if (token) {
+    try {
+      dispatch({ type: actionTypes.FETCH_POST_REQUEST })
+      const response = await axiosWithAuth([token]).get(`/posts/${id}`)
+      console.log('response.data:🥰', response.data)
+      const repliesArr = response.data.postLoaded
+      dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: repliesArr })
+    } catch {
+      dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: 0 })
+    }
+  }
+}
