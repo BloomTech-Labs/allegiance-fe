@@ -1,4 +1,5 @@
-import React from 'react'
+// import React from 'react'
+// this component does NOTHING
 import { useSelector } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'

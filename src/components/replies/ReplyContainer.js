@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { VIEW_REPLIES } from '../../reducers/navReducer'
+// import { VIEW_REPLIES } from '../../reducers/navReducer'
+import * as types from 'actions/actionTypes'
 
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
@@ -40,9 +41,9 @@ const ReplyContainer = props => {
           setPost(response.data.postLoaded)
           const groupId = response.data.postLoaded.group_id
           setSubmitted(false)
-          dispatch({ type: VIEW_REPLIES, payload: groupId })
+          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: groupId })
         } catch {
-          dispatch({ type: VIEW_REPLIES, payload: 0 })
+          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: 0 })
         }
       }
     }

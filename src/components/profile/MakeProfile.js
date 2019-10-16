@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { UPDATE_USER } from "../../reducers/userReducer";
+// import { UPDATE_USER } from "../../reducers/userReducer";
+import * as types from 'actions/actionTypes'
 
 import { Mixpanel } from "../analytics/Mixpanel";
 
@@ -37,7 +38,7 @@ const MakeProfile = props => {
 				`/users/${loggedInUser.id}`,
 				values
 			);
-			dispatch({ type: UPDATE_USER, payload: result.data.updated });
+			dispatch({ type: types.UPDATE_USER, payload: result.data.updated });
 			Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
 			const push = () => props.history.push("/profile")
 			setTimeout(push, 1000);

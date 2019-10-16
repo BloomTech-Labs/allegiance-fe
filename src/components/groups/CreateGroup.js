@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ADD_GROUP } from '../../reducers/userReducer'
-import { VIEW_GROUP } from '../../reducers/navReducer'
+// import { ADD_GROUP } from '../../reducers/userReducer'
+// import { VIEW_GROUP } from '../../reducers/navReducer'
+import * as types from 'actions/actionTypes'
 
 import { Mixpanel } from '../analytics/Mixpanel'
 
@@ -48,7 +49,7 @@ const CreateGroup = props => {
     if (group && window.location.pathname.includes('/editgroup/')) {
       let { id, updated_at, created_at, ...groupInfo } = group
       setValues(groupInfo)
-      dispatch({ type: VIEW_GROUP, payload: id })
+      dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
       Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
     }
   }, [props, setValues, group, loggedInUser.id, dispatch])
@@ -64,7 +65,7 @@ const CreateGroup = props => {
         id: result.data.newGroup.id,
         user_type: 'admin',
       }
-      dispatch({ type: ADD_GROUP, payload: addedGroup })
+      dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: addedGroup })
       Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
       const push = () => props.history.push(`/group/${result.data.newGroup.id}`)
       setTimeout(push, 1000)
