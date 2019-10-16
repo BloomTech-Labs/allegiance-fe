@@ -38,6 +38,23 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
+export const fetchNotifications = (token, data) => async dispatch => {
+  const { userId } = data;
+  if (token) {
+    try {
+      dispatch({ type: actionTypes.FETCH_NOTICE_REQUEST })
+      const notifications = await axiosWithAuth([token]).get(`/users/${userId}/notifications`);
+      dispatch({
+        type: actionTypes.FETCH_NOTICE_SUCCESS,
+        payload: notifications.data,
+      })
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: actionTypes.FETCH_NOTICE_FAILURE, payload: err })
+    }
+  }
+}
+
 export const likePost = (token, data) => async dispatch => {
   const { userId, id, user_id } = data
   console.log("likePost, userId, id, user_id:", userId, id, user_id)
