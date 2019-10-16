@@ -40,7 +40,6 @@ export const createGroupPost = (token, data) => async dispatch => {
 
 export const likePost = (token, data) => async dispatch => {
   const { userId, id, user_id } = data
-  console.log("likePost, userId, id, user_id:", userId, id, user_id)
   if (token) {
     try {
       dispatch({ type: actionTypes.POST_LIKE_REQUEST })
@@ -51,13 +50,13 @@ export const likePost = (token, data) => async dispatch => {
           post_id: id,
         }
       )
-      if(like.data.likeResult) {
+      if (like.data.likeResult) {
         axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
-            user_id,
-            invoker_id: userId,
-            type_id: id,
-            type: 'like'
-          })
+          user_id,
+          invoker_id: userId,
+          type_id: id,
+          type: 'like',
+        })
       }
       dispatch({
         type: actionTypes.POST_LIKE_SUCCESS,
@@ -69,5 +68,17 @@ export const likePost = (token, data) => async dispatch => {
     }
   }
 }
-
-
+export const dislikePost = (token, data) => async dispatch => {
+  if (token) {
+    try {
+      dispatch({ type: actionTypes.POST_UNLIKE_REQUEST })
+      const unLike = await axiosWithAuth([token]).delete(`/posts_likes/${data}`)
+      dispatch({
+        type: actionTypes.POST_UNLIKE_SUCCESS,
+        payload: unLike.data.deleted[0],
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}

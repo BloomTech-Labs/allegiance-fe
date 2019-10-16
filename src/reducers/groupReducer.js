@@ -38,10 +38,22 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         posts: newState,
       }
+    case types.POST_UNLIKE_SUCCESS:
+      const filterPosts = state.posts.filter(obj => {
+        if (obj.id === action.payload.post_id) {
+          obj.likes = obj.likes.filter(likeObj => likeObj === action.payload.id)
+          return obj
+        }
+        return obj
+      })
+      return {
+        ...state,
+        posts: filterPosts,
+      }
     case types.POST_LIKE_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     default:
       return state

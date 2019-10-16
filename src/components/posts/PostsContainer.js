@@ -14,7 +14,7 @@ const PostsContainer = props => {
   // Fetches Auth0 token for axios call
   const dispatch = useDispatch()
   const [token] = useGetToken()
-  const posts = useSelector(state => state.group.posts) 
+  const posts = useSelector(state => state.group.posts)
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
