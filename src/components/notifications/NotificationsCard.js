@@ -15,22 +15,15 @@ const NotificationsCard = props => {
     id,
     first_name,
     last_name,
-    user_image,
-    liker_id,
-    liker_name,
-    liker_image,
-    poster_id,
-    poster_name,
-    replier_id,
-    replier_name,
-    post_id,
-    post_content,
-    reply_id,
-    reply_content,
+    user_id,
+    invoker_id,
+    type,
+    type_id,
+    read,
     created_at,
-    tag,
-    group_image,
-    acronym,
+    username,
+    image,
+    post_content
   } = props.activity
 
   // Material UI styling
@@ -62,35 +55,36 @@ const NotificationsCard = props => {
   const fullName = first_name + ' ' + last_name
 
   // Streamline post id and reply id for linking
-  let postId
-  if (tag === 'post') {
-    postId = id
-  }
-  if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
-    postId = post_id
-  }
-  let replyId
-  if (tag === 'reply') {
-    replyId = id
-  }
-  if (tag === 'replyLike') {
-    replyId = reply_id
-  }
+  // let postId
+  // if (tag === 'post') {
+  //   postId = id
+  // }
+  // if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
+  //   postId = post_id
+  // }
+  // let replyId
+  // if (tag === 'reply') {
+  //   replyId = id
+  // }
+  // if (tag === 'replyLike') {
+  //   replyId = reply_id
+  // }
 
   // Maintain max allowable content length for posts and replies
-  let postContent, replyContent
+  let postContent
+  // let replyContent
   if (post_content) postContent = post_content.slice(0, 20)
-  if (reply_content) replyContent = reply_content.slice(0, 20)
+  // if (reply_content) replyContent = reply_content.slice(0, 20)
   if (post_content && post_content.length > 20) postContent += '...'
-  if (reply_content && reply_content.length > 20) replyContent += '...'
+  // if (reply_content && reply_content.length > 20) replyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToPost = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: `/post/${postId}`,
+      pathname: `/post/${type_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
-      replyNumber: replyId || null,
+      // replyNumber: replyId || null,
     })
   }
 
@@ -110,14 +104,14 @@ const NotificationsCard = props => {
           <Avatar
             aria-label='author_avatar'
             className={classes.avatar}
-            src={liker_image || user_image}
+            src={image}
             alt={'Avatar'}
           />
         </CardIcon>
         <CardMessage>
           <div>
-            <span>{liker_name || fullName}</span>{' '}
-            {tag === 'post' && <>made a post: {postContent}</>}
+            <span>{fullName || username}</span>{' '}
+            {/* {tag === 'post' && <>made a post: {postContent}</>}
             {tag === 'reply' && <>replied to a post: {replyContent}</>}
             {tag === 'postLike' && (
               <>
@@ -133,7 +127,10 @@ const NotificationsCard = props => {
                 {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
                 reply: {replyContent}
               </>
-            )}{' '}
+            )} */}
+            {type === 'like' && <>liked your post: {postContent}</>}
+            {type === 'reply' && <>replied to your post: {postContent}</>}
+            {' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -141,7 +138,7 @@ const NotificationsCard = props => {
             </p>
           </div>
         </CardMessage>
-        <CardGroup>
+        {/* <CardGroup>
           <Avatar
             aria-label='group_avatar'
             className={classes.avatar}
@@ -149,7 +146,7 @@ const NotificationsCard = props => {
             alt={'Avatar'}
           />
           <p>{acronym}</p>
-        </CardGroup>
+        </CardGroup> */}
       </Card>
     </NotificationCardDiv>
   )

@@ -6,12 +6,14 @@ import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import moment from 'moment'
 
-import { UPDATE_USER } from '../../reducers/userReducer'
+// import { UPDATE_USER } from '../../reducers/userReducer'
+import * as types from 'actions/actionTypes'
 
 import NotificationsCard from './NotificationsCard'
+import { fetchNotifications } from 'actions/index'
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState()
+  const notifications = useSelector(state => state.notifyReducer.notifications) 
   // Keep track of when notifications component mounts so that timestamp
   // can be passed to the put in the cleanup useEffect
   const [mountTime, setMountTime] = useState()
@@ -20,6 +22,7 @@ const Notifications = () => {
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // Fetch notifications related data
@@ -29,11 +32,12 @@ const Notifications = () => {
     const fetchData = async () => {
       if (token) {
         try {
-          const response = await axiosWithAuth([token]).post(`/feed`, {
-            group_id: mappedGroupIds,
-            interval: 48,
-          })
-          setNotifications(response.data.allActivity)
+          const data = {
+            userId
+          }
+          const response = await dispatch(fetchNotifications(token, data))
+          console.log(response);
+          // setNotifications(response.data.allActivity)
           // Record timestamp upon component mount
           setMountTime(moment().toISOString())
         } catch (error) {
@@ -42,14 +46,12 @@ const Notifications = () => {
       }
     }
     fetchData()
-  }, [token, userGroups])
+  }, [dispatch, token, userGroups, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
   const { email, location } = useSelector(
     state => state.userReducer.loggedInUser
   )
-
-  const dispatch = useDispatch()
   // Cleanup useEffect to change notification check time, we do this on component un-mount
   // instead of mount so that different styling can be applied to new vs old notifications
   useEffect(() => {
@@ -66,7 +68,7 @@ const Notifications = () => {
               notification_check: mountTime,
             }
           )
-          dispatch({ type: UPDATE_USER, payload: response.data.updated })
+          dispatch({ type: types.UPDATE_USER, payload: response.data.updated })
         } catch (error) {
           console.log(error)
         }
@@ -74,25 +76,23 @@ const Notifications = () => {
     }
   }, [dispatch, email, location, userId, token, mountTime])
 
-  if (!notifications) {
+  if (!notifications || notifications.length === 0) {
     return (
-      <Loader active size='large'>
-        Loading
-      </Loader>
+      <h1>No new notifications</h1>
     )
   }
 
-  // Filter out activity performed by the user, future versions should combine likes on same post/reply
-  const filteredNotifications = notifications.filter(
-    act => userId !== act.user_id && userId !== act.liker_id
-  )
+  // // Filter out activity performed by the user, future versions should combine likes on same post/reply
+  // const filteredNotifications = notifications.filter(
+  //   act => userId !== act.user_id && userId !== act.liker_id
+  // )
 
   return (
     <Container>
-      {filteredNotifications.map(activity => (
+      {notifications.map(activity => (
         <NotificationsCard
           activity={activity}
-          key={activity.tag + activity.id}
+          key={activity.id}
         />
       ))}
     </Container>

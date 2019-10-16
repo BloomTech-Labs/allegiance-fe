@@ -39,6 +39,7 @@ export default function PostCard(props) {
     created_at,
     group_id,
   } = props.post
+  console.log("props.post:", props.post)
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // Obtaining the current users status within the current group
@@ -122,6 +123,7 @@ export default function PostCard(props) {
     const data = {
       userId,
       id,
+      user_id,
     }
     await dispatch(likePost(token, data))
     // if (like.data.likeResult) {

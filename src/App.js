@@ -29,7 +29,8 @@ import MakeAllegiance from './components/allegiances/MakeAllegiance'
 import Feed from './components/feed/Feed'
 import Notifications from './components/notifications/Notifications'
 
-import { LOGIN } from './reducers/userReducer'
+// import { LOGIN } from './reducers/userReducer'
+import * as types from 'actions/actionTypes'
 
 function App(props) {
   const dispatch = useDispatch()
@@ -51,7 +52,7 @@ function App(props) {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: user.email,
           })
-          dispatch({ type: LOGIN, payload: result.data.userInfo })
+          dispatch({ type: types.LOGIN, payload: result.data.userInfo })
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
