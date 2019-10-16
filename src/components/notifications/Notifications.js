@@ -92,7 +92,7 @@ const Notifications = () => {
       {notifications.map(activity => (
         <NotificationsCard
           activity={activity}
-          key={activity.tag + activity.id}
+          key={activity.id}
         />
       ))}
     </Container>

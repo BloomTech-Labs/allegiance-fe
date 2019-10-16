@@ -44,6 +44,7 @@ export const fetchNotifications = (token, data) => async dispatch => {
     try {
       dispatch({ type: actionTypes.FETCH_NOTICE_REQUEST })
       const notifications = await axiosWithAuth([token]).get(`/users/${userId}/notifications`);
+      console.log(notifications);
       dispatch({
         type: actionTypes.FETCH_NOTICE_SUCCESS,
         payload: notifications.data,
