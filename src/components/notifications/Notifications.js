@@ -78,7 +78,7 @@ const Notifications = () => {
 
   if (!notifications || notifications.length === 0) {
     return (
-      <h1>No new notifications</h1>
+      <h1>No notifications</h1>
     )
   }
 
