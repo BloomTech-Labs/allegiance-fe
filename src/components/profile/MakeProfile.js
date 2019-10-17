@@ -41,6 +41,7 @@ const MakeProfile = props => {
   //Sends user data as a put request to API to update user info.
   async function updateUser() {
     try {
+      setErrorContent(null)
       if (image) values.image = image
       Object.keys(values).forEach(
         key => values[key] === '' && (values[key] = null)
