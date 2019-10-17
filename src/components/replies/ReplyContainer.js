@@ -17,9 +17,11 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
+import { fetchPost } from 'actions/index'
 
 const ReplyContainer = props => {
-  const [post, setPost] = useState()
+  // const [post, setPost] = useState()
+  const post = useSelector(state => state.group.post)
   const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
 
@@ -34,20 +36,7 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-          setPost(response.data.postLoaded)
-          const groupId = response.data.postLoaded.group_id
-          setSubmitted(false)
-          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: groupId })
-        } catch {
-          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: 0 })
-        }
-      }
-    }
-    fetchData()
+    dispatch(fetchPost(token, id))
   }, [token, id, submitted, dispatch])
 
   // callback function to handle submit
@@ -86,7 +75,7 @@ const ReplyContainer = props => {
   const classes = useStyles()
 
   // CreateRef for scrolling from Links
-  const replyRefs = post
+  const replyRefs = post.replies
     ? post.replies.reduce((acc, value) => {
         acc[value.id] = createRef()
         return acc
@@ -149,25 +138,30 @@ const ReplyContainer = props => {
   }
 
   // Sort replies by id (which is chronological)
-  const sortedReplies = post.replies.sort((a, b) => a.id - b.id)
+  const sortedReplies = post.replies
+    ? post.replies.sort((a, b) => a.id - b.id)
+    : null
 
   return (
     <ReplyViewContainer>
-      <PostCard post={post} setSubmitted={setSubmitted} />
-
-      <ReplyCardsContainer>
-        {sortedReplies.map(reply => {
-          return (
-            <div ref={replyRefs[reply.id]} key={reply.id}>
-              <ReplyCard
-                reply={reply}
-                setSubmitted={setSubmitted}
-                post={post}
-              />
-            </div>
-          )
-        })}
-      </ReplyCardsContainer>
+      {!!Object.values(post).length && (
+        <PostCard post={post} setSubmitted={setSubmitted} />
+      )}
+      {sortedReplies && (
+        <ReplyCardsContainer>
+          {sortedReplies.map(reply => {
+            return (
+              <div ref={replyRefs[reply.id]} key={reply.id}>
+                <ReplyCard
+                  reply={reply}
+                  setSubmitted={setSubmitted}
+                  post={post}
+                />
+              </div>
+            )
+          })}
+        </ReplyCardsContainer>
+      )}
 
       <div ref={repliesEndRef} />
 
