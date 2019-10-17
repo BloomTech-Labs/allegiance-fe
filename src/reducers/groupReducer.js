@@ -2,7 +2,7 @@ import * as types from 'actions/actionTypes'
 
 const initialState = {
   posts: [],
-  post: [],
+  post: {},
   error: '',
 }
 export const groupReducer = (state = initialState, action) => {
@@ -50,6 +50,11 @@ export const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: filterPosts,
+      }
+    case types.FETCH_POST_SUCCESS:
+      return {
+        ...state,
+        post: action.payload,
       }
     case types.POST_LIKE_FAILURE:
       return {

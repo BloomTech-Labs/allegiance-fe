@@ -87,11 +87,10 @@ export const fetchPost = (token, id) => async dispatch => {
     try {
       dispatch({ type: actionTypes.FETCH_POST_REQUEST })
       const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-      console.log('response.data:🥰', response.data)
-      const repliesArr = response.data.postLoaded
-      dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: repliesArr })
-    } catch {
-      dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: 0 })
+      const postObj = response.data.postLoaded
+      dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
+    } catch (err) {
+      dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
     }
   }
 }

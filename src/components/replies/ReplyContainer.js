@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
-import { fetchPost } from 'actions'
+// import { fetchPost } from 'actions'
 
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
@@ -17,10 +17,11 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
+import { fetchPost } from 'actions/index'
 
 const ReplyContainer = props => {
   // const [post, setPost] = useState()
-  const post = useSelector(state => state.group.post) 
+  const post = useSelector(state => state.group.post)
   const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
 
@@ -35,28 +36,8 @@ const ReplyContainer = props => {
 
   useEffect(async () => {
     // Fetch group related data
-    // const fetchData = async () => {
-    //   if (token) {
-    //     try {
-    //       dispatch({ type: types.FETCH_REPLIES_REQUEST })
-    //       const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-    //       setPost(response.data.postLoaded)
-    //       const groupId = response.data.postLoaded.group_id
-    //       setSubmitted(false)
-    //       dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: groupId })
-    //     } catch {
-    //       dispatch({ type: types.FETCH_REPLIES_FAILURE, payload: 0 })
-    //     }
-    //   }
-    
-
-    // if (token) {
-            const fetchData = async () => {
-              await dispatch(fetchPost(token, id))
-            }
-
-    fetchData()
-  }, [post])
+    dispatch(fetchPost(token, id))
+  }, [token, id, submitted, dispatch])
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -94,13 +75,12 @@ const ReplyContainer = props => {
   const classes = useStyles()
 
   // CreateRef for scrolling from Links
-  console.log("post", post)
-  // const replyRefs = post
-  //   ? post.replies.reduce((acc, value) => {
-  //       acc[value.id] = createRef()
-  //       return acc
-  //     }, {})
-  //   : null
+  const replyRefs = post.replies
+    ? post.replies.reduce((acc, value) => {
+        acc[value.id] = createRef()
+        return acc
+      }, {})
+    : null
 
   // On component mount, if a replyNumber is received from props, scroll the reply into view
   // useEffect(async () => {
@@ -159,25 +139,30 @@ const ReplyContainer = props => {
   }
 
   // Sort replies by id (which is chronological)
-  // const sortedReplies = post.replies.sort((a, b) => a.id - b.id)
-  
-  // <div ref={replyRefs[reply.id]} key={reply.id}>
-  // {sortedReplies.map(reply => {
-    // reply={reply}
+  const sortedReplies = post.replies
+    ? post.replies.sort((a, b) => a.id - b.id)
+    : null
+
   return (
     <ReplyViewContainer>
-      { post.length && <PostCard post={post} setSubmitted={setSubmitted} /> }
-      {/* <ReplyCardsContainer>
-          return (
-            <div>
-              <ReplyCard
-                setSubmitted={setSubmitted}
-                post={post}
-              />
-            </div>
-          )
-        })
-      </ReplyCardsContainer> */}
+      {!!Object.values(post).length && (
+        <PostCard post={post} setSubmitted={setSubmitted} />
+      )}
+      {sortedReplies && (
+        <ReplyCardsContainer>
+          {sortedReplies.map(reply => {
+            return (
+              <div ref={replyRefs[reply.id]} key={reply.id}>
+                <ReplyCard
+                  reply={reply}
+                  setSubmitted={setSubmitted}
+                  post={post}
+                />
+              </div>
+            )
+          })}
+        </ReplyCardsContainer>
+      )}
 
       <div ref={repliesEndRef} />
 
