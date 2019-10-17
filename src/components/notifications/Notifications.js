@@ -67,7 +67,7 @@ const Notifications = () => {
               notification_check: mountTime,
             }
           )
-          dispatch({ type: types.UPDATE_USER, payload: response.data.updated })
+          dispatch({ type: types.UPDATE_USER_SUCCESS, payload: response.data.updated })
         } catch (error) {
           console.log(error)
         }

@@ -49,9 +49,14 @@ const ReplyContainer = props => {
     //     }
     //   }
     
-    
-    await dispatch(fetchPost(token, id))
-  }, [token, id, submitted, dispatch])
+
+    // if (token) {
+            const fetchData = async () => {
+              await dispatch(fetchPost(token, id))
+            }
+
+    fetchData()
+  }, [post])
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -90,39 +95,40 @@ const ReplyContainer = props => {
 
   // CreateRef for scrolling from Links
   console.log("post", post)
-  const replyRefs = post
-    ? post.replies.reduce((acc, value) => {
-        acc[value.id] = createRef()
-        return acc
-      }, {})
-    : null
+  // const replyRefs = post
+  //   ? post.replies.reduce((acc, value) => {
+  //       acc[value.id] = createRef()
+  //       return acc
+  //     }, {})
+  //   : null
 
   // On component mount, if a replyNumber is received from props, scroll the reply into view
-  useEffect(async () => {
-      await dispatch(fetchPost(token, id))
-      if (props.location.replyNumber && replyRefs !== null) {
-        let yCoordinate
-        const scrollRef = () => {
-          // Subtract 50 px to account for padding top from top nav bar
-          const yOffset = -50
-          window.scrollTo({
-            top: yCoordinate + yOffset,
-            behavior: 'smooth',
-          })
-        }
+  // useEffect(async () => {
+  //   console.log("this ran")
+  //     await dispatch(fetchPost(token, id))
+  //     if (props.location.replyNumber && replyRefs !== null) {
+  //       let yCoordinate
+  //       const scrollRef = () => {
+  //         // Subtract 50 px to account for padding top from top nav bar
+  //         const yOffset = -50
+  //         window.scrollTo({
+  //           top: yCoordinate + yOffset,
+  //           behavior: 'smooth',
+  //         })
+  //       }
 
-        // Set ycoord to position of reply using replyNumber from props
-        yCoordinate =
-          replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-            .top + window.pageYOffset
+  //       // Set ycoord to position of reply using replyNumber from props
+  //       yCoordinate =
+  //         replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+  //           .top + window.pageYOffset
 
-        scrollRef()
-        // Set replyNumber to null to prevent re-render and scrollRef() when typing
-        props.location.replyNumber = null
-      }
-    }
-    // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
-  )
+  //       scrollRef()
+  //       // Set replyNumber to null to prevent re-render and scrollRef() when typing
+  //       props.location.replyNumber = null
+  //     }
+  //   }
+  //   // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
+  // )
 
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)
@@ -153,25 +159,25 @@ const ReplyContainer = props => {
   }
 
   // Sort replies by id (which is chronological)
-  const sortedReplies = post.replies.sort((a, b) => a.id - b.id)
-
+  // const sortedReplies = post.replies.sort((a, b) => a.id - b.id)
+  
+  // <div ref={replyRefs[reply.id]} key={reply.id}>
+  // {sortedReplies.map(reply => {
+    // reply={reply}
   return (
     <ReplyViewContainer>
-      <PostCard post={post} setSubmitted={setSubmitted} />
-
-      <ReplyCardsContainer>
-        {sortedReplies.map(reply => {
+      { post.length && <PostCard post={post} setSubmitted={setSubmitted} /> }
+      {/* <ReplyCardsContainer>
           return (
-            <div ref={replyRefs[reply.id]} key={reply.id}>
+            <div>
               <ReplyCard
-                reply={reply}
                 setSubmitted={setSubmitted}
                 post={post}
               />
             </div>
           )
-        })}
-      </ReplyCardsContainer>
+        })
+      </ReplyCardsContainer> */}
 
       <div ref={repliesEndRef} />
 

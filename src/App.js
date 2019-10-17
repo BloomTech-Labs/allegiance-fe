@@ -52,7 +52,7 @@ function App(props) {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: user.email,
           })
-          dispatch({ type: types.LOGIN, payload: result.data.userInfo })
+          dispatch({ type: types.FETCH_LOGIN_SUCCESS, payload: result.data.userInfo })
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo

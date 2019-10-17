@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-// import { ADD_GROUP, LEAVE_GROUP } from '../../reducers/userReducer'
 import * as types from 'actions/actionTypes'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { makeStyles } from '@material-ui/core/styles'
@@ -69,7 +68,7 @@ const MembershipStatus = props => {
           id: group_id,
           user_type: user_type,
         }
-        dispatch({ type: types.ADD_GROUP, payload: addedGroup })
+        dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
         props.setTrigger(true)
         Mixpanel.activity(loggedInUser.id, 'Joined Group')
       }
@@ -101,7 +100,8 @@ const MembershipStatus = props => {
           id: group_id,
           user_type: user_type,
         }
-        dispatch({ type: types.ADD_GROUP, payload: addedGroup })
+        // should be group invite, new actions
+        dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
         props.setTrigger(true)
         Mixpanel.activity(loggedInUser.id, 'Joined Group')
       }
@@ -118,7 +118,7 @@ const MembershipStatus = props => {
         result.data.message === 'The user to group pairing has been deleted.'
       ) {
         setUserType('non-member')
-        dispatch({ type: types.LEAVE_GROUP, payload: props.group_id })
+        dispatch({ type: types.LEAVE_GROUP_SUCCESS, payload: props.group_id })
         props.setTrigger(true)
         Mixpanel.activity(loggedInUser.id, 'Left Group')
       }

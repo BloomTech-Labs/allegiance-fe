@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
-// import { FETCH_GROUP_SUCCESS } from '../../reducers/navReducer'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
@@ -39,8 +38,8 @@ const GroupPage = props => {
           const groupId = response.data.group.id
           dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
           setTrigger(false)
-        } catch {
-          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: 0 })
+        } catch (err) {
+          dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
           setTrigger(false)
         }
       }

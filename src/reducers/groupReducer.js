@@ -2,7 +2,7 @@ import * as types from 'actions/actionTypes'
 
 const initialState = {
   posts: [],
-  post: {},
+  post: [],
   error: '',
 }
 export const groupReducer = (state = initialState, action) => {
