@@ -49,8 +49,13 @@ function App(props) {
     if (isAuthenticated && !loggedInUser && user && loading) {
       const registerUser = async () => {
         try {
+          console.log(user)
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: user.email,
+            first_name: user.given_name,
+            last_name: user.family_name,
+            username: user.nickname,
+            image: user.picture,
           })
           dispatch({ type: types.LOGIN, payload: result.data.userInfo })
 
