@@ -51,10 +51,32 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         posts: filterPosts,
       }
+    case types.REPLY_LIKE_SUCCESS:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: state.post.replies.filter(obj => {
+            if (obj.id === action.payload.reply_id) {
+              obj.replyLikes.push(action.payload)
+              return obj
+            }
+            return obj
+          }),
+        },
+      }
     case types.FETCH_POST_SUCCESS:
       return {
         ...state,
         post: action.payload,
+      }
+    case types.CREATE_REPLY_SUCCESS:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: [...state.post.replies, action.payload],
+        },
       }
     case types.POST_LIKE_FAILURE:
       return {

@@ -1,5 +1,6 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
+import { async } from 'q'
 
 export const fetchGroupPosts = (token, id) => async dispatch => {
   if (token)
@@ -93,5 +94,37 @@ export const fetchPost = (token, id) => async dispatch => {
     } catch (err) {
       dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
     }
+  }
+}
+
+export const likeReply = (token, data) => async dispatch => {
+  const { userId, id } = data
+  dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
+  const like = await axiosWithAuth([token]).post(`/replies_likes/reply/${id}`, {
+    user_id: userId,
+    reply_id: id,
+  })
+  if (like.data.likeResult) {
+    dispatch({
+      type: actionTypes.REPLY_LIKE_SUCCESS,
+      payload: like.data.likeResult,
+    })
+  }
+}
+
+export const createReply = (token, data) => async dispatch => {
+  const { userId, id, reply_content } = data
+  dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
+  const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
+    user_id: userId,
+    post_id: id,
+    reply_content: reply_content,
+  })
+
+  if (post.data.reply) {
+    dispatch({
+      type: actionTypes.CREATE_REPLY_SUCCESS,
+      payload: post.data.reply,
+    })
   }
 }
