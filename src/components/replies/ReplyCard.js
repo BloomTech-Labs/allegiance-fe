@@ -15,7 +15,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
 import Tooltip from '@material-ui/core/Tooltip'
-import { likeReply } from 'actions'
+import { likeReply, dislikeReply } from 'actions'
 
 const ReplyCard = props => {
   const {
@@ -56,13 +56,14 @@ const ReplyCard = props => {
   }
 
   async function unLikeReply(e) {
-    e.preventDefault()
-    const unLike = await axiosWithAuth([token]).delete(
-      `/replies_likes/${replyLikeId.id}`
-    )
-    if (unLike) {
-      props.setSubmitted(true)
-    }
+    // e.preventDefault()
+    // const unLike = await axiosWithAuth([token]).delete(
+    //   `/replies_likes/${replyLikeId.id}`
+    // )
+    // if (unLike) {
+    //   props.setSubmitted(true)
+    // }
+    dispatch(dislikeReply(token, replyLikeId.id))
   }
 
   const deleteReply = async () => {
@@ -248,79 +249,5 @@ const Activity = styled.div`
   height: 100%;
   justify-content: space-between;
 `
-
-// Material UI Styling
-const primary = red[600]
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  content: {
-    maxWidth: '70%',
-    margin: '10px 0',
-    padding: '10px',
-    display: 'block',
-    position: 'relative',
-    wordWrap: 'break-word',
-    borderRadius: '5px',
-    boxShadow: '0 0 6px #b2b2b2',
-    '&:last-child': {
-      paddingBottom: '10px',
-    },
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    backgroundColor: 'white',
-  },
-  dense: {
-    marginTop: theme.spacing(2),
-  },
-  menu: {
-    width: 200,
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  avatar: {
-    margin: 3,
-    width: 60,
-    height: 60,
-  },
-  typography: {
-    fontSize: 13,
-    color: 'black',
-    padding: 0,
-  },
-  typography2: {
-    fontSize: 15,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  likedIcon: {
-    margin: 0,
-    marginBottom: 0,
-    padding: 0,
-    color: primary,
-  },
-  unlikedIcon: {
-    margin: 0,
-    marginBottom: 0,
-    padding: 0,
-    color: primary,
-  },
-  countIcon: {
-    margin: 0,
-    marginBottom: 3,
-    padding: 0,
-  },
-  icon: {
-    margin: 0,
-    marginBottom: 0,
-    padding: 0,
-  },
-}))
 
 export default ReplyCard

@@ -76,7 +76,7 @@ export const dislikePost = (token, data) => async dispatch => {
       const unLike = await axiosWithAuth([token]).delete(`/posts_likes/${data}`)
       dispatch({
         type: actionTypes.POST_UNLIKE_SUCCESS,
-        payload: unLike.data.deleted[0], 
+        payload: unLike.data.deleted[0],
       })
     } catch (err) {
       console.log(err)
@@ -126,4 +126,13 @@ export const createReply = (token, data) => async dispatch => {
       payload: post.data.reply,
     })
   }
+}
+
+export const dislikeReply = (token, id) => async dispatch => {
+  const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)
+  console.log(unLike.data.deleted[0], 'delete data')
+  dispatch({
+    type: actionTypes.REPLY_DISLIKE_SUCCESS,
+    payload: unLike.data.deleted[0],
+  })
 }
