@@ -42,17 +42,7 @@ const ReplyContainer = props => {
   async function submitReply(e) {
     const data = { userId, id, reply_content: values.reply_content }
     dispatch(createReply(token, data))
-    // const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
-    //   user_id: userId,
-    //   post_id: id,
-    //   reply_content: values.reply_content,
-    // })
-    // if (post.data.reply) {
-    //   console.log('what is this post data reply', post.data.reply)
-    //   setValues('')
-    //   setSubmitted(true)
     //   Mixpanel.activity(userId, 'Reply Successfully Created.')
-    // }
   }
 
   // Material UI
