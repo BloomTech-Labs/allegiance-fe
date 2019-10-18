@@ -17,40 +17,46 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost } from 'actions/index'
+import { fetchPost, createReply } from 'actions'
 
 const ReplyContainer = props => {
   // const [post, setPost] = useState()
+  const dispatch = useDispatch()
+  const [token] = useGetToken()
   const post = useSelector(state => state.group.post)
   const [submitted, setSubmitted] = useState(false)
+  
   const id = props.match.params.id
-
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
 
-  const dispatch = useDispatch()
 
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(submitReply)
   // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
 
-  useEffect(async () => {
+  useEffect(() => {
+    const fetchData = async () => {
     // Fetch group related data
-    dispatch(fetchPost(token, id))
+    await dispatch(fetchPost(token, id))
+    }
+    fetchData()
   }, [token, id, submitted, dispatch])
 
   // callback function to handle submit
   async function submitReply(e) {
-    const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
-      user_id: userId,
-      post_id: id,
-      reply_content: values.reply_content,
-    })
-    if (post.data.reply) {
-      setValues('')
-      setSubmitted(true)
-      Mixpanel.activity(userId, 'Reply Successfully Created.')
-    }
+    const data = { userId, id, reply_content: values.reply_content }
+    dispatch(createReply(token, data))
+    // const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
+    //   user_id: userId,
+    //   post_id: id,
+    //   reply_content: values.reply_content,
+    // })
+    // if (post.data.reply) {
+    //   console.log('what is this post data reply', post.data.reply)
+    //   setValues('')
+    //   setSubmitted(true)
+    //   Mixpanel.activity(userId, 'Reply Successfully Created.')
+    // }
   }
 
   // Material UI

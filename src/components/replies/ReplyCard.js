@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,6 +15,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
 import Tooltip from '@material-ui/core/Tooltip'
+import { likeReply } from 'actions'
 
 const ReplyCard = props => {
   const {
@@ -28,6 +29,7 @@ const ReplyCard = props => {
     created_at,
   } = props.reply
   
+  const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   const replyLikeId = replyLikes.find(like => like.user_id === userId)
   // Obtaining the current users status within the current group
@@ -41,20 +43,16 @@ const ReplyCard = props => {
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
   // For Styled components -- see bottom of page
+
   const classes = useStyles()
   // Functions for liking & unliking replies
   async function addReplyLike(e) {
     e.preventDefault()
-    const like = await axiosWithAuth([token]).post(
-      `/replies_likes/reply/${id}`,
-      {
-        user_id: userId,
-        reply_id: id,
-      }
-    )
-    if (like.data.likeResult) {
-      props.setSubmitted(true)
+    const data = {
+      userId,
+      id,
     }
+    dispatch(likeReply(token, data))
   }
 
   async function unLikeReply(e) {
@@ -251,4 +249,5 @@ const Activity = styled.div`
   height: 100%;
   justify-content: space-between;
 `
+
 export default ReplyCard
