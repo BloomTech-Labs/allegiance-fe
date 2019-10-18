@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { UPDATE_USER } from "../../reducers/userReducer";
 import * as types from 'actions/actionTypes'
 
 import { Mixpanel } from "../analytics/Mixpanel";
@@ -32,18 +31,20 @@ const MakeProfile = props => {
 	//Sends user data as a put request to API to update user info.
 	async function updateUser() {
 		try {
+			dispatch({ type: types.UPDATE_USER_REQUEST})
 			if (image) values.image = image
 			Object.keys(values).forEach((key) => (values[key] === "") && (values[key] = null));
 			const result = await axiosWithAuth([token]).put(
 				`/users/${loggedInUser.id}`,
 				values
 			);
-			dispatch({ type: types.UPDATE_USER, payload: result.data.updated });
+			dispatch({ type: types.UPDATE_USER_SUCCESS, payload: result.data.updated });
 			Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
 			const push = () => props.history.push("/profile")
 			setTimeout(push, 1000);
 		}
-		catch {
+		catch (err) {
+			dispatch({ type: types.UPDATE_USER_FAILURE, payload: err })
 			Mixpanel.activity(loggedInUser.id, 'Edit Profile Failed')
 			setError(true)
 			setLoading(false)

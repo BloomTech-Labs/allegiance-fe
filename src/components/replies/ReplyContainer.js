@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { VIEW_REPLIES } from '../../reducers/navReducer'
 import * as types from 'actions/actionTypes'
+// import { fetchPost } from 'actions'
+
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
@@ -20,22 +21,24 @@ import { fetchPost, createReply } from 'actions'
 
 const ReplyContainer = props => {
   // const [post, setPost] = useState()
+  const dispatch = useDispatch()
+  const [token] = useGetToken()
   const post = useSelector(state => state.group.post)
   const [submitted, setSubmitted] = useState(false)
+
   const id = props.match.params.id
-
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
-
-  const dispatch = useDispatch()
 
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(submitReply)
   // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
 
   useEffect(() => {
-    // Fetch group related data
-    dispatch(fetchPost(token, id))
+    const fetchData = async () => {
+      // Fetch group related data
+      await dispatch(fetchPost(token, id))
+    }
+    fetchData()
   }, [token, id, submitted, dispatch])
 
   // callback function to handle submit
@@ -85,31 +88,32 @@ const ReplyContainer = props => {
     : null
 
   // On component mount, if a replyNumber is received from props, scroll the reply into view
-  useEffect(
-    () => {
-      if (props.location.replyNumber && replyRefs !== null) {
-        let yCoordinate
-        const scrollRef = () => {
-          // Subtract 50 px to account for padding top from top nav bar
-          const yOffset = -50
-          window.scrollTo({
-            top: yCoordinate + yOffset,
-            behavior: 'smooth',
-          })
-        }
+  // useEffect(async () => {
+  //   console.log("this ran")
+  //     await dispatch(fetchPost(token, id))
+  //     if (props.location.replyNumber && replyRefs !== null) {
+  //       let yCoordinate
+  //       const scrollRef = () => {
+  //         // Subtract 50 px to account for padding top from top nav bar
+  //         const yOffset = -50
+  //         window.scrollTo({
+  //           top: yCoordinate + yOffset,
+  //           behavior: 'smooth',
+  //         })
+  //       }
 
-        // Set ycoord to position of reply using replyNumber from props
-        yCoordinate =
-          replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-            .top + window.pageYOffset
+  //       // Set ycoord to position of reply using replyNumber from props
+  //       yCoordinate =
+  //         replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+  //           .top + window.pageYOffset
 
-        scrollRef()
-        // Set replyNumber to null to prevent re-render and scrollRef() when typing
-        props.location.replyNumber = null
-      }
-    }
-    // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
-  )
+  //       scrollRef()
+  //       // Set replyNumber to null to prevent re-render and scrollRef() when typing
+  //       props.location.replyNumber = null
+  //     }
+  //   }
+  //   // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
+  // )
 
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)

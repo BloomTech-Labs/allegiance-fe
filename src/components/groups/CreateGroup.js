@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { ADD_GROUP } from '../../reducers/userReducer'
-// import { VIEW_GROUP } from '../../reducers/navReducer'
 import * as types from 'actions/actionTypes'
 
 import { Mixpanel } from '../analytics/Mixpanel'
@@ -57,6 +55,7 @@ const CreateGroup = props => {
   //Creates a new group and pushes the user to the group page after submission.
   async function createGroup() {
     try {
+      dispatch({ type: types.ADD_GROUP_REQUEST})
       const newGroup = { ...values, image: image, creator_id: loggedInUser.id }
       const result = await axiosWithAuth([token]).post('/groups/', newGroup)
       const addedGroup = {
@@ -65,11 +64,13 @@ const CreateGroup = props => {
         id: result.data.newGroup.id,
         user_type: 'admin',
       }
-      dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: addedGroup })
+      // fetch_group_success??
+      dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
       Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
       const push = () => props.history.push(`/group/${result.data.newGroup.id}`)
       setTimeout(push, 1000)
-    } catch {
+    } catch (err) {
+      dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
       Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
       setError(true)
       setLoading(false)

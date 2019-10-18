@@ -28,6 +28,7 @@ const ReplyCard = props => {
     replyLikes,
     created_at,
   } = props.reply
+
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   const replyLikeId = replyLikes.find(like => like.user_id === userId)
@@ -41,6 +42,7 @@ const ReplyCard = props => {
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
+  // For Styled components -- see bottom of page
 
   const classes = useStyles()
   // Functions for liking & unliking replies
@@ -145,6 +147,80 @@ const ReplyCard = props => {
     </div>
   )
 }
+
+// Material UI Styling
+const primary = red[600]
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  content: {
+    maxWidth: '70%',
+    margin: '10px 0',
+    padding: '10px',
+    display: 'block',
+    position: 'relative',
+    wordWrap: 'break-word',
+    borderRadius: '5px',
+    boxShadow: '0 0 6px #b2b2b2',
+    '&:last-child': {
+      paddingBottom: '10px',
+    },
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    backgroundColor: 'white',
+  },
+  dense: {
+    marginTop: theme.spacing(2),
+  },
+  menu: {
+    width: 200,
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  avatar: {
+    margin: 3,
+    width: 60,
+    height: 60,
+  },
+  typography: {
+    fontSize: 13,
+    color: 'black',
+    padding: 0,
+  },
+  typography2: {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  likedIcon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+    color: primary,
+  },
+  unlikedIcon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+    color: primary,
+  },
+  countIcon: {
+    margin: 0,
+    marginBottom: 3,
+    padding: 0,
+  },
+  icon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+  },
+}))
 
 const BubbleContainer = styled.div`
   display: flex;

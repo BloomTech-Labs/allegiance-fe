@@ -83,6 +83,16 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.FETCH_POST_SUCCESS:
+      return {
+        ...state,
+        post: action.payload
+      }
+    case types.FETCH_POST_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      }
     default:
       return state
   }

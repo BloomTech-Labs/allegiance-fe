@@ -11,7 +11,7 @@ export const fetchGroupPosts = (token, id) => async dispatch => {
       dispatch({ type: actionTypes.FETCH_POSTS_SUCCESS, payload: sortedPost })
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.FETCH_POSTS_FAILURE })
+      dispatch({ type: actionTypes.FETCH_POSTS_FAILURE, payload: err })
     }
 }
 
@@ -34,7 +34,7 @@ export const createGroupPost = (token, data) => async dispatch => {
       })
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.CREATE_POST_FAILURE })
+      dispatch({ type: actionTypes.CREATE_POST_FAILURE, payload: err })
     }
   }
 }
@@ -65,7 +65,7 @@ export const likePost = (token, data) => async dispatch => {
       })
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.POST_LIKE_FAILURE })
+      dispatch({ type: actionTypes.POST_LIKE_FAILURE, payload: err })
     }
   }
 }
@@ -76,14 +76,13 @@ export const dislikePost = (token, data) => async dispatch => {
       const unLike = await axiosWithAuth([token]).delete(`/posts_likes/${data}`)
       dispatch({
         type: actionTypes.POST_UNLIKE_SUCCESS,
-        payload: unLike.data.deleted[0],
+        payload: unLike.data.deleted[0], 
       })
     } catch (err) {
       console.log(err)
     }
   }
 }
-
 export const fetchPost = (token, id) => async dispatch => {
   if (token) {
     try {
