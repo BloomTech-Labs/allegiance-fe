@@ -129,6 +129,7 @@ export const createReply = (token, data) => async dispatch => {
 }
 
 export const dislikeReply = (token, id) => async dispatch => {
+  dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)
   console.log(unLike.data.deleted[0], 'delete data')
   dispatch({

@@ -63,8 +63,16 @@ export const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         post: {
-          ...state,
-          replies: state.post.likes.filter(obj => obj.id !== action.payload.id),
+          ...state.post,
+          replies: state.post.replies.filter(obj => {
+            if (obj.id === action.payload.reply_id) {
+              obj.replyLikes = obj.replyLikes.filter(
+                likeObj => likeObj.id !== action.payload.id
+              )
+              return obj
+            }
+            return obj
+          }),
         },
       }
     case types.REPLY_LIKE_SUCCESS:
