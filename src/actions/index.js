@@ -1,6 +1,11 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
+
+export const updateSocket = data => dispatch => {
+  dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
+}
+
 const log = console.log
 
 export const fetchGroupPosts = (token, id) => async dispatch => {
