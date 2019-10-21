@@ -20,7 +20,7 @@ import {
   DeleteOutline,
   FavoriteBorder,
 } from '@material-ui/icons'
-import { likePost } from 'actions'
+import { likePost, dislikePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 
@@ -39,7 +39,6 @@ export default function PostCard(props) {
     created_at,
     group_id,
   } = props.post
-  console.log("props.post:", props.post)
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // Obtaining the current users status within the current group
@@ -126,25 +125,11 @@ export default function PostCard(props) {
       user_id,
     }
     await dispatch(likePost(token, data))
-    // if (like.data.likeResult) {
-    // axiosWithAuth([token]).post(`/users/${}/notifications`, {
-    //   user_id: "",
-    //   invoker: "",
-    //   type_id: "",
-    //   type: 'like'
-    // })
-    // props.setSubmitted(true)
-    // }
   }
 
   async function unLike(e) {
     e.preventDefault()
-    const unLike = await axiosWithAuth([token]).delete(
-      `/posts_likes/${postLikeId.id}`
-    )
-    if (unLike) {
-      props.setSubmitted(true)
-    }
+    await dispatch(dislikePost(token, postLikeId.id))
   }
 
   return (
@@ -223,7 +208,7 @@ export default function PostCard(props) {
               <ModeCommentOutlined />
             </IconButton>
             <IconButton className={classes.likesCount}>
-              <h4> {replies.length} </h4>
+              {replies && <h4> {replies.length} </h4>}
             </IconButton>
           </Link>
         </div>
