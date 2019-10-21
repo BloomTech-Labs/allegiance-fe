@@ -77,6 +77,7 @@ function App(props) {
             props.history.push(`${pushTo}`)
             Mixpanel.login(currentUser, 'Successful login.')
           }
+          console.log('Logging in user')
         } catch (err) {
           Mixpanel.track('Unsuccessful login')
         }
