@@ -208,7 +208,7 @@ export default function PostCard(props) {
               <ModeCommentOutlined />
             </IconButton>
             <IconButton className={classes.likesCount}>
-              <h4> {replies.length} </h4>
+              {replies && <h4> {replies.length} </h4>}
             </IconButton>
           </Link>
         </div>

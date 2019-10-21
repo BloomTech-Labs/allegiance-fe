@@ -60,7 +60,7 @@ export const groupReducer = (state = initialState, action) => {
           ...state.post,
           likes: state.post.likes
             ? state.post.likes.filter(obj => obj.id !== action.payload.id)
-            : [],
+            : null,
         },
       }
     case types.REPLY_DISLIKE_SUCCESS:
