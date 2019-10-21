@@ -104,6 +104,8 @@ const Notifications = () => {
 
 const Container = styled.div`
   background-color: whitesmoke;
+  display: flex;
+  flex-direction: column-reverse;
 `
 
 export default Notifications
