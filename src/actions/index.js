@@ -1,6 +1,11 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
+
+export const updateSocket = data => dispatch => {
+  dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
+}
+
 const log = console.log
 
 export const fetchGroupPosts = (token, id) => async dispatch => {
@@ -48,6 +53,7 @@ export const fetchNotifications = (token, data) => async dispatch => {
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
+      console.log(notifications)
       dispatch({
         type: actionTypes.FETCH_NOTICE_SUCCESS,
         payload: notifications.data,
@@ -59,7 +65,7 @@ export const fetchNotifications = (token, data) => async dispatch => {
   }
 }
 
-export const likePost = (token, data) => async dispatch => {
+export const likePost = (token, data, socket) => async dispatch => {
   const { userId, id, user_id } = data
   if (token) {
     try {
@@ -73,7 +79,7 @@ export const likePost = (token, data) => async dispatch => {
       )
       if (like.data.likeResult) {
         if (user_id !== userId) {
-          axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
+          await axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
             user_id,
             invoker_id: userId,
             type_id: id,
@@ -85,6 +91,7 @@ export const likePost = (token, data) => async dispatch => {
         type: actionTypes.POST_LIKE_SUCCESS,
         payload: like.data.likeResult,
       })
+      socket.emit('send notification', { userIds: [user_id] })
     } catch (err) {
       console.log(err)
       dispatch({ type: actionTypes.POST_LIKE_FAILURE, payload: err })
@@ -118,7 +125,7 @@ export const fetchPost = (token, id) => async dispatch => {
   }
 }
 
-export const likeReply = (token, data) => async dispatch => {
+export const likeReply = (token, data, socket) => async dispatch => {
   const { userId, id, user_id } = data
   dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
   const like = await axiosWithAuth([token]).post(`/replies_likes/reply/${id}`, {
@@ -138,10 +145,11 @@ export const likeReply = (token, data) => async dispatch => {
         type: 'reply_like',
       })
     }
+    socket.emit('send notification', { userIds: [user_id] })
   }
 }
 
-export const createReply = (token, data) => async dispatch => {
+export const createReply = (token, data, socket) => async dispatch => {
   const { userId, user_id, id, reply_content } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
   const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
@@ -155,14 +163,15 @@ export const createReply = (token, data) => async dispatch => {
       type: actionTypes.CREATE_REPLY_SUCCESS,
       payload: post.data.reply,
     })
-  if (userId !== user_id) {
-    axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
-      user_id,
-      invoker_id: userId,
-      type_id: id,
-      type: 'reply',
+    if (userId !== user_id) {
+      await axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
+        user_id,
+        invoker_id: userId,
+        type_id: id,
+        type: 'reply',
       })
     }
+    socket.emit('send notification', { userIds: [user_id] })
   }
 }
 

@@ -13,12 +13,13 @@ import NotificationsCard from './NotificationsCard'
 import { fetchNotifications } from 'actions/index'
 
 const Notifications = () => {
-  const notifications = useSelector(state => state.notifyReducer.notifications) 
+  const notifications = useSelector(state => state.notifyReducer.notifications)
   // Keep track of when notifications component mounts so that timestamp
   // can be passed to the put in the cleanup useEffect
   const [mountTime, setMountTime] = useState()
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const socket = useSelector(state => state.socketReducer.socket)
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
@@ -30,13 +31,13 @@ const Notifications = () => {
       return group.id
     })
     const fetchData = async () => {
-      if (token) {
+      if (token && userId) {
         try {
           const data = {
-            userId
+            userId,
           }
           const response = await dispatch(fetchNotifications(token, data))
-          console.log(response);
+          console.log(response)
           // setNotifications(response.data.allActivity)
           // Record timestamp upon component mount
           setMountTime(moment().toISOString())
@@ -46,6 +47,10 @@ const Notifications = () => {
       }
     }
     fetchData()
+    socket.on('new notification', fetchData)
+    return () => {
+      socket.off('new notification')
+    }
   }, [dispatch, token, userGroups, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
@@ -68,7 +73,10 @@ const Notifications = () => {
               notification_check: mountTime,
             }
           )
-          dispatch({ type: types.UPDATE_USER_SUCCESS, payload: response.data.updated })
+          dispatch({
+            type: types.UPDATE_USER_SUCCESS,
+            payload: response.data.updated,
+          })
         } catch (error) {
           console.log(error)
         }
@@ -77,9 +85,7 @@ const Notifications = () => {
   }, [dispatch, email, location, userId, token, mountTime])
 
   if (!notifications || notifications.length === 0) {
-    return (
-      <h1>No notifications</h1>
-    )
+    return <h1>No notifications</h1>
   }
 
   // // Filter out activity performed by the user, future versions should combine likes on same post/reply
@@ -90,10 +96,7 @@ const Notifications = () => {
   return (
     <Container>
       {notifications.map(activity => (
-        <NotificationsCard
-          activity={activity}
-          key={activity.id}
-        />
+        <NotificationsCard activity={activity} key={activity.id} />
       ))}
     </Container>
   )
@@ -101,6 +104,8 @@ const Notifications = () => {
 
 const Container = styled.div`
   background-color: whitesmoke;
+  display: flex;
+  flex-direction: column-reverse;
 `
 
 export default Notifications
