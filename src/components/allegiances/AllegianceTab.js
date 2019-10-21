@@ -57,8 +57,9 @@ const AllegianceTab = props => {
         { data: deleted }
       )
       console.log(deletedAllegiance)
-      dispatch({ type: types.LEAVE_ALLEGIANCE, payload: id })
+      dispatch({ type: types.LEAVE_ALLEGIANCE_SUCCESS, payload: id })
     } catch {
+      dispatch({ type: types.LEAVE_ALLEGIANCE_FAILURE, payload: id })
       console.log('Something went wrong.')
     }
   }

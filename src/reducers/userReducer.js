@@ -1,11 +1,3 @@
-// export const LOGIN = 'LOGIN'
-// export const UPDATE_USER = 'UPDATE_USER'
-// export const ADD_GROUP = 'ADD_GROUP'
-// export const LEAVE_GROUP = 'LEAVE_GROUP'
-// export const GET_ALLEGIANCES = 'GET_ALLEGIANCES'
-// export const ADD_ALLEGIANCE = 'ADD_ALLEGIANCE'
-// export const LEAVE_ALLEGIANCE = 'LEAVE_ALLEGIANCE'
-// export const ENTER_PROFILE = 'ENTER PROFILE'
 import * as types from 'actions/actionTypes'
 
 const initialState = {
@@ -18,7 +10,7 @@ const initialState = {
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.LOGIN:
+    case types.FETCH_LOGIN_SUCCESS:
       //Sets redux to the freshly logged in user's info, groups and allegiances.
       return {
         ...state,
@@ -31,7 +23,12 @@ export const userReducer = (state = initialState, action) => {
         loggedInAllegiances: action.payload.basicAllegianceInfo,
         error: '',
       }
-    case types.ENTER_PROFILE:
+    case types.FETCH_LOGIN_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case types.FETCH_PROFILE_SUCCESS:
       //Refreshes logged in user's info, groups and allegiances upon entering their profile.
       return {
         ...state,
@@ -43,20 +40,35 @@ export const userReducer = (state = initialState, action) => {
         loggedInAllegiances: action.payload.basicAllegianceInfo,
         error: '',
       }
-    case types.UPDATE_USER:
+    case types.FETCH_PROFILE_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case types.UPDATE_USER_SUCCESS:
       //Updates loggedInUser after their profile has been successfully edited.
       return {
         ...state,
         loggedInUser: action.payload,
         error: '',
       }
-    case types.ADD_GROUP:
+    case types.UPDATE_USER_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case types.ADD_GROUP_SUCCESS:
       //Updates logged in user's groups when they join a new group.
       return {
         ...state,
         loggedInGroups: [...state.loggedInGroups, action.payload],
       }
-    case types.LEAVE_GROUP:
+    case types.ADD_GROUP_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case types.LEAVE_GROUP_SUCCESS:
       //Updates logged in user's groups when they leave a group.
       return {
         ...state,
@@ -64,12 +76,23 @@ export const userReducer = (state = initialState, action) => {
           group => group.id !== action.payload
         ),
       }
-    case types.ADD_ALLEGIANCES_SUCCESS:
+    case types.LEAVE_GROUP_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    // case types.ADD_ALLEGIANCES_SUCCESS:  changed this as it appears below
+    case types.GET_ALLEGIANCES_SUCCESS:
       //Updates allegiances when entering the allegiance page.
       return {
         ...state,
         loggedInAllegiances: action.payload,
         error: '',
+      }
+    case types.GET_ALLEGIANCES_FAILURE: 
+      return {
+        ...state,
+        error: action.payload
       }
     case types.ADD_ALLEGIANCES_SUCCESS:
       //Updates logged in user's allegiances when they add a new one to their list.
@@ -77,13 +100,23 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loggedInAllegiances: [...state.loggedInAllegiances, action.payload],
       }
-    case types.LEAVE_ALLEGIANCE:
+    case types.ADD_ALLEGIANCES_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case types.LEAVE_ALLEGIANCE_SUCCESS:
       //Updates logged in user's allegiances when they remove one from their list.
       return {
         ...state,
         loggedInAllegiances: state.loggedInAllegiances.filter(
           allegiance => allegiance.id !== action.payload
         ),
+      }
+      case types.LEAVE_ALLEGIANCE_FAILURE:
+       return {
+         ...state,
+         error: action.payload
       }
     default:
       return state

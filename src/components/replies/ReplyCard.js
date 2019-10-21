@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,6 +15,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
 import Tooltip from '@material-ui/core/Tooltip'
+import { likeReply, dislikeReply } from 'actions'
 
 const ReplyCard = props => {
   const {
@@ -27,7 +28,8 @@ const ReplyCard = props => {
     replyLikes,
     created_at,
   } = props.reply
-  const primary = red[600]
+
+  const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   const replyLikeId = replyLikes.find(like => like.user_id === userId)
   // Obtaining the current users status within the current group
@@ -40,103 +42,28 @@ const ReplyCard = props => {
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
-
-  // Material UI Styling
-  const useStyles = makeStyles(theme => ({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    content: {
-      maxWidth: '70%',
-      margin: '10px 0',
-      padding: '10px',
-      display: 'block',
-      position: 'relative',
-      wordWrap: 'break-word',
-      borderRadius: '5px',
-      boxShadow: '0 0 6px #b2b2b2',
-      '&:last-child': {
-        paddingBottom: '10px',
-      },
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      backgroundColor: 'white',
-    },
-    dense: {
-      marginTop: theme.spacing(2),
-    },
-    menu: {
-      width: 200,
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-    avatar: {
-      margin: 3,
-      width: 60,
-      height: 60,
-    },
-    typography: {
-      fontSize: 13,
-      color: 'black',
-      padding: 0,
-    },
-    typography2: {
-      fontSize: 15,
-      color: 'black',
-      fontWeight: 'bold',
-    },
-    likedIcon: {
-      margin: 0,
-      marginBottom: 0,
-      padding: 0,
-      color: primary,
-    },
-    unlikedIcon: {
-      margin: 0,
-      marginBottom: 0,
-      padding: 0,
-      color: primary,
-    },
-    countIcon: {
-      margin: 0,
-      marginBottom: 3,
-      padding: 0,
-    },
-    icon: {
-      margin: 0,
-      marginBottom: 0,
-      padding: 0,
-    },
-  }))
+  // For Styled components -- see bottom of page
 
   const classes = useStyles()
   // Functions for liking & unliking replies
   async function addReplyLike(e) {
     e.preventDefault()
-    const like = await axiosWithAuth([token]).post(
-      `/replies_likes/reply/${id}`,
-      {
-        user_id: userId,
-        reply_id: id,
-      }
-    )
-    if (like.data.likeResult) {
-      props.setSubmitted(true)
+    const data = {
+      userId,
+      id,
     }
+    dispatch(likeReply(token, data))
   }
 
   async function unLikeReply(e) {
-    e.preventDefault()
-    const unLike = await axiosWithAuth([token]).delete(
-      `/replies_likes/${replyLikeId.id}`
-    )
-    if (unLike) {
-      props.setSubmitted(true)
-    }
+    // e.preventDefault()
+    // const unLike = await axiosWithAuth([token]).delete(
+    //   `/replies_likes/${replyLikeId.id}`
+    // )
+    // if (unLike) {
+    //   props.setSubmitted(true)
+    // }
+    dispatch(dislikeReply(token, replyLikeId.id))
   }
 
   const deleteReply = async () => {
@@ -221,6 +148,80 @@ const ReplyCard = props => {
     </div>
   )
 }
+
+// Material UI Styling
+const primary = red[600]
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  content: {
+    maxWidth: '70%',
+    margin: '10px 0',
+    padding: '10px',
+    display: 'block',
+    position: 'relative',
+    wordWrap: 'break-word',
+    borderRadius: '5px',
+    boxShadow: '0 0 6px #b2b2b2',
+    '&:last-child': {
+      paddingBottom: '10px',
+    },
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    backgroundColor: 'white',
+  },
+  dense: {
+    marginTop: theme.spacing(2),
+  },
+  menu: {
+    width: 200,
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  avatar: {
+    margin: 3,
+    width: 60,
+    height: 60,
+  },
+  typography: {
+    fontSize: 13,
+    color: 'black',
+    padding: 0,
+  },
+  typography2: {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  likedIcon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+    color: primary,
+  },
+  unlikedIcon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+    color: primary,
+  },
+  countIcon: {
+    margin: 0,
+    marginBottom: 3,
+    padding: 0,
+  },
+  icon: {
+    margin: 0,
+    marginBottom: 0,
+    padding: 0,
+  },
+}))
 
 const BubbleContainer = styled.div`
   display: flex;

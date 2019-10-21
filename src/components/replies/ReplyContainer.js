@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 // import { VIEW_REPLIES } from '../../reducers/navReducer'
 import * as types from 'actions/actionTypes'
-
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
@@ -17,9 +16,11 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
+import { fetchPost, createReply } from 'actions'
 
 const ReplyContainer = props => {
-  const [post, setPost] = useState()
+  // const [post, setPost] = useState()
+  const post = useSelector(state => state.group.post)
   const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
 
@@ -34,34 +35,14 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-          setPost(response.data.postLoaded)
-          const groupId = response.data.postLoaded.group_id
-          setSubmitted(false)
-          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: groupId })
-        } catch {
-          dispatch({ type: types.FETCH_REPLIES_SUCCESS, payload: 0 })
-        }
-      }
-    }
-    fetchData()
+    dispatch(fetchPost(token, id))
   }, [token, id, submitted, dispatch])
 
   // callback function to handle submit
   async function submitReply(e) {
-    const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
-      user_id: userId,
-      post_id: id,
-      reply_content: values.reply_content,
-    })
-    if (post.data.reply) {
-      setValues('')
-      setSubmitted(true)
-      Mixpanel.activity(userId, 'Reply Successfully Created.')
-    }
+    const data = { userId, id, reply_content: values.reply_content }
+    dispatch(createReply(token, data))
+    //   Mixpanel.activity(userId, 'Reply Successfully Created.')
   }
 
   // Material UI
@@ -86,7 +67,7 @@ const ReplyContainer = props => {
   const classes = useStyles()
 
   // CreateRef for scrolling from Links
-  const replyRefs = post
+  const replyRefs = post.replies
     ? post.replies.reduce((acc, value) => {
         acc[value.id] = createRef()
         return acc
@@ -149,25 +130,30 @@ const ReplyContainer = props => {
   }
 
   // Sort replies by id (which is chronological)
-  const sortedReplies = post.replies.sort((a, b) => a.id - b.id)
+  const sortedReplies = post.replies
+    ? post.replies.sort((a, b) => a.id - b.id)
+    : null
 
   return (
     <ReplyViewContainer>
-      <PostCard post={post} setSubmitted={setSubmitted} />
-
-      <ReplyCardsContainer>
-        {sortedReplies.map(reply => {
-          return (
-            <div ref={replyRefs[reply.id]} key={reply.id}>
-              <ReplyCard
-                reply={reply}
-                setSubmitted={setSubmitted}
-                post={post}
-              />
-            </div>
-          )
-        })}
-      </ReplyCardsContainer>
+      {!!Object.values(post).length && (
+        <PostCard post={post} setSubmitted={setSubmitted} />
+      )}
+      {sortedReplies && (
+        <ReplyCardsContainer>
+          {sortedReplies.map(reply => {
+            return (
+              <div ref={replyRefs[reply.id]} key={reply.id}>
+                <ReplyCard
+                  reply={reply}
+                  setSubmitted={setSubmitted}
+                  post={post}
+                />
+              </div>
+            )
+          })}
+        </ReplyCardsContainer>
+      )}
 
       <div ref={repliesEndRef} />
 

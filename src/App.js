@@ -57,7 +57,7 @@ function App(props) {
             username: user.nickname,
             image: user.picture,
           })
-          dispatch({ type: types.LOGIN, payload: result.data.userInfo })
+          dispatch({ type: types.FETCH_LOGIN_SUCCESS, payload: result.data.userInfo })
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
