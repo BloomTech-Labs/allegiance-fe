@@ -40,7 +40,7 @@ const ReplyContainer = props => {
 
   // callback function to handle submit
   async function submitReply(e) {
-    const data = { userId, id, reply_content: values.reply_content }
+    const data = { userId, id, reply_content: values.reply_content, user_id: post.user_id }
     dispatch(createReply(token, data))
     //   Mixpanel.activity(userId, 'Reply Successfully Created.')
   }

@@ -142,7 +142,7 @@ export const likeReply = (token, data) => async dispatch => {
 }
 
 export const createReply = (token, data) => async dispatch => {
-  const { userId, id, reply_content } = data
+  const { userId, user_id, id, reply_content } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
   const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
     user_id: userId,
@@ -155,6 +155,14 @@ export const createReply = (token, data) => async dispatch => {
       type: actionTypes.CREATE_REPLY_SUCCESS,
       payload: post.data.reply,
     })
+  if (userId !== user_id) {
+    axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
+      user_id,
+      invoker_id: userId,
+      type_id: id,
+      type: 'reply',
+      })
+    }
   }
 }
 
