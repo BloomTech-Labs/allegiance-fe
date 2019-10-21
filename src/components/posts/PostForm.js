@@ -25,12 +25,17 @@ const PostForm = props => {
   // callback function to handle submit
   async function submitPost(e) {
     const { groupId } = props
-    const data = {
+    var data = {
       userId,
       groupId,
       post_content: values.post_content,
     }
     await dispatch(createGroupPost(token, data))
+    var data = {
+      userId,
+      groupId,
+      post_content: "",
+    }
     // const post = await axiosWithAuth([token]).post(
     //   `/posts/group/${props.groupId}`,
     //   {
