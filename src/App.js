@@ -4,7 +4,6 @@ import { withRouter } from 'react-router'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
-import io from 'socket.io-client'
 
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
@@ -38,6 +37,7 @@ import { updateSocket } from 'actions/index'
 function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const { loading, user, isAuthenticated } = useAuth0()
 
   useEffect(() => {
@@ -83,8 +83,12 @@ function App(props) {
             props.history.push(`${pushTo}`)
             Mixpanel.login(currentUser, 'Successful login.')
           }
-          console.log('Logging in user')
-          dispatch(updateSocket(io(':5000')))
+          console.log('joining socket')
+          // dispatch(updateSocket(socket))
+          const socketUserId = newUser ? newUser.id : currentUser.id
+          socket.emit('join', {
+            id: socketUserId,
+          })
         } catch (err) {
           Mixpanel.track('Unsuccessful login')
         }

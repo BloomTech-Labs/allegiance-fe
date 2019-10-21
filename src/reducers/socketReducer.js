@@ -1,7 +1,8 @@
 import * as types from 'actions/actionTypes'
+import io from 'socket.io-client'
 
 const initialState = {
-  socket: null,
+  socket: io(':5000'),
 }
 
 export const socketReducer = (state = initialState, action) => {

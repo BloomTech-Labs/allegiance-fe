@@ -43,6 +43,7 @@ export default function PostCard(props) {
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const socket = useSelector(state => state.socketReducer.socket)
   const userStatus =
     userGroups.filter(group => group.id === group_id).length > 0
       ? userGroups.filter(group => group.id === group_id)[0].user_type
@@ -124,7 +125,7 @@ export default function PostCard(props) {
       id,
       user_id,
     }
-    await dispatch(likePost(token, data))
+    await dispatch(likePost(token, data, socket))
   }
 
   async function unLike(e) {
