@@ -1,6 +1,7 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
+const log = console.log
 
 export const fetchGroupPosts = (token, id) => async dispatch => {
   if (token)
@@ -40,12 +41,13 @@ export const createGroupPost = (token, data) => async dispatch => {
 }
 
 export const fetchNotifications = (token, data) => async dispatch => {
-  const { userId } = data;
+  const { userId } = data
   if (token) {
     try {
       dispatch({ type: actionTypes.FETCH_NOTICE_REQUEST })
-      const notifications = await axiosWithAuth([token]).get(`/users/${userId}/notifications`);
-      console.log(notifications);
+      const notifications = await axiosWithAuth([token]).get(
+        `/users/${userId}/notifications`
+      )
       dispatch({
         type: actionTypes.FETCH_NOTICE_SUCCESS,
         payload: notifications.data,
@@ -70,12 +72,14 @@ export const likePost = (token, data) => async dispatch => {
         }
       )
       if (like.data.likeResult) {
-        axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
-          user_id,
-          invoker_id: userId,
-          type_id: id,
-          type: 'like',
-        })
+        if (user_id !== userId) {
+          axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
+            user_id,
+            invoker_id: userId,
+            type_id: id,
+            type: 'like',
+          })
+        }
       }
       dispatch({
         type: actionTypes.POST_LIKE_SUCCESS,
@@ -115,7 +119,7 @@ export const fetchPost = (token, id) => async dispatch => {
 }
 
 export const likeReply = (token, data) => async dispatch => {
-  const { userId, id } = data
+  const { userId, id, user_id } = data
   dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
   const like = await axiosWithAuth([token]).post(`/replies_likes/reply/${id}`, {
     user_id: userId,
@@ -126,6 +130,14 @@ export const likeReply = (token, data) => async dispatch => {
       type: actionTypes.REPLY_LIKE_SUCCESS,
       payload: like.data.likeResult,
     })
+    if (userId !== user_id) {
+      axiosWithAuth([token]).post(`/users/${user_id}/notifications`, {
+        user_id,
+        invoker_id: userId,
+        type_id: id,
+        type: 'reply_like',
+      })
+    }
   }
 }
 

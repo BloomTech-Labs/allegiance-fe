@@ -40,13 +40,15 @@ export const groupReducer = (state = initialState, action) => {
         posts: newState,
         post: {
           ...state.post,
-          likes: [...state.post.likes, action.payload],
+          likes: state.post.likes ? [...state.post.likes, action.payload] : [],
         },
       }
     case types.POST_UNLIKE_SUCCESS:
       const filterPosts = state.posts.filter(obj => {
         if (obj.id === action.payload.post_id) {
-          obj.likes = obj.likes.filter(likeObj => likeObj !== action.payload.id)
+          obj.likes = obj.likes.filter(
+            likeObj => likeObj.id !== action.payload.id
+          )
           return obj
         }
         return obj
@@ -56,7 +58,9 @@ export const groupReducer = (state = initialState, action) => {
         posts: filterPosts,
         post: {
           ...state.post,
-          likes: state.post.likes.filter(obj => obj.id !== action.payload.id),
+          likes: state.post.likes
+            ? state.post.likes.filter(obj => obj.id !== action.payload.id)
+            : null,
         },
       }
     case types.REPLY_DISLIKE_SUCCESS:

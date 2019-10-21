@@ -49,20 +49,14 @@ const ReplyCard = props => {
   async function addReplyLike(e) {
     e.preventDefault()
     const data = {
-      userId,
+      user_id, // id of user who owns the entity
+      userId, // id of user who is liking an entity
       id,
     }
     dispatch(likeReply(token, data))
   }
 
   async function unLikeReply(e) {
-    // e.preventDefault()
-    // const unLike = await axiosWithAuth([token]).delete(
-    //   `/replies_likes/${replyLikeId.id}`
-    // )
-    // if (unLike) {
-    //   props.setSubmitted(true)
-    // }
     dispatch(dislikeReply(token, replyLikeId.id))
   }
 
