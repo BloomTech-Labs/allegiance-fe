@@ -10,6 +10,9 @@ import useGetToken from '../utils/useGetToken'
 import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
+import io from 'socket.io-client'
+
+let socket
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
@@ -21,6 +24,14 @@ const Profile = props => {
 
   //Fetches Auth0 token for axios call
   const [token] = useGetToken()
+
+  useEffect(() => {
+    console.log('front end')
+    socket = io(':5000')
+    socket.emit('join', {
+      data: 'somedata',
+    })
+  }, [])
 
   useEffect(() => {
     if (loggedInUser && token) {
