@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 
@@ -9,6 +9,8 @@ import styled from 'styled-components'
 import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
+
+import { fetchNotifications } from 'actions/index'
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth0()
@@ -28,40 +30,71 @@ const NavBar = () => {
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
   )
+  const socket = useSelector(state => state.socketReducer.socket);
+  const notifications = useSelector(state => state.notifyReducer.notifications);
+  const dispatch = useDispatch();
   const [token] = useGetToken()
 
   useEffect(() => {
-    // Obtain array of group ids where user has a relation for axios feed call
-    const mappedGroupIds = userGroups.map(group => {
-      return group.id
-    })
-    // Fetch notifications related data
+    // // Obtain array of group ids where user has a relation for axios feed call
+    // const mappedGroupIds = userGroups.map(group => {
+    //   return group.id
+    // })
+    // // Fetch notifications related data
+    // const fetchData = async () => {
+    //   if (token) {
+    //     try {
+    //       const response = await axiosWithAuth([token]).post(`/feed`, {
+    //         group_id: mappedGroupIds,
+    //         interval: 48,
+    //       })
+    //       // Filter out activity performed by the user, current filter uses activity's
+    //       // created_at - in future if allowing content updates, use updated_at
+    //       if (response) {
+    //         const filtered = response.data.allActivity.filter(
+    //           act =>
+    //             userId !== act.user_id &&
+    //             userId !== act.liker_id &&
+    //             // Notification_checks default to null for new users, thus the need for || check
+    //             (act.created_at > timeStamp || timeStamp === null)
+    //         )
+    //         setNavNotifications(filtered)
+    //       }
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
+    // }
+    // fetchData()
+
     const fetchData = async () => {
-      if (token) {
+      if (token && userId) {
         try {
-          const response = await axiosWithAuth([token]).post(`/feed`, {
-            group_id: mappedGroupIds,
-            interval: 48,
-          })
-          // Filter out activity performed by the user, current filter uses activity's
-          // created_at - in future if allowing content updates, use updated_at
-          if (response) {
-            const filtered = response.data.allActivity.filter(
-              act =>
-                userId !== act.user_id &&
-                userId !== act.liker_id &&
-                // Notification_checks default to null for new users, thus the need for || check
-                (act.created_at > timeStamp || timeStamp === null)
-            )
-            setNavNotifications(filtered)
+          const data = {
+            userId,
           }
+          const response = await dispatch(fetchNotifications(token, data))
+          console.log(response)
         } catch (error) {
           console.log(error)
         }
       }
     }
     fetchData()
-  }, [token, userGroups, userId, timeStamp])
+    socket.on('new notification', fetchData)
+    return () => {
+      socket.off('new notification')
+    }
+  }, [userId, token, timeStamp, socket, dispatch])
+
+  useEffect(() => {
+    if (token) {
+      console.log(notifications);
+      const filtered = notifications.filter(notify => notify.created_at > timeStamp || timeStamp === null)
+      console.log(filtered);
+      setNavNotifications(filtered)
+    }
+  }, [notifications, timeStamp, token])
 
   // Define location for conditional top nav bar rendering
   const { pathname } = window.location
