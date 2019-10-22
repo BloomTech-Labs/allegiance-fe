@@ -51,7 +51,7 @@ const Notifications = () => {
     return () => {
       socket.off('new notification')
     }
-  }, [dispatch, token, userGroups, userId])
+  }, [dispatch, socket, token, userGroups, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
   const { email, location } = useSelector(
