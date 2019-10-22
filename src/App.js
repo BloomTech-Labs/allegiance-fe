@@ -83,7 +83,12 @@ function App(props) {
             props.history.push(`${pushTo}`)
             Mixpanel.login(currentUser, 'Successful login.')
           }
-          console.log('joining socket')
+          console.log(
+            'joining socket',
+            socket,
+            '🧦',
+            process.env.REACT_APP_DEPLOY_SERVER
+          )
           // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
           socket.emit('join', {
