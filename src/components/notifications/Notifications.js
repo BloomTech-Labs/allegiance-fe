@@ -95,7 +95,15 @@ const Notifications = () => {
 
   return (
     <Container>
-      {notifications.map(activity => (
+      {notifications.sort((e1, e2) => {
+        if (e1.created_at > e2.created_at) {
+          return 1;
+        } else if (e1.created_at < e2.created_at) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }).map(activity => (
         <NotificationsCard activity={activity} key={activity.id} />
       ))}
     </Container>
