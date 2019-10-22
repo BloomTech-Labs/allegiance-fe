@@ -1,6 +1,7 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
+// import axios from 'axios'
 
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
@@ -64,6 +65,28 @@ export const fetchNotifications = (token, data) => async dispatch => {
     }
   }
 }
+
+export const deleteNotification = (token, notificationId) => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.DELETE_NOTIFICATION_REQUEST })
+    let del = await axiosWithAuth([token]).delete(
+      `/notifications/${notificationId}`
+    )
+    console.log('del:', del, 'del.data:', del.data)
+    dispatch({
+      type: actionTypes.DELETE_NOTIFICATION_SUCCESS,
+      payload: del.data,
+    })
+  } catch (err) {
+    dispatch({ type: actionTypes.DELETE_NOTIFICATION_FAILURE, payload: err })
+  }
+}
+
+// export function deleteNotification(token, notificationId) {
+//   if (token) {
+//     axiosWithAuth([token]).delete(`/notifications/${notificationId}`)
+//   }
+// }
 
 export const likePost = (token, data, socket) => async dispatch => {
   const { userId, id, user_id } = data
