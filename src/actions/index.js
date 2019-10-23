@@ -25,23 +25,25 @@ export const fetchGroupPosts = (token, id) => async dispatch => {
 export const createGroupPost = (token, data) => async dispatch => {
   const { userId, groupId, post_content } = data
   if (token) {
-    try {
-      dispatch({ type: actionTypes.CREATE_POST_REQUEST })
-      const post = await axiosWithAuth([token]).post(
-        `/posts/group/${groupId}`,
-        {
-          user_id: userId,
-          group_id: groupId,
-          post_content: post_content,
-        }
-      )
-      dispatch({
-        type: actionTypes.CREATE_POST_SUCCESS,
-        payload: post.data.postResult,
-      })
-    } catch (err) {
-      console.log(err)
-      dispatch({ type: actionTypes.CREATE_POST_FAILURE, payload: err })
+    if (!post_content.match(/^\s+$/)) {
+      try {
+        dispatch({ type: actionTypes.CREATE_POST_REQUEST })
+        const post = await axiosWithAuth([token]).post(
+          `/posts/group/${groupId}`,
+          {
+            user_id: userId,
+            group_id: groupId,
+            post_content: post_content,
+          }
+        )
+        dispatch({
+          type: actionTypes.CREATE_POST_SUCCESS,
+          payload: post.data.postResult,
+        })
+      } catch (err) {
+        console.log(err)
+        dispatch({ type: actionTypes.CREATE_POST_FAILURE, payload: err })
+      }
     }
   }
 }
