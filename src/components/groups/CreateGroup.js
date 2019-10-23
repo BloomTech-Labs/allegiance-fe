@@ -56,7 +56,7 @@ const CreateGroup = props => {
   async function createGroup() {
     try {
       dispatch({ type: types.ADD_GROUP_REQUEST })
-      const newGroup = { ...values, image: image, creator_id: loggedInUser.id }
+      const newGroup = { ...values, image: image || Default, creator_id: loggedInUser.id }
       const result = await axiosWithAuth([token]).post('/groups/', newGroup)
       const addedGroup = {
         name: result.data.newGroup.group_name,
