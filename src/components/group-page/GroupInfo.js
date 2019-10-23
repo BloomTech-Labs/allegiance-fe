@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import MembershipStatus from './MembershipStatus'
 import AllegiancePopover from './AllegiancePopover'
 import MembersList from './MembersList'
+import Default from '../../assets/walter-avi.png'
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
@@ -20,7 +21,7 @@ const GroupInfo = props => {
   return (
     <GroupInfoDiv>
       <ImageDiv>
-        <GroupLogo src={props.group.image} />
+        <GroupLogo src={props.group.image || Default} />
         <MembershipStatus
           group_id={props.group.id}
           members={props.members}

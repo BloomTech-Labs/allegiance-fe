@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Mixpanel } from '../analytics/Mixpanel'
+// import { Mixpanel } from '../analytics/Mixpanel'
 
 import styled from 'styled-components'
 import { device } from 'styled/device'
@@ -10,8 +10,8 @@ import { device } from 'styled/device'
 const SearchResults = props => {
   // Fetches user information from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const mixpanelCheck = () =>
-    Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
+  // const mixpanelCheck = () =>
+  //   Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
 
   // filtering search results to not include hidden groups
   const filteredResults = props.results.filter(
@@ -27,11 +27,7 @@ const SearchResults = props => {
           className = 'suggestion-active'
         }
         return (
-          <Link
-            to={`/group/${group.id}`}
-            key={group.id}
-            onClick={() => mixpanelCheck()}
-          >
+          <Link to={`/group/${group.id}`} key={group.id}>
             <div className={`single-result ${className}`}>
               <ResultImage src={group.image} alt={'Group Image'} />{' '}
               <ResultName className='result-info'>

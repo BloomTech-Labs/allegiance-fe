@@ -10,6 +10,8 @@ import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import io from 'socket.io-client'
+import Default from '../../assets/walter-avi.png'
+
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
@@ -110,6 +112,7 @@ const Profile = props => {
             <MyAllegianceGroups
               content={loggedInAllegiances || []}
               type='allegiance'
+              default={Default}
             />
           </>
           <>

@@ -11,7 +11,7 @@ import { Loader } from 'semantic-ui-react'
 import PrivateRoute from './components/PrivateRoute'
 
 import { initGA, logPageView } from './components/analytics/Analytics'
-import { Mixpanel } from './components/analytics/Mixpanel'
+// // import { Mixpanel } from './components/analytics/Mixpanel'
 
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import useGetToken from './components/utils/useGetToken'
@@ -65,15 +65,15 @@ function App(props) {
             payload: result.data.userInfo,
           })
 
-          //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
+          // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
           if (newUser) {
             props.history.push('/makeprofile')
-            Mixpanel.login(newUser, 'New user sign up.')
+            // Mixpanel.login(newUser, 'New user sign up.')
           }
           if (currentUser && currentUser.first_name === null) {
             props.history.push('/makeprofile')
-            Mixpanel.login(currentUser, 'Successful login, no profile info.')
+            // Mixpanel.login(currentUser, 'Successful login, no profile info.')
           }
           if (currentUser && currentUser.first_name !== null) {
             const pushTo =
@@ -81,7 +81,7 @@ function App(props) {
                 ? window.location.pathname
                 : '/home'
             props.history.push(`${pushTo}`)
-            Mixpanel.login(currentUser, 'Successful login.')
+            // Mixpanel.login(currentUser, 'Successful login.')
           }
           console.log(
             'joining socket',
@@ -95,7 +95,7 @@ function App(props) {
             id: socketUserId,
           })
         } catch (err) {
-          Mixpanel.track('Unsuccessful login')
+          // Mixpanel.track('Unsuccessful login')
         }
       }
       registerUser()

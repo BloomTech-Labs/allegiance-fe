@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
 
-import { Mixpanel } from '../analytics/Mixpanel'
+// // import { Mixpanel } from '../analytics/Mixpanel'
 
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'
@@ -42,20 +42,20 @@ const CreateGroup = props => {
   //If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
   const group = props.location.state ? props.location.state.group : null
   useEffect(() => {
-    window.location.pathname === '/creategroup' &&
-      Mixpanel.activity(loggedInUser.id, 'Start Create Group')
+    // window.location.pathname === '/creategroup' &&
+    // Mixpanel.activity(loggedInUser.id, 'Start Create Group')
     if (group && window.location.pathname.includes('/editgroup/')) {
       let { id, updated_at, created_at, ...groupInfo } = group
       setValues(groupInfo)
       dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
-      Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
+      // Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
     }
   }, [props, setValues, group, loggedInUser.id, dispatch])
 
   //Creates a new group and pushes the user to the group page after submission.
   async function createGroup() {
     try {
-      dispatch({ type: types.ADD_GROUP_REQUEST})
+      dispatch({ type: types.ADD_GROUP_REQUEST })
       const newGroup = { ...values, image: image, creator_id: loggedInUser.id }
       const result = await axiosWithAuth([token]).post('/groups/', newGroup)
       const addedGroup = {
@@ -66,12 +66,12 @@ const CreateGroup = props => {
       }
       // fetch_group_success??
       dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-      Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
+      // Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
       const push = () => props.history.push(`/group/${result.data.newGroup.id}`)
       setTimeout(push, 1000)
     } catch (err) {
       dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
+      // Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
       setError(true)
       setLoading(false)
     }
@@ -85,12 +85,12 @@ const CreateGroup = props => {
         `/groups/${group.id}`,
         updatedGroup
       )
-      Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
+      // Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
       const push = () => props.history.push(`/group/${group.id}`)
       setTimeout(push, 1000)
       console.log(result)
     } catch {
-      Mixpanel.activity(loggedInUser.id, 'Group Edit Failed')
+      // Mixpanel.activity(loggedInUser.id, 'Group Edit Failed')
     }
   }
 
@@ -98,12 +98,12 @@ const CreateGroup = props => {
   async function deleteGroup() {
     try {
       const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`)
-      Mixpanel.activity(loggedInUser.id, 'Complete Delete Group')
+      // Mixpanel.activity(loggedInUser.id, 'Complete Delete Group')
       const push = () => props.history.push(`/profile`)
       setTimeout(push, 1000)
       console.log(result)
     } catch {
-      Mixpanel.activity(loggedInUser.id, 'Group Deletion Failed')
+      // Mixpanel.activity(loggedInUser.id, 'Group Deletion Failed')
     }
   }
 
