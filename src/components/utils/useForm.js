@@ -9,19 +9,12 @@ const useForm = callback => {
 
   const handleSubmit = event => {
     if (event) event.preventDefault()
-    console.log("event.target.name1", event.target.value)
     try {
       setLoading(true)
       setError(false)
       setErrorContent(null)
       callback()
-      setValues(values => {
-     
-        return {
-          reply_content: "",
-
-        } 
-      })
+      setValues('')
     } catch {}
   }
 
