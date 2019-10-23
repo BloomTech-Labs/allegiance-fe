@@ -31,14 +31,6 @@ const PostForm = props => {
       post_content: values.post_content,
     }
     await dispatch(createGroupPost(token, data))
-    // const post = await axiosWithAuth([token]).post(
-    //   `/posts/group/${props.groupId}`,
-    //   {
-    //     user_id: userId,
-    //     group_id: props.groupId,
-    //     post_content: values.post_content,
-    //   }
-    // )
     // if (post.data.postResult) {
     //   setValues('')
     //   props.setSubmitted(true)

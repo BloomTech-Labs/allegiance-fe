@@ -23,7 +23,7 @@ import {
 import { likePost, dislikePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
-
+import { deleteGroupPost } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 
 export default function PostCard(props) {
@@ -112,10 +112,7 @@ export default function PostCard(props) {
   const classes = useStyles()
 
   const deletePost = async () => {
-    const post = await axiosWithAuth([token]).delete(`/posts/${id}`)
-    if (post) {
-      props.setSubmitted(true)
-    }
+    dispatch(deleteGroupPost(token, id))
   }
 
   async function addLike(e) {
