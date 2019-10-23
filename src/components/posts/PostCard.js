@@ -97,7 +97,7 @@ export default function PostCard(props) {
       margin: 0,
       marginBottom: 3,
       padding: 1,
-      color: primary,
+      color: 'grey',
       paddingRight: 0,
     },
     likesCount: {

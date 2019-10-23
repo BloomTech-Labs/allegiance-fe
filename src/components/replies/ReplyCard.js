@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 
 import avi from '../../assets/walter-avi.png'
-import { ThumbUp, DeleteOutline, FavoriteBorder } from '@material-ui/icons'
+import { ThumbUp, DeleteOutline } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
 import Avatar from '@material-ui/core/Avatar'
 import CardContent from '@material-ui/core/CardContent'
@@ -108,7 +108,7 @@ const ReplyCard = props => {
                 onClick={addReplyLike}
                 style={{backgroundColor: 'transparent'}}
               >
-                <FavoriteBorder className={classes.unlikedIcon} style={{backgroundColor: 'transparent'}}/>
+                <ThumbUp className={classes.unlikedIcon} style={{backgroundColor: 'transparent'}}/>
               </IconButton>
               <IconButton className={classes.countIcon}>
                 <h4> {replyLikes.length} </h4>
@@ -208,7 +208,7 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     marginBottom: 0,
     padding: 0,
-    color: primary,
+    color: 'grey',
   },
   countIcon: {
     margin: 0,
