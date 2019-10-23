@@ -8,12 +8,14 @@ const useForm = callback => {
   const [errorContent, setErrorContent] = useState()
 
   const handleSubmit = event => {
+    console.log(values)
     if (event) event.preventDefault()
     try {
       setLoading(true)
       setError(false)
       setErrorContent(null)
       callback()
+      setValues('')
     } catch {}
   }
 
