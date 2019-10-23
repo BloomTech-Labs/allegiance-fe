@@ -25,13 +25,19 @@ const PostForm = props => {
   // callback function to handle submit
   async function submitPost(e) {
     const { groupId } = props
-    const data = {
+    var data = {
       userId,
       groupId,
       post_content: values.post_content,
     }
+
     await dispatch(createGroupPost(token, data))
-    //   Mixpanel.activity(userId, 'Post Successfully Created.')
+
+    var data = {
+      userId,
+      groupId,
+      post_content: '',
+    }
   }
 
   // Material UI
