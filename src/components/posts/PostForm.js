@@ -5,7 +5,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
-import { Mixpanel } from '../analytics/Mixpanel'
+// import { Mixpanel } from '../analytics/Mixpanel'
 import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -31,11 +31,7 @@ const PostForm = props => {
       post_content: values.post_content,
     }
     await dispatch(createGroupPost(token, data))
-    // if (post.data.postResult) {
-    //   setValues('')
-    //   props.setSubmitted(true)
     //   Mixpanel.activity(userId, 'Post Successfully Created.')
-    // }
   }
 
   // Material UI
