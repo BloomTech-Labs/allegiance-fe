@@ -51,7 +51,7 @@ export default function PostCard(props) {
   const [token] = useGetToken()
   const postLikeId = likes.find(like => like.user_id === userId)
 
-  const primary = "blue"
+  const primary = '#4267b2'
   const useStyles = makeStyles(theme => ({
     card: {
       width: 400,
