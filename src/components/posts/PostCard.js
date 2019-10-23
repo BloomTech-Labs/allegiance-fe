@@ -185,7 +185,7 @@ export default function PostCard(props) {
             >
               <ThumbUp className={classes.unlikedIcon} />
             </IconButton>
-            <IconButton className={classes.likesCount}>
+            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>

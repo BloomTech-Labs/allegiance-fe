@@ -26,7 +26,7 @@ const MyAllegianceGroups = props => {
                   size='big'
                   circular
                   inverted
-                  color='blue'
+                  color='grey'
                   style={{ fontSize: '2.86rem' }}
                 />
               }

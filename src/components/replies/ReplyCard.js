@@ -149,7 +149,7 @@ const ReplyCard = props => {
 
 // Material UI Styling
 // const primary = red[600]
-const primary = "blue";
+const primary = '#4267b2';
 
 const useStyles = makeStyles(theme => ({
   container: {
