@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // import { Mixpanel } from '../analytics/Mixpanel'
 
+// change Default to change group picture
+import Default from '../../assets/walter-avi.png'
+
 const MyAllegianceGroups = props => {
   const mixpanelCheck = link => {
     if (props.type === 'group') {
@@ -28,6 +31,7 @@ const MyAllegianceGroups = props => {
                   inverted
                   color='grey'
                   style={{ fontSize: '2.86rem' }}
+                  default={Default}
                 />
               }
             />
@@ -38,7 +42,7 @@ const MyAllegianceGroups = props => {
         <div key={item.id} style={{ margin: '1%' }}>
           <Popup
             content={item.name}
-            trigger={<GroupLogo src={item.image} alt='Logo' />}
+            trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
           />
           <Nickname>{item.acronym && item.acronym}</Nickname>
         </div>
