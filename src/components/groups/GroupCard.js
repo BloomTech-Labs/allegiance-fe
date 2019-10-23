@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Mixpanel } from '../analytics/Mixpanel'
 import styled from 'styled-components'
 import { device } from 'styled/device'
+import Default from '../../assets/walter-avi.png'
 
 const GroupCard = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
@@ -19,7 +20,7 @@ const GroupCard = props => {
         <CardContainer>
           <TopDiv>
             {props.group.image && (
-              <CardImage src={props.group.image} alt='GroupAvatar' />
+              <CardImage src={props.group.image || Default} alt='GroupAvatar' />
             )}
           </TopDiv>
           <MiddleDiv color={props.color}>
