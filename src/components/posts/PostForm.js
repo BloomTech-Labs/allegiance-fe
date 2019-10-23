@@ -5,7 +5,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
-import { Mixpanel } from '../analytics/Mixpanel'
+// import { Mixpanel } from '../analytics/Mixpanel'
 import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,25 +25,19 @@ const PostForm = props => {
   // callback function to handle submit
   async function submitPost(e) {
     const { groupId } = props
-    const data = {
+    var data = {
       userId,
       groupId,
       post_content: values.post_content,
     }
+
     await dispatch(createGroupPost(token, data))
-    // const post = await axiosWithAuth([token]).post(
-    //   `/posts/group/${props.groupId}`,
-    //   {
-    //     user_id: userId,
-    //     group_id: props.groupId,
-    //     post_content: values.post_content,
-    //   }
-    // )
-    // if (post.data.postResult) {
-    //   setValues('')
-    //   props.setSubmitted(true)
-    //   Mixpanel.activity(userId, 'Post Successfully Created.')
-    // }
+
+    var data = {
+      userId,
+      groupId,
+      post_content: '',
+    }
   }
 
   // Material UI

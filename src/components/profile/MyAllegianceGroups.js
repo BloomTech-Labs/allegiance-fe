@@ -3,12 +3,12 @@ import { withRouter } from 'react-router'
 import { Popup, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Mixpanel } from '../analytics/Mixpanel'
+// import { Mixpanel } from '../analytics/Mixpanel'
 
 const MyAllegianceGroups = props => {
   const mixpanelCheck = link => {
     if (props.type === 'group') {
-      Mixpanel.activity(props.userId, 'Visited Group From Profile Page')
+      // Mixpanel.activity(props.userId, 'Visited Group From Profile Page')
       props.history.push(link)
     }
   }
@@ -26,7 +26,7 @@ const MyAllegianceGroups = props => {
                   size='big'
                   circular
                   inverted
-                  color='blue'
+                  color='grey'
                   style={{ fontSize: '2.86rem' }}
                 />
               }
@@ -35,11 +35,7 @@ const MyAllegianceGroups = props => {
         </div>
       )}
       {props.content.map(item => (
-        <div
-          key={item.id}
-          style={{ margin: '1%' }}
-          onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}
-        >
+        <div key={item.id} style={{ margin: '1%' }}>
           <Popup
             content={item.name}
             trigger={<GroupLogo src={item.image} alt='Logo' />}

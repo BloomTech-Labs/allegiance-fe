@@ -207,3 +207,14 @@ export const dislikeReply = (token, id) => async dispatch => {
     payload: unLike.data.deleted[0],
   })
 }
+
+export const deleteGroupPost = (token, id) => async dispatch => {
+  dispatch({ type: actionTypes.DELETE_POST_REQUEST })
+  const deletedPost = await axiosWithAuth([token]).delete(`/posts/${id}`)
+  if (deletedPost.data) {
+    dispatch({
+      type: actionTypes.DELETE_POST_SUCCESS,
+      payload: deletedPost.data,
+    })
+  }
+}

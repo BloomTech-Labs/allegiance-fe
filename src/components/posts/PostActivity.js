@@ -7,7 +7,7 @@ import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import {
   Favorite,
-  FavoriteBorder,
+  ThumbUp,
   ChatBubbleOutline,
   DeleteOutline,
 } from '@material-ui/icons'
@@ -55,7 +55,7 @@ const PostActivity = props => {
       <hr />
       <BottomContainer>
         <LikeContainer>
-          {!postLikeId && <FavoriteBorder onClick={addLike} />}
+          {!postLikeId && <ThumbUp onClick={addLike} />}
           {postLikeId && <Favorite onClick={unLike} />}
         </LikeContainer>
 

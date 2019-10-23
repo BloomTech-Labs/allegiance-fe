@@ -9,7 +9,7 @@ import { Button, Chip } from '@material-ui/core/'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 
-import { Mixpanel } from '../analytics/Mixpanel'
+// import { Mixpanel } from '../analytics/Mixpanel'
 
 import styled from 'styled-components'
 
@@ -70,7 +70,7 @@ const MembershipStatus = props => {
         }
         dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
         props.setTrigger(true)
-        Mixpanel.activity(loggedInUser.id, 'Joined Group')
+        // Mixpanel.activity(loggedInUser.id, 'Joined Group')
       }
     }
   }
@@ -103,7 +103,7 @@ const MembershipStatus = props => {
         // should be group invite, new actions
         dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
         props.setTrigger(true)
-        Mixpanel.activity(loggedInUser.id, 'Joined Group')
+        // Mixpanel.activity(loggedInUser.id, 'Joined Group')
       }
     }
   }
@@ -120,7 +120,7 @@ const MembershipStatus = props => {
         setUserType('non-member')
         dispatch({ type: types.LEAVE_GROUP_SUCCESS, payload: props.group_id })
         props.setTrigger(true)
-        Mixpanel.activity(loggedInUser.id, 'Left Group')
+        // Mixpanel.activity(loggedInUser.id, 'Left Group')
       }
     }
   }
