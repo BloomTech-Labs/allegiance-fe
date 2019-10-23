@@ -16,6 +16,19 @@ export const notifyReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.DELETE_NOTIFICATION_SUCCESS:
+      return {
+        ...state,
+        notifications: state.notifications.filter(item => {
+          console.log('in reducer', action.payload)
+          return item.id !== action.payload[0].id
+        }),
+      }
+    case types.DELETE_NOTIFICATION_FAILURE:
+      return {
+        ...state,
+        error: true,
+      }
     default:
       return state
   }

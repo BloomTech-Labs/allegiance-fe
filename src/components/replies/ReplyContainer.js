@@ -25,6 +25,7 @@ const ReplyContainer = props => {
   const id = props.match.params.id
 
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const socket = useSelector(state => state.socketReducer.socket)
 
   const dispatch = useDispatch()
 
@@ -40,8 +41,13 @@ const ReplyContainer = props => {
 
   // callback function to handle submit
   async function submitReply(e) {
-    const data = { userId, id, reply_content: values.reply_content, user_id: post.user_id }
-    dispatch(createReply(token, data))
+    const data = {
+      userId,
+      id,
+      reply_content: values.reply_content,
+      user_id: post.user_id,
+    }
+    dispatch(createReply(token, data, socket))
     //   Mixpanel.activity(userId, 'Reply Successfully Created.')
   }
 

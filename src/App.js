@@ -14,6 +14,7 @@ import { initGA, logPageView } from './components/analytics/Analytics'
 import { Mixpanel } from './components/analytics/Mixpanel'
 
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
+import useGetToken from './components/utils/useGetToken'
 
 import Landing from './components/Landing'
 import Profile from './components/profile/Profile'
@@ -31,10 +32,12 @@ import Notifications from './components/notifications/Notifications'
 
 // import { LOGIN } from './reducers/userReducer'
 import * as types from 'actions/actionTypes'
+import { updateSocket } from 'actions/index'
 
 function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const { loading, user, isAuthenticated } = useAuth0()
 
   useEffect(() => {
@@ -57,7 +60,10 @@ function App(props) {
             username: user.nickname,
             image: user.picture,
           })
-          dispatch({ type: types.FETCH_LOGIN_SUCCESS, payload: result.data.userInfo })
+          dispatch({
+            type: types.FETCH_LOGIN_SUCCESS,
+            payload: result.data.userInfo,
+          })
 
           //Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
@@ -77,6 +83,17 @@ function App(props) {
             props.history.push(`${pushTo}`)
             Mixpanel.login(currentUser, 'Successful login.')
           }
+          console.log(
+            'joining socket',
+            socket,
+            '🧦',
+            process.env.REACT_APP_DEPLOY_SERVER
+          )
+          // dispatch(updateSocket(socket))
+          const socketUserId = newUser ? newUser.id : currentUser.id
+          socket.emit('join', {
+            id: socketUserId,
+          })
         } catch (err) {
           Mixpanel.track('Unsuccessful login')
         }

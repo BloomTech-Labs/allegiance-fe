@@ -93,6 +93,8 @@ export const groupReducer = (state = initialState, action) => {
           }),
         },
       }
+    case types.CLEAR_POSTS:
+      return initialState
     case types.FETCH_POST_SUCCESS:
       return {
         ...state,

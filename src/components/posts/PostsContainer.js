@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-
+import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
@@ -23,6 +23,9 @@ const PostsContainer = props => {
       await dispatch(fetchGroupPosts(token, id))
     }
     fetchData()
+    return () => {
+      dispatch({ type: types.CLEAR_POSTS })
+    }
   }, [token, submitted, props.groupId])
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts

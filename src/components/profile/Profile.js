@@ -9,7 +9,7 @@ import useGetToken from '../utils/useGetToken'
 import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
-
+import io from 'socket.io-client'
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
@@ -25,11 +25,14 @@ const Profile = props => {
     if (loggedInUser && token) {
       const fetchData = async () => {
         try {
-          dispatch({ type: types.FETCH_PROFILE_REQUEST})
+          dispatch({ type: types.FETCH_PROFILE_REQUEST })
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: loggedInUser.email,
           })
-          dispatch({ type: types.FETCH_PROFILE_SUCCESS, payload: result.data.userInfo })
+          dispatch({
+            type: types.FETCH_PROFILE_SUCCESS,
+            payload: result.data.userInfo,
+          })
         } catch (err) {
           dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
           console.log("There was an issue retrieving the user's profile.")

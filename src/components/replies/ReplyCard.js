@@ -31,6 +31,7 @@ const ReplyCard = props => {
 
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const socket = useSelector(state => state.socketReducer.socket)
   const replyLikeId = replyLikes.find(like => like.user_id === userId)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
@@ -53,7 +54,7 @@ const ReplyCard = props => {
       userId, // id of user who is liking an entity
       id,
     }
-    dispatch(likeReply(token, data))
+    dispatch(likeReply(token, data, socket))
   }
 
   async function unLikeReply(e) {
