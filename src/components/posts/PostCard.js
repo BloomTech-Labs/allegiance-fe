@@ -11,14 +11,13 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core/'
-import red from '@material-ui/core/colors/red'
+import black from '@material-ui/core/colors/red'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
 import {
-  Favorite,
+  ThumbUp,
   ModeCommentOutlined,
   DeleteOutline,
-  FavoriteBorder,
 } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
@@ -52,7 +51,7 @@ export default function PostCard(props) {
   const [token] = useGetToken()
   const postLikeId = likes.find(like => like.user_id === userId)
 
-  const primary = red[600]
+  const primary = "blue"
   const useStyles = makeStyles(theme => ({
     card: {
       width: 400,
@@ -133,6 +132,7 @@ export default function PostCard(props) {
     await dispatch(dislikePost(token, postLikeId.id))
   }
 
+  // *************change icon number to reg number*************
   return (
     <Card raised className={classes.card}>
       <CardHeader
@@ -181,8 +181,9 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={addLike}
+              style={{backgroundColor: 'transparent'}}
             >
-              <FavoriteBorder className={classes.unlikedIcon} />
+              <ThumbUp className={classes.unlikedIcon} />
             </IconButton>
             <IconButton className={classes.likesCount}>
               <h4 className='likes-count'> {likes.length} </h4>
@@ -195,20 +196,21 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={unLike}
+              style={{backgroundColor: 'transparent'}}
             >
-              <Favorite className={classes.likedIcon} />
+              <ThumbUp className={classes.likedIcon} style={{backgroundColor: 'transparent'}}/>
             </IconButton>
-            <IconButton className={classes.likesCount}>
+            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>
         )}
         <div>
           <Link to={`/post/${id}`}>
-            <IconButton aria-label='share' className={classes.buttonDiv}>
+            <IconButton aria-label='share' className={classes.buttonDiv} style={{backgroundColor: 'transparent'}}>
               <ModeCommentOutlined />
             </IconButton>
-            <IconButton className={classes.likesCount}>
+            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
               {replies && <h4> {replies.length} </h4>}
             </IconButton>
           </Link>

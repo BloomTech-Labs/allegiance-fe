@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 
 import avi from '../../assets/walter-avi.png'
-import { Favorite, DeleteOutline, FavoriteBorder } from '@material-ui/icons'
+import { ThumbUp, DeleteOutline, FavoriteBorder } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
 import Avatar from '@material-ui/core/Avatar'
 import CardContent from '@material-ui/core/CardContent'
@@ -106,8 +106,9 @@ const ReplyCard = props => {
                 className={classes.icon}
                 aria-label='add to favorites'
                 onClick={addReplyLike}
+                style={{backgroundColor: 'transparent'}}
               >
-                <FavoriteBorder className={classes.unlikedIcon} />
+                <FavoriteBorder className={classes.unlikedIcon} style={{backgroundColor: 'transparent'}}/>
               </IconButton>
               <IconButton className={classes.countIcon}>
                 <h4> {replyLikes.length} </h4>
@@ -120,10 +121,11 @@ const ReplyCard = props => {
                 className={classes.icon}
                 aria-label='add to favorites'
                 onClick={unLikeReply}
+                style={{backgroundColor: 'transparent'}}
               >
-                <Favorite className={classes.likedIcon} />
+                <ThumbUp className={classes.likedIcon} style={{backgroundColor: 'transparent'}}/>
               </IconButton>
-              <IconButton className={classes.countIcon}>
+              <IconButton className={classes.countIcon} style={{backgroundColor: 'transparent'}}>
                 <h4> {replyLikes.length} </h4>
               </IconButton>
             </div>
@@ -134,6 +136,7 @@ const ReplyCard = props => {
               onClick={() => deleteReply()}
               aria-label='settings'
               className={classes.icon}
+              style={{backgroundColor: 'transparent'}}
             >
               <DeleteOutline />
             </IconButton>
@@ -145,7 +148,8 @@ const ReplyCard = props => {
 }
 
 // Material UI Styling
-const primary = red[600]
+// const primary = red[600]
+const primary = "blue";
 
 const useStyles = makeStyles(theme => ({
   container: {
