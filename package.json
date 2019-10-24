@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "cypress": "^3.4.1",
+    "cypress": "^3.5.0",
     "jest-dom": "^4.0.0"
   },
   "dependencies": {
