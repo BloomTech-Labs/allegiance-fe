@@ -10,8 +10,7 @@ import styled from 'styled-components'
 
 import SearchResults from './SearchResults'
 
-const SearchBar = (props) => {
-  
+const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
   // token for accessing authentication required backend routes
@@ -49,16 +48,15 @@ const SearchBar = (props) => {
   const classes = useStyles()
 
   // Handle up and down arrow keys
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     // e.preventDefault()
     // User pressed the enter key
     if (e.keyCode === 13) {
       e.preventDefault()
       console.log(results)
-      // history.push(`/group/${results[0].id}`)
+      props.history.push(`/group/${results[0].id}`)
       // Check that results from SearchResults has something to fill
       if (results.length > 0) {
-        console.
         setSuggestion(0)
         setValues(results[activeSuggestion])
       }

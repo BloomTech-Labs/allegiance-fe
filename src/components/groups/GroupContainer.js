@@ -10,12 +10,11 @@ import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 import NearbyGroups from './NearbyGroups'
 
 function GroupContainer(props) {
-  console.log(props)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
 
   return (
     <Container>
-      <SearchBar history={props.history}/>
+      <SearchBar history={props.history} />
       <Divider />
       <MyGroups>
         <GroupTitleHolder>
