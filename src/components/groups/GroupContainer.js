@@ -3,17 +3,19 @@ import { useSelector } from 'react-redux'
 import { Divider } from 'semantic-ui-react'
 import styled from 'styled-components'
 
+import { withRouter } from 'react-router-dom'
 import GroupList from './GroupList'
 import SearchBar from './SearchBar'
 import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 import NearbyGroups from './NearbyGroups'
 
-function GroupContainer() {
+function GroupContainer(props) {
+  console.log(props)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
 
   return (
     <Container>
-      <SearchBar />
+      <SearchBar history={props.history}/>
       <Divider />
       <MyGroups>
         <GroupTitleHolder>
@@ -32,7 +34,7 @@ function GroupContainer() {
     </Container>
   )
 }
-export default GroupContainer
+export default withRouter(GroupContainer)
 
 const Container = styled.div`
   h3 {
