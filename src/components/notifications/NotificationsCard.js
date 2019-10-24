@@ -24,8 +24,7 @@ const NotificationsCard = props => {
     created_at,
     username,
     image,
-    post_content,
-    reply_content,
+    content,
   } = props.activity
 
   const dispatch = useDispatch()
@@ -76,12 +75,9 @@ const NotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let postContent
-  let replyContent
-  if (post_content) postContent = post_content.slice(0, 20)
-  if (reply_content) replyContent = reply_content.slice(0, 20)
-  if (post_content && post_content.length > 20) postContent += '...'
-  if (reply_content && reply_content.length > 20) replyContent += '...'
+  let notifyContent = ''
+  if (content) notifyContent = content.slice(0, 20)
+  if (content && content.length > 20) content += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToPost = e => {
@@ -136,10 +132,11 @@ const NotificationsCard = props => {
                 reply: {replyContent}
               </>
             )} */}
-            {type === 'like' && <>liked your post: {postContent}</>}
-            {type === 'reply' && <>replied to your post: {postContent}</>}
-            {type === 'reply_like' && (
-              <>liked your reply: {replyContent}</>
+            {type === 'like' && <>liked your post: {content}</>}
+            {type === 'reply' && <>replied to your post: {content}</>}
+            {type === 'reply_like' && <>liked your reply: {content}</>}
+            {type === 'group_invite' && (
+              <>invited you to a group: {content}</>
             )}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
