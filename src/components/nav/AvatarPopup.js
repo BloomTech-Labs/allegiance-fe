@@ -1,8 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 export const AvatarPopup = ({ user }) => {
+  const { isAuthenticated, logout } = useAuth0()
+  const logoutWithRedirect = () =>
+    logout({
+      returnTo: window.location.origin,
+    })
+
   return (
     <StyledAvatarPopup>
       <div className='arrow-up'></div>
@@ -21,7 +28,7 @@ export const AvatarPopup = ({ user }) => {
       <Link className='settings' to='/makeprofile'>
         Account Settings
       </Link>
-      <a className='logout' href={`http://localhost:8000/logout`}>
+      <a className='logout' onClick={() => logoutWithRedirect()}>
         Logout
       </a>
     </StyledAvatarPopup>

@@ -20,7 +20,6 @@ const NavRight = props => {
 export default withRouter(NavRight)
 
 const StyledNavRight = styled.div`
-  border: 2px solid pink;
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
@@ -28,7 +27,6 @@ const StyledNavRight = styled.div`
     display: flex;
     color: white;
     margin: 0;
-    border: 2px solid;
     padding: 0;
     height: %100;
     list-style-type: none;
@@ -39,7 +37,7 @@ const StyledNavRight = styled.div`
       list-style-type: none;
       img {
         border-radius: 50%;
-        width: 42px;
+        width: 4.5rem;
       }
     }
   }

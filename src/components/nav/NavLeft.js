@@ -28,7 +28,6 @@ const NavLeft = props => {
 export default withRouter(NavLeft)
 
 const StyledNavLeft = styled.div`
-  border: 2px solid green;
   width: 100%;
   display: flex;
   height: 45px;
@@ -36,7 +35,6 @@ const StyledNavLeft = styled.div`
     display: flex;
     color: white;
     margin: 0;
-    border: 2px solid;
     padding: 0;
     height: %100;
     justify-content: space-evenly;
