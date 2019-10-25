@@ -61,6 +61,10 @@ const Notifications = () => {
   // instead of mount so that different styling can be applied to new vs old notifications
   useEffect(() => {
     return async () => {
+      console.log(
+        'am i getting my new notification time check ?',
+        token && userId && mountTime
+      )
       if (token && userId && mountTime) {
         try {
           const response = await axiosWithAuth([token]).put(
@@ -95,17 +99,19 @@ const Notifications = () => {
 
   return (
     <Container>
-      {notifications.sort((e1, e2) => {
-        if (e1.created_at > e2.created_at) {
-          return 1;
-        } else if (e1.created_at < e2.created_at) {
-          return -1;
-        } else {
-          return 0;
-        }
-      }).map(activity => (
-        <NotificationsCard activity={activity} key={activity.id} />
-      ))}
+      {notifications
+        .sort((e1, e2) => {
+          if (e1.created_at > e2.created_at) {
+            return 1
+          } else if (e1.created_at < e2.created_at) {
+            return -1
+          } else {
+            return 0
+          }
+        })
+        .map(activity => (
+          <NotificationsCard activity={activity} key={activity.id} />
+        ))}
     </Container>
   )
 }
