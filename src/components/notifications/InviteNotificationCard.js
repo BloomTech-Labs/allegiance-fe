@@ -7,25 +7,20 @@ import Moment from 'react-moment'
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
-import { deleteNotification } from 'actions/index'
 
-const NotificationsCard = props => {
+const InviteNotificationsCard = props => {
   // De-structure props to gain access to keys
   const {
     // note: various other key/value pairs available, see postman documentation
-    id,
+    user_id,
+    sender_id,
+    group_id,
+    created_at,
+    group_name,
+    image,
     first_name,
     last_name,
-    user_id,
-    invoker_id,
-    type,
-    type_id,
-    read,
-    created_at,
-    username,
-    image,
-    content,
-  } = props.activity
+  } = props.invite
 
   const dispatch = useDispatch()
   // Material UI styling
@@ -75,15 +70,15 @@ const NotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let notifyContent = ''
-  if (content) notifyContent = content.slice(0, 20)
-  if (content && content.length > 20) content += '...'
+  let cutGroupName = ''
+  if (group_name) cutGroupName = group_name.slice(0, 20)
+  if (group_name && group_name.length > 20) cutGroupName += '...'
 
   // Onclick handler for notifications to direct user to correct app path
-  const goToPost = e => {
+  const goToGroup = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: `/post/${type_id}`,
+      pathname: `/group/${group_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
       // replyNumber: replyId || null,
     })
@@ -101,7 +96,7 @@ const NotificationsCard = props => {
   return (
     <NotificationCardDiv>
       <Card
-        onClick={e => goToPost(e)}
+        onClick={e => goToGroup(e)}
         className={checkIfNew ? classes.newCard : classes.card}
       >
         <CardIcon>
@@ -114,7 +109,7 @@ const NotificationsCard = props => {
         </CardIcon>
         <CardMessage>
           <div>
-            <span>{fullName || username}</span>{' '}
+            <span>{fullName}</span>{' '}
             {/* {tag === 'post' && <>made a post: {postContent}</>}
             {tag === 'reply' && <>replied to a post: {replyContent}</>}
             {tag === 'postLike' && (
@@ -132,12 +127,7 @@ const NotificationsCard = props => {
                 reply: {replyContent}
               </>
             )} */}
-            {type === 'like' && <>liked your post: {content}</>}
-            {type === 'reply' && <>replied to your post: {content}</>}
-            {type === 'reply_like' && <>liked your reply: {content}</>}
-            {type === 'group_invite' && (
-              <>invited you to a group: {content}</>
-            )}{' '}
+            {<>invited you to a group: {cutGroupName}</>}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -161,9 +151,6 @@ const NotificationsCard = props => {
           <p>{acronym}</p>
         </CardGroup> */}
       </Card>
-      <DelButton onClick={() => dispatch(deleteNotification(token, id))}>
-        Delete
-      </DelButton>
     </NotificationCardDiv>
   )
 }
@@ -222,4 +209,4 @@ const DelButton = styled.button`
   border-style: none;
 `
 
-export default withRouter(NotificationsCard)
+export default withRouter(InviteNotificationsCard)

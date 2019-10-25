@@ -50,35 +50,55 @@ export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
     try {
-      dispatch({ type: actionTypes.FETCH_NOTICE_REQUEST })
+      dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_REQUEST })
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
       console.log(notifications)
       dispatch({
-        type: actionTypes.FETCH_NOTICE_SUCCESS,
+        type: actionTypes.FETCH_NOTIFICATIONS_SUCCESS,
         payload: notifications.data,
       })
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.FETCH_NOTICE_FAILURE, payload: err })
+      dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_FAILURE, payload: err })
+    }
+  }
+}
+
+export const fetchInvites = (token, data) => async dispatch => {
+  const { userId } = data
+  if (token) {
+    try {
+      dispatch({ type: actionTypes.FETCH_INVITES_REQUEST })
+      const invites = await axiosWithAuth([token]).get(
+        `/users/${userId}/invites`
+      )
+      console.log(invites)
+      dispatch({
+        type: actionTypes.FETCH_INVITES_SUCCESS,
+        payload: invites.data,
+      })
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: actionTypes.FETCH_INVITES_FAILURE, payload: err })
     }
   }
 }
 
 export const deleteNotification = (token, notificationId) => async dispatch => {
   try {
-    dispatch({ type: actionTypes.DELETE_NOTIFICATION_REQUEST })
+    dispatch({ type: actionTypes.DELETE_NOTIFICATIONS_REQUEST })
     let del = await axiosWithAuth([token]).delete(
       `/notifications/${notificationId}`
     )
     console.log('del:', del, 'del.data:', del.data)
     dispatch({
-      type: actionTypes.DELETE_NOTIFICATION_SUCCESS,
+      type: actionTypes.DELETE_NOTIFICATIONS_SUCCESS,
       payload: del.data,
     })
   } catch (err) {
-    dispatch({ type: actionTypes.DELETE_NOTIFICATION_FAILURE, payload: err })
+    dispatch({ type: actionTypes.DELETE_NOTIFICATIONS_FAILURE, payload: err })
   }
 }
 

@@ -9,11 +9,13 @@ import moment from 'moment'
 // import { UPDATE_USER } from '../../reducers/userReducer'
 import * as types from 'actions/actionTypes'
 
-import NotificationsCard from './NotificationsCard'
-import { fetchNotifications } from 'actions/index'
+import ActivityNotificationsCard from './ActivityNotificationsCard'
+import InviteNotificationCard from './InviteNotificationCard'
+import { fetchNotifications, fetchInvites } from 'actions/index'
 
 const Notifications = () => {
   const notifications = useSelector(state => state.notifyReducer.notifications)
+  const invites = useSelector(state => state.notifyReducer.invites)
   // Keep track of when notifications component mounts so that timestamp
   // can be passed to the put in the cleanup useEffect
   const [mountTime, setMountTime] = useState()
@@ -33,11 +35,13 @@ const Notifications = () => {
     const fetchData = async () => {
       if (token && userId) {
         try {
-          const data = {
-            userId,
-          }
-          const response = await dispatch(fetchNotifications(token, data))
-          console.log(response)
+          // const data = {
+          //   userId,
+          // }
+          // const notifications = await dispatch(fetchNotifications(token, data))
+          // console.log(notifications)
+          // const invites = await dispatch(fetchInvites(token, data))
+          // console.log(invites)
           // setNotifications(response.data.allActivity)
           // Record timestamp upon component mount
           setMountTime(moment().toISOString())
@@ -47,10 +51,10 @@ const Notifications = () => {
       }
     }
     fetchData()
-    socket.on('new notification', fetchData)
-    return () => {
-      socket.off('new notification')
-    }
+    // socket.on('new notification', fetchData)
+    // return () => {
+    //   socket.off('new notification')
+    // }
   }, [dispatch, socket, token, userGroups, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
@@ -93,18 +97,39 @@ const Notifications = () => {
   //   act => userId !== act.user_id && userId !== act.liker_id
   // )
 
+  const activityNotifications = notifications.sort((e1, e2) => {
+    if (e1.created_at < e2.created_at) {
+      return 1
+    } else if (e1.created_at > e2.created_at) {
+      return -1
+    } else {
+      return 0
+    }
+  })
+  const inviteNotifications = invites.sort((e1, e2) => {
+    if (e1.created_at < e2.created_at) {
+      return 1
+    } else if (e1.created_at > e2.created_at) {
+      return -1
+    } else {
+      return 0
+    }
+  })
+
   return (
     <Container>
-      {notifications.sort((e1, e2) => {
-        if (e1.created_at > e2.created_at) {
-          return 1;
-        } else if (e1.created_at < e2.created_at) {
-          return -1;
-        } else {
-          return 0;
-        }
-      }).map(activity => (
-        <NotificationsCard activity={activity} key={activity.id} />
+      <h1>Pending Invites</h1>
+      <br />
+      {inviteNotifications.map(invite => (
+        <InviteNotificationCard
+          invite={invite}
+          key={`${invite.user_id}${invite.group_id}${invite.sender_id}`}
+        />
+      ))}
+      <h1>Activity</h1>
+      <br />
+      {activityNotifications.map(activity => (
+        <ActivityNotificationsCard activity={activity} key={activity.id} />
       ))}
     </Container>
   )
@@ -113,7 +138,7 @@ const Notifications = () => {
 const Container = styled.div`
   background-color: whitesmoke;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 `
 
 export default Notifications

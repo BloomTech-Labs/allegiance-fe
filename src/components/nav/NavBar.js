@@ -10,7 +10,7 @@ import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
 
-import { fetchNotifications } from 'actions/index'
+import { fetchNotifications, fetchInvites } from 'actions/index'
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth0()
@@ -30,9 +30,10 @@ const NavBar = () => {
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
   )
-  const socket = useSelector(state => state.socketReducer.socket);
-  const notifications = useSelector(state => state.notifyReducer.notifications);
-  const dispatch = useDispatch();
+  const socket = useSelector(state => state.socketReducer.socket)
+  const notifications = useSelector(state => state.notifyReducer.notifications)
+  const invites = useSelector(state => state.notifyReducer.invites)
+  const dispatch = useDispatch()
   const [token] = useGetToken()
 
   useEffect(() => {
@@ -73,8 +74,10 @@ const NavBar = () => {
           const data = {
             userId,
           }
-          const response = await dispatch(fetchNotifications(token, data))
-          console.log(response)
+          dispatch(fetchInvites(token, data))
+          dispatch(fetchNotifications(token, data))
+          console.log(invites)
+          console.log(notifications)
         } catch (error) {
           console.log(error)
         }
@@ -89,9 +92,10 @@ const NavBar = () => {
 
   useEffect(() => {
     if (token) {
-      console.log(notifications);
-      const filtered = notifications.filter(notify => notify.created_at > timeStamp || timeStamp === null)
-      console.log(filtered);
+      const filtered = notifications.filter(
+        notify => notify.created_at > timeStamp || timeStamp === null
+      )
+
       setNavNotifications(filtered)
     }
   }, [notifications, timeStamp, token])
