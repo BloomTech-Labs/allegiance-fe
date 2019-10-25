@@ -49,9 +49,10 @@ const ResultsContainer = styled.div`
   position: absolute;
   z-index: 1;
   background-color: white;
-  margin-top: 18.5%;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  // margin-top: 18.5%;
   .suggestion-active {
-    background-color: lightgoldenrodyellow;
+    background-color: white;
   }
   .single-result {
     display: flex;
@@ -61,10 +62,10 @@ const ResultsContainer = styled.div`
     padding: 0 5%;
     text-decoration: none;
     width: 100%;
-    border: 1px solid black;
+    border: none;
     height: 8vh;
     &:hover {
-      background-color: lightgoldenrodyellow;
+      background-color: #add8e6;
     }
   }
   .result-info {
