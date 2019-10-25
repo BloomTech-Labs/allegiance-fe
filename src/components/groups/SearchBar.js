@@ -132,8 +132,14 @@ const SearchFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 90%;
+  width: 600px;
   position: relative;
+  @media (max-width: 800px) {
+    width: 400px;
+  }
+  @media (max-width: 800px) {
+    width: 300px;
+  }
 `
 
 const SearchForm = styled.form`
