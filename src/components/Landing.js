@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import Logo from '../assets/Logo.png'
 import LandingImage from '../assets/LandingImage.jpg'
+// import Button from '../styled/Landing.scss'
 
 const Landing = () => {
   const { loginWithRedirect } = useAuth0()
@@ -15,10 +16,10 @@ const Landing = () => {
       </LogoHolder>
       <Headers>The social network for sports fans</Headers>
       <ButtonHolder>
-        <Button
-          color='red'
+        {/* <Button
+          // color='red'
           content='Sign In'
-          onClick={() => loginWithRedirect({})}
+          
           style={{
             border: 'none',
             color: 'white',
@@ -26,7 +27,8 @@ const Landing = () => {
             fontSize: '1.25rem',
             margin: '3%',
           }}
-        />
+        /> */}
+        <Button1 onClick={() => loginWithRedirect({})}>Sign In</Button1>
       </ButtonHolder>
     </LandingContainer>
   )
@@ -59,8 +61,18 @@ const Headers = styled.h1`
 
 const ButtonHolder = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   width: 50%;
+`
+
+const Button1 = styled.button`
+  background-color: #4267b2;
+  color: white;
+  width: 500px;
+  height: 60px;
+  border-radius: 20px;
+  font-size: 2rem;
+  margin: 3%;
 `
 
 export default Landing

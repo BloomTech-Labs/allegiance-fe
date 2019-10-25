@@ -22,6 +22,7 @@ const SearchResults = props => {
     <ResultsContainer>
       {/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
       {filteredResults.map((group, index) => {
+        console.log('group.id:::::', group.id)
         let className
         if (index === props.activeSuggestion) {
           className = 'suggestion-active'
