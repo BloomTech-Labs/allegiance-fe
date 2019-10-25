@@ -44,13 +44,17 @@ const SearchResults = props => {
 
 const ResultsContainer = styled.div`
   display: flex;
-  width: 95.5%;
+  width: 98.2%;
   flex-direction: column;
   position: absolute;
   z-index: 1;
   background-color: white;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  // margin-top: 18.5%;
+  border-radius: 20px;
+  margin-top: 65px;
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
   .suggestion-active {
     background-color: white;
   }
@@ -62,7 +66,6 @@ const ResultsContainer = styled.div`
     padding: 0 5%;
     text-decoration: none;
     width: 100%;
-    border: none;
     height: 8vh;
     &:hover {
       background-color: #add8e6;

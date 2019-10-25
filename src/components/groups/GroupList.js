@@ -20,6 +20,7 @@ const GroupList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('are we ever fetching groups ? ', token)
       if (token) {
         const groups = await axiosWithAuth([token]).post(`/groups/search`, {
           column: 'group_name',

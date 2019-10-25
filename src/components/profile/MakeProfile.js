@@ -172,10 +172,6 @@ const MakeProfile = props => {
 }
 
 const FormHolder = styled.div`
-  background-color: #dee4e7;
-  min-height: 90vh;
-  padding-top: 5%;
-  margin-top: -1.5%;
   @media (max-width: 320px) {
     height: 87vh;
   }
