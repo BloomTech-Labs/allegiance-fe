@@ -49,7 +49,7 @@ const GroupInfo = props => {
             members={props.members}
             setTrigger={props.setTrigger}
           />
-          <InviteModal />
+          <InviteModal groupId={props.group.id} />
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
