@@ -110,8 +110,9 @@ export default function PostCard(props) {
 
   const classes = useStyles()
 
-  const deletePost = async () => {
-    dispatch(deleteGroupPost(token, id))
+  async function deletePost(e){
+    e.preventDefault()
+    await dispatch(deleteGroupPost(token, id))
   }
 
   async function addLike(e) {

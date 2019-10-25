@@ -220,3 +220,30 @@ export const deleteGroupPost = (token, id) => async dispatch => {
     })
   }
 }
+
+export const requestJoinPrivate = (token, id) => async dispatch => {
+  dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
+  const privateGroup = await axiosWithAuth([token]).get(`/groups/${id}`)
+  if (token && privateGroup) {
+    try {
+      dispatch({ 
+        type: actionTypes.JOIN_PRIVATE_SUCCESS,
+        payload: privateGroup.id })
+      } catch (err) {
+      dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err})
+    }
+  }
+}
+
+
+// return {
+//   ...state,
+//   loggedInUser: action.payload.currentUser || action.payload.newUser,
+//   loggedInGroups: action.payload.basicGroupInfo
+//     ? action.payload.basicGroupInfo.filter(
+//         group => group.user_type !== 'invited'
+//       )
+//     : [],
+//   loggedInAllegiances: action.payload.basicAllegianceInfo,
+//   error: '',
+// }
