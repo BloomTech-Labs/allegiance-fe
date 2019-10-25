@@ -223,7 +223,8 @@ export const deleteGroupPost = (token, id) => async dispatch => {
 
 export const requestJoinPrivate = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
-  const privateGroup = await axiosWithAuth([token]).get(`/groups/${id}`)
+  const { userId, groupId, post_content } = id
+  const privateGroup = await axiosWithAuth([token]).get(`/group/${groupId}`)
   if (token && privateGroup) {
     try {
       dispatch({ 

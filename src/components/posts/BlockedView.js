@@ -4,23 +4,30 @@ import replies from '../../assets/replies.png'
 import LockIcon from '@material-ui/icons/Lock'
 import { Button } from 'semantic-ui-react'
 import { join } from 'path';
-import useGetToken from '.utils/useGetToken'
+import useGetToken from '../utils/useGetToken'
 import { useSelector, useDispatch } from 'react-redux'
 import { requestJoinPrivate } from 'actions'
 
 const fb ='#4267b2'
 
-
 const BlockedView = props => {
+  console.log('props::', props)
   const [token] = useGetToken()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  // const groups = props.userGroups.filter(privateGroupId => privateGroupId.id === privateGroupId)
+  const groups = '35'
   const dispatch = useDispatch()
-  const privateGroupId = props.privateGroupId.find(privateId => privateId.id === privateId)
+  // const privateGroupId = privateGroupId.find(privateId => privateId.id === privateId)
+  // const joinRequestId = useSelector(state => state.userReducer.requestJoinPrivate.id)
   
   async function joinGroup(e){
     e.preventDefault()
+    const data = {
+      userId,
+      
+    }
     console.log('joinGroup fired e:', e)
-    await dispatch(requestJoinPrivate(token, privateGroupId.id, userId))
+    await dispatch(requestJoinPrivate(token, groups))
   }
 
   return (
@@ -28,7 +35,7 @@ const BlockedView = props => {
       <Content>
         <LockIcon style={{ fontSize: 60 }} />
         <h2>You must be a member of this group to see the content!</h2>
-        <Button color='blue' onClick={() => joinGroup()}>Request To Join Group</Button>
+        <Button color='blue' onClick={(e) => joinGroup(e)}>Request To Join Group</Button>
       </Content>
     </BlockedContainer>
   )

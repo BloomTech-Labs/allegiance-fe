@@ -121,13 +121,13 @@ export const userReducer = (state = initialState, action) => {
       case types.JOIN_PRIVATE_SUCCESS:
       return {
         ...state,
-        loggedInUser: action.payload.currentUser || action.payload.newUser,
-        loggedInGroups: action.payload.basicGroupInfo
-          ? action.payload.basicGroupInfo.filter(
-              group => group.user_type !== 'invited'
-            )
-          : [],
-        loggedInAllegiances: action.payload.basicAllegianceInfo,
+        // loggedInUser: action.payload.currentUser || action.payload.newUser,
+        loggedInGroups: action.payload.basicGroupInfo,
+          // ? action.payload.basicGroupInfo.filter(
+          //     group => group.
+          //   )
+          // : [],
+        // loggedInAllegiances: action.payload.basicAllegianceInfo,
         error: '',
       }
     default:
