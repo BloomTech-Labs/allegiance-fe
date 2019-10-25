@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
-import bell from 'a'
+import { Avatar } from './Avatar'
 const NavRight = props => {
   const { location, user } = props
 
@@ -9,13 +9,8 @@ const NavRight = props => {
     <StyledNavRight>
       <ul>
         <li>
-          <NavLink to='/notifications'>
-            <IconButton />
-          </NavLink>
-        </li>
-        <li>
           <NavLink>
-            <img src={user.image} />
+            <Avatar user={user} />
           </NavLink>
         </li>
       </ul>
@@ -36,28 +31,16 @@ const StyledNavRight = styled.div`
     border: 2px solid;
     padding: 0;
     height: %100;
-    justify-content: space-evenly;
-    width: 225px;
     list-style-type: none;
+    width: 100%;
+    justify-content: flex-end;
     li {
       display: block;
       list-style-type: none;
-      a {
-        display: flex;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-      }
-      span {
-        color: white;
-        margin-left: 5px;
-        font-size: 20px;
+      img {
+        border-radius: 50%;
+        width: 42px;
       }
     }
-  }
-  img {
-    border-radius: 50%;
-    width: 42px;
-    height: 45px;
   }
 `

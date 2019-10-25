@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
-
+import CssReset from 'styles/cssReset'
 import PrivateRoute from './components/PrivateRoute'
 
 import { initGA, logPageView } from './components/analytics/Analytics'
@@ -127,6 +127,7 @@ function App(props) {
 
   return (
     <AppContainer>
+      <CssReset />
       {props.location.pathname !== '/' && <NavBar />}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <Switch>

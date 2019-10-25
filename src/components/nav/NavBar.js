@@ -114,8 +114,7 @@ const Sticky = styled.nav`
   left: 0;
   z-index: 1;
   margin: 0 auto;
-  height: 50px;
-  /* border: 2px solid red; */
+  height: 55px;
   display: flex;
   justify-content: space-between;
   align-items: center;
