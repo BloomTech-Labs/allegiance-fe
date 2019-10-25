@@ -54,11 +54,12 @@ const SearchBar = props => {
     if (e.keyCode === 13) {
       e.preventDefault()
       console.log(results)
-      props.history.push(`/group/${results[0].id}`)
+
       // Check that results from SearchResults has something to fill
       if (results.length > 0) {
         setSuggestion(0)
         setValues(results[activeSuggestion])
+        props.history.push(`/group/${results[0].id}`)
       }
     }
     // User pressed the up arrow
@@ -132,8 +133,14 @@ const SearchFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 90%;
+  width: 600px;
   position: relative;
+  @media (max-width: 800px) {
+    width: 400px;
+  }
+  @media (max-width: 800px) {
+    width: 300px;
+  }
 `
 
 const SearchForm = styled.form`
