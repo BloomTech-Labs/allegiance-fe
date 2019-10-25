@@ -54,11 +54,12 @@ const SearchBar = props => {
     if (e.keyCode === 13) {
       e.preventDefault()
       console.log(results)
-      props.history.push(`/group/${results[0].id}`)
+
       // Check that results from SearchResults has something to fill
       if (results.length > 0) {
         setSuggestion(0)
         setValues(results[activeSuggestion])
+        props.history.push(`/group/${results[0].id}`)
       }
     }
     // User pressed the up arrow
