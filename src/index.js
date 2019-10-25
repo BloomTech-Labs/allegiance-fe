@@ -1,18 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { Auth0Provider } from './components/auth/react-auth0-wrapper'
-
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import logger from 'redux-logger'
 import rootReducer from './reducers'
-
 import { BrowserRouter as Router } from 'react-router-dom'
-
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = appState => {
@@ -34,7 +32,6 @@ ReactDOM.render(
     client_id={process.env.REACT_APP_CLIENTID}
     audience={process.env.REACT_APP_AUDIENCE}
     redirect_uri={window.location.origin}
-    onRedirectCallback={onRedirectCallback}
   >
     <Provider store={store}>
       <Router>

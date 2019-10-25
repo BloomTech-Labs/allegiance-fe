@@ -10,7 +10,7 @@ import styled from 'styled-components'
 
 import SearchResults from './SearchResults'
 
-const SearchBar = () => {
+const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
   // token for accessing authentication required backend routes

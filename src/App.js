@@ -4,14 +4,12 @@ import { withRouter } from 'react-router'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
-
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 
 import PrivateRoute from './components/PrivateRoute'
 
 import { initGA, logPageView } from './components/analytics/Analytics'
-// // import { Mixpanel } from './components/analytics/Mixpanel'
 
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import useGetToken from './components/utils/useGetToken'
@@ -69,12 +67,8 @@ function App(props) {
           const { newUser, currentUser } = result.data.userInfo
           if (newUser) {
             props.history.push('/makeprofile')
-            // Mixpanel.login(newUser, 'New user sign up.')
           }
-          if (currentUser && currentUser.first_name === null) {
-            props.history.push('/makeprofile')
-            // Mixpanel.login(currentUser, 'Successful login, no profile info.')
-          }
+
           if (currentUser && currentUser.first_name !== null) {
             const pushTo =
               window.location.pathname !== '/'
@@ -133,36 +127,45 @@ function App(props) {
 
   return (
     <AppContainer>
-      <Switch>
-        <Route exact path='/' component={!isAuthenticated && Landing} />
-        <NavBar />
-      </Switch>
-      <Switch>
-        <Route exact path='/home' component={Feed} />
-        <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
-        <PrivateRoute exact path='/creategroup' component={CreateGroup} />
-        <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
-        <PrivateRoute exact path='/notifications' component={Notifications} />
-        <PrivateRoute exact path='/groups' component={GroupContainer} />
-        <PrivateRoute exact path='/profile' component={Profile} />
-        <PrivateRoute exact path='/group/:id' component={GroupPage} />
-        <PrivateRoute
-          exact
-          path='/allegiance/:id'
-          component={UnderConstruction}
-        />
-        <PrivateRoute exact path='/addallegiance' component={AddAllegiance} />
-        <PrivateRoute exact path='/makeallegiance' component={MakeAllegiance} />
-        <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
-      </Switch>
+      {props.location.pathname !== '/' && <NavBar />}
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <Switch>
+          <Route exact path='/' component={!isAuthenticated && Landing} />
+          <Route exact path='/home' component={Feed} />
+          <Route path='/groups' component={GroupContainer} />
+          <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
+          <PrivateRoute exact path='/creategroup' component={CreateGroup} />
+          <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
+          <PrivateRoute exact path='/notifications' component={Notifications} />
+          <PrivateRoute exact path='/profile' component={Profile} />
+          <PrivateRoute exact path='/group/:id' component={GroupPage} />
+          <PrivateRoute
+            exact
+            path='/allegiance/:id'
+            component={UnderConstruction}
+          />
+          <PrivateRoute exact path='/addallegiance' component={AddAllegiance} />
+          <PrivateRoute
+            exact
+            path='/makeallegiance'
+            component={MakeAllegiance}
+          />
+          <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
+        </Switch>
+      </div>
     </AppContainer>
   )
 }
 
 const AppContainer = styled.div`
-  text-align: center;
-  padding-top: 11%;
-  padding-bottom: 12%;
+  background-color: #dee4e7;
+  min-height: 100vh;
 `
 
 export default withRouter(App)
+// text-align: center;
+// position: relative;
+// background-color: #dee4e7;
+// min-height: 100vh;
+// margin: 0 auto;
+// border: 4px solid blue;

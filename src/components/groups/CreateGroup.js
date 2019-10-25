@@ -56,7 +56,11 @@ const CreateGroup = props => {
   async function createGroup() {
     try {
       dispatch({ type: types.ADD_GROUP_REQUEST })
-      const newGroup = { ...values, image: image || Default, creator_id: loggedInUser.id }
+      const newGroup = {
+        ...values,
+        image: image || Default,
+        creator_id: loggedInUser.id,
+      }
       const result = await axiosWithAuth([token]).post('/groups/', newGroup)
       const addedGroup = {
         name: result.data.newGroup.group_name,
@@ -215,8 +219,6 @@ const CreateGroup = props => {
 const FormHolder = styled.div`
   background-color: #dee4e7;
   min-height: 90vh;
-  padding-top: 5%;
-  margin-top: -1.5%;
   @media (max-width: 320px) {
     height: 87vh;
   }
