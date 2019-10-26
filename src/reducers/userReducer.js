@@ -5,6 +5,7 @@ const initialState = {
   loggedInPosts: '',
   loggedInGroups: [],
   loggedInAllegiances: [],
+  pendingInvites: [],
   error: '',
 }
 
@@ -26,7 +27,7 @@ export const userReducer = (state = initialState, action) => {
     case types.FETCH_LOGIN_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.FETCH_PROFILE_SUCCESS:
       //Refreshes logged in user's info, groups and allegiances upon entering their profile.
@@ -43,7 +44,7 @@ export const userReducer = (state = initialState, action) => {
     case types.FETCH_PROFILE_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.UPDATE_USER_SUCCESS:
       //Updates loggedInUser after their profile has been successfully edited.
@@ -55,7 +56,7 @@ export const userReducer = (state = initialState, action) => {
     case types.UPDATE_USER_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.ADD_GROUP_SUCCESS:
       //Updates logged in user's groups when they join a new group.
@@ -66,7 +67,7 @@ export const userReducer = (state = initialState, action) => {
     case types.ADD_GROUP_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.LEAVE_GROUP_SUCCESS:
       //Updates logged in user's groups when they leave a group.
@@ -79,7 +80,7 @@ export const userReducer = (state = initialState, action) => {
     case types.LEAVE_GROUP_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     // case types.ADD_ALLEGIANCES_SUCCESS:  changed this as it appears below
     case types.GET_ALLEGIANCES_SUCCESS:
@@ -89,10 +90,10 @@ export const userReducer = (state = initialState, action) => {
         loggedInAllegiances: action.payload,
         error: '',
       }
-    case types.GET_ALLEGIANCES_FAILURE: 
+    case types.GET_ALLEGIANCES_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.ADD_ALLEGIANCES_SUCCESS:
       //Updates logged in user's allegiances when they add a new one to their list.
@@ -103,7 +104,7 @@ export const userReducer = (state = initialState, action) => {
     case types.ADD_ALLEGIANCES_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.LEAVE_ALLEGIANCE_SUCCESS:
       //Updates logged in user's allegiances when they remove one from their list.
@@ -113,10 +114,10 @@ export const userReducer = (state = initialState, action) => {
           allegiance => allegiance.id !== action.payload
         ),
       }
-      case types.LEAVE_ALLEGIANCE_FAILURE:
-       return {
-         ...state,
-         error: action.payload
+    case types.LEAVE_ALLEGIANCE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       }
     default:
       return state
