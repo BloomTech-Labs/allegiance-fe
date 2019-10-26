@@ -9,9 +9,8 @@ import styled from 'styled-components'
 import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
-<<<<<<< HEAD
 import NavRight from './NavRight'
-import { CreateNotification, fetchNotifications } from 'actions/index'
+import { CreateNotification, fetchNotifications, fetchInvites } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
@@ -20,12 +19,7 @@ import NavMiddle from './NavMiddle'
 
 const NavBar = props => {
   const { location } = props
-=======
 
-import { fetchNotifications, fetchInvites } from 'actions/index'
-
-const NavBar = () => {
->>>>>>> 14ee7ae5177d74139a8f30b709f6e2bdc4c4a328
   const { isAuthenticated, logout } = useAuth0()
   // Obtain last viewed replies thread's group_id from redux
   const groupId = useSelector(state => state.navReducer.groupID)
@@ -40,10 +34,9 @@ const NavBar = () => {
   )
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
-<<<<<<< HEAD
-=======
+
   const invites = useSelector(state => state.notifyReducer.invites)
->>>>>>> 14ee7ae5177d74139a8f30b709f6e2bdc4c4a328
+
   const dispatch = useDispatch()
   const [token] = useGetToken()
 
@@ -64,13 +57,11 @@ const NavBar = () => {
               payload: unreadNum,
             })
           }
-<<<<<<< HEAD
-=======
+
           dispatch(fetchInvites(token, data))
           dispatch(fetchNotifications(token, data))
           console.log(invites)
           console.log(notifications)
->>>>>>> 14ee7ae5177d74139a8f30b709f6e2bdc4c4a328
         } catch (error) {
           console.log(error)
         }
@@ -90,52 +81,7 @@ const NavBar = () => {
     return () => {
       socket.off('new notification')
     }
-<<<<<<< HEAD
   }, [user, token, timeStamp, socket, dispatch, props.location.pathname])
-=======
-  }, [userId, token, timeStamp, socket, dispatch])
-
-  useEffect(() => {
-    if (token) {
-      const filtered = notifications.filter(
-        notify => notify.created_at > timeStamp || timeStamp === null
-      )
-
-      setNavNotifications(filtered)
-    }
-  }, [notifications, timeStamp, token])
-
-  // Define location for conditional top nav bar rendering
-  const { pathname } = window.location
-  // Helper for conditional top nav bar rendering when using id params in pathname
-  const TopNavItem = (label, link, title) => (
-    <>
-      <IconBut
-        aria-label={label}
-        as={Link}
-        to={link}
-        style={{ color: 'white', marginTop: '1%' }}
-      >
-        <ArrowBack />
-      </IconBut>
-      <p>{title}</p>
-      <TopNavRight />
-    </>
-  )
-
-  if (!navNotifications) {
-    return (
-      <Loader active size='large'>
-        Loading
-      </Loader>
-    )
-  }
-
-  // Setting notifications to empty array allows for elimination of notification
-  // icon number upon mount and solves axios PUT lag upon notifications un-mount
-  if (pathname === '/notifications' && navNotifications.length > 0)
-    setNavNotifications([])
->>>>>>> 14ee7ae5177d74139a8f30b709f6e2bdc4c4a328
 
   return (
     <Sticky>
