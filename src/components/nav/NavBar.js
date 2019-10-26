@@ -10,7 +10,7 @@ import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
 import NavRight from './NavRight'
-import { CreateNotification, fetchNotifications } from 'actions/index'
+import { CreateNotification, fetchNotifications, fetchInvites } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
@@ -33,6 +33,7 @@ const NavBar = props => {
   )
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
+  const invites = useSelector(state => state.notifyReducer.invites)
   const dispatch = useDispatch()
   const [token] = useGetToken()
 
@@ -53,6 +54,10 @@ const NavBar = props => {
               payload: unreadNum,
             })
           }
+          dispatch(fetchInvites(token, data))
+          dispatch(fetchNotifications(token, data))
+          console.log(invites)
+          console.log(notifications)
         } catch (error) {
           console.log(error)
         }

@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
 import { deleteNotification } from 'actions/index'
 
-const NotificationsCard = props => {
+const ActivityNotificationsCard = props => {
   // De-structure props to gain access to keys
   const {
     // note: various other key/value pairs available, see postman documentation
@@ -24,8 +24,7 @@ const NotificationsCard = props => {
     created_at,
     username,
     image,
-    post_content,
-    reply_content,
+    content,
   } = props.activity
 
   const dispatch = useDispatch()
@@ -76,12 +75,9 @@ const NotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let postContent
-  let replyContent
-  if (post_content) postContent = post_content.slice(0, 20)
-  if (reply_content) replyContent = reply_content.slice(0, 20)
-  if (post_content && post_content.length > 20) postContent += '...'
-  if (reply_content && reply_content.length > 20) replyContent += '...'
+  let notifyContent = ''
+  if (content) notifyContent = content.slice(0, 20)
+  if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToPost = e => {
@@ -103,11 +99,8 @@ const NotificationsCard = props => {
   if (created_at > timeStamp || timeStamp === null) checkIfNew = true
 
   return (
-    <NotificationCardDiv>
-      <Card
-        onClick={e => goToPost(e)}
-        className={checkIfNew ? classes.newCard : classes.card}
-      >
+    <NotificationCardDiv onClick={e => goToPost(e)}>
+      <Card className={checkIfNew ? classes.newCard : classes.card}>
         <CardIcon>
           <Avatar
             aria-label='author_avatar'
@@ -136,11 +129,9 @@ const NotificationsCard = props => {
                 reply: {replyContent}
               </>
             )} */}
-            {type === 'like' && <>liked your post: {postContent}</>}
-            {type === 'reply' && <>replied to your post: {postContent}</>}
-            {type === 'reply_like' && (
-              <>liked your reply: {replyContent}</>
-            )}{' '}
+            {type === 'like' && <>liked your post: {content}</>}
+            {type === 'reply' && <>replied to your post: {content}</>}
+            {type === 'reply_like' && <>liked your reply: {content}</>}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -163,10 +154,15 @@ const NotificationsCard = props => {
           />
           <p>{acronym}</p>
         </CardGroup> */}
+        <DelButton
+          onClick={evt => {
+            evt.stopPropagation()
+            dispatch(deleteNotification(token, id))
+          }}
+        >
+          X
+        </DelButton>
       </Card>
-      <DelButton onClick={() => dispatch(deleteNotification(token, id))}>
-        Delete
-      </DelButton>
     </NotificationCardDiv>
   )
 }
@@ -225,4 +221,4 @@ const DelButton = styled.button`
   border-style: none;
 `
 
-export default withRouter(NotificationsCard)
+export default withRouter(ActivityNotificationsCard)
