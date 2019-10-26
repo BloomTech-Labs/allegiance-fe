@@ -60,7 +60,7 @@ const NavBar = props => {
     }
     fetchData()
     socket.on('new notification', async data => {
-      await dispatch(CreateNotification(data))
+      await dispatch(CreateNotification(data.notification))
       // i don't want to increment unread num if I am viewing the notifications
       if (location.pathname !== '/notifications') {
         await dispatch({

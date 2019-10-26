@@ -17,24 +17,22 @@ const NavRight = props => {
       <ul>
         <li>
           <NavLink to='/notifications'>
-            <MenuItem to='/notifications'>
-              {/* Placeholder to keep alignment of icon center as desired */}
-              <PlaceHolder />
-              <NavIcon
-                size='large'
-                name='bell outline'
-                number={10}
-                alt={'Notifications'}
-              />
-              {/* Notification count only shows when not navigated to notification 
+            {/* Placeholder to keep alignment of icon center as desired */}
+            <PlaceHolder />
+            <NavIcon
+              size='large'
+              name='bell outline'
+              number={10}
+              alt={'Notifications'}
+            />
+            {/* Notification count only shows when not navigated to notification 
                 component and when there is more than zero notifications to show */}
-              {pathname !== '/notifications' && notifyReducer.unread > 0 && (
-                <NotificationNumber>{notifyReducer.unread}</NotificationNumber>
-              )}
-              {/* Placeholder to keep alignment of icon center as desired */}
-              {(pathname === '/notifications' ||
-                notifyReducer.notifications.length === 0) && <PlaceHolder />}
-            </MenuItem>
+            {pathname !== '/notifications' && notifyReducer.unread > 0 && (
+              <NotificationNumber>{notifyReducer.unread}</NotificationNumber>
+            )}
+            {/* Placeholder to keep alignment of icon center as desired */}
+            {(pathname === '/notifications' ||
+              notifyReducer.notifications.length === 0) && <PlaceHolder />}
           </NavLink>
         </li>
         <li className='avatar'>
