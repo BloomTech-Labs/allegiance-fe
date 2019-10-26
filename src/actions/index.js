@@ -61,11 +61,19 @@ export const fetchNotifications = (token, data) => async dispatch => {
         type: actionTypes.FETCH_NOTICE_SUCCESS,
         payload: notifications.data,
       })
+      return notifications.data
     } catch (err) {
       console.log(err)
       dispatch({ type: actionTypes.FETCH_NOTICE_FAILURE, payload: err })
     }
   }
+}
+
+export const CreateNotification = data => async dispatch => {
+  dispatch({
+    type: actionTypes.CREATE_NOTIFICATION_SUCCESS,
+    payload: data.notification,
+  })
 }
 
 export const deleteNotification = (token, notificationId) => async dispatch => {
@@ -74,7 +82,6 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
     let del = await axiosWithAuth([token]).delete(
       `/notifications/${notificationId}`
     )
-    console.log('del:', del, 'del.data:', del.data)
     dispatch({
       type: actionTypes.DELETE_NOTIFICATION_SUCCESS,
       payload: del.data,
@@ -83,12 +90,6 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
     dispatch({ type: actionTypes.DELETE_NOTIFICATION_FAILURE, payload: err })
   }
 }
-
-// export function deleteNotification(token, notificationId) {
-//   if (token) {
-//     axiosWithAuth([token]).delete(`/notifications/${notificationId}`)
-//   }
-// }
 
 export const likePost = (token, data, socket) => async dispatch => {
   const { userId, id, user_id } = data
@@ -116,7 +117,10 @@ export const likePost = (token, data, socket) => async dispatch => {
         type: actionTypes.POST_LIKE_SUCCESS,
         payload: like.data.likeResult,
       })
-      socket.emit('send notification', { userIds: [user_id] })
+      socket.emit('send notification', {
+        userIds: [user_id],
+        notification: like.data.likeResult,
+      })
     } catch (err) {
       console.log(err)
       dispatch({ type: actionTypes.POST_LIKE_FAILURE, payload: err })

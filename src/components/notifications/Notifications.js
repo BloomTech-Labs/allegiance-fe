@@ -19,7 +19,6 @@ const Notifications = () => {
   const [mountTime, setMountTime] = useState()
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
-  const socket = useSelector(state => state.socketReducer.socket)
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
@@ -36,22 +35,21 @@ const Notifications = () => {
           const data = {
             userId,
           }
-          const response = await dispatch(fetchNotifications(token, data))
-          console.log(response)
-          // setNotifications(response.data.allActivity)
-          // Record timestamp upon component mount
+          if (!notifications.length) {
+            const response = await dispatch(fetchNotifications(token, data))
+          }
           setMountTime(moment().toISOString())
         } catch (error) {
           console.log(error)
         }
       }
+      await dispatch({
+        type: types.SET_UNREAD_NOTIFICATION_NUM,
+        payload: 0,
+      })
     }
     fetchData()
-    socket.on('new notification', fetchData)
-    return () => {
-      socket.off('new notification')
-    }
-  }, [dispatch, socket, token, userGroups, userId])
+  }, [dispatch, token, userGroups, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
   const { email, location } = useSelector(
@@ -61,10 +59,6 @@ const Notifications = () => {
   // instead of mount so that different styling can be applied to new vs old notifications
   useEffect(() => {
     return async () => {
-      console.log(
-        'am i getting my new notification time check ?',
-        token && userId && mountTime
-      )
       if (token && userId && mountTime) {
         try {
           const response = await axiosWithAuth([token]).put(
@@ -80,6 +74,10 @@ const Notifications = () => {
           dispatch({
             type: types.UPDATE_USER_SUCCESS,
             payload: response.data.updated,
+          })
+          dispatch({
+            type: types.SET_UNREAD_NOTIFICATION_NUM,
+            payload: 0,
           })
         } catch (error) {
           console.log(error)
