@@ -102,6 +102,46 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
   }
 }
 
+export const acceptInvite = (
+  token,
+  userId,
+  senderId,
+  groupId
+) => async dispatch => {
+  dispatch(deleteInvite(token, userId, senderId, groupId))
+  //MORE STUFF
+}
+
+export const declineInvite = (
+  token,
+  userId,
+  senderId,
+  groupId
+) => async dispatch => {
+  dispatch(deleteInvite(token, userId, senderId, groupId))
+}
+
+export const deleteInvite = (
+  token,
+  userId,
+  senderId,
+  groupId
+) => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.DELETE_INVITES_REQUEST })
+    let del = await axiosWithAuth([token]).delete(
+      `/groups/${groupId}/invitees/${userId}/${senderId}`
+    )
+    console.log('del:', del, 'del.data:', del.data)
+    dispatch({
+      type: actionTypes.DELETE_INVITES_SUCCESS,
+      payload: del.data,
+    })
+  } catch (err) {
+    dispatch({ type: actionTypes.DELETE_INVITES_FAILURE, payload: err })
+  }
+}
+
 // export function deleteNotification(token, notificationId) {
 //   if (token) {
 //     axiosWithAuth([token]).delete(`/notifications/${notificationId}`)

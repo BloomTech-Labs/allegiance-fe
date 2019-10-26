@@ -43,9 +43,14 @@ export const notifyReducer = (state = initialState, action) => {
     case types.DELETE_INVITES_SUCCESS:
       return {
         ...state,
-        invites: state.invite.filter(item => {
+        invites: state.invites.filter(item => {
           console.log('in reducer', action.payload)
-          return item.id !== action.payload[0].id
+          const invite = action.payload[0]
+          return !(
+            item.user_id === invite.user_id &&
+            item.sender_id === invite.sender_id &&
+            item.group_id === invite.group_id
+          )
         }),
       }
     case types.DELETE_INVITES_FAILURE:

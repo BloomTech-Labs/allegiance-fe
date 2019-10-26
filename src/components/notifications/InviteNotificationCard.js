@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
 
+import { acceptInvite, declineInvite } from 'actions/index'
+
 const InviteNotificationsCard = props => {
   // De-structure props to gain access to keys
   const {
@@ -27,6 +29,7 @@ const InviteNotificationsCard = props => {
   const useStyles = makeStyles({
     newCard: {
       display: 'flex',
+      justifyContent: 'space-evenly',
       width: '90%',
       backgroundColor: '#FFFFE0',
     },
@@ -51,7 +54,7 @@ const InviteNotificationsCard = props => {
   const classes = useStyles()
 
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
-  const fullName = first_name + ' ' + last_name
+  //   const fullName = first_name + ' ' + last_name
 
   // Streamline post id and reply id for linking
   // let postId
@@ -70,9 +73,9 @@ const InviteNotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let cutGroupName = ''
-  if (group_name) cutGroupName = group_name.slice(0, 20)
-  if (group_name && group_name.length > 20) cutGroupName += '...'
+  //   let cutGroupName = ''
+  //   if (group_name) cutGroupName = group_name.slice(0, 20)
+  //   if (group_name && group_name.length > 20) cutGroupName += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToGroup = e => {
@@ -109,7 +112,7 @@ const InviteNotificationsCard = props => {
         </CardIcon>
         <CardMessage>
           <div>
-            <span>{fullName}</span>{' '}
+            <span>{first_name}</span>{' '}
             {/* {tag === 'post' && <>made a post: {postContent}</>}
             {tag === 'reply' && <>replied to a post: {replyContent}</>}
             {tag === 'postLike' && (
@@ -127,7 +130,7 @@ const InviteNotificationsCard = props => {
                 reply: {replyContent}
               </>
             )} */}
-            {<>invited you to a group: {cutGroupName}</>}{' '}
+            {<>invited you to a group</>}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -150,6 +153,22 @@ const InviteNotificationsCard = props => {
           />
           <p>{acronym}</p>
         </CardGroup> */}
+        <Accept
+        //   onClick={evt => {
+        //     evt.stopPropagation()
+        //     dispatch(deleteNotification(token, id))
+        //   }}
+        >
+          ✔
+        </Accept>
+        <Decline
+          onClick={evt => {
+            evt.stopPropagation()
+            dispatch(declineInvite(token, user_id, sender_id, group_id))
+          }}
+        >
+          X
+        </Decline>
       </Card>
     </NotificationCardDiv>
   )
@@ -182,7 +201,7 @@ const CardIcon = styled.div`
 `
 
 const CardMessage = styled.div`
-  width: 60%;
+  width: 40%;
   display: flex;
   margin: 1%;
   overflow: hidden;
@@ -195,7 +214,20 @@ const CardGroup = styled.div`
   width: 20%;
   margin: 1%;
 `
-const DelButton = styled.button`
+const Accept = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: green;
+  font-weight: 700;
+  border-radius: 5px;
+  color: white;
+  width: 10%;
+  margin: 1%;
+  border-style: none;
+`
+const Decline = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;

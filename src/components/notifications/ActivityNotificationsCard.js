@@ -99,11 +99,8 @@ const ActivityNotificationsCard = props => {
   if (created_at > timeStamp || timeStamp === null) checkIfNew = true
 
   return (
-    <NotificationCardDiv>
-      <Card
-        onClick={e => goToPost(e)}
-        className={checkIfNew ? classes.newCard : classes.card}
-      >
+    <NotificationCardDiv onClick={e => goToPost(e)}>
+      <Card className={checkIfNew ? classes.newCard : classes.card}>
         <CardIcon>
           <Avatar
             aria-label='author_avatar'
@@ -157,10 +154,15 @@ const ActivityNotificationsCard = props => {
           />
           <p>{acronym}</p>
         </CardGroup> */}
+        <DelButton
+          onClick={evt => {
+            evt.stopPropagation()
+            dispatch(deleteNotification(token, id))
+          }}
+        >
+          X
+        </DelButton>
       </Card>
-      <DelButton onClick={() => dispatch(deleteNotification(token, id))}>
-        Delete
-      </DelButton>
     </NotificationCardDiv>
   )
 }

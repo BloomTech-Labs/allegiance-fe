@@ -88,7 +88,10 @@ const Notifications = () => {
     }
   }, [dispatch, email, location, userId, token, mountTime])
 
-  if (!notifications || notifications.length === 0) {
+  if (
+    (!notifications && !invites) ||
+    (notifications.length === 0 && invites.length === 0)
+  ) {
     return <h1>No notifications</h1>
   }
 
