@@ -2,18 +2,21 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Divider } from 'semantic-ui-react'
 import styled from 'styled-components'
-import { useAuth0 } from '../auth/react-auth0-wrapper'
+
+import { withRouter } from 'react-router-dom'
 import GroupList from './GroupList'
 import SearchBar from './SearchBar'
 import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 import NearbyGroups from './NearbyGroups'
-import { withRouter } from 'react-router-dom'
+
 function GroupContainer(props) {
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
 
   return (
     <Container>
+
       <SearchBar {...props} />
+
       <Divider />
       <MyGroups>
         <GroupTitleHolder>

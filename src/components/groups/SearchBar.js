@@ -49,8 +49,12 @@ const SearchBar = props => {
 
   // Handle up and down arrow keys
   const onKeyDown = e => {
+    // e.preventDefault()
     // User pressed the enter key
     if (e.keyCode === 13) {
+      e.preventDefault()
+      console.log(results)
+      props.history.push(`/group/${results[0].id}`)
       // Check that results from SearchResults has something to fill
       if (results.length > 0) {
         setSuggestion(0)
@@ -99,7 +103,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper>
       {/* form to handle group search text from user */}
-      <SearchForm onSubmit={handleSubmit}>
+      <SearchForm>
         <TextField
           value={values.group_name || ''}
           onChange={handleChange}
