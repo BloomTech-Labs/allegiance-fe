@@ -1,9 +1,20 @@
 import React from 'react'
 import { Button, Image } from 'semantic-ui-react'
 import styled from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
-import Logo2 from '../assets/Logo2.png'
-import LandingImage from '../assets/LandingImage.jpg'
+
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import Logo2 from '../assets/landing/Logo2.png'
+import LandingImage from '../assets/landing/LandingImage.png'
+import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
+import instagram from '../assets/landing/instagram.png'
+import twitter from '../assets/landing/twitter.png'
+import facebook from '../assets/landing/facebook.png'
+import NewWay from '../assets/landing/NewWay.png'
+import SportsBetter from '../assets/landing/SportsBetter.png'
+import SportIcons from '../assets/landing/SportIcons.png'
 
 // const Landing = () => {
 //   const { loginWithRedirect } = useAuth0()
@@ -76,12 +87,37 @@ const Landing = () => {
     <LandingDiv>
       <Top>
         <LeftTop>
-          <Image src={Logo2} size='small' alt={'Logo'} />
-          <H1>Do Sports.</H1>
-          <H2>Together.</H2>
+          <Image src={Logo2} size='110px' alt={'Logo'} />
+          <Image src={DoSportsTogether} size='145px' alt={'Do'} />
         </LeftTop>
         <RightTop>
-          <H1>twitter, fb, instagram</H1>
+          <Image
+            path='/instagram'
+            onClick={() => {
+              window.location.href = 'https://instagram.com'
+            }}
+            src={instagram}
+            size='8px'
+            alt={'Insta'}
+          />
+          <Image
+            path='/twitter'
+            onClick={() => {
+              window.location.href = 'https://twitter.com'
+            }}
+            src={twitter}
+            size='8px'
+            alt={'Twitter'}
+          />
+          <Image
+            path='/facebook'
+            onClick={() => {
+              window.location.href = 'https://facebook.com'
+            }}
+            src={facebook}
+            size='8px'
+            alt={'Facebook'}
+          />
         </RightTop>
       </Top>
       <Middle>
@@ -89,24 +125,25 @@ const Landing = () => {
           <H2>Search</H2>
         </LeftMiddle>
         <RightMiddle>
-          <RegisterBtn>Register/Log In</RegisterBtn>
+          <RegisterBtn onClick={() => loginWithRedirect({})}>
+            Register/Log In
+          </RegisterBtn>
         </RightMiddle>
       </Middle>
       <Bottom>
         <LeftBottom1>
-          <H3>
-            A new way for you to create communities around your favorite
-            teamsand connect with other fans because...
-          </H3>
+          <Image src={NewWay} size='463px' alt={'New'} />
         </LeftBottom1>
         <LeftBottom2>
-          <H4>SPORTS ARE BETTER TOGETHER!</H4>
+          <Image src={SportsBetter} size='391px' alt={'Sports'} />
         </LeftBottom2>
         <LeftBottom3>
-          <H5>basketball, baseball, soccer, football, hockey, volleyball</H5>
+          <Image src={SportIcons} size='383px' alt={'Sport_Icons'} />
         </LeftBottom3>
         <LeftBottom4>
-          <JoinBtn>Join a group today.</JoinBtn>
+          <JoinBtn onClick={() => loginWithRedirect({})}>
+            Join a group today.
+          </JoinBtn>
         </LeftBottom4>
       </Bottom>
     </LandingDiv>
@@ -122,6 +159,7 @@ const Top = styled.div`
   // border: 1px solid blue;
   display: flex;
   justify-content: space-between;
+  height: 67px;
 `
 const LeftTop = styled.div`
   display: flex;
@@ -129,27 +167,29 @@ const LeftTop = styled.div`
   align-items: center;
   // border: 1px solid purple;
   width: 400px;
-  margin-top: 20px;
-  margin-left: 34px;
+  margin-left: 5px;
 `
 const RightTop = styled.div`
   display: flex;
-  margin-top: 20px;
-  margin-right: 20px;
+  justify-content: space-evenly;
+  margin-top: 26px;
+  // margin-right: 20px;
+  width: 190px;
+  height: 15px;
 `
 const Middle = styled.div`
-  // border: 1px solid green;
   display: flex;
   justify-content: space-between;
+  height: 67px;
 `
 const LeftMiddle = styled.div`
   display: flex;
   align-items: center;
   width: 480px;
-  height: 37px
-  margin-top: 15px;
+  height: 37px;
   margin-left: 24px;
   border: 1px solid grey;
+  margin-top: 15px;
 `
 const RightMiddle = styled.div`
   display: flex;
@@ -160,15 +200,15 @@ const Bottom = styled.div`
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  height: 605px;
+  height: 777px;
 `
 const LeftBottom1 = styled.div`
-  margin-top: 284px;
+  margin-top: 140px;
   margin-left: 49px;
   width: 463px;
 `
 const LeftBottom2 = styled.div`
-  margin-top: 24px;
+  margin-top: 34px;
   margin-left: 49px;
   width: 500px;
 `
@@ -179,6 +219,12 @@ const LeftBottom3 = styled.div`
 const LeftBottom4 = styled.div`
   margin-top: 30px;
   margin-left: 49px;
+`
+const GlobalStyles = createGlobalStyle`
+body {
+  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
+  font-family: 'Roboto', sans-serif;
+}
 `
 const H1 = styled.h1`
   font-size: 1.9rem;
@@ -201,16 +247,20 @@ const H5 = styled.h4`
   color: white;
 `
 const RegisterBtn = styled.button`
-  height: 67px;
+  height: 68px;
+  z-index: 1
   width: 163px;
   color: white;
   background: #4483cd;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
 `
 const JoinBtn = styled.button`
   height: 54px;
   width: 192px;
   color: white;
   background: #ed5959;
-  font-size: 15px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
 `
 export default Landing
