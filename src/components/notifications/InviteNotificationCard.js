@@ -23,6 +23,7 @@ const InviteNotificationsCard = props => {
     image,
     first_name,
     last_name,
+    accepted,
   } = props.invite
 
   const dispatch = useDispatch()
@@ -111,71 +112,46 @@ const InviteNotificationsCard = props => {
             alt={'Avatar'}
           />
         </CardIcon>
-        <CardMessage>
-          <div>
-            <span>{first_name}</span>{' '}
-            {/* {tag === 'post' && <>made a post: {postContent}</>}
-            {tag === 'reply' && <>replied to a post: {replyContent}</>}
-            {tag === 'postLike' && (
-              <>
-                liked {liker_id === poster_id && 'their own'}
-                {liker_id !== poster_id && (
-                  <span>{poster_name}'s</span>
-                )} post: {postContent}
-              </>
-            )}
-            {tag === 'replyLike' && (
-              <>
-                liked {liker_id === replier_id && 'their own'}
-                {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
-                reply: {replyContent}
-              </>
-            )} */}
-            {<>invited you to a group</>}{' '}
-            <p>
-              <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
-                <Moment fromNow>{created_at}</Moment>
-              </Tooltip>
-            </p>
-          </div>
-        </CardMessage>
-
-        {/* <DelButton onClick={() => selectNotification(user_id, invoker_id, timestamp/create_at) {
-          useSelector(grab state and filter to get notification id)
-          returns id
-          deleteNotification(notificationId)
-        }}>Delete</DelButton> */}
-        {/* <CardGroup>
-          <Avatar
-            aria-label='group_avatar'
-            className={classes.avatar}
-            src={group_image}
-            alt={'Avatar'}
-          />
-          <p>{acronym}</p>
-        </CardGroup> */}
-        <Accept
-          onClick={evt => {
-            evt.stopPropagation()
-            const data = {
-              user_id,
-              sender_id,
-              group_id,
-              Mixpanel,
-            }
-            dispatch(acceptInvite(token, data))
-          }}
-        >
-          ✔
-        </Accept>
-        <Decline
-          onClick={evt => {
-            evt.stopPropagation()
-            dispatch(declineInvite(token, user_id, sender_id, group_id))
-          }}
-        >
-          X
-        </Decline>
+        {!accepted ? (
+          <>
+            <CardMessage>
+              <div>
+                <span>{first_name}</span> {<>invited you to a group</>}{' '}
+                <p>
+                  <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
+                    <Moment fromNow>{created_at}</Moment>
+                  </Tooltip>
+                </p>
+              </div>
+            </CardMessage>
+            <Accept
+              onClick={evt => {
+                evt.stopPropagation()
+                const data = {
+                  user_id,
+                  sender_id,
+                  group_id,
+                  Mixpanel,
+                }
+                dispatch(acceptInvite(token, data))
+              }}
+            >
+              ✔
+            </Accept>
+            <Decline
+              onClick={evt => {
+                evt.stopPropagation()
+                dispatch(declineInvite(token, user_id, sender_id, group_id))
+              }}
+            >
+              X
+            </Decline>
+          </>
+        ) : (
+          <CardMessage>
+            <div>{<>You have joined {group_name}.</>} </div>
+          </CardMessage>
+        )}
       </Card>
     </NotificationCardDiv>
   )

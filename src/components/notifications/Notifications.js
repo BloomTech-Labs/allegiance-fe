@@ -28,9 +28,7 @@ const Notifications = () => {
 
   useEffect(() => {
     // Fetch notifications related data
-    const mappedGroupIds = userGroups.map(group => {
-      return group.id
-    })
+    console.log('fetching notifications')
     const fetchData = async () => {
       if (token && userId) {
         try {
@@ -51,7 +49,7 @@ const Notifications = () => {
       })
     }
     fetchData()
-  }, [dispatch, token, userGroups, userId])
+  }, [dispatch, token, userId])
 
   // Retrieve email and location as those are required by JOI check on backend
   const { email, location } = useSelector(

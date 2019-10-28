@@ -62,6 +62,20 @@ export const notifyReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.ACCEPT_INVITES_SUCCESS:
+      return {
+        ...state,
+        invites: state.invites.map(item => {
+          const invite = action.payload[0]
+          if (item.group_id === invite.group_id) {
+            return {
+              ...item,
+              accepted: true,
+            }
+          }
+          return item
+        }),
+      }
     case types.DELETE_INVITES_SUCCESS:
       return {
         ...state,

@@ -152,8 +152,8 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
 
 export const acceptInvite = (token, data) => async dispatch => {
   const { user_id, sender_id, group_id } = data
-  await dispatch(deleteInvite(token, user_id, sender_id, group_id))
   await dispatch(joinGroup(token, data))
+  await dispatch(deleteInvite(token, user_id, sender_id, group_id, true))
 }
 
 export const declineInvite = (
@@ -162,14 +162,15 @@ export const declineInvite = (
   senderId,
   groupId
 ) => async dispatch => {
-  dispatch(deleteInvite(token, userId, senderId, groupId))
+  dispatch(deleteInvite(token, userId, senderId, groupId, false))
 }
 
 export const deleteInvite = (
   token,
   userId,
   senderId,
-  groupId
+  groupId,
+  accepted
 ) => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_INVITES_REQUEST })
@@ -177,10 +178,15 @@ export const deleteInvite = (
       `/groups/${groupId}/invitees/${userId}/${senderId}`
     )
     console.log('del:', del, 'del.data:', del.data)
-    dispatch({
-      type: actionTypes.DELETE_INVITES_SUCCESS,
-      payload: del.data,
-    })
+    accepted
+      ? dispatch({
+          type: actionTypes.ACCEPT_INVITES_SUCCESS,
+          payload: del.data,
+        })
+      : dispatch({
+          type: actionTypes.DELETE_INVITES_SUCCESS,
+          payload: del.data,
+        })
   } catch (err) {
     dispatch({ type: actionTypes.DELETE_INVITES_FAILURE, payload: err })
   }
