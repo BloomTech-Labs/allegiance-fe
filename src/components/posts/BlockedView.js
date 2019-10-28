@@ -7,6 +7,7 @@ import { join } from 'path';
 import useGetToken from '../utils/useGetToken'
 import { useSelector, useDispatch } from 'react-redux'
 import { requestJoinPrivate } from 'actions'
+import { withRouter } from 'react-router-dom'
 
 const fb ='#4267b2'
 
@@ -14,8 +15,9 @@ const BlockedView = props => {
   console.log('props::', props)
   const [token] = useGetToken()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
-  // const groups = props.userGroups.filter(privateGroupId => privateGroupId.id === privateGroupId)
-  const groups = '35'
+  const groupPathID = props.location.pathname.split('/group/')
+  const privateGroupID = groupPathID[groupPathID.length -1]
+  console.log('lookey here', props.location, privateGroupID)
   const dispatch = useDispatch()
   // const privateGroupId = privateGroupId.find(privateId => privateId.id === privateId)
   // const joinRequestId = useSelector(state => state.userReducer.requestJoinPrivate.id)
@@ -27,7 +29,7 @@ const BlockedView = props => {
       
     }
     console.log('joinGroup fired e:', e)
-    await dispatch(requestJoinPrivate(token, groups))
+    // await dispatch(requestJoinPrivate(token, groups))
   }
 
   return (
@@ -60,4 +62,4 @@ const Content = styled.div`
   z-index: 1;
 `
 
-export default BlockedView
+export default withRouter(BlockedView)
