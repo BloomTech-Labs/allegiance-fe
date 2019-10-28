@@ -48,6 +48,38 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
+export const joinGroup = (token, data) => async dispatch => {
+  const { user_id, group_id, Mixpanel } = data
+  if (token) {
+    try {
+      const result = await axiosWithAuth([token]).post(`/groups_users`, {
+        user_id,
+        group_id,
+        user_type: 'member',
+      })
+      if (result.data.newGroupUsers) {
+        const {
+          group_name,
+          group_image,
+          group_id,
+          user_type,
+        } = result.data.newGroupUsers
+        const addedGroup = {
+          name: group_name,
+          image: group_image,
+          id: group_id,
+          user_type: user_type,
+        }
+        dispatch({ type: actionTypes.ADD_GROUP_SUCCESS, payload: addedGroup })
+        Mixpanel.activity(user_id, 'Joined Group')
+      }
+    } catch (err) {
+      console.log(err)
+      dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+    }
+  }
+}
+
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
@@ -96,6 +128,13 @@ export const CreateNotification = data => async dispatch => {
   })
 }
 
+export const createInvite = data => async dispatch => {
+  dispatch({
+    type: actionTypes.CREATE_INVITE_SUCCESS,
+    payload: data['invite'],
+  })
+}
+
 export const deleteNotification = (token, notificationId) => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_NOTIFICATIONS_REQUEST })
@@ -111,14 +150,10 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
   }
 }
 
-export const acceptInvite = (
-  token,
-  userId,
-  senderId,
-  groupId
-) => async dispatch => {
-  dispatch(deleteInvite(token, userId, senderId, groupId))
-  //MORE STUFF
+export const acceptInvite = (token, data) => async dispatch => {
+  const { user_id, sender_id, group_id } = data
+  await dispatch(deleteInvite(token, user_id, sender_id, group_id))
+  await dispatch(joinGroup(token, data))
 }
 
 export const declineInvite = (

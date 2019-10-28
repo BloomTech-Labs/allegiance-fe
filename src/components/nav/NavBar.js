@@ -10,7 +10,12 @@ import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
 import NavRight from './NavRight'
-import { CreateNotification, fetchNotifications, fetchInvites } from 'actions'
+import {
+  CreateNotification,
+  createInvite,
+  fetchNotifications,
+  fetchInvites,
+} from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
@@ -69,10 +74,21 @@ const NavBar = props => {
     }
     fetchData()
     socket.on('new notification', async data => {
+      console.log('new notification data', data)
       await dispatch(CreateNotification(data))
       // i don't want to increment unread num if I am viewing the notifications
       if (location.pathname !== '/notifications') {
-        await dispatch({
+        dispatch({
+          type: INCREMENT_UNREAD_NOTIFICATION_NUM,
+          payload: 1,
+        })
+      }
+    })
+    socket.on('new invite', async data => {
+      await dispatch(createInvite(data))
+      // i don't want to increment unread num if I am viewing the notifications
+      if (location.pathname !== '/notifications') {
+        dispatch({
           type: INCREMENT_UNREAD_NOTIFICATION_NUM,
           payload: 1,
         })
@@ -80,6 +96,7 @@ const NavBar = props => {
     })
     return () => {
       socket.off('new notification')
+      socket.off('new invite')
     }
   }, [user, token, timeStamp, socket, dispatch, props.location.pathname])
 

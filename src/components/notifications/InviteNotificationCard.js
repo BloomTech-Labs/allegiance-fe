@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
 
 import { acceptInvite, declineInvite } from 'actions/index'
+import { Mixpanel } from '../analytics/Mixpanel'
 
 const InviteNotificationsCard = props => {
   // De-structure props to gain access to keys
@@ -154,10 +155,16 @@ const InviteNotificationsCard = props => {
           <p>{acronym}</p>
         </CardGroup> */}
         <Accept
-        //   onClick={evt => {
-        //     evt.stopPropagation()
-        //     dispatch(deleteNotification(token, id))
-        //   }}
+          onClick={evt => {
+            evt.stopPropagation()
+            const data = {
+              user_id,
+              sender_id,
+              group_id,
+              Mixpanel,
+            }
+            dispatch(acceptInvite(token, data))
+          }}
         >
           ✔
         </Accept>

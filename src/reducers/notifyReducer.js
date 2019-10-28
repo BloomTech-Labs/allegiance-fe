@@ -42,7 +42,11 @@ export const notifyReducer = (state = initialState, action) => {
         ...state,
         notifications: [...state.notifications, action.payload],
       }
-
+    case types.CREATE_INVITE_SUCCESS:
+      return {
+        ...state,
+        invites: [...state.invites, action.payload],
+      }
     case types.DELETE_NOTIFICATIONS_FAILURE:
       return {
         ...state,
