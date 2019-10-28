@@ -57,7 +57,7 @@ const MakeAllegiance = props => {
 
       setTimeout(push, 1000)
     } catch {
-      dispatch({ type: types.ADD_ALLEGIANCES_FAILURE})
+      dispatch({ type: types.ADD_ALLEGIANCES_FAILURE })
       setError(true)
       setLoading(false)
     }
@@ -135,8 +135,6 @@ const MakeAllegiance = props => {
 const FormHolder = styled.div`
   background-color: #dee4e7;
   min-height: 90vh;
-  padding-top: 5%;
-  margin-top: -1.5%;
   @media (max-width: 320px) {
     height: 87vh;
   }

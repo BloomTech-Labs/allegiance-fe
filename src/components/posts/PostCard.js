@@ -14,11 +14,7 @@ import {
 import black from '@material-ui/core/colors/red'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
-import {
-  ThumbUp,
-  ModeCommentOutlined,
-  DeleteOutline,
-} from '@material-ui/icons'
+import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
@@ -39,7 +35,7 @@ export default function PostCard(props) {
     group_id,
   } = props.post
   const dispatch = useDispatch()
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const socket = useSelector(state => state.socketReducer.socket)
@@ -49,7 +45,7 @@ export default function PostCard(props) {
       : null
 
   const [token] = useGetToken()
-  const postLikeId = likes.find(like => like.user_id === userId)
+  const postLikeId = likes.find(like => like.user_id === user.id)
 
   const primary = '#4267b2'
   const useStyles = makeStyles(theme => ({
@@ -118,7 +114,7 @@ export default function PostCard(props) {
   async function addLike(e) {
     e.preventDefault()
     const data = {
-      userId,
+      user: user,
       id,
       user_id,
     }
@@ -147,7 +143,7 @@ export default function PostCard(props) {
           />
         }
         action={
-          (userId === user_id || userStatus === 'admin') &&
+          (user.id === user_id || userStatus === 'admin') &&
           !window.location.pathname.includes('/post') && (
             <IconButton onClick={() => deletePost()} aria-label='settings'>
               <DeleteOutline />
@@ -179,11 +175,14 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={addLike}
-              style={{backgroundColor: 'transparent'}}
+              style={{ backgroundColor: 'transparent' }}
             >
               <ThumbUp className={classes.unlikedIcon} />
             </IconButton>
-            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>
@@ -194,21 +193,34 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={unLike}
-              style={{backgroundColor: 'transparent'}}
+              style={{ backgroundColor: 'transparent' }}
             >
-              <ThumbUp className={classes.likedIcon} style={{backgroundColor: 'transparent'}}/>
+              <ThumbUp
+                className={classes.likedIcon}
+                style={{ backgroundColor: 'transparent' }}
+              />
             </IconButton>
-            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>
         )}
         <div>
           <Link to={`/post/${id}`}>
-            <IconButton aria-label='share' className={classes.buttonDiv} style={{backgroundColor: 'transparent'}}>
+            <IconButton
+              aria-label='share'
+              className={classes.buttonDiv}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <ModeCommentOutlined />
             </IconButton>
-            <IconButton className={classes.likesCount} style={{backgroundColor: 'transparent'}}>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
               {replies && <h4> {replies.length} </h4>}
             </IconButton>
           </Link>

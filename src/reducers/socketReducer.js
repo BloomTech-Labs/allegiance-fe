@@ -1,6 +1,5 @@
 import * as types from 'actions/actionTypes'
 import io from 'socket.io-client'
-console.log('env🚫', process.env.REACT_APP_DEPLOY_SERVER)
 
 const initialState = {
   socket: io(process.env.REACT_APP_DEPLOY_SERVER),
