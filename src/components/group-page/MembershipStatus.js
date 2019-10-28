@@ -9,9 +9,11 @@ import { Button, Chip } from '@material-ui/core/'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 
-// import { Mixpanel } from '../analytics/Mixpanel'
+import { Mixpanel } from '../analytics/Mixpanel'
 
 import styled from 'styled-components'
+
+import { joinGroup } from '../../actions/index.js'
 
 const MembershipStatus = props => {
   const [userType, setUserType] = useState()
@@ -49,28 +51,33 @@ const MembershipStatus = props => {
   async function joinGroup(e) {
     e.preventDefault()
     if (token) {
-      const result = await axiosWithAuth([token]).post(`/groups_users`, {
-        user_id: loggedInUser.id,
-        group_id: props.group_id,
-        user_type: 'member',
-      })
-      if (result.data.newGroupUsers) {
-        setUserType('member')
-        const {
-          group_name,
-          group_image,
-          group_id,
-          user_type,
-        } = result.data.newGroupUsers
-        const addedGroup = {
-          name: group_name,
-          image: group_image,
-          id: group_id,
-          user_type: user_type,
+      try {
+        const result = await axiosWithAuth([token]).post(`/groups_users`, {
+          user_id: loggedInUser.id,
+          group_id: props.group_id,
+          user_type: 'member',
+        })
+        if (result.data.newGroupUsers) {
+          setUserType('member')
+          const {
+            group_name,
+            group_image,
+            group_id,
+            user_type,
+          } = result.data.newGroupUsers
+          const addedGroup = {
+            name: group_name,
+            image: group_image,
+            id: group_id,
+            user_type: user_type,
+          }
+          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
+          props.setTrigger(true)
+          Mixpanel.activity(loggedInUser.id, 'Joined Group')
         }
-        dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-        props.setTrigger(true)
-        // Mixpanel.activity(loggedInUser.id, 'Joined Group')
+      } catch (err) {
+        console.log(err)
+        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
       }
     }
   }
@@ -78,32 +85,37 @@ const MembershipStatus = props => {
   async function joinGroupInvite(e) {
     e.preventDefault()
     if (token) {
-      const result = await axiosWithAuth([token]).put(
-        `/groups_users/${relation}`,
-        {
-          user_id: loggedInUser.id,
-          group_id: props.group_id,
-          user_type: 'member',
+      try {
+        const result = await axiosWithAuth([token]).put(
+          `/groups_users/${relation}`,
+          {
+            user_id: loggedInUser.id,
+            group_id: props.group_id,
+            user_type: 'member',
+          }
+        )
+        if (result.data.updated) {
+          setUserType('member')
+          const {
+            group_name,
+            group_image,
+            group_id,
+            user_type,
+          } = result.data.updated
+          const addedGroup = {
+            name: group_name,
+            image: group_image,
+            id: group_id,
+            user_type: user_type,
+          }
+          // should be group invite, new actions
+          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
+          props.setTrigger(true)
+          // Mixpanel.activity(loggedInUser.id, 'Joined Group')
         }
-      )
-      if (result.data.updated) {
-        setUserType('member')
-        const {
-          group_name,
-          group_image,
-          group_id,
-          user_type,
-        } = result.data.updated
-        const addedGroup = {
-          name: group_name,
-          image: group_image,
-          id: group_id,
-          user_type: user_type,
-        }
-        // should be group invite, new actions
-        dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-        props.setTrigger(true)
-        // Mixpanel.activity(loggedInUser.id, 'Joined Group')
+      } catch (err) {
+        console.log(err)
+        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
       }
     }
   }

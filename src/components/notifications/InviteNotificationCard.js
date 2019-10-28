@@ -7,32 +7,31 @@ import Moment from 'react-moment'
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
-import { deleteNotification } from 'actions/index'
 
-const NotificationsCard = props => {
+import { acceptInvite, declineInvite } from 'actions/index'
+import { Mixpanel } from '../analytics/Mixpanel'
+
+const InviteNotificationsCard = props => {
   // De-structure props to gain access to keys
   const {
     // note: various other key/value pairs available, see postman documentation
-    id,
+    user_id,
+    sender_id,
+    group_id,
+    created_at,
+    group_name,
+    image,
     first_name,
     last_name,
-    user_id,
-    invoker_id,
-    type,
-    type_id,
-    read,
-    created_at,
-    username,
-    image,
-    post_content,
-    reply_content,
-  } = props.activity
+    accepted,
+  } = props.invite
 
   const dispatch = useDispatch()
   // Material UI styling
   const useStyles = makeStyles({
     newCard: {
       display: 'flex',
+      justifyContent: 'space-evenly',
       width: '90%',
       backgroundColor: '#FFFFE0',
     },
@@ -57,7 +56,7 @@ const NotificationsCard = props => {
   const classes = useStyles()
 
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
-  const fullName = first_name + ' ' + last_name
+  //   const fullName = first_name + ' ' + last_name
 
   // Streamline post id and reply id for linking
   // let postId
@@ -76,18 +75,15 @@ const NotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let postContent
-  let replyContent
-  if (post_content) postContent = post_content.slice(0, 20)
-  if (reply_content) replyContent = reply_content.slice(0, 20)
-  if (post_content && post_content.length > 20) postContent += '...'
-  if (reply_content && reply_content.length > 20) replyContent += '...'
+  //   let cutGroupName = ''
+  //   if (group_name) cutGroupName = group_name.slice(0, 20)
+  //   if (group_name && group_name.length > 20) cutGroupName += '...'
 
   // Onclick handler for notifications to direct user to correct app path
-  const goToPost = e => {
+  const goToGroup = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: `/post/${type_id}`,
+      pathname: `/group/${group_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
       // replyNumber: replyId || null,
     })
@@ -105,7 +101,7 @@ const NotificationsCard = props => {
   return (
     <NotificationCardDiv>
       <Card
-        onClick={e => goToPost(e)}
+        onClick={e => goToGroup(e)}
         className={checkIfNew ? classes.newCard : classes.card}
       >
         <CardIcon>
@@ -116,57 +112,47 @@ const NotificationsCard = props => {
             alt={'Avatar'}
           />
         </CardIcon>
-        <CardMessage>
-          <div>
-            <span>{fullName || username}</span>{' '}
-            {/* {tag === 'post' && <>made a post: {postContent}</>}
-            {tag === 'reply' && <>replied to a post: {replyContent}</>}
-            {tag === 'postLike' && (
-              <>
-                liked {liker_id === poster_id && 'their own'}
-                {liker_id !== poster_id && (
-                  <span>{poster_name}'s</span>
-                )} post: {postContent}
-              </>
-            )}
-            {tag === 'replyLike' && (
-              <>
-                liked {liker_id === replier_id && 'their own'}
-                {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
-                reply: {replyContent}
-              </>
-            )} */}
-            {type === 'like' && <>liked your post: {postContent}</>}
-            {type === 'reply' && <>replied to your post: {postContent}</>}
-            {type === 'reply_like' && (
-              <>liked your reply: {replyContent}</>
-            )}{' '}
-            <p>
-              <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
-                <Moment fromNow>{created_at}</Moment>
-              </Tooltip>
-            </p>
-          </div>
-        </CardMessage>
-
-        {/* <DelButton onClick={() => selectNotification(user_id, invoker_id, timestamp/create_at) {
-          useSelector(grab state and filter to get notification id)
-          returns id
-          deleteNotification(notificationId)
-        }}>Delete</DelButton> */}
-        {/* <CardGroup>
-          <Avatar
-            aria-label='group_avatar'
-            className={classes.avatar}
-            src={group_image}
-            alt={'Avatar'}
-          />
-          <p>{acronym}</p>
-        </CardGroup> */}
+        {!accepted ? (
+          <>
+            <CardMessage>
+              <div>
+                <span>{first_name}</span> {<>invited you to a group</>}{' '}
+                <p>
+                  <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
+                    <Moment fromNow>{created_at}</Moment>
+                  </Tooltip>
+                </p>
+              </div>
+            </CardMessage>
+            <Accept
+              onClick={evt => {
+                evt.stopPropagation()
+                const data = {
+                  user_id,
+                  sender_id,
+                  group_id,
+                  Mixpanel,
+                }
+                dispatch(acceptInvite(token, data))
+              }}
+            >
+              ✔
+            </Accept>
+            <Decline
+              onClick={evt => {
+                evt.stopPropagation()
+                dispatch(declineInvite(token, user_id, sender_id, group_id))
+              }}
+            >
+              X
+            </Decline>
+          </>
+        ) : (
+          <CardMessage>
+            <div>{<>You have joined {group_name}.</>} </div>
+          </CardMessage>
+        )}
       </Card>
-      <DelButton onClick={() => dispatch(deleteNotification(token, id))}>
-        Delete
-      </DelButton>
     </NotificationCardDiv>
   )
 }
@@ -198,7 +184,7 @@ const CardIcon = styled.div`
 `
 
 const CardMessage = styled.div`
-  width: 60%;
+  width: 40%;
   display: flex;
   margin: 1%;
   overflow: hidden;
@@ -211,7 +197,20 @@ const CardGroup = styled.div`
   width: 20%;
   margin: 1%;
 `
-const DelButton = styled.button`
+const Accept = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: green;
+  font-weight: 700;
+  border-radius: 5px;
+  color: white;
+  width: 10%;
+  margin: 1%;
+  border-style: none;
+`
+const Decline = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -225,4 +224,4 @@ const DelButton = styled.button`
   border-style: none;
 `
 
-export default withRouter(NotificationsCard)
+export default withRouter(InviteNotificationsCard)

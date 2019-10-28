@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Divider } from 'semantic-ui-react'
 import styled from 'styled-components'
@@ -14,7 +14,9 @@ function GroupContainer(props) {
 
   return (
     <Container>
-      <SearchBar history={props.history} />
+
+      <SearchBar {...props} />
+
       <Divider />
       <MyGroups>
         <GroupTitleHolder>
