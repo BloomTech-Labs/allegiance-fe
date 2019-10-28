@@ -26,10 +26,10 @@ const BlockedView = props => {
     e.preventDefault()
     const data = {
       userId,
-      
+      privateGroupID,
     }
     console.log('joinGroup fired e:', e)
-    // await dispatch(requestJoinPrivate(token, groups))
+    await dispatch(requestJoinPrivate(token, data))
   }
 
   return (

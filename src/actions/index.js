@@ -320,15 +320,22 @@ export const deleteGroupPost = (token, id) => async dispatch => {
   }
 }
 
-export const requestJoinPrivate = (token, id) => async dispatch => {
+export const requestJoinPrivate = (token, data) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
-  const { userId, groupId, post_content } = id
-  const privateGroup = await axiosWithAuth([token]).post(`/private/group/${id}`)
-  if (token && privateGroup) {
+  const { userId, privateGroupID } = data
+  //  const userId = req.params.userId
+  console.log('privateGroupID:', privateGroupID)
+  console.log('userId:', userId.toString())
+  console.log('data:', data)
+  const privateGroup = await axiosWithAuth([token]).post(`/private/group/${privateGroupID}`, {
+    userId: userId.toString(),
+    privateGroupID: privateGroupID,
+  })
+  if (token && privateGroupID) {
     try {
       dispatch({ 
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
-        payload: privateGroup.id })
+        payload: privateGroup.privateGroupID })
       } catch (err) {
       dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err})
     }
