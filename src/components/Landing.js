@@ -1,4 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { axiosWithAuth } from './utils/axiosWithAuth'
+import useGetToken from './utils/useGetToken'
+import useForm from './utils/useForm'
+import useDebounce from './utils/useDebounce'
+import TextField from '@material-ui/core/TextField'
+import { makeStyles } from '@material-ui/core/styles'
+
+import SearchBar from './groups/SearchBar'
+
 import { Button, Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
@@ -15,71 +24,6 @@ import facebook from '../assets/landing/facebook.png'
 import NewWay from '../assets/landing/NewWay.png'
 import SportsBetter from '../assets/landing/SportsBetter.png'
 import SportIcons from '../assets/landing/SportIcons.png'
-
-// const Landing = () => {
-//   const { loginWithRedirect } = useAuth0()
-//   return (
-//     <LandingContainer>
-//       <LogoHolder>
-//         <Image src={Logo} size='small' alt={'Logo'} />
-//         <h1>ALLEGIANCE</h1>
-//       </LogoHolder>
-//       <Body>
-//         <H1>The social network for sports fans</H1>
-//       </Body>
-//       <ButtonHolder>
-//         <Button1 onClick={() => loginWithRedirect({})}>Sign In</Button1>
-//       </ButtonHolder>
-//     </LandingContainer>
-//   )
-// }
-
-// const LandingContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-evenly;
-//   background-size: cover;
-//   color: white;
-//   height: 100vh;
-//   margin-top: -11%;
-//   margin-bottom: -12%;
-//   align-items: center;
-//   border: 1px solid red;
-// `
-
-// const LogoHolder = styled.div`
-//   margin-top: 100px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `
-
-// const Body = styled.div`
-//   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)),
-//     url(${LandingImage});
-//   background-size: cover;
-// `
-
-// const H1 = styled.h1`
-//   width: 75%;
-//   font-size: 3rem;
-// `
-
-// const ButtonHolder = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   width: 50%;
-// `
-
-// const Button1 = styled.button`
-//   background-color: #4267b2;
-//   color: white;
-//   width: 500px;
-//   height: 60px;
-//   border-radius: 20px;
-//   font-size: 2rem;
-//   margin: 3%;
-// `
 
 const Landing = () => {
   const { loginWithRedirect } = useAuth0()
@@ -122,7 +66,7 @@ const Landing = () => {
       </Top>
       <Middle>
         <LeftMiddle>
-          <H2>Search</H2>
+          <SearchBar />
         </LeftMiddle>
         <RightMiddle>
           <RegisterBtn onClick={() => loginWithRedirect({})}>
@@ -154,6 +98,12 @@ const LandingDiv = styled.div`
   // border: 1px solid red;
   background-color: white;
   overflow: hidden;
+`
+const GlobalStyles = createGlobalStyle`
+body {
+  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
+  font-family: 'Roboto', sans-serif;
+}
 `
 const Top = styled.div`
   // border: 1px solid blue;
@@ -188,7 +138,7 @@ const LeftMiddle = styled.div`
   width: 480px;
   height: 37px;
   margin-left: 24px;
-  border: 1px solid grey;
+  // border: 1px solid grey;
   margin-top: 15px;
 `
 const RightMiddle = styled.div`
@@ -220,31 +170,9 @@ const LeftBottom4 = styled.div`
   margin-top: 30px;
   margin-left: 49px;
 `
-const GlobalStyles = createGlobalStyle`
-body {
-  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
-  font-family: 'Roboto', sans-serif;
-}
-`
-const H1 = styled.h1`
-  font-size: 1.9rem;
-  color: black;
-`
 const H2 = styled.h2`
   font-size: 2rem;
   color: black;
-`
-const H3 = styled.h3`
-  font-size: 32px;
-  color: white;
-`
-const H4 = styled.h4`
-  font-size: 25px;
-  color: white;
-`
-const H5 = styled.h4`
-  font-size: 15px;
-  color: white;
 `
 const RegisterBtn = styled.button`
   height: 68px;

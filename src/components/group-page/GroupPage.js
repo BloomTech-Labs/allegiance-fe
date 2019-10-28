@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
+import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
@@ -31,7 +32,7 @@ const GroupPage = props => {
     const fetchData = async () => {
       if (token) {
         try {
-          const response = await axiosWithAuth([token]).get(`/groups/${id}`)
+          const response = await axios.get(`/groups/${id}`)
           setGroup(response.data.group)
           setAllegiances(response.data.allegiances)
           setMembers(response.data.members)
