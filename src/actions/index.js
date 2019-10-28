@@ -220,7 +220,7 @@ export const likePost = (token, data, socket) => async dispatch => {
           socket.emit('send notification', {
             userIds: [user_id],
             notification: {
-              ...notification.data[0],
+              ...notification.data,
               first_name: user.first_name,
               last_name: user.last_name,
               image: user.image,
@@ -291,7 +291,7 @@ export const likeReply = (token, data, socket) => async dispatch => {
       socket.emit('send notification', {
         userIds: [user_id],
         notification: {
-          ...notification.data[0],
+          ...notification.data,
           first_name: user.first_name,
           last_name: user.last_name,
           image: user.image,
@@ -329,7 +329,7 @@ export const createReply = (token, data, socket) => async dispatch => {
       socket.emit('send notification', {
         userIds: [user_id],
         notification: {
-          ...notification.data[0],
+          ...notification.data,
           first_name: user.first_name,
           last_name: user.last_name,
           image: user.image,
