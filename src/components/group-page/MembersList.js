@@ -115,6 +115,24 @@ const MembersList = props => {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
+        {props.requests.map(member => (
+          <ListItem button key={member.id} className={classes.member}>
+            <ListItemIcon>
+              <Avatar
+                className={classes.avatar}
+                src={!member.image ? avi : member.image}
+                alt={'User Avatar'}
+              />
+            </ListItemIcon>
+            <ListItemText primary={`${member.first_name} ${member.last_name}`} className={classes.text} />
+            {userStatus === 'admin' && member.id !== userId && (
+              <HighlightOffIcon
+                onClick={e => removeMember(e, member.id)}
+                className={classes.remove}
+              />
+            )}
+          </ListItem>
+        ))}
         {sortedMembers.map(member => (
           <ListItem button key={member.id} className={classes.member}>
             <ListItemIcon>
