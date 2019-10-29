@@ -7,6 +7,7 @@ const initialState = {
   loggedInAllegiances: [],
   pendingInvites: [],
   error: '',
+  pendingGroupRequests: [],
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -119,7 +120,41 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
-    default:
+      case types.JOIN_PRIVATE_SUCCESS:
+      return {
+        ...state,
+        pendingGroupRequests: [...state.pendingGroupRequests, action.payload],
+        error: ''
+      }
+      case types.JOIN_PRIVATE_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+      case types.CANCEL_JOIN_PRIVATE_SUCCESS:
+      return {
+        ...state,
+        pendingGroupRequests: state.pendingGroupRequests.filter(request => request === action.payload)
+      }
+      case types.CANCEL_JOIN_PRIVATE_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+      default:
       return state
+    }
   }
-}
+
+  
+  
+  
+  
+
+  // loggedInUser: action.payload.currentUser || action.payload.newUser,
+  // loggedInGroups: action.payload.basicGroupInfo,
+    // ? action.payload.basicGroupInfo.filter(
+    //     group => group.
+    //   )
+    // : [],
+  // loggedInAllegiances: action.payload.basicAllegianceInfo,

@@ -239,6 +239,7 @@ export const likePost = (token, data, socket) => async dispatch => {
     }
   }
 }
+
 export const dislikePost = (token, data) => async dispatch => {
   if (token) {
     try {
@@ -253,6 +254,7 @@ export const dislikePost = (token, data) => async dispatch => {
     }
   }
 }
+
 export const fetchPost = (token, id) => async dispatch => {
   if (token) {
     try {
@@ -310,7 +312,6 @@ export const createReply = (token, data, socket) => async dispatch => {
     post_id: id,
     reply_content: reply_content,
   })
-
   if (post.data.reply) {
     dispatch({
       type: actionTypes.CREATE_REPLY_SUCCESS,
@@ -360,3 +361,39 @@ export const deleteGroupPost = (token, id) => async dispatch => {
     })
   }
 }
+
+export const requestJoinPrivate = (token, data) => async dispatch => {
+  dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
+  const { userId, privateGroupID } = data
+  const privateGroup = await axiosWithAuth([token]).post(`/private/group/${privateGroupID}`, {
+    userId: userId.toString(),
+    privateGroupID: privateGroupID,
+  })
+  if (token && privateGroupID) {
+    console.log('privateGroup:::', privateGroup.data[0])
+    try {
+      dispatch({ 
+        type: actionTypes.JOIN_PRIVATE_SUCCESS,
+        payload: privateGroup.data[0].group_id })
+      } catch (err) {
+      dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err})
+    }
+  }
+}
+
+export const cancelRequestJoinPrivate = (token, data) => async dispatch => {
+  dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_REQUEST })
+  const { userId, privateGroupID } = data
+  const cancelPrivateGroup = await axiosWithAuth([token]).delete(`/private/group/${privateGroupID}/${userId}` 
+  )
+  if (token && privateGroupID) {
+    console.log('cancelPrivateGroup', cancelPrivateGroup)
+    try {
+      dispatch({
+        type: actionTypes.CANCEL_JOIN_PRIVATE_SUCCESS, 
+        payload: privateGroupID })
+      } catch (err) {
+        dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_FAILURE, payload: err})
+      }
+      }
+    }

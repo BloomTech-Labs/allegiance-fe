@@ -103,7 +103,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper>
       {/* form to handle group search text from user */}
-      <SearchForm>
+      <SearchForm onSubmit={handleSubmit}>
         <TextField
           value={values.group_name || ''}
           onChange={handleChange}
