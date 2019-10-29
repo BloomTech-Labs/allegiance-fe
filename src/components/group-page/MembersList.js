@@ -16,6 +16,9 @@ import avi from '../../assets/walter-avi.png'
 import blueGrey from '@material-ui/core/colors/blueGrey'
 import red from '@material-ui/core/colors/red'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
+import { Mixpanel } from '../analytics/Mixpanel'
 
 const blue = blueGrey[500]
 const primary = red[500]
@@ -100,6 +103,40 @@ const MembersList = props => {
     setState({ ...state, [side]: open })
   }
 
+  async function addToGroup(e, user_id) {
+    e.preventDefault()
+    if (token) {
+      try {
+        const result = await axiosWithAuth([token]).post(`/groups_users`, {
+          user_id,
+          group_id,
+          user_type: 'member',
+        })
+        if (result.data.newGroupUsers) {
+          const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+          if (deleted) {
+            props.setTrigger(true)
+            Mixpanel.activity(user_id, 'Joined Group')
+          }
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function declineRequest(e, user_id) {
+    e.preventDefault()
+    try {
+      const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+      if (deleted) {
+        props.setTrigger(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   // Sorting members list alphabetically
   props.members.sort((a, b) => (a.name < b.name ? -1 : 1))
   // Sorting list by membership status to put admins at the top
@@ -115,6 +152,33 @@ const MembersList = props => {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
+        {userStatus === 'admin' && props.requests.map(member => (
+          <ListItem button key={member.id} className={classes.member}>
+            <ListItemIcon>
+              <Avatar
+                className={classes.avatar}
+                src={!member.image ? avi : member.image}
+                alt={'User Avatar'}
+              />
+            </ListItemIcon>
+            <ListItemText primary={`${member.first_name} ${member.last_name}`} className={classes.text} />
+            {member.id !== userId && (
+              <>
+                <CheckCircleOutlineIcon 
+                  onClick={e => {
+                    addToGroup(e, member.id)
+                  }}
+                />
+                <HighlightOffIcon
+                  onClick={e => {
+                    declineRequest(e, member.id)
+                  }}
+                  className={classes.remove}
+                />
+              </>
+            )}
+          </ListItem>
+        ))}
         {sortedMembers.map(member => (
           <ListItem button key={member.id} className={classes.member}>
             <ListItemIcon>

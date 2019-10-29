@@ -22,6 +22,7 @@ const GroupPage = props => {
   const [group, setGroup] = useState({})
   const [allegiances, setAllegiances] = useState([])
   const [members, setMembers] = useState([])
+  const [requests, setRequests] = useState([])
   const [trigger, setTrigger] = useState(false)
 
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const GroupPage = props => {
           setGroup(response.data.group)
           setAllegiances(response.data.allegiances)
           setMembers(response.data.members)
+          setRequests(response.data.reqs)
           const groupId = response.data.group.id
           dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
           setTrigger(false)
@@ -72,6 +74,7 @@ const GroupPage = props => {
           members={members}
           allegiances={allegiances}
           setTrigger={setTrigger}
+          requests={requests}
         />
       </PaperContainer>
       {group.privacy_setting === 'public' ||

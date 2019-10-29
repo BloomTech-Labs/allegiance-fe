@@ -48,6 +48,7 @@ const GroupInfo = props => {
           <MembersList
             group_id={props.group.id}
             members={props.members}
+            requests={props.requests}
             setTrigger={props.setTrigger}
           />
           <InviteModal group={props.group} />

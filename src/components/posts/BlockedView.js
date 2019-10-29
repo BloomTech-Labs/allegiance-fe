@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import replies from '../../assets/replies.png'
 import LockIcon from '@material-ui/icons/Lock'
+import { withRouter } from 'react-router-dom'
 
-const BlockedView = props => {
+const BlockedView = () => {
+
   return (
     <BlockedContainer>
       <Content>
@@ -33,4 +35,4 @@ const Content = styled.div`
   z-index: 1;
 `
 
-export default BlockedView
+export default withRouter(BlockedView)
