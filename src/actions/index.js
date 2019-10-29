@@ -362,22 +362,46 @@ export const deleteGroupPost = (token, id) => async dispatch => {
   }
 }
 
-export const requestJoinPrivate = (token, data) => async dispatch => {
+export const requestJoinPrivate = (token, data, socket) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
-  const { userId, privateGroupID } = data
-  const privateGroup = await axiosWithAuth([token]).post(`/private/group/${privateGroupID}`, {
-    userId: userId.toString(),
-    privateGroupID: privateGroupID,
-  })
-  if (token && privateGroupID) {
-    console.log('privateGroup:::', privateGroup.data[0])
-    try {
+  const { user, privateGroupID, adminIds } = data
+  const userId = user.id
+
+  try {
+    const privateGroup = await axiosWithAuth([token]).post(`/private/group/${privateGroupID}`, {
+      userId: userId.toString(),
+      privateGroupID: privateGroupID,
+    })
+    if (token && privateGroupID) {
+      console.log('privateGroup:::', privateGroup.data[0])
       dispatch({ 
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
         payload: privateGroup.data[0].group_id })
-      } catch (err) {
-      dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err})
+
+      let notification;
+      adminIds.forEach(async (id) => {
+        notification = await axiosWithAuth([token]).post(
+          `/users/${id}/notifications`,
+          {
+            user_id: id,
+            invoker_id: userId,
+            type_id: privateGroupID,
+            type: 'group_request',
+          }
+        )
+      })
+      socket.emit('send notification', {
+        userIds: adminIds,
+        notification: {
+          ...notification.data,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          image: user.image,
+        },
+      })
     }
+  } catch (err) {
+    dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err })
   }
 }
 

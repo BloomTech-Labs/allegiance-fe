@@ -25,6 +25,7 @@ const MembershipStatus = props => {
 
   // Fetches user information from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const privateGroupRequests = useSelector(state => state.userReducer.pendingGroupRequests)
   let hasRequest = privateGroupRequests.includes(props.group_id)
   
@@ -152,10 +153,17 @@ const MembershipStatus = props => {
   async function requestPrivate(e) {
     e.preventDefault()
     const data = {
-      userId: loggedInUser.id,
+      user: loggedInUser,
       privateGroupID: props.group_id,
+      adminIds: props.members.reduce((acc, member) => {
+        if (member.status === 'admin') {
+          acc.push(member.id)
+        }
+        return acc;
+      }, [])
     }
-    await dispatch(requestJoinPrivate(token, data))
+    console.log('adminIds:', data);
+    await dispatch(requestJoinPrivate(token, data, socket))
   }
 
   async function cancelRequestPrivate(e) {
