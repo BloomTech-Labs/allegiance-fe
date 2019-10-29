@@ -123,10 +123,20 @@ export const userReducer = (state = initialState, action) => {
       case types.JOIN_PRIVATE_SUCCESS:
       return {
         ...state,
-        pendingGroupRequests: action.payload,
-        error: '',
+        pendingGroupRequests: [...state.pendingGroupRequests, action.payload],
+        error: ''
       }
       case types.JOIN_PRIVATE_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }
+      case types.CANCEL_JOIN_PRIVATE_SUCCESS:
+      return {
+        ...state,
+        pendingGroupRequests: state.pendingGroupRequests.filter(request => request === action.payload)
+      }
+      case types.CANCEL_JOIN_PRIVATE_FAILURE:
       return {
         ...state,
         error: action.payload

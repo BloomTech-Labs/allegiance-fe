@@ -58,7 +58,7 @@ const NavBar = props => {
             })
           }
 
-          dispatch(fetchInvites(token, data))
+          dispatch(fetchInvites(token, data)) 
           dispatch(fetchNotifications(token, data))
           console.log(invites)
           console.log(notifications)
