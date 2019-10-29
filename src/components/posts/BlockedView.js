@@ -2,48 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import replies from '../../assets/replies.png'
 import LockIcon from '@material-ui/icons/Lock'
-import { Button } from 'semantic-ui-react'
-import { join } from 'path';
-import useGetToken from '../utils/useGetToken'
-import { useSelector, useDispatch } from 'react-redux'
-import { requestJoinPrivate, cancelRequestJoinPrivate } from 'actions'
 import { withRouter } from 'react-router-dom'
 
-const fb ='#4267b2'
-
-const BlockedView = props => {
-  const [token] = useGetToken()
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
-  const groupPathID = props.location.pathname.split('/group/')
-  const privateGroupID = groupPathID[groupPathID.length -1]
-  const dispatch = useDispatch()
-  
-  async function joinGroup(e) {
-    e.preventDefault()
-    const data = {
-      userId,
-      privateGroupID,
-    }
-    await dispatch(requestJoinPrivate(token, data))
-  }
-
-  async function cancelJoinGroup(e) {
-    e.preventDefault()
-    console.log('cancelJoinGroup:::', cancelJoinGroup)
-    const data = {
-      userId,
-      privateGroupID,
-    }
-    await dispatch(cancelRequestJoinPrivate(token, data))
-  }
+const BlockedView = () => {
 
   return (
     <BlockedContainer>
       <Content>
         <LockIcon style={{ fontSize: 60 }} />
         <h2>You must be a member of this group to see the content!</h2>
-        <Button color='blue' onClick={(e) => joinGroup(e)}>Request To Join Group</Button>
-        <Button color='blue' onClick={(e) => cancelJoinGroup(e)}>Cancel Request To Join Group</Button>
       </Content>
     </BlockedContainer>
   )
