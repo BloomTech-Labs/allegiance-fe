@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 
+import SearchBar from './groups/SearchBar'
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import Logo2 from '../assets/landing/Logo2.png'
@@ -21,7 +23,7 @@ import SportIcons from '../assets/landing/SportIcons.png'
 //   return (
 //     <LandingContainer>
 //       <LogoHolder>
-//         <Image src={Logo} size='small' alt={'Logo'} />
+//         <Image src={Logo2} size='small' alt={'Logo'} />
 //         <h1>ALLEGIANCE</h1>
 //       </LogoHolder>
 //       <Body>
@@ -122,7 +124,7 @@ const Landing = () => {
       </Top>
       <Middle>
         <LeftMiddle>
-          <H2>Search</H2>
+          <SearchBar />
         </LeftMiddle>
         <RightMiddle>
           <RegisterBtn onClick={() => loginWithRedirect({})}>
@@ -188,7 +190,6 @@ const LeftMiddle = styled.div`
   width: 480px;
   height: 37px;
   margin-left: 24px;
-  border: 1px solid grey;
   margin-top: 15px;
 `
 const RightMiddle = styled.div`

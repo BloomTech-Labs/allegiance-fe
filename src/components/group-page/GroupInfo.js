@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import InviteModal from './InviteModal'
 import MembershipStatus from './MembershipStatus'
 import AllegiancePopover from './AllegiancePopover'
 import MembersList from './MembersList'
@@ -49,6 +50,7 @@ const GroupInfo = props => {
             members={props.members}
             setTrigger={props.setTrigger}
           />
+          <InviteModal groupId={props.group.id} />
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>

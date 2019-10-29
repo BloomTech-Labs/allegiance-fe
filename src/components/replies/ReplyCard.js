@@ -30,9 +30,9 @@ const ReplyCard = props => {
   } = props.reply
 
   const dispatch = useDispatch()
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const replyLikeId = replyLikes.find(like => like.user_id === userId)
+  const replyLikeId = replyLikes.find(like => like.user_id === user.id)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const { group_id } = props.post
@@ -51,7 +51,7 @@ const ReplyCard = props => {
     e.preventDefault()
     const data = {
       user_id, // id of user who owns the entity
-      userId, // id of user who is liking an entity
+      user, // id of user who is liking an entity
       id,
     }
     dispatch(likeReply(token, data, socket))
@@ -70,7 +70,7 @@ const ReplyCard = props => {
 
   return (
     <div className={'reply-div'}>
-      <BubbleContainer user={userId === user_id ? 'mine' : 'yours'} key={id}>
+      <BubbleContainer user={user.id === user_id ? 'mine' : 'yours'} key={id}>
         <Avatar
           className={classes.avatar}
           src={!image ? avi : image}
@@ -79,7 +79,7 @@ const ReplyCard = props => {
         <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
           <Content
             className={classes.content}
-            color={userId === user_id ? 'me' : 'you'}
+            color={user.id === user_id ? 'me' : 'you'}
           >
             <Typography
               className={classes.typography2}
@@ -106,9 +106,12 @@ const ReplyCard = props => {
                 className={classes.icon}
                 aria-label='add to favorites'
                 onClick={addReplyLike}
-                style={{backgroundColor: 'transparent'}}
+                style={{ backgroundColor: 'transparent' }}
               >
-                <ThumbUp className={classes.unlikedIcon} style={{backgroundColor: 'transparent'}}/>
+                <ThumbUp
+                  className={classes.unlikedIcon}
+                  style={{ backgroundColor: 'transparent' }}
+                />
               </IconButton>
               <IconButton className={classes.countIcon}>
                 <h4> {replyLikes.length} </h4>
@@ -121,22 +124,28 @@ const ReplyCard = props => {
                 className={classes.icon}
                 aria-label='add to favorites'
                 onClick={unLikeReply}
-                style={{backgroundColor: 'transparent'}}
+                style={{ backgroundColor: 'transparent' }}
               >
-                <ThumbUp className={classes.likedIcon} style={{backgroundColor: 'transparent'}}/>
+                <ThumbUp
+                  className={classes.likedIcon}
+                  style={{ backgroundColor: 'transparent' }}
+                />
               </IconButton>
-              <IconButton className={classes.countIcon} style={{backgroundColor: 'transparent'}}>
+              <IconButton
+                className={classes.countIcon}
+                style={{ backgroundColor: 'transparent' }}
+              >
                 <h4> {replyLikes.length} </h4>
               </IconButton>
             </div>
           )}
 
-          {(userId === user_id || userStatus === 'admin') && (
+          {(user.id === user_id || userStatus === 'admin') && (
             <IconButton
               onClick={() => deleteReply()}
               aria-label='settings'
               className={classes.icon}
-              style={{backgroundColor: 'transparent'}}
+              style={{ backgroundColor: 'transparent' }}
             >
               <DeleteOutline />
             </IconButton>
@@ -149,7 +158,7 @@ const ReplyCard = props => {
 
 // Material UI Styling
 // const primary = red[600]
-const primary = '#4267b2';
+const primary = '#4267b2'
 
 const useStyles = makeStyles(theme => ({
   container: {

@@ -30,12 +30,13 @@ import Notifications from './components/notifications/Notifications'
 
 // import { LOGIN } from './reducers/userReducer'
 import * as types from 'actions/actionTypes'
-import { updateSocket } from 'actions/index'
+import { updateSocket, fetchNotifications } from 'actions'
 
 function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
+  const notifications = useSelector(state => state.notifyReducer.notifications)
   const { loading, user, isAuthenticated } = useAuth0()
 
   useEffect(() => {
@@ -77,12 +78,7 @@ function App(props) {
             props.history.push(`${pushTo}`)
             // Mixpanel.login(currentUser, 'Successful login.')
           }
-          console.log(
-            'joining socket',
-            socket,
-            '🧦',
-            process.env.REACT_APP_DEPLOY_SERVER
-          )
+
           // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
           socket.emit('join', {
@@ -128,30 +124,22 @@ function App(props) {
   return (
     <AppContainer>
       <CssReset />
-      {props.location.pathname !== '/' && <NavBar />}
+      {props.location.pathname !== '/' && <NavBar {...props} />}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <Switch>
           <Route exact path='/' component={!isAuthenticated && Landing} />
-          <Route exact path='/home' component={Feed} />
+          <Route path='/home' component={Feed} />
           <Route path='/groups' component={GroupContainer} />
-          <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
-          <PrivateRoute exact path='/creategroup' component={CreateGroup} />
-          <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
-          <PrivateRoute exact path='/notifications' component={Notifications} />
-          <PrivateRoute exact path='/profile' component={Profile} />
-          <PrivateRoute exact path='/group/:id' component={GroupPage} />
-          <PrivateRoute
-            exact
-            path='/allegiance/:id'
-            component={UnderConstruction}
-          />
-          <PrivateRoute exact path='/addallegiance' component={AddAllegiance} />
-          <PrivateRoute
-            exact
-            path='/makeallegiance'
-            component={MakeAllegiance}
-          />
-          <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
+          <PrivateRoute path='/makeprofile' component={MakeProfile} />
+          <PrivateRoute path='/creategroup' component={CreateGroup} />
+          <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
+          <PrivateRoute path='/notifications' component={Notifications} />
+          <PrivateRoute path='/profile' component={Profile} />
+          <Route path='/group/:id' component={GroupPage} />
+          <PrivateRoute path='/allegiance/:id' component={UnderConstruction} />
+          <PrivateRoute path='/addallegiance' component={AddAllegiance} />
+          <PrivateRoute path='/makeallegiance' component={MakeAllegiance} />
+          <PrivateRoute path='/post/:id' component={ReplyContainer} />
         </Switch>
       </div>
     </AppContainer>

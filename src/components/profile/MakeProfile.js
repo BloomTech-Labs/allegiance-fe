@@ -38,6 +38,7 @@ const MakeProfile = props => {
 
   //Sends user data as a put request to API to update user info.
   async function updateUser() {
+    console.log(token)
     try {
       dispatch({ type: types.UPDATE_USER_REQUEST })
       if (image) values.image = image
@@ -69,7 +70,7 @@ const MakeProfile = props => {
     setValues(userInfo)
     // Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
   }, [setValues, loggedInUser])
-
+  console.log(token)
   return (
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>

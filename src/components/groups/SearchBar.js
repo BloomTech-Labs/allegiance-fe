@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import useGetToken from '../utils/useGetToken'
+import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+// import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import useDebounce from '../utils/useDebounce'
 
@@ -14,7 +14,7 @@ const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
   // token for accessing authentication required backend routes
-  const [token] = useGetToken()
+  // const [token] = useGetToken()
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(fillSearch)
   const debouncedSearchTerm = useDebounce(values.group_name, 1000)
@@ -81,13 +81,13 @@ const SearchBar = props => {
   //useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
   useEffect(() => {
     const fetchData = async () => {
-      if (token) {
-        const groups = await axiosWithAuth([token]).post('/groups/search', {
-          column: 'group_name',
-          row: values.group_name,
-        })
-        return groups
-      }
+      // if (token) {
+      const groups = await axiosWithoutAuth().post('/groups/search', {
+        column: 'group_name',
+        row: values.group_name,
+      })
+      return groups
+      // }
     }
     // If empty string in search immediately set results array to blank
     if (values.group_name === '') setResults([])
@@ -99,7 +99,7 @@ const SearchBar = props => {
         setResults(res.data.groupByFilter)
       })
     }
-  }, [values, token, debouncedSearchTerm])
+  }, [values, debouncedSearchTerm])
 
   return (
     <SearchFormWrapper>

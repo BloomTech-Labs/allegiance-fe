@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import useGetToken from '../utils/useGetToken'
+// import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+import axios from 'axios'
+// import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
@@ -13,7 +15,7 @@ import BlockedView from '../posts/BlockedView'
 
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
+  // const [token] = useGetToken()
 
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
@@ -29,23 +31,25 @@ const GroupPage = props => {
   useEffect(() => {
     // Fetch group related data
     const fetchData = async () => {
-      if (token) {
-        try {
-          const response = await axiosWithAuth([token]).get(`/groups/${id}`)
-          setGroup(response.data.group)
-          setAllegiances(response.data.allegiances)
-          setMembers(response.data.members)
-          const groupId = response.data.group.id
-          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
-          setTrigger(false)
-        } catch (err) {
-          dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
-          setTrigger(false)
-        }
+      // if (token) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/groups/${id}`
+        )
+        setGroup(response.data.group)
+        setAllegiances(response.data.allegiances)
+        setMembers(response.data.members)
+        const groupId = response.data.group.id
+        dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
+        setTrigger(false)
+      } catch (err) {
+        dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
+        setTrigger(false)
       }
+      // }
     }
     fetchData()
-  }, [token, id, dispatch, trigger])
+  }, [id, dispatch, trigger])
 
   if (Object.keys(group).length === 0) {
     return (
