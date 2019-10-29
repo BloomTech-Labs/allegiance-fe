@@ -338,3 +338,19 @@ export const requestJoinPrivate = (token, data) => async dispatch => {
     }
   }
 }
+
+export const cancelRequestJoinPrivate = (token, data) => async dispatch => {
+  dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_REQUEST })
+  const { userId, privateGroupID } = data
+  const cancelPrivateGroup = await axiosWithAuth([token]).delete(`/private/group/${privateGroupID}/${userId}` 
+  )
+  if (token && privateGroupID) {
+    try {
+      dispatch({
+        type: actionTypes.CANCEL_JOIN_PRIVATE_SUCCESS, 
+        payload: cancelPrivateGroup.privateGroupID })
+      } catch (err) {
+        dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_FAILURE, payload: err})
+      }
+      }
+    }

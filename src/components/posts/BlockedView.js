@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react'
 import { join } from 'path';
 import useGetToken from '../utils/useGetToken'
 import { useSelector, useDispatch } from 'react-redux'
-import { requestJoinPrivate } from 'actions'
+import { requestJoinPrivate, cancelRequestJoinPrivate } from 'actions'
 import { withRouter } from 'react-router-dom'
 
 const fb ='#4267b2'
@@ -18,7 +18,7 @@ const BlockedView = props => {
   const privateGroupID = groupPathID[groupPathID.length -1]
   const dispatch = useDispatch()
   
-  async function joinGroup(e){
+  async function joinGroup(e) {
     e.preventDefault()
     const data = {
       userId,
@@ -27,12 +27,23 @@ const BlockedView = props => {
     await dispatch(requestJoinPrivate(token, data))
   }
 
+  async function cancelJoinGroup(e) {
+    e.preventDefault()
+    console.log('cancelJoinGroup:::', cancelJoinGroup)
+    const data = {
+      userId,
+      privateGroupID,
+    }
+    await dispatch(cancelRequestJoinPrivate(token, data))
+  }
+
   return (
     <BlockedContainer>
       <Content>
         <LockIcon style={{ fontSize: 60 }} />
         <h2>You must be a member of this group to see the content!</h2>
         <Button color='blue' onClick={(e) => joinGroup(e)}>Request To Join Group</Button>
+        <Button color='blue' onClick={(e) => cancelJoinGroup(e)}>Cancel Request To Join Group</Button>
       </Content>
     </BlockedContainer>
   )
