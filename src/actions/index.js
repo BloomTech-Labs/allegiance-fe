@@ -198,6 +198,7 @@ export const likePost = (token, data, socket) => async dispatch => {
     }
   }
 }
+
 export const dislikePost = (token, data) => async dispatch => {
   if (token) {
     try {
@@ -212,6 +213,7 @@ export const dislikePost = (token, data) => async dispatch => {
     }
   }
 }
+
 export const fetchPost = (token, id) => async dispatch => {
   if (token) {
     try {
@@ -269,7 +271,6 @@ export const createReply = (token, data, socket) => async dispatch => {
     post_id: id,
     reply_content: reply_content,
   })
-
   if (post.data.reply) {
     dispatch({
       type: actionTypes.CREATE_REPLY_SUCCESS,
@@ -323,10 +324,6 @@ export const deleteGroupPost = (token, id) => async dispatch => {
 export const requestJoinPrivate = (token, data) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
   const { userId, privateGroupID } = data
-  //  const userId = req.params.userId
-  console.log('privateGroupID:', privateGroupID)
-  console.log('userId:', userId.toString())
-  console.log('data:', data)
   const privateGroup = await axiosWithAuth([token]).post(`/private/group/${privateGroupID}`, {
     userId: userId.toString(),
     privateGroupID: privateGroupID,
@@ -341,16 +338,3 @@ export const requestJoinPrivate = (token, data) => async dispatch => {
     }
   }
 }
-
-
-// return {
-//   ...state,
-//   loggedInUser: action.payload.currentUser || action.payload.newUser,
-//   loggedInGroups: action.payload.basicGroupInfo
-//     ? action.payload.basicGroupInfo.filter(
-//         group => group.user_type !== 'invited'
-//       )
-//     : [],
-//   loggedInAllegiances: action.payload.basicAllegianceInfo,
-//   error: '',
-// }
