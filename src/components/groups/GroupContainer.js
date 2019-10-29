@@ -12,23 +12,29 @@ import NearbyGroups from './NearbyGroups'
 
 function GroupContainer(props) {
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
 
   return (
     <Container>
       <SearchBar {...props} />
-      <Divider />
-      <MyGroups>
-        <GroupTitleHolder>
-          <H3>MY GROUPS</H3>
-        </GroupTitleHolder>
+      {userIn && (
         <>
-          <MyAllegianceGroups content={loggedInGroups} type={'group'} />
+          <Divider />
+          <MyGroups>
+            <GroupTitleHolder>
+              <H3>MY GROUPS</H3>
+            </GroupTitleHolder>
+            <>
+              <MyAllegianceGroups content={loggedInGroups} type={'group'} />
+            </>
+          </MyGroups>
+          <Divider />
+          <H3>GROUPS NEAR YOU</H3>
+          <NearbyGroups />
+          <Divider />
         </>
-      </MyGroups>
-      <Divider />
-      <H3>GROUPS NEAR YOU</H3>
-      <NearbyGroups />
-      <Divider />
+      )}
+
       <H3>DISCOVER</H3>
       <GroupList />
     </Container>

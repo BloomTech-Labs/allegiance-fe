@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
@@ -11,11 +12,13 @@ import PostCard from './PostCard'
 import { fetchGroupPosts } from 'actions'
 
 const PostsContainer = props => {
+  const { loginWithRedirect } = useAuth0()
   // Fetches Auth0 token for axios call
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const posts = useSelector(state => state.group.posts)
   const [submitted, setSubmitted] = useState(false)
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,34 +51,71 @@ const PostsContainer = props => {
   } else {
     membership = currentUserType.user_type
   }
+  if (!userIn) {
+    return (
+      <PostsWrapper>
+        <PostListContainer>
+          {posts.length > 0 ? (
+            posts.map(post => {
+              return (
+                <PostCard
+                  post={post}
+                  key={post.id}
+                  setSubmitted={setSubmitted}
+                />
+              )
+            })
+          ) : (
+            <JoinBtn onClick={() => loginWithRedirect({})}>
+              Log In to see posts!
+            </JoinBtn>
+          )}
+        </PostListContainer>
 
-  return (
-    <PostsWrapper>
-      <PostListContainer>
-        {posts.length > 0 ? (
-          posts.map(post => {
-            return (
-              <PostCard post={post} key={post.id} setSubmitted={setSubmitted} />
-            )
-          })
-        ) : (
-          <PaperContainer elevation={20}>
-            <h2>Nobody has posted yet!</h2>
-          </PaperContainer>
+        <div ref={postsEndRef} />
+
+        {(membership === 'admin' || membership === 'member') && (
+          <PostForm
+            setSubmitted={setSubmitted}
+            groupId={props.groupId}
+            scrollToBottom={scrollToBottom}
+          />
         )}
-      </PostListContainer>
+      </PostsWrapper>
+    )
+  } else {
+    return (
+      <PostsWrapper>
+        <PostListContainer>
+          {posts.length > 0 ? (
+            posts.map(post => {
+              return (
+                <PostCard
+                  post={post}
+                  key={post.id}
+                  setSubmitted={setSubmitted}
+                />
+              )
+            })
+          ) : (
+            <PaperContainer elevation={20}>
+              <h2>Nobody has posted yet!</h2>
+            </PaperContainer>
+          )}
+        </PostListContainer>
 
-      <div ref={postsEndRef} />
+        <div ref={postsEndRef} />
 
-      {(membership === 'admin' || membership === 'member') && (
-        <PostForm
-          setSubmitted={setSubmitted}
-          groupId={props.groupId}
-          scrollToBottom={scrollToBottom}
-        />
-      )}
-    </PostsWrapper>
-  )
+        {(membership === 'admin' || membership === 'member') && (
+          <PostForm
+            setSubmitted={setSubmitted}
+            groupId={props.groupId}
+            scrollToBottom={scrollToBottom}
+          />
+        )}
+      </PostsWrapper>
+    )
+  }
 }
 
 const PostListContainer = styled.div`
@@ -91,6 +131,14 @@ const PostsWrapper = styled.div`
 `
 const PaperContainer = styled(Paper)`
   padding: 3.5rem;
+`
+const JoinBtn = styled.button`
+  height: 54px;
+  width: 192px;
+  color: white;
+  background: #4483cd;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
 `
 
 export default PostsContainer

@@ -3,6 +3,7 @@ import { Button, Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
+import { withRouter } from 'react-router-dom'
 
 import SearchBar from './groups/SearchBar'
 
@@ -83,7 +84,7 @@ import SportIcons from '../assets/landing/SportIcons.png'
 //   margin: 3%;
 // `
 
-const Landing = () => {
+const Landing = props => {
   const { loginWithRedirect } = useAuth0()
   return (
     <LandingDiv>
@@ -124,7 +125,7 @@ const Landing = () => {
       </Top>
       <Middle>
         <LeftMiddle>
-          <SearchBar />
+          <SearchBar {...props} />
         </LeftMiddle>
         <RightMiddle>
           <RegisterBtn onClick={() => loginWithRedirect({})}>
@@ -264,4 +265,4 @@ const JoinBtn = styled.button`
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
 `
-export default Landing
+export default withRouter(Landing)
