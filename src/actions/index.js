@@ -392,8 +392,23 @@ export const cancelRequestJoinPrivate = (token, data) => async dispatch => {
       dispatch({
         type: actionTypes.CANCEL_JOIN_PRIVATE_SUCCESS, 
         payload: privateGroupID })
-      } catch (err) {
-        dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_FAILURE, payload: err})
-      }
-      }
+    } catch (err) {
+      dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_FAILURE, payload: err})
     }
+  }
+}
+
+export const fetchPrivateRequests = (token, data) => async dispatch => {
+  dispatch({ type: actionTypes.FETCH_PRIVATE_REQUEST })
+
+  if (token) {
+    try {
+      const { user_id } = data
+      const pendingRequests = await axiosWithAuth([token]).get(`/users/${user_id}/group_requests`)
+      const groupIds = pendingRequests.data.map(request => request.group_id)
+      dispatch({ type: actionTypes.FETCH_PRIVATE_SUCCESS, payload: groupIds })
+    } catch (err) {
+      dispatch({ type: actionTypes.FETCH_PRIVATE_FAILURE, payload: err })
+    }
+  }
+}

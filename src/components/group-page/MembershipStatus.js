@@ -13,7 +13,7 @@ import { Mixpanel } from '../analytics/Mixpanel'
 
 import styled from 'styled-components'
 
-import { joinGroup } from '../../actions/index.js'
+import { requestJoinPrivate, cancelRequestJoinPrivate, fetchPrivateRequests } from 'actions'
 
 const MembershipStatus = props => {
   const [userType, setUserType] = useState()
@@ -25,6 +25,13 @@ const MembershipStatus = props => {
 
   // Fetches user information from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const privateGroupRequests = useSelector(state => state.userReducer.pendingGroupRequests)
+  let hasRequest = privateGroupRequests.includes(props.group_id)
+  
+  useEffect(() => {
+    console.log('hasRequest?', hasRequest)
+    hasRequest = privateGroupRequests.includes(props.group_id)
+  }, [privateGroupRequests])
 
   useEffect(() => {
     // Fetch user type and groups_users id
@@ -46,6 +53,11 @@ const MembershipStatus = props => {
       }
     }
     fetchDataUserType()
+
+    const fetchRequests = async () => {
+      await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
+    }
+    fetchRequests()
   }, [token, props.group_id, loggedInUser, userType])
 
   async function joinGroup(e) {
@@ -137,6 +149,24 @@ const MembershipStatus = props => {
     }
   }
 
+  async function requestPrivate(e) {
+    e.preventDefault()
+    const data = {
+      userId: loggedInUser.id,
+      privateGroupID: props.group_id,
+    }
+    await dispatch(requestJoinPrivate(token, data))
+  }
+
+  async function cancelRequestPrivate(e) {
+    e.preventDefault()
+    const data = {
+      userId: loggedInUser.id,
+      privateGroupID: props.group_id,
+    }
+    await dispatch(cancelRequestJoinPrivate(token, data))
+  }
+
   const primary = red[600]
   const accent = blue[400]
   const useStyles = makeStyles(theme => ({
@@ -217,17 +247,51 @@ const MembershipStatus = props => {
           )}
         </>
       )}
-      {userType === 'non-member' && props.privacy !== 'hidden' && (
+      {userType === 'non-member' && (
         <>
-          <NotMember>Holder</NotMember>
-          <Button
-            onClick={e => joinGroup(e)}
-            variant='contained'
-            size='small'
-            className={classes.join}
-          >
-            Join
-          </Button>
+          {props.privacy === 'public' && (
+            <>
+              <NotMember>Holder</NotMember>
+              <Button
+                onClick={e => joinGroup(e)}
+                variant='contained'
+                size='small'
+                className={classes.join}
+              >
+                Join
+              </Button>
+            </>
+          )}
+          {props.privacy !== 'public' && (
+            <>
+              {
+                !hasRequest ?
+                  <>
+                    <NotMember>Holder</NotMember>
+                    <Button
+                      onClick={e => requestPrivate(e)}
+                      variant='contained'
+                      size='small'
+                      className={classes.join}
+                    >
+                      Request to Join
+                    </Button>
+                  </>
+                :
+                  <>
+                    <NotMember>Holder</NotMember>
+                    <Button
+                      onClick={e => cancelRequestPrivate(e)}
+                      variant='contained'
+                      size='small'
+                      className={classes.join}
+                    >
+                      Cancel Request
+                    </Button>
+                  </>
+              }
+            </>
+          )}
         </>
       )}
     </GroupMemberStatus>
