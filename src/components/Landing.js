@@ -19,71 +19,6 @@ import NewWay from '../assets/landing/NewWay.png'
 import SportsBetter from '../assets/landing/SportsBetter.png'
 import SportIcons from '../assets/landing/SportIcons.png'
 
-// const Landing = () => {
-//   const { loginWithRedirect } = useAuth0()
-//   return (
-//     <LandingContainer>
-//       <LogoHolder>
-//         <Image src={Logo2} size='small' alt={'Logo'} />
-//         <h1>ALLEGIANCE</h1>
-//       </LogoHolder>
-//       <Body>
-//         <H1>The social network for sports fans</H1>
-//       </Body>
-//       <ButtonHolder>
-//         <Button1 onClick={() => loginWithRedirect({})}>Sign In</Button1>
-//       </ButtonHolder>
-//     </LandingContainer>
-//   )
-// }
-
-// const LandingContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-evenly;
-//   background-size: cover;
-//   color: white;
-//   height: 100vh;
-//   margin-top: -11%;
-//   margin-bottom: -12%;
-//   align-items: center;
-//   border: 1px solid red;
-// `
-
-// const LogoHolder = styled.div`
-//   margin-top: 100px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `
-
-// const Body = styled.div`
-//   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)),
-//     url(${LandingImage});
-//   background-size: cover;
-// `
-
-// const H1 = styled.h1`
-//   width: 75%;
-//   font-size: 3rem;
-// `
-
-// const ButtonHolder = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   width: 50%;
-// `
-
-// const Button1 = styled.button`
-//   background-color: #4267b2;
-//   color: white;
-//   width: 500px;
-//   height: 60px;
-//   border-radius: 20px;
-//   font-size: 2rem;
-//   margin: 3%;
-// `
-
 const Landing = props => {
   const { loginWithRedirect } = useAuth0()
   return (
@@ -149,6 +84,14 @@ const Landing = props => {
           </JoinBtn>
         </LeftBottom4>
       </Bottom>
+      <Footer>
+        <FooterLeft>
+          <H1>About</H1>
+        </FooterLeft>
+        <FooterRight>
+          <H1>© 2019 Allegiance</H1>
+        </FooterRight>
+      </Footer>
     </LandingDiv>
   )
 }
@@ -184,6 +127,11 @@ const Middle = styled.div`
   display: flex;
   justify-content: space-between;
   height: 67px;
+  @media (max-width: 500px) {
+    height: 100px;
+    align-items: center;
+    flex-direction: column-reverse;
+  }
 `
 const LeftMiddle = styled.div`
   display: flex;
@@ -202,7 +150,9 @@ const Bottom = styled.div`
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  height: 777px;
+  max-height: 489px;
+  @media (max-width: 500px) {
+  }
 `
 const LeftBottom1 = styled.div`
   margin-top: 140px;
@@ -222,6 +172,20 @@ const LeftBottom4 = styled.div`
   margin-top: 30px;
   margin-left: 49px;
 `
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 43px;
+  align-items: center;
+`
+const FooterLeft = styled.div`
+  display: flex;
+  margin-left: 24px;
+`
+const FooterRight = styled.div`
+  display: flex;
+  margin-right: 24px;
+`
 const GlobalStyles = createGlobalStyle`
 body {
   <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
@@ -229,24 +193,8 @@ body {
 }
 `
 const H1 = styled.h1`
-  font-size: 1.9rem;
-  color: black;
-`
-const H2 = styled.h2`
-  font-size: 2rem;
-  color: black;
-`
-const H3 = styled.h3`
-  font-size: 32px;
-  color: white;
-`
-const H4 = styled.h4`
-  font-size: 25px;
-  color: white;
-`
-const H5 = styled.h4`
-  font-size: 15px;
-  color: white;
+  font-size: 1rem;
+  color: grey;
 `
 const RegisterBtn = styled.button`
   height: 68px;
@@ -256,6 +204,12 @@ const RegisterBtn = styled.button`
   background: #4483cd;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
+  @media (max-width: 500px) {
+    width: 450px;
+    height: 45px;
+    margin-left: 25px;
+    margin-right: 25px;
+  }
 `
 const JoinBtn = styled.button`
   height: 54px;
