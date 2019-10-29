@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import axios from 'axios'
@@ -8,30 +8,29 @@ import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import CssReset from 'styles/cssReset'
 import PrivateRoute from './components/PrivateRoute'
-
 import { initGA, logPageView } from './components/analytics/Analytics'
-
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import useGetToken from './components/utils/useGetToken'
-
-import Landing from './components/Landing'
-import Profile from './components/profile/Profile'
 import NavBar from './components/nav/NavBar'
-import GroupContainer from './components/groups/GroupContainer'
-import MakeProfile from './components/profile/MakeProfile'
-import GroupPage from './components/group-page/GroupPage'
-import CreateGroup from './components/groups/CreateGroup'
-import UnderConstruction from './components/UnderConstruction'
-import AddAllegiance from './components/allegiances/AddAllegiance'
-import ReplyContainer from './components/replies/ReplyContainer'
-import MakeAllegiance from './components/allegiances/MakeAllegiance'
-import Feed from './components/feed/Feed'
-import Notifications from './components/notifications/Notifications'
-
-// import { LOGIN } from './reducers/userReducer'
 import * as types from 'actions/actionTypes'
 import { updateSocket, fetchNotifications } from 'actions'
 
+const Landing = lazy(() => import('components/Landing'))
+const Profile = lazy(() => import('components/profile/Profile'))
+const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
+const MakeProfile = lazy(() => import('components/profile/MakeProfile'))
+const GroupPage = lazy(() => import('components/group-page/GroupPage'))
+const CreateGroup = lazy(() => import('components/groups/CreateGroup'))
+const UnderConstruction = lazy(() => import('components/UnderConstruction'))
+const AddAllegiance = lazy(() => import('components/allegiances/AddAllegiance'))
+const ReplyContainer = lazy(() => import('components/replies/ReplyContainer'))
+const MakeAllegiance = lazy(() =>
+  import('components/allegiances/MakeAllegiance')
+)
+const Feed = lazy(() => import('components/feed/Feed'))
+const Notifications = lazy(() =>
+  import('components/notifications/Notifications')
+)
 function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
@@ -126,29 +125,39 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <Switch>
-          <Route exact path='/' component={!isAuthenticated && Landing} />
-          <Route exact path='/home' component={Feed} />
-          <Route path='/groups' component={GroupContainer} />
-          <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
-          <PrivateRoute exact path='/creategroup' component={CreateGroup} />
-          <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
-          <PrivateRoute exact path='/notifications' component={Notifications} />
-          <PrivateRoute exact path='/profile' component={Profile} />
-          <PrivateRoute exact path='/group/:id' component={GroupPage} />
-          <PrivateRoute
-            exact
-            path='/allegiance/:id'
-            component={UnderConstruction}
-          />
-          <PrivateRoute exact path='/addallegiance' component={AddAllegiance} />
-          <PrivateRoute
-            exact
-            path='/makeallegiance'
-            component={MakeAllegiance}
-          />
-          <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
-        </Switch>
+        <Suspense fallback={null}>
+          <Switch>
+            <Route exact path='/' component={!isAuthenticated && Landing} />
+            <Route exact path='/home' component={Feed} />
+            <Route path='/groups' component={GroupContainer} />
+            <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
+            <PrivateRoute exact path='/creategroup' component={CreateGroup} />
+            <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
+            <PrivateRoute
+              exact
+              path='/notifications'
+              component={Notifications}
+            />
+            <PrivateRoute exact path='/profile' component={Profile} />
+            <PrivateRoute exact path='/group/:id' component={GroupPage} />
+            <PrivateRoute
+              exact
+              path='/allegiance/:id'
+              component={UnderConstruction}
+            />
+            <PrivateRoute
+              exact
+              path='/addallegiance'
+              component={AddAllegiance}
+            />
+            <PrivateRoute
+              exact
+              path='/makeallegiance'
+              component={MakeAllegiance}
+            />
+            <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
+          </Switch>
+        </Suspense>
       </div>
     </AppContainer>
   )
