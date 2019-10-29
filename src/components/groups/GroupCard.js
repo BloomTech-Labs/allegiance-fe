@@ -19,7 +19,7 @@ const GroupCard = props => {
       <Link to={`/group/${props.group.id}`}>
         <CardContainer>
           <TopDiv>
-            <CardImage src={props.group.image || Default} alt='GroupAvatar' />           
+            <CardImage src={props.group.image || Default} alt='GroupAvatar' />
           </TopDiv>
           <MiddleDiv color={props.color}>
             <h4>

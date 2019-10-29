@@ -13,7 +13,7 @@ import Default from '../../assets/walter-avi.png'
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
-
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
   const isAdmin = loggedInGroups
     ? loggedInGroups.find(group => group.id === props.group.id)
@@ -50,7 +50,7 @@ const GroupInfo = props => {
             members={props.members}
             setTrigger={props.setTrigger}
           />
-          <InviteModal groupId={props.group.id} />
+          {userIn && <InviteModal groupId={props.group.id} />}
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
