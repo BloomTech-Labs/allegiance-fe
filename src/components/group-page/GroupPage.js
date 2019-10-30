@@ -34,7 +34,7 @@ const GroupPage = props => {
         // add token to fetchGroupPosts
         dispatch(fetchGroupPosts(id))
         // setRequests(response.reqs)
-        dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
+        // dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
         // setTrigger(false)
       } catch (err) {
         dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })

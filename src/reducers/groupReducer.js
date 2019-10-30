@@ -128,7 +128,9 @@ export const groupReducer = (state = initialState, action) => {
     case types.FETCH_GROUP_SUCCESS:
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.group,
+        members: action.payload.members,
+        allegiances: action.payload.allegiances,
       }
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)
