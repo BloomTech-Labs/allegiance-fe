@@ -378,9 +378,9 @@ export const requestJoinPrivate = (token, data, socket) => async dispatch => {
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
         payload: privateGroup.data[0].group_id })
 
-      let notification;
-      adminIds.forEach(async (id) => {
-        notification = await axiosWithAuth([token]).post(
+      let notifications = []
+      adminIds.forEach((id) => {
+        notifications.push(axiosWithAuth([token]).post(
           `/users/${id}/notifications`,
           {
             user_id: id,
@@ -388,16 +388,19 @@ export const requestJoinPrivate = (token, data, socket) => async dispatch => {
             type_id: privateGroupID,
             type: 'group_request',
           }
-        )
+        ))
       })
-      socket.emit('send notification', {
-        userIds: adminIds,
-        notification: {
-          ...notification.data,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          image: user.image,
-        },
+      Promise.all(notifications).then((values) => {
+        console.log('emit socket', values);
+        socket.emit('send notification', {
+          userIds: adminIds,
+          notification: {
+            ...values[0].data,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            image: user.image,
+          },
+        })
       })
     }
   } catch (err) {
