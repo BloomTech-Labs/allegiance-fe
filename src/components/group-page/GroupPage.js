@@ -1,56 +1,52 @@
 import React, { useState, useEffect } from 'react'
-// import { axiosWithAuth } from '../utils/axiosWithAuth'
-import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
-import axios from 'axios'
-// import useGetToken from '../utils/useGetToken'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
+import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
-
+import { fetchGroup, fetchGroupPosts } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
-
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
-  // const [token] = useGetToken()
-
+  const [token] = useGetToken()
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
-
-  const [group, setGroup] = useState({})
+  // const [group, setGroup] = useState({})
+  const group = useSelector(state => state.group)
+  const posts = group.posts
   const [allegiances, setAllegiances] = useState([])
   const [members, setMembers] = useState([])
+  const [requests, setRequests] = useState([])
   const [trigger, setTrigger] = useState(false)
-
   const dispatch = useDispatch()
-
   useEffect(() => {
     // Fetch group related data
     const fetchData = async () => {
-      // if (token) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/groups/${id}`
-        )
-        setGroup(response.data.group)
-        setAllegiances(response.data.allegiances)
-        setMembers(response.data.members)
-        const groupId = response.data.group.id
-        dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
-        setTrigger(false)
-      } catch (err) {
-        dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
-        setTrigger(false)
+      if (true) {
+        try {
+          dispatch(fetchGroup(id))
+          const response = await fetchGroup(id)
+          // add token to fetchGroupPosts
+          dispatch(fetchGroupPosts(id))
+          setAllegiances(response.allegiances)
+          setMembers(response.members)
+          setRequests(response.reqs)
+          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
+          // setTrigger(false)
+        } catch (err) {
+          dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
+          // setTrigger(false)
+        }
       }
-      // }
     }
     fetchData()
-  }, [id, dispatch, trigger])
-
+    return () => dispatch({ type: types.CLEAR_POSTS })
+  }, [token, id, dispatch, trigger])
   if (Object.keys(group).length === 0) {
     return (
       <Loader active size='large'>
@@ -67,7 +63,6 @@ const GroupPage = props => {
   } else {
     membership = currentUserType.user_type
   }
-
   return (
     <GroupPageContainer>
       <PaperContainer elevation={3}>
@@ -76,19 +71,19 @@ const GroupPage = props => {
           members={members}
           allegiances={allegiances}
           setTrigger={setTrigger}
+          requests={requests}
         />
       </PaperContainer>
       {group.privacy_setting === 'public' ||
       membership === 'member' ||
       membership === 'admin' ? (
-        <PostsContainer groupId={group.id} members={members} />
+        <PostsContainer groupId={id} members={members} posts={posts} />
       ) : (
         <BlockedView />
       )}
     </GroupPageContainer>
   )
 }
-
 const GroupPageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,9 +93,7 @@ const GroupPageContainer = styled.div`
   min-height: 87vh;
   justify-content: flex-start;
 `
-
 const PaperContainer = styled(Paper)`
   margin-bottom: 5%;
 `
-
 export default GroupPage

@@ -9,7 +9,6 @@ import useGetToken from '../utils/useGetToken'
 import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
-import io from 'socket.io-client'
 import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {

@@ -7,7 +7,7 @@ import { device } from 'styled/device'
 import Default from '../../assets/walter-avi.png'
 
 const GroupCard = props => {
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  // const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   // const mixpanelCheck = () =>
   //   Mixpanel.activity(
   //     loggedInUser.id,

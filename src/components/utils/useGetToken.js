@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react"
-import { useAuth0 } from "../auth/react-auth0-wrapper";
+import { useState, useEffect } from 'react'
+import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 function useGetToken() {
-    const [token, setToken] = useState(null)
+  const [token, setToken] = useState(null)
 
-    const { getTokenSilently } = useAuth0();
+  const { getTokenSilently } = useAuth0()
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const result = await getTokenSilently()
-            setToken(result)
-        }
-        fetchToken()
-    })
+  useEffect(() => {
+    const fetchToken = async () => {
+      const result = await getTokenSilently()
+      setToken(result)
+    }
+    fetchToken()
+  })
 
-    return ([token])
+  return [token]
 }
 
 export default useGetToken

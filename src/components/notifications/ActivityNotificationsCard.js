@@ -16,11 +16,8 @@ const ActivityNotificationsCard = props => {
     id,
     first_name,
     last_name,
-    user_id,
-    invoker_id,
     type,
     type_id,
-    read,
     created_at,
     username,
     image,
@@ -80,10 +77,10 @@ const ActivityNotificationsCard = props => {
   if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
-  const goToPost = e => {
+  const goToNote = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: `/post/${type_id}`,
+      pathname: type !== 'group_request' && type !== 'group_accepted' ? `/post/${type_id}` : `/group/${type_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
       // replyNumber: replyId || null,
     })
@@ -99,7 +96,7 @@ const ActivityNotificationsCard = props => {
   if (created_at > timeStamp || timeStamp === null) checkIfNew = true
 
   return (
-    <NotificationCardDiv onClick={e => goToPost(e)}>
+    <NotificationCardDiv onClick={e => goToNote(e)}>
       <Card className={checkIfNew ? classes.newCard : classes.card}>
         <CardIcon>
           <Avatar
@@ -131,7 +128,9 @@ const ActivityNotificationsCard = props => {
             )} */}
             {type === 'like' && <>liked your post: {content}</>}
             {type === 'reply' && <>replied to your post: {content}</>}
-            {type === 'reply_like' && <>liked your reply: {content}</>}{' '}
+            {type === 'reply_like' && <>liked your reply: {content}</>}
+            {type === 'group_request' && <>requested membership to your group: {content}</>}
+            {type === 'group_accepted' && <>has accepted your membership request to group: {content}</>}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -200,13 +199,13 @@ const CardMessage = styled.div`
   overflow: hidden;
 `
 
-const CardGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20%;
-  margin: 1%;
-`
+// const CardGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 20%;
+//   margin: 1%;
+// `
 const DelButton = styled.button`
   display: flex;
   flex-direction: column;

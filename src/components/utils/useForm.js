@@ -19,16 +19,14 @@ const useForm = callback => {
   }
 
   const handleChange = event => {
-    console.log("event.target.name", event.target.name)
     event.persist()
     setError(false)
     setErrorContent(null)
     setValues(values => {
-      console.log('values', values)
       return {
         ...values,
-      [event.target.name]: event.target.value,
-      } 
+        [event.target.name]: event.target.value,
+      }
     })
   }
 

@@ -4,6 +4,16 @@ const initialState = {
   posts: [],
   post: {},
   error: '',
+  acronym: null,
+  created_at: null,
+  creator_id: null,
+  description: null,
+  group_name: null,
+  id: null,
+  image: null,
+  location: null,
+  privacy_setting: null,
+  updated_at: null,
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -113,10 +123,10 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
-    case types.FETCH_POST_SUCCESS:
+    case types.FETCH_GROUP_SUCCESS:
       return {
         ...state,
-        post: action.payload,
+        ...action.payload,
       }
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)

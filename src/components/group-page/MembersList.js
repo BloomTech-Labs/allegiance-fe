@@ -59,7 +59,9 @@ const MembersList = props => {
       : null
 
   // Retrieve current logged in userId
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const user = useSelector(state => state.userReducer.loggedInUser)
+  const userId = user.id
+  const socket = useSelector(state => state.socketReducer.socket)
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
 
@@ -98,6 +100,55 @@ const MembersList = props => {
     }
 
     setState({ ...state, [side]: open })
+  }
+
+  async function addToGroup(e, user_id) {
+    e.preventDefault()
+    if (token) {
+      try {
+        const deleted = await axiosWithAuth([token]).delete(
+          `/private/group/${group_id}/${user_id}`
+        )
+        if (deleted) {
+          const notification = await axiosWithAuth([token]).post(
+            `/users/${user_id}/notifications`,
+            {
+              user_id,
+              invoker_id: userId,
+              type_id: group_id,
+              type: 'group_accepted',
+            }
+          )
+          console.log('emit socket', notification)
+          socket.emit('send notification', {
+            userIds: [user_id],
+            notification: {
+              ...notification.data,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              image: user.image,
+            },
+          })
+          props.setTrigger(true)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function declineRequest(e, user_id) {
+    e.preventDefault()
+    try {
+      const deleted = await axiosWithAuth([token]).delete(
+        `/private/group/${group_id}/${user_id}`
+      )
+      if (deleted) {
+        props.setTrigger(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   // Sorting members list alphabetically

@@ -10,20 +10,24 @@ import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
 import NavRight from './NavRight'
-import { CreateNotification, fetchNotifications, fetchInvites } from 'actions'
+import {
+  CreateNotification,
+  createInvite,
+  fetchNotifications,
+  fetchInvites,
+} from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import NavMiddle from './NavMiddle'
-
+import { joinGroup } from 'actions/index'
+import { Mixpanel } from '../analytics/Mixpanel'
 const NavBar = props => {
   const { location } = props
-
   const { isAuthenticated, logout } = useAuth0()
   // Obtain last viewed replies thread's group_id from redux
   const groupId = useSelector(state => state.navReducer.groupID)
-
   // Retrieve notifications while not on notifications tab to update number counter on icon
   const [navNotifications, setNavNotifications] = useState()
   // Retrieve all groups where user has a relation
@@ -34,12 +38,9 @@ const NavBar = props => {
   )
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
-
   const invites = useSelector(state => state.notifyReducer.invites)
-
   const dispatch = useDispatch()
   const [token] = useGetToken()
-
   useEffect(() => {
     const fetchData = async () => {
       if (token && user) {
@@ -57,11 +58,8 @@ const NavBar = props => {
               payload: unreadNum,
             })
           }
-
           dispatch(fetchInvites(token, data))
-          dispatch(fetchNotifications(token, data))
           console.log(invites)
-          console.log(notifications)
         } catch (error) {
           console.log(error)
         }
@@ -69,10 +67,30 @@ const NavBar = props => {
     }
     fetchData()
     socket.on('new notification', async data => {
+      console.log('new notification data', data)
       await dispatch(CreateNotification(data))
       // i don't want to increment unread num if I am viewing the notifications
       if (location.pathname !== '/notifications') {
-        await dispatch({
+        dispatch({
+          type: INCREMENT_UNREAD_NOTIFICATION_NUM,
+          payload: 1,
+        })
+      }
+      if (data.notification.type === 'group_accepted') {
+        dispatch(
+          joinGroup(token, {
+            user_id: user.id,
+            group_id: data.notification.type_id,
+            Mixpanel,
+          })
+        )
+      }
+    })
+    socket.on('new invite', async data => {
+      await dispatch(createInvite(data))
+      // i don't want to increment unread num if I am viewing the notifications
+      if (location.pathname !== '/notifications') {
+        dispatch({
           type: INCREMENT_UNREAD_NOTIFICATION_NUM,
           payload: 1,
         })
@@ -80,9 +98,9 @@ const NavBar = props => {
     })
     return () => {
       socket.off('new notification')
+      socket.off('new invite')
     }
   }, [user, token, timeStamp, socket, dispatch, props.location.pathname])
-
   return (
     <Sticky>
       <NavLeft />
@@ -90,7 +108,6 @@ const NavBar = props => {
     </Sticky>
   )
 }
-
 const Sticky = styled.nav`
   position: sticky;
   width: 100%;
@@ -105,5 +122,4 @@ const Sticky = styled.nav`
   background-color: #1a4570;
   color: white;
 `
-
 export default NavBar

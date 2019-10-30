@@ -7,20 +7,20 @@ import { Auth0Provider } from './components/auth/react-auth0-wrapper'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import logger from 'redux-logger'
 import rootReducer from './reducers'
 import { BrowserRouter as Router } from 'react-router-dom'
 // A function that routes the user to the right place
 // after login
-const onRedirectCallback = appState => {
-  window.history.replaceState(
-    {},
-    document.title,
-    appState && appState.targetUrl
-      ? appState.targetUrl
-      : window.location.pathname
-  )
-}
+
+// const onRedirectCallback = appState => {
+//   window.history.replaceState(
+//     {},
+//     document.title,
+//     appState && appState.targetUrl
+//       ? appState.targetUrl
+//       : window.location.pathname
+//   )
+// }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
