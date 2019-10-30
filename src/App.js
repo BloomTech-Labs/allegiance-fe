@@ -10,11 +10,8 @@ import CssReset from 'styles/cssReset'
 import PrivateRoute from './components/PrivateRoute'
 import { initGA, logPageView } from './components/analytics/Analytics'
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
-import useGetToken from './components/utils/useGetToken'
 import NavBar from './components/nav/NavBar'
 import * as types from 'actions/actionTypes'
-import { updateSocket, fetchNotifications } from 'actions'
-
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
 const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
@@ -47,10 +44,13 @@ function App(props) {
   }, [])
 
   useEffect(() => {
+    console.log('[rerender] => APP HOME', user)
+
     if (isAuthenticated && !loggedInUser && user && loading) {
+      // once variable user is defined - this if statement will be true
+      console.log('in here ...')
       const registerUser = async () => {
         try {
-          console.log(user)
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: user.email,
             first_name: user.given_name,

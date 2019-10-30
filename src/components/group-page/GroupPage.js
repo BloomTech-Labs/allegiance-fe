@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
+import { fetchGroup, fetchGroupPosts } from 'actions'
 
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
@@ -19,7 +20,9 @@ const GroupPage = props => {
   const id = parseInt(props.match.params.id)
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
 
-  const [group, setGroup] = useState({})
+  // const [group, setGroup] = useState({})
+  const group = useSelector(state => state.group)
+  const posts = group.posts
   const [allegiances, setAllegiances] = useState([])
   const [members, setMembers] = useState([])
   const [requests, setRequests] = useState([])
@@ -30,23 +33,25 @@ const GroupPage = props => {
   useEffect(() => {
     // Fetch group related data
     const fetchData = async () => {
-      if (token) {
+      if (true) {
         try {
-          const response = await axiosWithAuth([token]).get(`/groups/${id}`)
-          setGroup(response.data.group)
-          setAllegiances(response.data.allegiances)
-          setMembers(response.data.members)
-          setRequests(response.data.reqs)
-          const groupId = response.data.group.id
-          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: groupId })
-          setTrigger(false)
+          dispatch(fetchGroup(id))
+          // add token to fetchGroupPosts
+          dispatch(fetchGroupPosts(id))
+          // setAllegiances(response.data.allegiances)
+          // setMembers(response.data.members)
+          // setRequests(response.data.reqs)
+          // const groupId = response.data.group.id
+          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
+          // setTrigger(false)
         } catch (err) {
           dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
-          setTrigger(false)
+          // setTrigger(false)
         }
       }
     }
     fetchData()
+    return () => dispatch({ type: types.CLEAR_POSTS })
   }, [token, id, dispatch, trigger])
 
   if (Object.keys(group).length === 0) {
@@ -80,7 +85,7 @@ const GroupPage = props => {
       {group.privacy_setting === 'public' ||
       membership === 'member' ||
       membership === 'admin' ? (
-        <PostsContainer groupId={group.id} members={members} />
+        <PostsContainer groupId={id} members={members} posts={posts} />
       ) : (
         <BlockedView />
       )}

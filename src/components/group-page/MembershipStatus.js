@@ -14,6 +14,7 @@ import { Mixpanel } from '../analytics/Mixpanel'
 import styled from 'styled-components'
 
 import { requestJoinPrivate, cancelRequestJoinPrivate, fetchPrivateRequests } from 'actions'
+import axios from 'axios'
 
 const MembershipStatus = props => {
   const [userType, setUserType] = useState()
@@ -25,6 +26,7 @@ const MembershipStatus = props => {
 
   // Fetches user information from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const privateGroupRequests = useSelector(state => state.userReducer.pendingGroupRequests)
   let hasRequest = privateGroupRequests.includes(props.group_id)
   
@@ -36,9 +38,9 @@ const MembershipStatus = props => {
   useEffect(() => {
     // Fetch user type and groups_users id
     const fetchDataUserType = async () => {
-      if (token) {
-        const response = await axiosWithAuth([token]).post(
-          `/groups_users/search`,
+      if (true) {
+        const response = await axios.post(
+          `http://localhost:5000/api/groups_users/search`,
           {
             user_id: loggedInUser.id,
             group_id: props.group_id,
@@ -52,12 +54,12 @@ const MembershipStatus = props => {
         }
       }
     }
-    fetchDataUserType()
+    // fetchDataUserType()
 
-    const fetchRequests = async () => {
-      await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
-    }
-    fetchRequests()
+    // const fetchRequests = async () => {
+    //   await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
+    // }
+    // fetchRequests()
   }, [token, props.group_id, loggedInUser, userType])
 
   async function joinGroup(e) {
@@ -152,10 +154,17 @@ const MembershipStatus = props => {
   async function requestPrivate(e) {
     e.preventDefault()
     const data = {
-      userId: loggedInUser.id,
+      user: loggedInUser,
       privateGroupID: props.group_id,
+      adminIds: props.members.reduce((acc, member) => {
+        if (member.status === 'admin') {
+          acc.push(member.id)
+        }
+        return acc;
+      }, [])
     }
-    await dispatch(requestJoinPrivate(token, data))
+    console.log('adminIds:', data);
+    await dispatch(requestJoinPrivate(token, data, socket))
   }
 
   async function cancelRequestPrivate(e) {
