@@ -111,7 +111,9 @@ const NotificationNumber = styled.div`
   left: -14px;
 `
 const RegisterBtn = styled.button`
-  height: 68px;
+  height: 53px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1
   width: 163px;
   color: white;

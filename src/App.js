@@ -125,7 +125,7 @@ function App(props) {
     <AppContainer>
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ margin: '0 auto' }}>
         <Switch>
           <Route exact path='/' component={!isAuthenticated && Landing} />
           <Route path='/home' component={Feed} />

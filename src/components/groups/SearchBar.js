@@ -133,20 +133,18 @@ const SearchFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 600px;
+  width: 80vw;
   position: relative;
-  @media (max-width: 800px) {
-    width: 400px;
-  }
-  @media (max-width: 800px) {
-    width: 300px;
-  }
 `
 
 const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50vw;
+  @media (max-width: 800px) {
+    width: 92.4vw;
+    height: 100px;
+  }
 `
 
 export default SearchBar

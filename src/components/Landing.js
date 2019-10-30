@@ -18,6 +18,7 @@ import facebook from '../assets/landing/facebook.png'
 import NewWay from '../assets/landing/NewWay.png'
 import SportsBetter from '../assets/landing/SportsBetter.png'
 import SportIcons from '../assets/landing/SportIcons.png'
+import Baseball from '../assets/landing/Baseball.jpg'
 
 const Landing = props => {
   const { loginWithRedirect } = useAuth0()
@@ -99,7 +100,6 @@ const Landing = props => {
 const LandingDiv = styled.div`
   // border: 1px solid red;
   background-color: white;
-  overflow: hidden;
 `
 const Top = styled.div`
   // border: 1px solid blue;
@@ -119,7 +119,6 @@ const RightTop = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-top: 26px;
-  // margin-right: 20px;
   width: 190px;
   height: 15px;
 `
@@ -127,7 +126,7 @@ const Middle = styled.div`
   display: flex;
   justify-content: space-between;
   height: 67px;
-  @media (max-width: 500px) {
+  @media (max-width: 800px) {
     height: 100px;
     align-items: center;
     flex-direction: column-reverse;
@@ -139,38 +138,63 @@ const LeftMiddle = styled.div`
   width: 480px;
   height: 37px;
   margin-left: 24px;
+  @media (max-width: 800px) {
+    justify-content: center;
+    margin-left: 0px;
+  }
   margin-top: 15px;
 `
 const RightMiddle = styled.div`
   display: flex;
-  margin-right: 0px;
+  // margin-right: 0px;
+  // border: 1px solid red;
 `
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  max-height: 489px;
+  height: 489px;
+  @media (max-width: 700px) {
+    background-image: url(${Baseball});
+  }
   @media (max-width: 500px) {
+    align-items: center;
   }
 `
 const LeftBottom1 = styled.div`
   margin-top: 140px;
   margin-left: 49px;
-  width: 463px;
+  width: 400px;
+  @media (max-width: 500px) {
+    margin-left: 0px;
+    width: 75vw;
+    margin-top: 100px;
+  }
 `
 const LeftBottom2 = styled.div`
   margin-top: 34px;
   margin-left: 49px;
   width: 500px;
+  @media (max-width: 500px) {
+    margin-left: 0px;
+    width: 75vw;
+  }
 `
 const LeftBottom3 = styled.div`
   margin-top: 20px;
   margin-left: 49px;
+  @media (max-width: 500px) {
+    margin-left: 0px;
+    width: 75vw;
+  }
 `
 const LeftBottom4 = styled.div`
   margin-top: 30px;
   margin-left: 49px;
+  @media (max-width: 500px) {
+    margin-left: 0px;
+  }
 `
 const Footer = styled.div`
   display: flex;
@@ -197,26 +221,30 @@ const H1 = styled.h1`
   color: grey;
 `
 const RegisterBtn = styled.button`
-  height: 68px;
+  height: 67px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1
   width: 163px;
   color: white;
   background: #4483cd;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
-  @media (max-width: 500px) {
-    width: 450px;
+  @media (max-width: 800px) {
+    width: 90vw;
     height: 45px;
-    margin-left: 25px;
-    margin-right: 25px;
   }
 `
 const JoinBtn = styled.button`
   height: 54px;
   width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   color: white;
   background: #ed5959;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `
 export default withRouter(Landing)
