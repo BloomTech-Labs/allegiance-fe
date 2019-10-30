@@ -7,7 +7,7 @@ import { device } from 'styled/device'
 import Default from '../../assets/walter-avi.png'
 
 const GroupCard = props => {
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  // const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   // const mixpanelCheck = () =>
   //   Mixpanel.activity(
   //     loggedInUser.id,
@@ -19,7 +19,7 @@ const GroupCard = props => {
       <Link to={`/group/${props.group.id}`}>
         <CardContainer>
           <TopDiv>
-            <CardImage src={props.group.image || Default} alt='GroupAvatar' />           
+            <CardImage src={props.group.image || Default} alt='GroupAvatar' />
           </TopDiv>
           <MiddleDiv color={props.color}>
             <h4>

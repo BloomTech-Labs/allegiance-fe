@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Modal, Input, Icon } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -11,7 +11,7 @@ const InviteModal = props => {
   const [token] = useGetToken()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const { values, setValues, handleChange, handleSubmit } = useForm(sendInvite)
+  const { values, handleChange, handleSubmit } = useForm(sendInvite)
 
   async function sendInvite() {
     try {

@@ -16,11 +16,8 @@ const ActivityNotificationsCard = props => {
     id,
     first_name,
     last_name,
-    user_id,
-    invoker_id,
     type,
     type_id,
-    read,
     created_at,
     username,
     image,
@@ -200,13 +197,13 @@ const CardMessage = styled.div`
   overflow: hidden;
 `
 
-const CardGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20%;
-  margin: 1%;
-`
+// const CardGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 20%;
+//   margin: 1%;
+// `
 const DelButton = styled.button`
   display: flex;
   flex-direction: column;
