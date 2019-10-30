@@ -15,6 +15,7 @@ const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
   // Fetches Auth0 token for axios call
   const dispatch = useDispatch()
+  console.log('post container rendered')
   const [token] = useGetToken()
   const posts = useSelector(state => state.group.posts)
   const [submitted, setSubmitted] = useState(false)

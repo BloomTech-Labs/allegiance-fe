@@ -35,6 +35,7 @@ export default function PostCard(props) {
     group_id,
   } = props.post
   const dispatch = useDispatch()
+  console.log('postcard rendered')
   const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
