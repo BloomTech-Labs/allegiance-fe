@@ -12,7 +12,7 @@ import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
+  // const [token] = useGetToken()
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
@@ -27,26 +27,24 @@ const GroupPage = props => {
   useEffect(() => {
     // Fetch group related data
     const fetchData = async () => {
-      if (true) {
-        try {
-          dispatch(fetchGroup(id))
-          const response = await fetchGroup(id)
-          // add token to fetchGroupPosts
-          dispatch(fetchGroupPosts(id))
-          setAllegiances(response.allegiances)
-          setMembers(response.members)
-          setRequests(response.reqs)
-          dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
-          // setTrigger(false)
-        } catch (err) {
-          dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
-          // setTrigger(false)
-        }
+      // if (true) {
+      try {
+        dispatch(fetchGroup(id))
+        const response = await fetchGroup(id)
+        // add token to fetchGroupPosts
+        dispatch(fetchGroupPosts(id))
+        // setRequests(response.reqs)
+        dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
+        // setTrigger(false)
+      } catch (err) {
+        dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
+        // setTrigger(false)
       }
+      // }
     }
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
-  }, [token, id, dispatch, trigger])
+  }, [id, dispatch, trigger])
   if (Object.keys(group).length === 0) {
     return (
       <Loader active size='large'>
@@ -68,8 +66,8 @@ const GroupPage = props => {
       <PaperContainer elevation={3}>
         <GroupInfo
           group={group}
-          members={members}
-          allegiances={allegiances}
+          members={group.members}
+          allegiances={group.allegiances}
           setTrigger={setTrigger}
           requests={requests}
         />

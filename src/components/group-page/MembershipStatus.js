@@ -34,12 +34,12 @@ const MembershipStatus = props => {
   const privateGroupRequests = useSelector(
     state => state.userReducer.pendingGroupRequests
   )
-  let hasRequest = privateGroupRequests.includes(props.group_id)
+  // let hasRequest = privateGroupRequests.includes(props.group_id)
 
-  useEffect(() => {
-    console.log('hasRequest?', hasRequest)
-    hasRequest = privateGroupRequests.includes(props.group_id)
-  }, [privateGroupRequests])
+  // useEffect(() => {
+  //   console.log('hasRequest?', hasRequest)
+  //   hasRequest = privateGroupRequests.includes(props.group_id)
+  // }, [privateGroupRequests])
 
   useEffect(() => {
     // Fetch user type and groups_users id

@@ -115,7 +115,7 @@ function App(props) {
     <AppContainer>
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ margin: '0 auto' }}>
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />
@@ -130,7 +130,7 @@ function App(props) {
               component={Notifications}
             />
             <PrivateRoute exact path='/profile' component={Profile} />
-            <PrivateRoute exact path='/group/:id' component={GroupPage} />
+            <Route exact path='/group/:id' component={GroupPage} />
             <PrivateRoute
               exact
               path='/allegiance/:id'

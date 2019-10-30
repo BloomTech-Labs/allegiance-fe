@@ -419,5 +419,6 @@ export const fetchPrivateRequests = (token, data) => async dispatch => {
 export const fetchGroup = id => async dispatch => {
   dispatch({ type: actionTypes.FETCH_GROUP_REQUEST })
   const group = await axios.get(`http://localhost:5000/api/groups/${id}`)
-  dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data.group })
+  dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
+  console.log(group)
 }
