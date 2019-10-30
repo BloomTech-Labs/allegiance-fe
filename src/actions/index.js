@@ -9,7 +9,8 @@ export const updateSocket = data => dispatch => {
 
 const log = console.log
 
-export const fetchGroupPosts = (token, id) => async dispatch => {
+export const fetchGroupPosts = (id) => async dispatch => {
+  console.log('id:::', id)
   try {
     dispatch({ type: actionTypes.FETCH_POSTS_REQUEST })
     const posts = await axios.get(`http://localhost:5000/api/posts/group/${id}`)

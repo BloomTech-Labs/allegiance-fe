@@ -12,20 +12,7 @@ import { fetchGroupPosts } from 'actions'
 
 const PostsContainer = props => {
   // Fetches Auth0 token for axios call
-  const dispatch = useDispatch()
-  const [token] = useGetToken()
-  const posts = useSelector(state => state.group.posts)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const id = props.groupId
-      await dispatch(fetchGroupPosts(token, id))
-    }
-    fetchData()
-    return () => {
-      dispatch({ type: types.CLEAR_POSTS })
-    }
-  }, [token, props.groupId])
+  const { posts } = props
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts
   const postsEndRef = useRef(null)
