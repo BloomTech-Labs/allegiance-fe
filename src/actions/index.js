@@ -9,8 +9,7 @@ export const updateSocket = data => dispatch => {
 
 const log = console.log
 
-export const fetchGroupPosts = (id) => async dispatch => {
-  console.log('id:::', id)
+export const fetchGroupPosts = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POSTS_REQUEST })
     const posts = await axios.get(`http://localhost:5000/api/posts/group/${id}`)
@@ -360,26 +359,52 @@ export const deleteGroupPost = (token, id) => async dispatch => {
   }
 }
 
-export const requestJoinPrivate = (token, data) => async dispatch => {
+export const requestJoinPrivate = (token, data, socket) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
-  const { userId, privateGroupID } = data
-  const privateGroup = await axiosWithAuth([token]).post(
-    `/private/group/${privateGroupID}`,
-    {
-      userId: userId.toString(),
-      privateGroupID: privateGroupID,
-    }
-  )
-  if (token && privateGroupID) {
-    console.log('privateGroup:::', privateGroup.data[0])
-    try {
+  const { user, privateGroupID, adminIds } = data
+  const userId = user.id
+
+  try {
+    const privateGroup = await axiosWithAuth([token]).post(
+      `/private/group/${privateGroupID}`,
+      {
+        userId: userId.toString(),
+        privateGroupID: privateGroupID,
+      }
+    )
+    if (token && privateGroupID) {
+      console.log('privateGroup:::', privateGroup.data[0])
       dispatch({
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
         payload: privateGroup.data[0].group_id,
       })
-    } catch (err) {
-      dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err })
+
+      let notifications = []
+      adminIds.forEach(id => {
+        notifications.push(
+          axiosWithAuth([token]).post(`/users/${id}/notifications`, {
+            user_id: id,
+            invoker_id: userId,
+            type_id: privateGroupID,
+            type: 'group_request',
+          })
+        )
+      })
+      Promise.all(notifications).then(values => {
+        console.log('emit socket', values)
+        socket.emit('send notification', {
+          userIds: adminIds,
+          notification: {
+            ...values[0].data,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            image: user.image,
+          },
+        })
+      })
     }
+  } catch (err) {
+    dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err })
   }
 }
 

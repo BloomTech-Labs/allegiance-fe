@@ -35,9 +35,9 @@ const GroupPage = props => {
     const fetchData = async () => {
       if (true) {
         try {
-         dispatch(fetchGroup(id))
-         // add token to fetchGroupPosts
-         dispatch(fetchGroupPosts(id))
+          dispatch(fetchGroup(id))
+          // add token to fetchGroupPosts
+          dispatch(fetchGroupPosts(id))
           // setAllegiances(response.data.allegiances)
           // setMembers(response.data.members)
           // setRequests(response.data.reqs)
@@ -51,6 +51,7 @@ const GroupPage = props => {
       }
     }
     fetchData()
+    return () => dispatch({ type: types.CLEAR_POSTS })
   }, [token, id, dispatch, trigger])
 
   if (Object.keys(group).length === 0) {
