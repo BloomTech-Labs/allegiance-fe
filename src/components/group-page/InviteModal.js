@@ -35,38 +35,41 @@ const InviteModal = props => {
       console.log(err)
     }
   }
-
-  return (
-    <Modal trigger={<Button>Invite Users</Button>}>
-      <Modal.Header>Select a user to invite</Modal.Header>
-      <Modal.Content>
-        <ContentWrapper>
-          <FormWrapper onSubmit={handleSubmit}>
-            <Input
-              icon='users'
-              iconPosition='left'
-              placeholder='Search users...'
-              style={InputWidth}
-              onChange={handleChange}
-              value={values.email || ''}
-              name='email'
-            />
-            <Button animated style={ButtonSpacing}>
-              <Button.Content visible>Send Invite</Button.Content>
-              <Button.Content hidden>
-                <Icon name='arrow right' />
-              </Button.Content>
-            </Button>
-          </FormWrapper>
-          <Modal.Description>
-            {/* <descriptionP>
-                Once you've selected a user you wish to invite, click invite to send them an invitation to your group.
-            </descriptionP> */}
-          </Modal.Description>
-        </ContentWrapper>
-      </Modal.Content>
-    </Modal>
-  )
+  if (loggedInUser) {
+    return (
+      <Modal trigger={<Button>Invite Users</Button>}>
+        <Modal.Header>Select a user to invite</Modal.Header>
+        <Modal.Content>
+          <ContentWrapper>
+            <FormWrapper onSubmit={handleSubmit}>
+              <Input
+                icon='users'
+                iconPosition='left'
+                placeholder='Search users...'
+                style={InputWidth}
+                onChange={handleChange}
+                value={values.email || ''}
+                name='email'
+              />
+              <Button animated style={ButtonSpacing}>
+                <Button.Content visible>Send Invite</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='arrow right' />
+                </Button.Content>
+              </Button>
+            </FormWrapper>
+            <Modal.Description>
+              {/* <descriptionP>
+                  Once you've selected a user you wish to invite, click invite to send them an invitation to your group.
+              </descriptionP> */}
+            </Modal.Description>
+          </ContentWrapper>
+        </Modal.Content>
+      </Modal>
+    )
+  } else {
+    return null
+  }
 }
 
 const DescriptionP = styled.p``

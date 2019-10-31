@@ -34,7 +34,6 @@ function App(props) {
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
   const { loading, user, isAuthenticated } = useAuth0()
-
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
       initGA()
@@ -42,10 +41,8 @@ function App(props) {
     }
     logPageView()
   }, [])
-
   useEffect(() => {
     console.log('[rerender] => APP HOME', user)
-
     if (isAuthenticated && !loggedInUser && user && loading) {
       // once variable user is defined - this if statement will be true
       console.log('in here ...')
@@ -62,13 +59,11 @@ function App(props) {
             type: types.FETCH_LOGIN_SUCCESS,
             payload: result.data.userInfo,
           })
-
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
           if (newUser) {
             props.history.push('/makeprofile')
           }
-
           if (currentUser && currentUser.first_name !== null) {
             const pushTo =
               window.location.pathname !== '/'
@@ -77,7 +72,6 @@ function App(props) {
             props.history.push(`${pushTo}`)
             // Mixpanel.login(currentUser, 'Successful login.')
           }
-
           // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
           socket.emit('join', {
@@ -90,7 +84,6 @@ function App(props) {
       registerUser()
     }
   })
-
   // Define moment display
   moment.updateLocale('en', {
     relativeTime: {
@@ -110,7 +103,6 @@ function App(props) {
       yy: '%dY',
     },
   })
-
   if (loading) {
     return (
       <Loader active size='large'>
@@ -119,55 +111,39 @@ function App(props) {
       </Loader>
     )
   }
-
   return (
     <AppContainer>
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ margin: '0 auto' }}>
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />
-            <Route exact path='/home' component={Feed} />
+            <Route path='/home' component={Feed} />
             <Route path='/groups' component={GroupContainer} />
-            <PrivateRoute exact path='/makeprofile' component={MakeProfile} />
-            <PrivateRoute exact path='/creategroup' component={CreateGroup} />
-            <PrivateRoute exact path='/editgroup/:id' component={CreateGroup} />
+            <PrivateRoute path='/makeprofile' component={MakeProfile} />
+            <PrivateRoute path='/creategroup' component={CreateGroup} />
+            <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
+            <PrivateRoute path='/notifications' component={Notifications} />
+            <PrivateRoute path='/profile' component={Profile} />
+            <Route path='/group/:id' component={GroupPage} />
             <PrivateRoute
-              exact
-              path='/notifications'
-              component={Notifications}
-            />
-            <PrivateRoute exact path='/profile' component={Profile} />
-            <PrivateRoute exact path='/group/:id' component={GroupPage} />
-            <PrivateRoute
-              exact
               path='/allegiance/:id'
               component={UnderConstruction}
             />
-            <PrivateRoute
-              exact
-              path='/addallegiance'
-              component={AddAllegiance}
-            />
-            <PrivateRoute
-              exact
-              path='/makeallegiance'
-              component={MakeAllegiance}
-            />
-            <PrivateRoute exact path='/post/:id' component={ReplyContainer} />
+            <PrivateRoute path='/addallegiance' component={AddAllegiance} />
+            <PrivateRoute path='/makeallegiance' component={MakeAllegiance} />
+            <PrivateRoute path='/post/:id' component={ReplyContainer} />
           </Switch>
         </Suspense>
       </div>
     </AppContainer>
   )
 }
-
 const AppContainer = styled.div`
   background-color: #dee4e7;
   min-height: 100vh;
 `
-
 export default withRouter(App)
 // text-align: center;
 // position: relative;

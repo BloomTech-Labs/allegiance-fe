@@ -59,7 +59,7 @@ const Notifications = () => {
   // instead of mount so that different styling can be applied to new vs old notifications
   useEffect(() => {
     return async () => {
-      if (token && userId && mountTime) {
+      if (userId && mountTime) {
         try {
           const response = await axiosWithAuth([token]).put(
             `/users/${userId}`,
@@ -84,7 +84,7 @@ const Notifications = () => {
         }
       }
     }
-  }, [dispatch, email, location, userId, token, mountTime])
+  }, [dispatch, email, location, userId, mountTime])
 
   if (
     (!notifications && !invites) ||

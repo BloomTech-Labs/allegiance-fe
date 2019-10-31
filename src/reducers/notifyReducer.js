@@ -18,7 +18,6 @@ export const notifyReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
-
     case types.SET_UNREAD_NOTIFICATION_NUM:
       return {
         ...state,
