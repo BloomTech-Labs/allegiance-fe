@@ -12,21 +12,7 @@ import { fetchGroupPosts } from 'actions'
 
 const PostsContainer = props => {
   // Fetches Auth0 token for axios call
-  const dispatch = useDispatch()
-  const [token] = useGetToken()
-  const posts = useSelector(state => state.group.posts)
-  const [submitted, setSubmitted] = useState(false)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const id = props.groupId
-      await dispatch(fetchGroupPosts(token, id))
-    }
-    fetchData()
-    return () => {
-      dispatch({ type: types.CLEAR_POSTS })
-    }
-  }, [token, submitted, props.groupId])
+  const { posts } = props
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts
   const postsEndRef = useRef(null)
@@ -54,9 +40,7 @@ const PostsContainer = props => {
       <PostListContainer>
         {posts.length > 0 ? (
           posts.map(post => {
-            return (
-              <PostCard post={post} key={post.id} setSubmitted={setSubmitted} />
-            )
+            return <PostCard post={post} key={post.id} />
           })
         ) : (
           <PaperContainer elevation={20}>
@@ -68,11 +52,7 @@ const PostsContainer = props => {
       <div ref={postsEndRef} />
 
       {(membership === 'admin' || membership === 'member') && (
-        <PostForm
-          setSubmitted={setSubmitted}
-          groupId={props.groupId}
-          scrollToBottom={scrollToBottom}
-        />
+        <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
       )}
     </PostsWrapper>
   )
@@ -81,6 +61,7 @@ const PostsContainer = props => {
 const PostListContainer = styled.div`
   width: 100%;
   display: flex;
+  border: 2px solid pink;
   flex-direction: column;
   align-items: center;
   background-color: #dee4e7;

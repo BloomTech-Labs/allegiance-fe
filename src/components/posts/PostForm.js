@@ -117,7 +117,7 @@ const ReplyForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 801px;
   background-color: #dee4e7;
   align-items: center;
 `

@@ -9,7 +9,7 @@ import { device } from 'styled/device'
 // Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {
   // Fetches user information from Redux
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  // const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   // const mixpanelCheck = () =>
   //   Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
 

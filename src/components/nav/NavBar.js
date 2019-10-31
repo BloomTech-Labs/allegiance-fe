@@ -21,6 +21,8 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import NavMiddle from './NavMiddle'
+import { joinGroup } from 'actions/index'
+import { Mixpanel } from '../analytics/Mixpanel'
 
 const NavBar = props => {
   const { location } = props
@@ -64,9 +66,7 @@ const NavBar = props => {
           }
 
           dispatch(fetchInvites(token, data))
-          dispatch(fetchNotifications(token, data))
           console.log(invites)
-          console.log(notifications)
         } catch (error) {
           console.log(error)
         }
@@ -82,6 +82,14 @@ const NavBar = props => {
           type: INCREMENT_UNREAD_NOTIFICATION_NUM,
           payload: 1,
         })
+      }
+
+      if (data.notification.type === 'group_accepted') {
+        dispatch(joinGroup(token, {
+          user_id: user.id,
+          group_id: data.notification.type_id,
+          Mixpanel,
+        }))
       }
     })
     socket.on('new invite', async data => {
