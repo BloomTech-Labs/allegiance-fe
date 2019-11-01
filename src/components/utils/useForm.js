@@ -65,6 +65,7 @@ const useForm = callback => {
     setError,
     setErrorContent,
     setLoading,
+    isLoading,
   }
 }
 
