@@ -14,6 +14,9 @@ const initialState = {
   location: null,
   privacy_setting: null,
   updated_at: null,
+  allegiances: [],
+  members: [],
+  reqs: [],
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -126,7 +129,10 @@ export const groupReducer = (state = initialState, action) => {
     case types.FETCH_GROUP_SUCCESS:
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.group,
+        members: action.payload.members,
+        allegiances: action.payload.allegiances,
+        reqs: action.payload.reqs,
       }
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)

@@ -13,7 +13,11 @@ import { Mixpanel } from '../analytics/Mixpanel'
 
 import styled from 'styled-components'
 
-import { requestJoinPrivate, cancelRequestJoinPrivate, fetchPrivateRequests } from 'actions'
+import {
+  requestJoinPrivate,
+  cancelRequestJoinPrivate,
+  fetchPrivateRequests,
+} from 'actions'
 import axios from 'axios'
 
 const MembershipStatus = props => {
@@ -27,9 +31,11 @@ const MembershipStatus = props => {
   // Fetches user information from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const privateGroupRequests = useSelector(state => state.userReducer.pendingGroupRequests)
+  const privateGroupRequests = useSelector(
+    state => state.userReducer.pendingGroupRequests
+  )
   let hasRequest = privateGroupRequests.includes(props.group_id)
-  
+
   useEffect(() => {
     console.log('hasRequest?', hasRequest)
     hasRequest = privateGroupRequests.includes(props.group_id)
@@ -46,6 +52,7 @@ const MembershipStatus = props => {
             group_id: props.group_id,
           }
         )
+        console.log('RESPONSE', response)
         if (response.data.relationExists) {
           setUserType(response.data.relationExists[0].user_type)
           setRelation(response.data.relationExists[0].id)
@@ -54,14 +61,14 @@ const MembershipStatus = props => {
         }
       }
     }
-    // fetchDataUserType()
+    fetchDataUserType()
 
-    // const fetchRequests = async () => {
-    //   await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
-    // }
-    // fetchRequests()
+    const fetchRequests = async () => {
+      await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
+    }
+    fetchRequests()
   }, [token, props.group_id, loggedInUser, userType])
-
+  console.log('usertype', userType)
   async function joinGroup(e) {
     e.preventDefault()
     if (token) {
@@ -160,10 +167,10 @@ const MembershipStatus = props => {
         if (member.status === 'admin') {
           acc.push(member.id)
         }
-        return acc;
-      }, [])
+        return acc
+      }, []),
     }
-    console.log('adminIds:', data);
+    console.log('adminIds:', data)
     await dispatch(requestJoinPrivate(token, data, socket))
   }
 
@@ -273,32 +280,31 @@ const MembershipStatus = props => {
           )}
           {props.privacy !== 'public' && (
             <>
-              {
-                !hasRequest ?
-                  <>
-                    <NotMember>Holder</NotMember>
-                    <Button
-                      onClick={e => requestPrivate(e)}
-                      variant='contained'
-                      size='small'
-                      className={classes.join}
-                    >
-                      Request to Join
-                    </Button>
-                  </>
-                :
-                  <>
-                    <NotMember>Holder</NotMember>
-                    <Button
-                      onClick={e => cancelRequestPrivate(e)}
-                      variant='contained'
-                      size='small'
-                      className={classes.join}
-                    >
-                      Cancel Request
-                    </Button>
-                  </>
-              }
+              {!hasRequest ? (
+                <>
+                  <NotMember>Holder</NotMember>
+                  <Button
+                    onClick={e => requestPrivate(e)}
+                    variant='contained'
+                    size='small'
+                    className={classes.join}
+                  >
+                    Request to Join
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <NotMember>Holder</NotMember>
+                  <Button
+                    onClick={e => cancelRequestPrivate(e)}
+                    variant='contained'
+                    size='small'
+                    className={classes.join}
+                  >
+                    Cancel Request
+                  </Button>
+                </>
+              )}
             </>
           )}
         </>

@@ -2,13 +2,10 @@ import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
 import axios from 'axios'
-
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
 }
-
 const log = console.log
-
 export const fetchGroupPosts = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POSTS_REQUEST })
@@ -20,7 +17,6 @@ export const fetchGroupPosts = id => async dispatch => {
     dispatch({ type: actionTypes.FETCH_POSTS_FAILURE, payload: err })
   }
 }
-
 export const createGroupPost = (token, data) => async dispatch => {
   const { userId, groupId, post_content } = data
   if (token) {
@@ -46,7 +42,6 @@ export const createGroupPost = (token, data) => async dispatch => {
     }
   }
 }
-
 export const joinGroup = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
@@ -78,7 +73,6 @@ export const joinGroup = (token, data) => async dispatch => {
     }
   }
 }
-
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
@@ -124,14 +118,12 @@ export const CreateNotification = data => async dispatch => {
     payload: data['notification'],
   })
 }
-
 export const createInvite = data => async dispatch => {
   dispatch({
     type: actionTypes.CREATE_INVITE_SUCCESS,
     payload: data['invite'],
   })
 }
-
 export const deleteNotification = (token, notificationId) => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_NOTIFICATIONS_REQUEST })
@@ -213,7 +205,6 @@ export const likePost = (token, data, socket) => async dispatch => {
             }
           )
           console.log('what is notification.data', notification.data)
-
           socket.emit('send notification', {
             userIds: [user_id],
             notification: {
@@ -264,7 +255,6 @@ export const fetchPost = (token, id) => async dispatch => {
     }
   }
 }
-
 export const likeReply = (token, data, socket) => async dispatch => {
   const { user, id, user_id } = data
   dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
@@ -300,7 +290,6 @@ export const likeReply = (token, data, socket) => async dispatch => {
     }
   }
 }
-
 export const createReply = (token, data, socket) => async dispatch => {
   const { user, user_id, id, reply_content } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
@@ -337,7 +326,6 @@ export const createReply = (token, data, socket) => async dispatch => {
     }
   }
 }
-
 export const dislikeReply = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)
@@ -347,7 +335,6 @@ export const dislikeReply = (token, id) => async dispatch => {
     payload: unLike.data.deleted[0],
   })
 }
-
 export const deleteGroupPost = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.DELETE_POST_REQUEST })
   const deletedPost = await axiosWithAuth([token]).delete(`/posts/${id}`)
@@ -358,12 +345,10 @@ export const deleteGroupPost = (token, id) => async dispatch => {
     })
   }
 }
-
 export const requestJoinPrivate = (token, data, socket) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
   const { user, privateGroupID, adminIds } = data
   const userId = user.id
-
   try {
     const privateGroup = await axiosWithAuth([token]).post(
       `/private/group/${privateGroupID}`,
@@ -378,7 +363,6 @@ export const requestJoinPrivate = (token, data, socket) => async dispatch => {
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
         payload: privateGroup.data[0].group_id,
       })
-
       let notifications = []
       adminIds.forEach(id => {
         notifications.push(
@@ -407,7 +391,6 @@ export const requestJoinPrivate = (token, data, socket) => async dispatch => {
     dispatch({ type: actionTypes.JOIN_PRIVATE_FAILURE, payload: err })
   }
 }
-
 export const cancelRequestJoinPrivate = (token, data) => async dispatch => {
   dispatch({ type: actionTypes.CANCEL_JOIN_PRIVATE_REQUEST })
   const { userId, privateGroupID } = data
@@ -447,5 +430,6 @@ export const fetchPrivateRequests = (token, data) => async dispatch => {
 export const fetchGroup = id => async dispatch => {
   dispatch({ type: actionTypes.FETCH_GROUP_REQUEST })
   const group = await axios.get(`http://localhost:5000/api/groups/${id}`)
-  dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data.group })
+  dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
+  console.log(group.data)
 }

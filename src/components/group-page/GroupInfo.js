@@ -18,7 +18,8 @@ const GroupInfo = props => {
   const isAdmin = loggedInGroups
     ? loggedInGroups.find(group => group.id === props.group.id)
     : null
-
+  console.log('props', props)
+  console.log('privacy', privacy)
   return (
     <GroupInfoDiv>
       <ImageDiv>
