@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
 // import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
@@ -20,6 +20,18 @@ const SearchBar = props => {
   const debouncedSearchTerm = useDebounce(values.group_name, 1000)
   // useStates for handling up and down arrow key selections
   const [activeSuggestion, setSuggestion] = useState(0)
+  // added useRef
+  const node = useRef()
+
+  // Listener set up to detect clicks
+  useEffect(() => {
+    // add when mounted
+    document.addEventListener('mousedown', onKeyDown)
+    // return function to be called when unmounted
+    return () => {
+      document.removeEventListener('mousedown', onKeyDown)
+    }
+  }, [])
 
   // callback function to handle submit
   function fillSearch(e, group) {
@@ -49,32 +61,36 @@ const SearchBar = props => {
 
   // Handle up and down arrow keys
   const onKeyDown = e => {
-    // e.preventDefault()
-    // User pressed the enter key
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      console.log(results)
-
-      // Check that results from SearchResults has something to fill
-      if (results.length > 0) {
-        setSuggestion(0)
-        setValues(results[activeSuggestion])
-        props.history.push(`/group/${results[0].id}`)
+    // Checks if inside search bar
+    if (node.current.contains(e.target)) {
+      console.log('INSIDE')
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        // Check that results from SearchResults has something to fill
+        if (results.length > 0) {
+          setSuggestion(0)
+          setValues(results[activeSuggestion])
+          props.history.push(`/group/${results[0].id}`)
+        }
       }
-    }
-    // User pressed the up arrow
-    if (e.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return
-      }
-      setSuggestion(activeSuggestion - 1)
-    }
-    // User pressed the down arrow
-    else if (e.keyCode === 40) {
-      if (activeSuggestion + 1 === results.length) {
-        return
-      }
-      setSuggestion(activeSuggestion + 1)
+      //User pressed the up arrow
+      // if (e.keyCode === 38) {
+      //   if (activeSuggestion === 0) {
+      //     return
+      //   }
+      //   setSuggestion(activeSuggestion - 1)
+      // }
+      // // User pressed the down arrow
+      // else if (e.keyCode === 40) {
+      //   if (activeSuggestion + 1 === results.length) {
+      //     return
+      //   }
+      //   setSuggestion(activeSuggestion + 1)
+      // }
+    } else if (!node.current.contains(e.target)) {
+      console.log('OUTSIDE')
+      setSuggestion(0)
+      setValues(results)
     }
   }
 
@@ -104,7 +120,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper>
       {/* form to handle group search text from user */}
-      <SearchForm>
+      <SearchForm ref={node}>
         <TextField
           value={values.group_name || ''}
           onChange={handleChange}
