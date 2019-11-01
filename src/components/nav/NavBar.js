@@ -23,6 +23,7 @@ import {
 import NavMiddle from './NavMiddle'
 import { joinGroup } from 'actions/index'
 import { Mixpanel } from '../analytics/Mixpanel'
+import { fetchPrivateRequests } from 'actions'
 
 const NavBar = props => {
   const { location } = props
@@ -46,6 +47,15 @@ const NavBar = props => {
 
   const dispatch = useDispatch()
   const [token] = useGetToken()
+
+  useEffect(() => {
+    if (user) {
+      const fetchRequests = async () => {
+        await dispatch(fetchPrivateRequests(token, { user_id: user.id }))
+      }
+      fetchRequests()
+    }
+  }, [user])
 
   useEffect(() => {
     const fetchData = async () => {

@@ -11,7 +11,7 @@ const InviteModal = props => {
   const [token] = useGetToken()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const { values, setValues, handleChange, handleSubmit } = useForm(sendInvite)
+  const { values, setValues, isLoading, setLoading, handleChange, handleSubmit } = useForm(sendInvite)
   const [response, setResponse] = useState(null)
 
   console.log(props.members)
@@ -20,7 +20,7 @@ const InviteModal = props => {
     try {
       const result = await axiosWithAuth(token).post(`/groups/${id}/invitees`, {
         sender_id: loggedInUser.id,
-        email: values.email,
+        username: values.username,
       })
       const userId = result.data[0].user_id
       console.log(result.data)
@@ -39,12 +39,14 @@ const InviteModal = props => {
         },
       })
     } catch (err) {
-      const error = err.response.data.error
+      const error = err.response.data.message
       setResponse({
         isError: true,
         message: error || 'Unsuccessful Invite'
       })
       console.log(err.response)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -57,14 +59,14 @@ const InviteModal = props => {
             <Input
               icon='users'
               iconPosition='left'
-              placeholder='Enter a username or email...'
+              placeholder='Enter a username...'
               style={InputWidth}
               onChange={handleChange}
-              value={values.email || ''}
-              name='email'
-              autoFocus="true"
+              value={values.username || ''}
+              name='username'
+              autoFocus={true}
             />
-            <Button animated style={ButtonSpacing}>
+            <Button color="blue" loading={isLoading} animated style={ButtonSpacing}>
               <Button.Content visible>Send Invite</Button.Content>
               <Button.Content hidden>
                 <Icon name='arrow right' />
@@ -87,9 +89,9 @@ const InviteModal = props => {
             </Label> */}
           </FormWrapper>
           <Modal.Description>
-            <descriptionP>
+            <DescriptionP>
                 Send an invite to notify a user to join your group.
-            </descriptionP>
+            </DescriptionP>
           </Modal.Description>
         </ContentWrapper>
       </Modal.Content>

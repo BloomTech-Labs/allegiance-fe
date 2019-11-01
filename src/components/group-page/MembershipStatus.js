@@ -16,7 +16,6 @@ import styled from 'styled-components'
 import {
   requestJoinPrivate,
   cancelRequestJoinPrivate,
-  fetchPrivateRequests,
 } from 'actions'
 import axios from 'axios'
 
@@ -44,7 +43,8 @@ const MembershipStatus = props => {
   useEffect(() => {
     // Fetch user type and groups_users id
     const fetchDataUserType = async () => {
-      if (true) {
+      if (props.group_id) {
+        console.log('group_id', props.group_id);
         const response = await axios.post(
           `http://localhost:5000/api/groups_users/search`,
           {
@@ -62,12 +62,7 @@ const MembershipStatus = props => {
       }
     }
     fetchDataUserType()
-
-    const fetchRequests = async () => {
-      await dispatch(fetchPrivateRequests(token, { user_id: loggedInUser.id }))
-    }
-    fetchRequests()
-  }, [token, props.group_id, loggedInUser, userType])
+  }, [token, props.group_id, loggedInUser])
   console.log('usertype', userType)
   async function joinGroup(e) {
     e.preventDefault()
