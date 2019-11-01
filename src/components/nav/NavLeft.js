@@ -1,29 +1,52 @@
 import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import logo from 'assets/logo192.png'
 import jersey from 'assets/jersey.png'
 const NavLeft = props => {
   const { location } = props
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
 
-  return (
-    <StyledNavLeft>
-      <ul>
-        <li>
-          <NavLink to='/home'>
-            <img src={logo} style={{ width: '25px' }} />
-            <span>Home</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to='/groups'>
-            <img src={jersey} style={{ width: '25px' }} />
-            <span>Discover</span>
-          </NavLink>
-        </li>
-      </ul>
-    </StyledNavLeft>
-  )
+  if (userIn) {
+    return (
+      <StyledNavLeft>
+        <ul>
+          <li>
+            <NavLink to='/home'>
+              <img src={logo} style={{ width: '25px' }} />
+              <span>Home</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='/groups'>
+              <img src={jersey} style={{ width: '25px' }} />
+              <span>Discover</span>
+            </NavLink>
+          </li>
+        </ul>
+      </StyledNavLeft>
+    )
+  } else {
+    return (
+      <StyledNavLeft>
+        <ul>
+          <li>
+            <NavLink to='/'>
+              <img src={logo} style={{ width: '25px' }} />
+              <span>Home</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='/groups'>
+              <img src={jersey} style={{ width: '25px' }} />
+              <span>Discover</span>
+            </NavLink>
+          </li>
+        </ul>
+      </StyledNavLeft>
+    )
+  }
 }
 export default withRouter(NavLeft)
 
