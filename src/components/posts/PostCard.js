@@ -142,7 +142,7 @@ export default function PostCard(props) {
         action={
           (user.id === user_id || userStatus === 'admin') &&
           !window.location.pathname.includes('/post') && (
-            <IconButton onClick={() => deletePost()} aria-label='settings'>
+            <IconButton onClick={(e) => deletePost(e)} aria-label='settings'>
               <DeleteOutline />
             </IconButton>
           )
