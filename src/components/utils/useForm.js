@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Message } from 'semantic-ui-react'
 
-const useForm = callback => {
+const useForm = (callback, keepValues) => {
   const [values, setValues] = useState({})
   const [isLoading, setLoading] = useState()
   const [isError, setError] = useState()
@@ -14,7 +14,9 @@ const useForm = callback => {
       setError(false)
       setErrorContent(null)
       callback()
-      setValues('')
+      if (!keepValues) {
+        setValues('')
+      }
     } catch {}
   }
 
