@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import axios from 'axios'
-import useGetToken from '../utils/useGetToken'
+import React, { useState, useEffect, useRef } from 'react'
+import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+// import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import useDebounce from '../utils/useDebounce'
 
@@ -15,11 +14,22 @@ const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
   // token for accessing authentication required backend routes
+  // const [token] = useGetToken()
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(fillSearch)
   const debouncedSearchTerm = useDebounce(values.group_name, 1000)
   // useStates for handling up and down arrow key selections
   const [activeSuggestion, setSuggestion] = useState(0)
+  // added useRef
+  const node = useRef()
+
+  // Listener set up to detect clicks
+  useEffect(() => {
+    document.addEventListener('mousedown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onKeyDown)
+    }
+  }, [])
 
   // callback function to handle submit
   function fillSearch(e, group) {
@@ -47,47 +57,49 @@ const SearchBar = props => {
 
   const classes = useStyles()
 
-  // Handle up and down arrow keys
   const onKeyDown = e => {
-    // e.preventDefault()
-    // User pressed the enter key
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      console.log(results)
-      props.history.push(`/group/${results[0].id}`)
-      // Check that results from SearchResults has something to fill
-      if (results.length > 0) {
-        setSuggestion(0)
-        setValues(results[activeSuggestion])
+    // Checks if inside search bar
+    if (node.current.contains(e.target)) {
+      // console.log('INSIDE')
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        // Check that results from SearchResults has something to fill
+        if (results.length > 0) {
+          setSuggestion(0)
+          setValues(results[activeSuggestion])
+          props.history.push(`/group/${results[0].id}`)
+        }
       }
-    }
-    // User pressed the up arrow
-    if (e.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return
-      }
-      setSuggestion(activeSuggestion - 1)
-    }
-    // User pressed the down arrow
-    else if (e.keyCode === 40) {
-      if (activeSuggestion + 1 === results.length) {
-        return
-      }
-      setSuggestion(activeSuggestion + 1)
+      //User pressed the up arrow
+      // if (e.keyCode === 38) {
+      //   if (activeSuggestion === 0) {
+      //     return
+      //   }
+      //   setSuggestion(activeSuggestion - 1)
+      // }
+      // // User pressed the down arrow
+      // else if (e.keyCode === 40) {
+      //   if (activeSuggestion + 1 === results.length) {
+      //     return
+      //   }
+      //   setSuggestion(activeSuggestion + 1)
+      // }
+    } else if (!node.current.contains(e.target)) {
+      // console.log('OUTSIDE')
+      setValues(results)
     }
   }
 
   //useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
   useEffect(() => {
     const fetchData = async () => {
-      const groups = await axios.post(
-        'http://localhost:5000/api/groups/search',
-        {
-          column: 'group_name',
-          row: values.group_name,
-        }
-      )
+      // if (token) {
+      const groups = await axiosWithoutAuth().post('/groups/search', {
+        column: 'group_name',
+        row: values.group_name,
+      })
       return groups
+      // }
     }
     // If empty string in search immediately set results array to blank
     if (values.group_name === '') setResults([])
@@ -104,7 +116,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper>
       {/* form to handle group search text from user */}
-      <SearchForm onSubmit={handleSubmit}>
+      <SearchForm ref={node}>
         <TextField
           value={values.group_name || ''}
           onChange={handleChange}
@@ -133,14 +145,21 @@ const SearchFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 90%;
+  width: 80vw;
   position: relative;
 `
 
 const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50vw;
+  @media (max-width: 800px) {
+    width: 92.4vw;
+    height: 100px;
+  }
+  &:hover {
+    background: #add8e6;
+  }
 `
 
 export default SearchBar

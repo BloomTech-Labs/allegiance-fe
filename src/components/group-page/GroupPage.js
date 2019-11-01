@@ -84,7 +84,6 @@ const GroupPage = props => {
 }
 const GroupPageContainer = styled.div`
   display: flex;
-  border: 2px solid pink;
   flex-direction: column;
   justify-content: center;
   width: 100%;

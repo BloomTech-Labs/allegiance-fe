@@ -10,29 +10,38 @@ import NearbyGroups from './NearbyGroups'
 import { withRouter } from 'react-router-dom'
 function GroupContainer(props) {
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
 
-  return (
-    <Container>
-
-      <SearchBar {...props} />
-
-      <Divider />
-      <MyGroups>
-        <GroupTitleHolder>
-          <H3>MY GROUPS</H3>
-        </GroupTitleHolder>
-        <>
-          <MyAllegianceGroups content={loggedInGroups} type={'group'} />
-        </>
-      </MyGroups>
-      <Divider />
-      <H3>GROUPS NEAR YOU</H3>
-      <NearbyGroups />
-      <Divider />
-      <H3>DISCOVER</H3>
-      <GroupList />
-    </Container>
-  )
+  if (userIn) {
+    return (
+      <Container>
+        <SearchBar {...props} />
+        <Divider />
+        <MyGroups>
+          <GroupTitleHolder>
+            <H3>MY GROUPS</H3>
+          </GroupTitleHolder>
+          <>
+            <MyAllegianceGroups content={loggedInGroups} type={'group'} />
+          </>
+        </MyGroups>
+        <Divider />
+        <H3>GROUPS NEAR YOU</H3>
+        <NearbyGroups />
+        <Divider />
+        <H3>DISCOVER</H3>
+        <GroupList />
+      </Container>
+    )
+  } else {
+    return (
+      <Container>
+        <SearchBar {...props} />
+        <H3>DISCOVER</H3>
+        <GroupList />
+      </Container>
+    )
+  }
 }
 export default withRouter(GroupContainer)
 
