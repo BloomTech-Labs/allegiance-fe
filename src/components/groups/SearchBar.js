@@ -25,9 +25,7 @@ const SearchBar = props => {
 
   // Listener set up to detect clicks
   useEffect(() => {
-    // add when mounted
     document.addEventListener('mousedown', onKeyDown)
-    // return function to be called when unmounted
     return () => {
       document.removeEventListener('mousedown', onKeyDown)
     }
@@ -59,11 +57,10 @@ const SearchBar = props => {
 
   const classes = useStyles()
 
-  // Handle up and down arrow keys
   const onKeyDown = e => {
     // Checks if inside search bar
     if (node.current.contains(e.target)) {
-      console.log('INSIDE')
+      // console.log('INSIDE')
       if (e.keyCode === 13) {
         e.preventDefault()
         // Check that results from SearchResults has something to fill
@@ -88,8 +85,7 @@ const SearchBar = props => {
       //   setSuggestion(activeSuggestion + 1)
       // }
     } else if (!node.current.contains(e.target)) {
-      console.log('OUTSIDE')
-      setSuggestion(0)
+      // console.log('OUTSIDE')
       setValues(results)
     }
   }
@@ -160,6 +156,9 @@ const SearchForm = styled.form`
   @media (max-width: 800px) {
     width: 92.4vw;
     height: 100px;
+  }
+  &:hover {
+    background: #add8e6;
   }
 `
 
