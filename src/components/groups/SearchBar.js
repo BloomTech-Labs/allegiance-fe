@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import axios from 'axios'
-import useGetToken from '../utils/useGetToken'
+import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+// import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import useDebounce from '../utils/useDebounce'
 
@@ -16,6 +14,7 @@ const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
   // token for accessing authentication required backend routes
+  // const [token] = useGetToken()
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(fillSearch)
   const debouncedSearchTerm = useDebounce(values.group_name, 1000)
@@ -55,11 +54,12 @@ const SearchBar = props => {
     if (e.keyCode === 13) {
       e.preventDefault()
       console.log(results)
-      props.history.push(`/group/${results[0].id}`)
+
       // Check that results from SearchResults has something to fill
       if (results.length > 0) {
         setSuggestion(0)
         setValues(results[activeSuggestion])
+        props.history.push(`/group/${results[0].id}`)
       }
     }
     // User pressed the up arrow
@@ -81,14 +81,13 @@ const SearchBar = props => {
   //useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
   useEffect(() => {
     const fetchData = async () => {
-      const groups = await axios.post(
-        'http://localhost:5000/api/groups/search',
-        {
-          column: 'group_name',
-          row: values.group_name,
-        }
-      )
+      // if (token) {
+      const groups = await axiosWithoutAuth().post('/groups/search', {
+        column: 'group_name',
+        row: values.group_name,
+      })
       return groups
+      // }
     }
     // If empty string in search immediately set results array to blank
     if (values.group_name === '') setResults([])
@@ -105,7 +104,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper>
       {/* form to handle group search text from user */}
-      <SearchForm onSubmit={handleSubmit}>
+      <SearchForm>
         <TextField
           value={values.group_name || ''}
           onChange={handleChange}
@@ -134,14 +133,18 @@ const SearchFormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 90%;
+  width: 80vw;
   position: relative;
 `
 
 const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50vw;
+  @media (max-width: 800px) {
+    width: 92.4vw;
+    height: 100px;
+  }
 `
 
 export default SearchBar

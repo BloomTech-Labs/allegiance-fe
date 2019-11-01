@@ -44,14 +44,19 @@ const SearchResults = props => {
 
 const ResultsContainer = styled.div`
   display: flex;
-  width: 95.5%;
+  width: 48.5vw;
+  @media (max-width: 800px) {
+    width: 89.4vw;
+  }
   flex-direction: column;
   position: absolute;
   z-index: 1;
   background-color: white;
-  margin-top: 18.5%;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  margin-top: 65px;
   .suggestion-active {
-    background-color: lightgoldenrodyellow;
+    background-color: white;
   }
   .single-result {
     display: flex;
@@ -61,10 +66,9 @@ const ResultsContainer = styled.div`
     padding: 0 5%;
     text-decoration: none;
     width: 100%;
-    border: 1px solid black;
     height: 8vh;
     &:hover {
-      background-color: lightgoldenrodyellow;
+      background-color: #add8e6;
     }
   }
   .result-info {
