@@ -3,23 +3,97 @@ import { Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 import InviteModal from './InviteModal'
 import MembershipStatus from './MembershipStatus'
 import AllegiancePopover from './AllegiancePopover'
 import MembersList from './MembersList'
+import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
+import useGetToken from 'components/utils/useGetToken'
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
+  const group_id = props.group.id
 
+  const user = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
   const isAdmin = loggedInGroups
     ? loggedInGroups.find(group => group.id === props.group.id)
     : null
   console.log('props', props)
   console.log('privacy', privacy)
+  const token = useGetToken();
+
+  async function addToGroup(evt, user_id) {
+    evt.preventDefault()
+    if (token) {
+      try {
+          const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+          if (deleted) {
+            const notification = await axiosWithAuth([token]).post(
+              `/users/${user_id}/notifications`,
+              {
+                user_id,
+                invoker_id: user.id,
+                type_id: group_id,
+                type: 'group_accepted',
+              }
+            )
+            await axiosWithAuth([token]).post(`/groups_users`, {
+              user_id,
+              group_id,
+              user_type: 'member',
+            })
+            console.log('emit socket', notification);
+            socket.emit('send notification', {
+              userIds: [user_id],
+              notification: {
+                ...notification.data,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                image: user.image,
+              },
+            })
+            props.setTrigger(true)
+          }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function removeMember(evt, user_id) {
+    evt.preventDefault()
+    if (token) {
+      const result = await axiosWithAuth([token]).delete(`/groups_users/`, {
+        data: {
+          user_id,
+          group_id,
+        },
+      })
+      if (
+        result.data.message === 'The user to group pairing has been deleted.'
+      ) {
+        props.setTrigger(true)
+      }
+    }
+  }
+
+  async function declineRequest(evt, user_id) {
+    evt.preventDefault()
+    try {
+      const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+      if (deleted) {
+        props.setTrigger(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <GroupInfoDiv>
       <ImageDiv>
@@ -46,11 +120,19 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          <MembersList
+          {/* <MembersList
             group_id={props.group.id}
             members={props.members}
             requests={props.requests}
             setTrigger={props.setTrigger}
+          /> */}
+          <MemberList
+            group_id={props.group.id}
+            requests={props.requests}
+            members={props.members}
+            addToGroup={addToGroup}
+            removeMember={removeMember}
+            declineRequest={declineRequest}
           />
           <InviteModal members={props.members} group={props.group} />
         </SubInfo>

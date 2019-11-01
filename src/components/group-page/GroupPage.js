@@ -42,6 +42,7 @@ const GroupPage = props => {
       }
       // }
     }
+    console.log('re-rendering group')
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
   }, [id, dispatch, trigger])
