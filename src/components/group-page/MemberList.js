@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Header, Icon, Button, List, Modal, Image, Label, Menu, Tab } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 const MemberList = props => {
   const { memberType, members, requests, addToGroup, declineRequest, removeMember } = props;
@@ -10,7 +11,7 @@ const MemberList = props => {
     {
       menuItem: { key: 'users', icon: 'users', content: 'Users' },
       render: () => <Tab.Pane>
-        <List divided verticalAlign='middle'>
+        <StyledList divided verticalAlign='middle'>
           {
             members.map(member => (
               <Fragment key={member.id}>
@@ -26,7 +27,7 @@ const MemberList = props => {
               </Fragment>
             ))
           }
-        </List>
+        </StyledList>
       </Tab.Pane>,
     },
   ]
@@ -35,11 +36,12 @@ const MemberList = props => {
     panes.push({
       menuItem: (
         <Menu.Item key='messages'>
-          Pending Requests<Label>{requestSize}</Label>
+          Pending Requests
+          <Label>{requestSize}</Label>
         </Menu.Item>
       ),
       render: () => <Tab.Pane>
-        <List divided verticalAlign='middle'>
+        <StyledList divided verticalAlign='middle'>
           {
             requests.map(member => (
               <Fragment key={member.id}>
@@ -54,7 +56,7 @@ const MemberList = props => {
               </Fragment>
             ))
           }
-        </List>
+        </StyledList>
       </Tab.Pane>,
     })
   }
@@ -75,5 +77,9 @@ const MemberList = props => {
     </Modal>
   )
 }
+
+const StyledList = styled(List)`
+  min-height: 300px;
+`;
 
 export default MemberList;
