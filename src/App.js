@@ -59,6 +59,10 @@ function App(props) {
             type: types.FETCH_LOGIN_SUCCESS,
             payload: result.data.userInfo,
           })
+          dispatch({
+            type: types.FETCH_MY_GROUPS_SUCCESS,
+            payload: result.data.userInfo.basicGroupInfo,
+          })
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
           if (newUser) {
