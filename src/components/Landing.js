@@ -26,11 +26,18 @@ const Landing = props => {
     <LandingDiv>
       <Top>
         <LeftTop>
-          <Image src={Logo2} size='small' alt={'Logo'} />
+          <Image
+            src={Logo2}
+            size='small'
+            alt={'Logo'}
+            onClick={() => {
+              window.location = window.location
+            }}
+          />
           <Image src={DoSportsTogether} size='small' alt={'Do'} />
         </LeftTop>
         <RightTop>
-          <Image
+          <ImageMini
             path='/instagram'
             onClick={() => {
               window.location.href = 'https://instagram.com'
@@ -38,7 +45,7 @@ const Landing = props => {
             src={instagram}
             alt={'Insta'}
           />
-          <Image
+          <ImageMini
             path='/twitter'
             onClick={() => {
               window.location.href = 'https://twitter.com'
@@ -46,7 +53,7 @@ const Landing = props => {
             src={twitter}
             alt={'Twitter'}
           />
-          <Image
+          <ImageMini
             path='/facebook'
             onClick={() => {
               window.location.href = 'https://facebook.com'
@@ -93,14 +100,14 @@ const Landing = props => {
             alt={'Facebook'}
           /> */}
 
-          <H1
+          <About
             onClick={() => {
               window.location.href =
                 'https://github.com/orgs/Lambda-School-Labs/teams/labs-17-allegiance/repositories '
             }}
           >
-            about us
-          </H1>
+            About Us
+          </About>
         </FooterLeft>
         <FooterRight>
           <H1>© 2019 Allegiance</H1>
@@ -235,7 +242,7 @@ const H1 = styled.h1`
 `
 const RegisterBtn = styled.button`
   &:hover{
-    background-color: red;
+    background: #ed5959;
   }
   height: 67px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -251,6 +258,9 @@ const RegisterBtn = styled.button`
   }
 `
 const JoinBtn = styled.button`
+  &:hover {
+    background: #4483cd;
+  }
   height: 54px;
   width: 192px;
   border: none;
@@ -263,4 +273,18 @@ const JoinBtn = styled.button`
     width: 90vw;
   }
 `
+const ImageMini = styled.img`
+  &:hover {
+    transition: all 0.2s ease-in-out;
+
+     transform: scale(1.5);
+  }
+`
+const About = styled.div`
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.5);
+  }
+`
+
 export default withRouter(Landing)
