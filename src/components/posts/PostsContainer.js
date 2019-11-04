@@ -9,7 +9,6 @@ import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-import { fetchGroupPosts } from 'actions'
 
 const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
