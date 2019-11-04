@@ -152,12 +152,6 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          {/* <MembersList
-            group_id={props.group.id}
-            members={props.members}
-            requests={props.requests}
-            setTrigger={props.setTrigger}
-          /> */}
           <MemberList
             memberType={memberType}
             requests={props.requests}
