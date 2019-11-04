@@ -144,6 +144,11 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.EDIT_GROUP_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
+      }
     default:
       return state
   }

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
+import { editGroups } from 'actions'
 
 // // import { Mixpanel } from '../analytics/Mixpanel'
 
@@ -47,10 +48,9 @@ const CreateGroup = props => {
     if (group && window.location.pathname.includes('/editgroup/')) {
       let { id, updated_at, created_at, ...groupInfo } = group
       setValues(groupInfo)
-      dispatch({ type: types.FETCH_GROUP_SUCCESS, payload: id })
       // Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
     }
-  }, [props, setValues, group, loggedInUser.id, dispatch])
+  }, [setValues, dispatch])
 
   //Creates a new group and pushes the user to the group page after submission.
   async function createGroup() {
@@ -83,19 +83,12 @@ const CreateGroup = props => {
 
   //Edits existing group and pushes the user to the group page after submission.
   async function editGroup() {
-    try {
-      const updatedGroup = { ...values, image }
-      const result = await axiosWithAuth([token]).put(
-        `/groups/${group.id}`,
-        updatedGroup
-      )
-      // Mixpanel.activity(loggedInUser.id, 'Complete Edit Group')
-      const push = () => props.history.push(`/group/${group.id}`)
-      setTimeout(push, 1000)
-      console.log(result)
-    } catch {
-      // Mixpanel.activity(loggedInUser.id, 'Group Edit Failed')
-    }
+    console.log('got called')
+    const updatedGroup = { ...values, image }
+    console.log('about to dispatch', group.id)
+    dispatch(editGroups(group.id, updatedGroup)).then(() => {
+      props.history.push(`/group/${group.id}`)
+    })
   }
 
   //Deletes a group.
@@ -116,7 +109,6 @@ const CreateGroup = props => {
       ? values.privacy_setting.charAt(0).toUpperCase() +
         values.privacy_setting.slice(1)
       : null
-
   return (
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>

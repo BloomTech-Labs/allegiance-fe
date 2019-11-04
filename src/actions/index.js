@@ -433,3 +433,38 @@ export const fetchGroup = id => async dispatch => {
   dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
   console.log(group.data)
 }
+
+export const editGroups = (groupId, data) => async dispatch => {
+  const {
+    image,
+    description,
+    group_name,
+    location,
+    acronym,
+    privacy_setting,
+    creator_id,
+  } = data
+  dispatch({ type: actionTypes.EDIT_GROUP_REQUEST })
+  try {
+    const editGroup = await axios.put(
+      `http://localhost:5000/api/groups/${groupId}`,
+      {
+        image,
+        description,
+        group_name,
+        location,
+        acronym,
+        privacy_setting,
+        creator_id,
+      }
+    )
+    console.log(editGroup)
+    dispatch({
+      type: actionTypes.EDIT_GROUP_SUCCESS,
+      payload: editGroup.data.updated,
+    })
+  } catch (err) {
+    console.log(err)
+    dispatch({ type: actionTypes.EDIT_GROUP_FAILURE, payload: err })
+  }
+}
