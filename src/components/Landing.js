@@ -26,8 +26,8 @@ const Landing = props => {
     <LandingDiv>
       <Top>
         <LeftTop>
-          <Image src={Logo2} size='110px' alt={'Logo'} />
-          <Image src={DoSportsTogether} size='145px' alt={'Do'} />
+          <Image src={Logo2} size='small' alt={'Logo'} />
+          <Image src={DoSportsTogether} size='small' alt={'Do'} />
         </LeftTop>
         <RightTop>
           <Image
@@ -36,7 +36,6 @@ const Landing = props => {
               window.location.href = 'https://instagram.com'
             }}
             src={instagram}
-            size='8px'
             alt={'Insta'}
           />
           <Image
@@ -45,7 +44,6 @@ const Landing = props => {
               window.location.href = 'https://twitter.com'
             }}
             src={twitter}
-            size='8px'
             alt={'Twitter'}
           />
           <Image
@@ -54,7 +52,6 @@ const Landing = props => {
               window.location.href = 'https://facebook.com'
             }}
             src={facebook}
-            size='8px'
             alt={'Facebook'}
           />
         </RightTop>
@@ -71,13 +68,13 @@ const Landing = props => {
       </Middle>
       <Bottom>
         <LeftBottom1>
-          <Image src={NewWay} size='463px' alt={'New'} />
+          <Image src={NewWay} size='large' alt={'New'} />
         </LeftBottom1>
         <LeftBottom2>
-          <Image src={SportsBetter} size='391px' alt={'Sports'} />
+          <Image src={SportsBetter} size='large' alt={'Sports'} />
         </LeftBottom2>
         <LeftBottom3>
-          <Image src={SportIcons} size='383px' alt={'Sport_Icons'} />
+          <Image src={SportIcons} size='large' alt={'Sport_Icons'} />
         </LeftBottom3>
         <LeftBottom4>
           <JoinBtn onClick={() => loginWithRedirect({})}>
@@ -87,7 +84,23 @@ const Landing = props => {
       </Bottom>
       <Footer>
         <FooterLeft>
-          <H1>About</H1>
+          {/* <Image
+            path='/facebook'
+            onClick={() => {
+              window.location.href = 'https://facebook.com'
+            }}
+            src={facebook}
+            alt={'Facebook'}
+          /> */}
+
+          <H1
+            onClick={() => {
+              window.location.href =
+                'https://github.com/orgs/Lambda-School-Labs/teams/labs-17-allegiance/repositories '
+            }}
+          >
+            about us
+          </H1>
         </FooterLeft>
         <FooterRight>
           <H1>© 2019 Allegiance</H1>
@@ -221,6 +234,9 @@ const H1 = styled.h1`
   color: grey;
 `
 const RegisterBtn = styled.button`
+  &:hover{
+    background-color: red;
+  }
   height: 67px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1
