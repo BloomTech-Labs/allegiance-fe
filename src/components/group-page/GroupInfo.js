@@ -86,7 +86,7 @@ const GroupInfo = props => {
                 image: user.image,
               },
             })
-            props.setTrigger(true)
+            props.setTrigger(!props.trigger)
           }
       } catch (err) {
         console.log(err)
@@ -106,7 +106,7 @@ const GroupInfo = props => {
       if (
         result.data.message === 'The user to group pairing has been deleted.'
       ) {
-        props.setTrigger(true)
+        props.setTrigger(!props.trigger)
       }
     }
   }
@@ -116,7 +116,7 @@ const GroupInfo = props => {
     try {
       const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
       if (deleted) {
-        props.setTrigger(true)
+        props.setTrigger(!props.trigger)
       }
     } catch (err) {
       console.log(err)
@@ -166,7 +166,9 @@ const GroupInfo = props => {
             removeMember={removeMember}
             declineRequest={declineRequest}
           />
-          <InviteModal members={props.members} group={props.group} />
+          {memberType.userType &&
+            <InviteModal members={props.members} group={props.group} />
+          }
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
