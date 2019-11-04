@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
@@ -11,8 +11,11 @@ import MembersList from './MembersList'
 import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
 import useGetToken from 'components/utils/useGetToken'
+import axios from 'axios'
 
 const GroupInfo = props => {
+  const [memberType, setMemberType] = useState({});
+  
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
   const group_id = props.group.id
@@ -26,6 +29,32 @@ const GroupInfo = props => {
   console.log('props', props)
   console.log('privacy', privacy)
   const token = useGetToken();
+
+  useEffect(() => {
+    // Fetch user type and groups_users id
+    const fetchDataUserType = async () => {
+      if (group_id) {
+        console.log('group_id', group_id);
+        const response = await axios.post(
+          `http://localhost:5000/api/groups_users/search`,
+          {
+            user_id: user.id,
+            group_id: group_id,
+          }
+        )
+        const data = response.data.relationExists;
+        if (data) {
+          setMemberType({
+            userType: data[0].user_type,
+            relationId: data[0].id
+          })
+        } else {
+          setMemberType({})
+        }
+      }
+    }
+    fetchDataUserType()
+  }, [group_id, user])
 
   async function addToGroup(evt, user_id) {
     evt.preventDefault()
@@ -99,9 +128,12 @@ const GroupInfo = props => {
       <ImageDiv>
         <GroupLogo src={props.group.image || Default} />
         <MembershipStatus
+          user={user}
           group_id={props.group.id}
           members={props.members}
           privacy={privacy}
+          memberType={memberType}
+          setMemberType={setMemberType}
           setTrigger={props.setTrigger}
         />
       </ImageDiv>
@@ -127,7 +159,7 @@ const GroupInfo = props => {
             setTrigger={props.setTrigger}
           /> */}
           <MemberList
-            group_id={props.group.id}
+            memberType={memberType}
             requests={props.requests}
             members={props.members}
             addToGroup={addToGroup}

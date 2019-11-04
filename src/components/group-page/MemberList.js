@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Header, Icon, Button, List, Modal, Image, Label, Menu, Tab } from 'semantic-ui-react';
 
 const MemberList = props => {
-  const { group_id, members, requests, addToGroup, declineRequest, removeMember } = props;
+  const { memberType, members, requests, addToGroup, declineRequest, removeMember } = props;
   const groupSize = members.length;
   const requestSize = requests.length;
 
@@ -15,9 +15,11 @@ const MemberList = props => {
             members.map(member => (
               <Fragment key={member.id}>
                 <List.Item>
-                  <List.Content floated='right'>
-                    <Button icon color="red" onClick={(evt) => removeMember(evt, member.id)}><Icon name='remove' /></Button>
-                  </List.Content>
+                  {memberType.userType === 'admin' &&
+                    <List.Content floated='right'>
+                      <Button icon color="red" onClick={(evt) => removeMember(evt, member.id)}><Icon name='remove' /></Button>
+                    </List.Content>
+                  }
                   <Image avatar src={member.image} />
                   <List.Content>{member.username}</List.Content>
                 </List.Item>
@@ -27,7 +29,10 @@ const MemberList = props => {
         </List>
       </Tab.Pane>,
     },
-    {
+  ]
+
+  if (memberType.userType === 'admin') {
+    panes.push({
       menuItem: (
         <Menu.Item key='messages'>
           Pending Requests<Label>{requestSize}</Label>
@@ -51,8 +56,8 @@ const MemberList = props => {
           }
         </List>
       </Tab.Pane>,
-    },
-  ]
+    })
+  }
 
   return (
     <Modal trigger={<Button>{groupSize} Members</Button>}>
