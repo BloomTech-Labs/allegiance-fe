@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
-import { editGroups } from 'actions'
+import { editGroup, createGroup } from 'actions'
 
 // // import { Mixpanel } from '../analytics/Mixpanel'
 
@@ -27,8 +27,8 @@ const CreateGroup = props => {
 
   //Imports form custom hook to handle state, form entry and form submission.
   const requestType = window.location.pathname.includes('/editgroup/')
-    ? editGroup
-    : createGroup
+    ? handleGroupEdit
+    : handleGroupCreation
   const {
     values,
     handleChange,
@@ -53,26 +53,27 @@ const CreateGroup = props => {
   }, [setValues, dispatch])
 
   //Creates a new group and pushes the user to the group page after submission.
-  async function createGroup() {
+  async function handleGroupCreation() {
     try {
-      dispatch({ type: types.ADD_GROUP_REQUEST })
+
       const newGroup = {
         ...values,
         image: image || Default,
         creator_id: loggedInUser.id,
       }
-      const result = await axiosWithAuth([token]).post('/groups/', newGroup)
-      const addedGroup = {
-        name: result.data.newGroup.group_name,
-        image: result.data.newGroup.image,
-        id: result.data.newGroup.id,
-        user_type: 'admin',
-      }
+      dispatch(createGroup(newGroup)).then((res) => {
+        props.history.push(`/group/${res}`)
+      })
+      // const result = await axiosWithAuth([token]).post('/groups/', newGroup)
+      // const addedGroup = {
+      //   name: result.data.newGroup.group_name,
+      //   image: result.data.newGroup.image,
+      //   id: result.data.newGroup.id,
+      //   user_type: 'admin',
+      // }
       // fetch_group_success??
-      dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
+      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
       // Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
-      const push = () => props.history.push(`/group/${result.data.newGroup.id}`)
-      setTimeout(push, 1000)
     } catch (err) {
       dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
       // Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
@@ -82,11 +83,9 @@ const CreateGroup = props => {
   }
 
   //Edits existing group and pushes the user to the group page after submission.
-  async function editGroup() {
-    console.log('got called')
+  async function handleGroupEdit() {
     const updatedGroup = { ...values, image }
-    console.log('about to dispatch', group.id)
-    dispatch(editGroups(group.id, updatedGroup)).then(() => {
+    dispatch(editGroup(group.id, updatedGroup)).then(() => {
       props.history.push(`/group/${group.id}`)
     })
   }
