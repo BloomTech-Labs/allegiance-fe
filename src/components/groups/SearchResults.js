@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 // import { Mixpanel } from '../analytics/Mixpanel'
@@ -19,7 +19,16 @@ const SearchResults = props => {
   // )
   const filteredResults = props.results
   console.log(filteredResults)
-
+  if (props.loading) {
+    return <h1>Loading</h1>
+  }
+  if (filteredResults.length === 0) {
+    return (
+      <ResultsContainer>
+        <h1>No results found</h1>
+      </ResultsContainer>
+    )
+  }
   return (
     <ResultsContainer>
       {/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
