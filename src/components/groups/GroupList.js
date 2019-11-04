@@ -34,13 +34,13 @@ const GroupList = () => {
         group => !loggedInIDs.includes(group.id)
       )
       // filtering group list to remove hidden groups from public display
-      const accessGroups = uniqueGroups.filter(
-        group => group.privacy_setting !== 'hidden'
-      )
+      // const accessGroups = uniqueGroups.filter(
+      //   group => group.privacy_setting !== 'hidden'
+      // )
       // sorting groups by number of members
-      accessGroups.sort((a, b) => b.members.length - a.members.length)
+      uniqueGroups.sort((a, b) => b.members.length - a.members.length)
 
-      setData({ groups: accessGroups })
+      setData({ groups: uniqueGroups })
       // }
     }
 

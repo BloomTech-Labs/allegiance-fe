@@ -14,9 +14,11 @@ const SearchResults = props => {
   //   Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
 
   // filtering search results to not include hidden groups
-  const filteredResults = props.results.filter(
-    result => result.privacy_setting !== 'hidden'
-  )
+  // const filteredResults = props.results.filter(
+  //   result => result.privacy_setting !== 'hidden'
+  // )
+  const filteredResults = props.results
+  console.log(filteredResults)
 
   return (
     <ResultsContainer>
