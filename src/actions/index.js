@@ -46,18 +46,23 @@ export const joinGroup = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
-      const result = await axiosWithAuth([token]).post(`/groups_users`, {
-        user_id,
-        group_id,
-        user_type: 'member',
-      })
-      if (result.data.newGroupUsers) {
+      const result = await axiosWithAuth([token]).post(
+        `api/groups_users/search`,
+        {
+          user_id,
+          group_id,
+        }
+      )
+      const relation = result.data.relationExists;
+      if (relation) {
+        const data = relation[0];
+        console.log('data', data)
         const {
           group_name,
           group_image,
           group_id,
           user_type,
-        } = result.data.newGroupUsers
+        } = data
         const addedGroup = {
           name: group_name,
           image: group_image,

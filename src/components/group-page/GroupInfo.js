@@ -1,33 +1,138 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 import InviteModal from './InviteModal'
 import MembershipStatus from './MembershipStatus'
 import AllegiancePopover from './AllegiancePopover'
-import MembersList from './MembersList'
+import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
+import useGetToken from 'components/utils/useGetToken'
+import axios from 'axios'
 
 const GroupInfo = props => {
+  const [memberType, setMemberType] = useState({});
+  
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
+  const group_id = props.group.id
 
+  const user = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
   const isAdmin = loggedInGroups
     ? loggedInGroups.find(group => group.id === props.group.id)
     : null
   console.log('props', props)
   console.log('privacy', privacy)
+  const token = useGetToken();
+
+  useEffect(() => {
+    // Fetch user type and groups_users id
+    const fetchDataUserType = async () => {
+      if (group_id) {
+        console.log('group_id', group_id);
+        const response = await axios.post(
+          `http://localhost:5000/api/groups_users/search`,
+          {
+            user_id: user.id,
+            group_id: group_id,
+          }
+        )
+        const data = response.data.relationExists;
+        if (data) {
+          setMemberType({
+            userType: data[0].user_type,
+            relationId: data[0].id
+          })
+        } else {
+          setMemberType({})
+        }
+      }
+    }
+    fetchDataUserType()
+  }, [group_id, user])
+
+  async function addToGroup(evt, user_id) {
+    evt.preventDefault()
+    if (token) {
+      try {
+          const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+          if (deleted) {
+            const notification = await axiosWithAuth([token]).post(
+              `/users/${user_id}/notifications`,
+              {
+                user_id,
+                invoker_id: user.id,
+                type_id: group_id,
+                type: 'group_accepted',
+              }
+            )
+            await axiosWithAuth([token]).post(`/groups_users`, {
+              user_id,
+              group_id,
+              user_type: 'member',
+            })
+            console.log('emit socket', notification);
+            socket.emit('send notification', {
+              userIds: [user_id],
+              notification: {
+                ...notification.data,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                image: user.image,
+              },
+            })
+            props.setTrigger(!props.trigger)
+          }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function removeMember(evt, user_id) {
+    evt.preventDefault()
+    if (token) {
+      const result = await axiosWithAuth([token]).delete(`/groups_users/`, {
+        data: {
+          user_id,
+          group_id,
+        },
+      })
+      if (
+        result.data.message === 'The user to group pairing has been deleted.'
+      ) {
+        props.setTrigger(!props.trigger)
+      }
+    }
+  }
+
+  async function declineRequest(evt, user_id) {
+    evt.preventDefault()
+    try {
+      const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+      if (deleted) {
+        props.setTrigger(!props.trigger)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <GroupInfoDiv>
       <ImageDiv>
         <GroupLogo src={props.group.image || Default} />
         <MembershipStatus
+          user={user}
           group_id={props.group.id}
           members={props.members}
           privacy={privacy}
+          memberType={memberType}
+          setMemberType={setMemberType}
           setTrigger={props.setTrigger}
         />
       </ImageDiv>
@@ -46,13 +151,17 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          <MembersList
-            group_id={props.group.id}
-            members={props.members}
+          <MemberList
+            memberType={memberType}
             requests={props.requests}
-            setTrigger={props.setTrigger}
+            members={props.members}
+            addToGroup={addToGroup}
+            removeMember={removeMember}
+            declineRequest={declineRequest}
           />
-          <InviteModal members={props.members} group={props.group} />
+          {memberType.userType &&
+            <InviteModal members={props.members} group={props.group} />
+          }
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>

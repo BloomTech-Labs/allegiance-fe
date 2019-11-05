@@ -42,6 +42,7 @@ const GroupPage = props => {
       }
       // }
     }
+
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
   }, [id, dispatch, trigger])
@@ -68,6 +69,7 @@ const GroupPage = props => {
           group={group}
           members={group.members}
           allegiances={group.allegiances}
+          trigger={trigger}
           setTrigger={setTrigger}
           requests={group.reqs}
         />
