@@ -444,7 +444,7 @@ export const editGroup = (groupId, data) => async dispatch => {
     privacy_setting,
     creator_id,
   } = data
-  dispatch({ type: actionTypes.EDIT_GROUP_REQUEST })
+  await dispatch({ type: actionTypes.EDIT_GROUP_REQUEST })
   try {
     const editGroup = await axios.put(
       `http://localhost:5000/api/groups/${groupId}`,
@@ -458,8 +458,8 @@ export const editGroup = (groupId, data) => async dispatch => {
         creator_id,
       }
     )
-    console.log(editGroup.data.updated)
-    dispatch({
+    console.log('EDIT DATA👙', editGroup.data)
+    await dispatch({
       type: actionTypes.EDIT_GROUP_SUCCESS,
       payload: editGroup.data.updated,
     })
@@ -490,6 +490,5 @@ export const createGroup = groupData => async dispatch => {
     })
     // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
     return newGroup.data.newGroup.id
-
   }
 }
