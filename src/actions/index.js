@@ -503,3 +503,13 @@ export const createGroup = groupData => async dispatch => {
     })
   }
 }
+
+export const deleteGroup = groupId => async dispatch => {
+  try {
+    dispatch({type: actionTypes.DELETE_GROUP_REQUEST})
+    const deletedGroup = await axios.delete(`/groups/${groupId}`)
+    dispatch({type: actionTypes.DELETE_GROUP_SUCCESS, payload: groupId})
+  } catch (err) {
+    dispatch({type: actionTypes.DELETE_GROUP_FAILURE, payload: err})
+  }
+}

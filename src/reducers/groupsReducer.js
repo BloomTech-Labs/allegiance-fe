@@ -15,6 +15,8 @@ export const groupsReducer = (state = [], action) => {
           return group
         }
       })
+    case types.DELETE_GROUP_SUCCESS:
+      return state.filter(group => group.id !== action.payload)
     default:
       return state
   }
