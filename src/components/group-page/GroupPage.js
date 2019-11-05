@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
-import { fetchGroup, fetchGroupPosts } from 'actions'
+import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
@@ -17,6 +17,7 @@ const GroupPage = props => {
   const id = parseInt(props.match.params.id)
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   // const [group, setGroup] = useState({})
+  const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
   const posts = group.posts
   const [allegiances, setAllegiances] = useState([])
@@ -30,6 +31,7 @@ const GroupPage = props => {
       try {
         dispatch(fetchGroup(id))
         dispatch(fetchGroupPosts(id))
+        dispatch(fetchUserMembership({ group_id: id, user_id: user.id }))
       } catch (err) {
         dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
       }

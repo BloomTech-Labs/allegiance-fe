@@ -17,6 +17,7 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
+  memberType: null
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {

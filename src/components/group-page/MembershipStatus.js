@@ -21,7 +21,15 @@ import {
 import axios from 'axios'
 
 const MembershipStatus = props => {
-  const { user, group_id, members, privacy, memberType, setMemberType, setTrigger } = props;
+  const {
+    user,
+    group_id,
+    members,
+    privacy,
+    memberType,
+    setMemberType,
+    setTrigger,
+  } = props
   const dispatch = useDispatch()
 
   // Fetches Auth0 token for axios call
@@ -65,44 +73,6 @@ const MembershipStatus = props => {
           dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
           setTrigger(true)
           Mixpanel.activity(user.id, 'Joined Group')
-        }
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      }
-    }
-  }
-
-  async function joinGroupInvite(e) {
-    e.preventDefault()
-    if (token) {
-      try {
-        const result = await axiosWithAuth([token]).put(
-          `/groups_users/${memberType.relationId}`,
-          {
-            user_id: user.id,
-            group_id,
-            user_type: 'member',
-          }
-        )
-        if (result.data.updated) {
-          setMemberType('member')
-          const {
-            group_name,
-            group_image,
-            group_id,
-            user_type,
-          } = result.data.updated
-          const addedGroup = {
-            name: group_name,
-            image: group_image,
-            id: group_id,
-            user_type: user_type,
-          }
-          // should be group invite, new actions
-          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-          setTrigger(true)
-          // Mixpanel.activity(loggedInUser.id, 'Joined Group')
         }
       } catch (err) {
         console.log(err)
@@ -192,24 +162,6 @@ const MembershipStatus = props => {
                 className={classes.leave}
               >
                 Leave
-              </Button>
-            </>
-          )}
-          {memberType.userType === 'invited' && (
-            <>
-              <Chip
-                variant='outlined'
-                size='small'
-                label='Invited'
-                className={classes.chip}
-              />
-              <Button
-                onClick={e => joinGroupInvite(e)}
-                variant='contained'
-                size='small'
-                className={classes.join}
-              >
-                Join
               </Button>
             </>
           )}

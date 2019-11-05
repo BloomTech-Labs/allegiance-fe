@@ -521,3 +521,22 @@ export const deleteGroup = groupId => async dispatch => {
     dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
   }
 }
+
+export const fetchUserMembership = data => async dispatch => {
+  console.log(data)
+  const { group_id, user_id } = data
+
+  dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })
+
+  const response = await axios.post(`/groups_users/search`, {
+    user_id,
+    group_id,
+  })
+  const ahhh = response.data.relationExists
+  console.log('membership', ahhh)
+
+  dispatch({
+    type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
+    payload: response.data.relationExists || 'non-member',
+  })
+}
