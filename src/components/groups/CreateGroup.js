@@ -54,15 +54,17 @@ const CreateGroup = props => {
 
   //Creates a new group and pushes the user to the group page after submission.
   async function handleGroupCreation() {
-    try {
+    // try {
 
       const newGroup = {
         ...values,
         image: image || Default,
         creator_id: loggedInUser.id,
       }
-      dispatch(createGroup(newGroup)).then((res) => {
-        props.history.push(`/group/${res}`)
+      await dispatch(createGroup(newGroup)).then((res) => {
+        console.log('pushing to data', res);
+        props.history.push(`/group/${res.id}`)
+        dispatch({ type: types.ADD_GROUP_SUCCESS, payload: res })
       })
       // const result = await axiosWithAuth([token]).post('/groups/', newGroup)
       // const addedGroup = {
@@ -72,14 +74,13 @@ const CreateGroup = props => {
       //   user_type: 'admin',
       // }
       // fetch_group_success??
-      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
       // Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
-    } catch (err) {
-      dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      // Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
-      setError(true)
-      setLoading(false)
-    }
+    // } catch (err) {
+    //   dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
+    //   // Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
+    //   setError(true)
+    //   setLoading(false)
+    // }
   }
 
   //Edits existing group and pushes the user to the group page after submission.

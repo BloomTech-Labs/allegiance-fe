@@ -470,26 +470,36 @@ export const editGroup = (groupId, data) => async dispatch => {
 }
 
 export const createGroup = groupData => async dispatch => {
-  dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
-  dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
-  const newGroup = await axios.post(
-    'http://localhost:5000/api/groups',
-    groupData
-  )
-  if (newGroup.data) {
-    // const addedGroup = {
-    //   name: result.data.newGroup.group_name,
-    //   image: result.data.newGroup.image,
-    //   id: result.data.newGroup.id,
-    //   user_type: 'admin',
-    // }
-    console.log('new group created', newGroup.data.newGroup)
-    dispatch({
-      type: actionTypes.CREATE_GROUP_SUCCESS,
-      payload: newGroup.data.newGroup,
+  try {
+    await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const newGroup = await axios.post(
+      'http://localhost:5000/api/groups',
+      groupData
+    )
+    console.log('creating new group', newGroup);
+    const createdGroup = newGroup.data.newGroup;
+    if (createdGroup) {
+      const addedGroup = {
+        name: createdGroup.group_name,
+        image: createdGroup.image,
+        id: createdGroup.id,
+        user_type: 'admin',
+      }
+      console.log('new group created', addedGroup)
+      await dispatch({
+        type: actionTypes.CREATE_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
+      return addedGroup;
+    } else {
+      throw new Error();
+    }
+  } catch(err) {
+    await dispatch({
+      type: actionTypes.CREATE_GROUP_FAILURE,
+      payload: err,
     })
-    // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-    return newGroup.data.newGroup.id
-
   }
 }
