@@ -7,9 +7,10 @@ export const groupsReducer = (state = [], action) => {
     case types.CREATE_GROUP_SUCCESS:
       return [...state, action.payload]
     case types.EDIT_GROUP_SUCCESS:
-      return state.filter(group => {
+      return state.map(group => {
+        console.log(group.id === action.payload.id, group.id, action.payload.id)
         if (group.id === action.payload.id) {
-          return action.payload
+          return { ...action.payload, ...group }
         } else {
           return group
         }

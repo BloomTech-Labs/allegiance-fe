@@ -62,7 +62,6 @@ const CreateGroup = props => {
         creator_id: loggedInUser.id,
       }
       await dispatch(createGroup(newGroup)).then((res) => {
-        console.log('pushing to data', res);
         props.history.push(`/group/${res.id}`)
         dispatch({ type: types.ADD_GROUP_SUCCESS, payload: res })
       })
@@ -86,8 +85,12 @@ const CreateGroup = props => {
   //Edits existing group and pushes the user to the group page after submission.
   async function handleGroupEdit() {
     const updatedGroup = { ...values, image }
-    dispatch(editGroup(group.id, updatedGroup)).then(() => {
-      props.history.push(`/group/${group.id}`)
+    dispatch(
+      editGroup(window.location.pathname.split('/editgroup/')[1], updatedGroup)
+    ).then(() => {
+      props.history.push(
+        `/group/${window.location.pathname.split('/editgroup/')[1]}`
+      )
     })
   }
 
