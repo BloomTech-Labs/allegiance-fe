@@ -1,7 +1,7 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
-import axios from 'axios'
+import axios from 'components/utils/axiosWithoutAuth'
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
 }
@@ -9,7 +9,7 @@ const log = console.log
 export const fetchGroupPosts = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POSTS_REQUEST })
-    const posts = await axios.get(`http://localhost:5000/api/posts/group/${id}`)
+    const posts = await axios.get(`/posts/group/${id}`)
     const sortedPost = posts.data.postsLoaded.sort((a, b) => a.id - b.id)
     dispatch({ type: actionTypes.FETCH_POSTS_SUCCESS, payload: sortedPost })
   } catch (err) {
@@ -42,10 +42,12 @@ export const createGroupPost = (token, data) => async dispatch => {
     }
   }
 }
+
 export const joinGroup = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
+      await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
       const result = await axiosWithAuth([token]).post(
         `api/groups_users/search`,
         {
@@ -53,31 +55,35 @@ export const joinGroup = (token, data) => async dispatch => {
           group_id,
         }
       )
-      const relation = result.data.relationExists;
+      const relation = result.data.relationExists
       if (relation) {
-        const data = relation[0];
+        const data = relation[0]
         console.log('data', data)
-        const {
-          group_name,
-          group_image,
-          group_id,
-          user_type,
-        } = data
+        const { group_name, group_image, group_id, user_type } = data
         const addedGroup = {
           name: group_name,
           image: group_image,
           id: group_id,
           user_type: user_type,
         }
-        dispatch({ type: actionTypes.ADD_GROUP_SUCCESS, payload: addedGroup })
+        await dispatch({
+          type: actionTypes.ADD_GROUP_SUCCESS,
+          payload: addedGroup,
+        })
+        await dispatch({
+          type: actionTypes.CREATE_GROUP_SUCCESS,
+          payload: addedGroup,
+        })
         Mixpanel.activity(user_id, 'Joined Group')
       }
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+      await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+      await dispatch({ type: actionTypes.CREATE_GROUP_FAILURE, payload: err })
     }
   }
 }
+
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
@@ -434,7 +440,84 @@ export const fetchPrivateRequests = (token, data) => async dispatch => {
 
 export const fetchGroup = id => async dispatch => {
   dispatch({ type: actionTypes.FETCH_GROUP_REQUEST })
-  const group = await axios.get(`http://localhost:5000/api/groups/${id}`)
+  const group = await axios.get(`/groups/${id}`)
   dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
   console.log(group.data)
+}
+
+export const editGroup = (groupId, data) => async dispatch => {
+  const {
+    image,
+    description,
+    group_name,
+    location,
+    acronym,
+    privacy_setting,
+    creator_id,
+  } = data
+  await dispatch({ type: actionTypes.EDIT_GROUP_REQUEST })
+  try {
+    const editGroup = await axios.put(`/groups/${groupId}`, {
+      image,
+      description,
+      group_name,
+      location,
+      acronym,
+      privacy_setting,
+      creator_id,
+    })
+    console.log('EDIT DATA👙', editGroup.data)
+    await dispatch({
+      type: actionTypes.EDIT_GROUP_SUCCESS,
+      payload: editGroup.data.updated,
+    })
+  } catch (err) {
+    console.log(err)
+    dispatch({ type: actionTypes.EDIT_GROUP_FAILURE, payload: err })
+  }
+}
+
+export const createGroup = groupData => async dispatch => {
+  try {
+    await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const newGroup = await axios.post('/groups', groupData)
+    console.log('creating new group', newGroup)
+    const createdGroup = newGroup.data.newGroup
+    if (createdGroup) {
+      const addedGroup = {
+        name: createdGroup.group_name,
+        image: createdGroup.image,
+        id: createdGroup.id,
+        user_type: 'admin',
+      }
+      console.log('new group created', addedGroup)
+      await dispatch({
+        type: actionTypes.CREATE_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
+      return addedGroup
+    } else {
+      throw new Error()
+    }
+  } catch (err) {
+    await dispatch({
+      type: actionTypes.CREATE_GROUP_FAILURE,
+      payload: err,
+    })
+  }
+}
+
+export const deleteGroup = groupId => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.DELETE_GROUP_REQUEST })
+    const deletedGroup = await axios.delete(`/groups/${groupId}`)
+    dispatch({
+      type: actionTypes.DELETE_GROUP_SUCCESS,
+      payload: Number(groupId),
+    })
+  } catch (err) {
+    dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
+  }
 }

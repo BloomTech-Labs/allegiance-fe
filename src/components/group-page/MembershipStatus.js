@@ -16,6 +16,7 @@ import styled from 'styled-components'
 import {
   requestJoinPrivate,
   cancelRequestJoinPrivate,
+  joinGroup,
 } from 'actions'
 import axios from 'axios'
 
