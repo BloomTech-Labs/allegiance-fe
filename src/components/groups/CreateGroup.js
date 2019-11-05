@@ -96,14 +96,6 @@ const CreateGroup = props => {
 
   //Deletes a group.
   async function handleDeleteGroup() {
-    //   const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`)
-    //   // Mixpanel.activity(loggedInUser.id, 'Complete Delete Group')
-    //   const push = () => props.history.push(`/profile`)
-    //   setTimeout(push, 1000)
-    //   console.log(result)
-    // } catch {
-    //   // Mixpanel.activity(loggedInUser.id, 'Group Deletion Failed')
-    // }
     dispatch(
       deleteGroup(window.location.pathname.split('/editgroup/')[1])
     ).then(() => props.history.push('/groups'))
