@@ -90,6 +90,7 @@ const GroupTitleHolder = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  background-color: #dee4e7;
   h3 {
     margin: 0 1%;
   }
