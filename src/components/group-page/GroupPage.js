@@ -31,15 +31,17 @@ const GroupPage = props => {
       try {
         dispatch(fetchGroup(id))
         dispatch(fetchGroupPosts(id))
-        dispatch(fetchUserMembership({ group_id: id, user_id: user.id }))
       } catch (err) {
         dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
       }
     }
 
+    if (user && user.id) {
+      dispatch(fetchUserMembership({ group_id: id, user_id: user.id }))
+    }
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
-  }, [])
+  }, [user])
   if (Object.keys(group).length === 0) {
     return (
       <Loader active size='large'>

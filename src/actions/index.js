@@ -523,7 +523,7 @@ export const deleteGroup = groupId => async dispatch => {
 }
 
 export const fetchUserMembership = data => async dispatch => {
-  console.log(data)
+  console.log('fetching membership', data)
   const { group_id, user_id } = data
 
   dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })
@@ -532,11 +532,17 @@ export const fetchUserMembership = data => async dispatch => {
     user_id,
     group_id,
   })
-  const ahhh = response.data.relationExists
-  console.log('membership', ahhh)
+  const relation = response.data.relationExists
+  console.log('membership', relation)
 
-  dispatch({
-    type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
-    payload: response.data.relationExists || 'non-member',
-  })
+  if (relation) {
+    dispatch({
+      type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
+      payload: relation[0] || 'non-member',
+    })
+  } else {
+    dispatch({
+      type: actionTypes.FETCH_MEMBER_TYPE_FAILURE,
+    })
+  }
 }
