@@ -66,6 +66,7 @@ function App(props) {
           }
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
+          console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
           }
