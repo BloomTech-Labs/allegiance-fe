@@ -16,6 +16,7 @@ import styled from 'styled-components'
 import {
   requestJoinPrivate,
   cancelRequestJoinPrivate,
+  joinGroup,
 } from 'actions'
 import axios from 'axios'
 
@@ -64,38 +65,11 @@ const MembershipStatus = props => {
     fetchDataUserType()
   }, [token, props.group_id, loggedInUser])
   console.log('usertype', userType)
-  async function joinGroup(e) {
+  async function joinGroupButton(e) {
     e.preventDefault()
-    if (token) {
-      try {
-        const result = await axiosWithAuth([token]).post(`/groups_users`, {
-          user_id: loggedInUser.id,
-          group_id: props.group_id,
-          user_type: 'member',
-        })
-        if (result.data.newGroupUsers) {
-          setUserType('member')
-          const {
-            group_name,
-            group_image,
-            group_id,
-            user_type,
-          } = result.data.newGroupUsers
-          const addedGroup = {
-            name: group_name,
-            image: group_image,
-            id: group_id,
-            user_type: user_type,
-          }
-          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-          props.setTrigger(true)
-          Mixpanel.activity(loggedInUser.id, 'Joined Group')
-        }
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      }
-    }
+    await dispatch(joinGroup(token, {user_id: loggedInUser.id, group_id: props.group_id, Mixpanel}))
+    props.setTrigger(true)
+    setUserType('member')
   }
 
   async function joinGroupInvite(e) {
@@ -264,7 +238,7 @@ const MembershipStatus = props => {
             <>
               <NotMember>Holder</NotMember>
               <Button
-                onClick={e => joinGroup(e)}
+                onClick={e => joinGroupButton(e)}
                 variant='contained'
                 size='small'
                 className={classes.join}

@@ -46,6 +46,7 @@ export const joinGroup = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
+      await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
       const result = await axiosWithAuth([token]).post(`/groups_users`, {
         user_id,
         group_id,
@@ -64,12 +65,14 @@ export const joinGroup = (token, data) => async dispatch => {
           id: group_id,
           user_type: user_type,
         }
-        dispatch({ type: actionTypes.ADD_GROUP_SUCCESS, payload: addedGroup })
+        await dispatch({ type: actionTypes.ADD_GROUP_SUCCESS, payload: addedGroup })
+        await dispatch({ type: actionTypes.CREATE_GROUP_SUCCESS, payload: addedGroup })
         Mixpanel.activity(user_id, 'Joined Group')
       }
     } catch (err) {
       console.log(err)
-      dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+      await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+      await dispatch({ type: actionTypes.CREATE_GROUP_SUCCESS, payload: err })
     }
   }
 }
