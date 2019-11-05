@@ -9,7 +9,6 @@ import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-import { fetchGroupPosts } from 'actions'
 
 const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
@@ -63,17 +62,19 @@ const PostsContainer = props => {
     return (
       <PostsWrapper>
         <PostListContainer>
+          <JoinBtn onClick={() => loginWithRedirect({})}>
+            LOG IN TO JOIN THE CONVERSATION!
+          </JoinBtn>
           {posts.length > 0 ? (
             posts.map(post => {
               return <PostCard post={post} key={post.id} />
             })
           ) : (
-            <JoinBtn onClick={() => loginWithRedirect({})}>
-              Log In To See Posts!
-            </JoinBtn>
+            <PaperContainer elevation={20}>
+              <h2>Nobody has posted yet!</h2>
+            </PaperContainer>
           )}
         </PostListContainer>
-
         <div ref={postsEndRef} />
 
         {(membership === 'admin' || membership === 'member') && (

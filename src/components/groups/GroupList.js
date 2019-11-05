@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
 
-import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 
@@ -13,40 +13,39 @@ const GroupList = () => {
   const [data, setData] = useState({ groups: [] })
 
   // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
+  // const [token] = useGetToken()
 
   // Fetches user groups from Redux
   const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('are we ever fetching groups ? ', token)
-      if (token) {
-        const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-          column: 'group_name',
-          row: '',
-        })
-        console.log(groups.data)
+      // if (token) {
+      const groups = await axiosWithoutAuth().post(`/groups/search`, {
+        column: 'group_name',
+        row: '',
+      })
+      console.log(groups.data)
 
-        // Get array of ids for groups the user already is a member of
-        const loggedInIDs = loggedInGroups.map(group => group.id)
+      // Get array of ids for groups the user already is a member of
+      const loggedInIDs = loggedInGroups.map(group => group.id)
 
-        const uniqueGroups = groups.data.groupByFilter.filter(
-          group => !loggedInIDs.includes(group.id)
-        )
-        // filtering group list to remove hidden groups from public display
-        const accessGroups = uniqueGroups.filter(
-          group => group.privacy_setting !== 'hidden'
-        )
-        // sorting groups by number of members
-        accessGroups.sort((a, b) => b.members.length - a.members.length)
+      const uniqueGroups = groups.data.groupByFilter.filter(
+        group => !loggedInIDs.includes(group.id)
+      )
+      // filtering group list to remove hidden groups from public display
+      // const accessGroups = uniqueGroups.filter(
+      //   group => group.privacy_setting !== 'hidden'
+      // )
+      // sorting groups by number of members
+      uniqueGroups.sort((a, b) => b.members.length - a.members.length)
 
-        setData({ groups: accessGroups })
-      }
+      setData({ groups: uniqueGroups })
+      // }
     }
 
     fetchData()
-  }, [token, loggedInGroups])
+  }, [loggedInGroups])
 
   if (!data) {
     return (

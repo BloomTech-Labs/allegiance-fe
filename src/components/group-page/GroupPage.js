@@ -34,6 +34,7 @@ const GroupPage = props => {
         dispatch({ type: types.FETCH_GROUP_FAILURE, payload: err })
       }
     }
+
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
   }, [])
@@ -60,6 +61,7 @@ const GroupPage = props => {
           group={group}
           members={group.members}
           allegiances={group.allegiances}
+          trigger={trigger}
           setTrigger={setTrigger}
           requests={group.reqs}
         />
@@ -76,7 +78,6 @@ const GroupPage = props => {
 }
 const GroupPageContainer = styled.div`
   display: flex;
-  border: 2px solid pink;
   flex-direction: column;
   justify-content: center;
   width: 100%;

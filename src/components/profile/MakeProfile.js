@@ -30,8 +30,9 @@ const MakeProfile = props => {
     SubmitButton,
     ErrorMessage,
     setError,
+    setErrorContent,
     setLoading,
-  } = useForm(updateUser)
+  } = useForm(updateUser, true)
 
   //Imports image upload functions
   const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
@@ -44,6 +45,25 @@ const MakeProfile = props => {
       Object.keys(values).forEach(
         key => values[key] === '' && (values[key] = null)
       )
+
+      const users = await axiosWithAuth([token]).get(`/users`)
+
+      const emailExists = users.data.users.some(
+        user => user.email === values.email && loggedInUser.id !== user.id
+      )
+      if (emailExists) {
+        setErrorContent('Email is in use by a different account')
+        throw new Error()
+      }
+
+      const usernameExists = users.data.users.some(
+        user => user.username === values.username && loggedInUser.id !== user.id
+      )
+      if (usernameExists) {
+        setErrorContent('Username is in use by a different account')
+        throw new Error()
+      }
+
       const result = await axiosWithAuth([token]).put(
         `/users/${loggedInUser.id}`,
         values

@@ -42,32 +42,38 @@ export const createGroupPost = (token, data) => async dispatch => {
     }
   }
 }
+
 export const joinGroup = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
       await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
-      const result = await axiosWithAuth([token]).post(`/groups_users`, {
-        user_id,
-        group_id,
-        user_type: 'member',
-      })
-      if (result.data.newGroupUsers) {
+      const result = await axiosWithAuth([token]).post(
+        `api/groups_users/search`,
+        {
+          user_id,
+          group_id,
+        }
+      )
+      const relation = result.data.relationExists;
+      if (relation) {
+        const data = relation[0];
+        console.log('data', data)
         const {
           group_name,
           group_image,
           group_id,
           user_type,
-        } = result.data.newGroupUsers
+        } = data
         const addedGroup = {
           name: group_name,
           image: group_image,
           id: group_id,
           user_type: user_type,
         }
-        await dispatch({
+        await dispatch({ 
           type: actionTypes.ADD_GROUP_SUCCESS,
-          payload: addedGroup,
+          payload: addedGroup 
         })
         await dispatch({
           type: actionTypes.CREATE_GROUP_SUCCESS,
@@ -78,10 +84,11 @@ export const joinGroup = (token, data) => async dispatch => {
     } catch (err) {
       console.log(err)
       await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
-      await dispatch({ type: actionTypes.CREATE_GROUP_SUCCESS, payload: err })
+      await dispatch({ type: actionTypes.CREATE_GROUP_FAILURE, payload: err })
     }
   }
 }
+
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
