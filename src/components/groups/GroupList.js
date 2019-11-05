@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
 
-import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+import axios from 'components/utils/axiosWithoutAuth'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 
@@ -21,7 +21,7 @@ const GroupList = () => {
   useEffect(() => {
     const fetchData = async () => {
       // if (token) {
-      const groups = await axiosWithoutAuth().post(`/groups/search`, {
+      const groups = await axios.post(`/groups/search`, {
         column: 'group_name',
         row: '',
       })

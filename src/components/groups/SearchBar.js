@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
+import axios from 'components/utils/axiosWithoutAuth'
 // import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import useDebounce from '../utils/useDebounce'
@@ -86,13 +86,11 @@ const SearchBar = props => {
   useEffect(() => {
     const fetchData = async () => {
       // if (token) {
-      const groups = await axiosWithoutAuth().post('/groups/search', {
+      const groups = await axios.post('/groups/search', {
         column: 'group_name',
         row: values.group_name,
       })
-      console.log('GEOPS', groups)
       return groups
-      // }
     }
     // If empty string in search immediately set results array to blank
     if (values.group_name === '') setShowResults(false)

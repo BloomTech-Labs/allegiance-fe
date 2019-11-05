@@ -10,11 +10,11 @@ import AllegiancePopover from './AllegiancePopover'
 import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
 import useGetToken from 'components/utils/useGetToken'
-import axios from 'axios'
+import axios from 'components/utils/axiosWithoutAuth'
 
 const GroupInfo = props => {
-  const [memberType, setMemberType] = useState({});
-  
+  const [memberType, setMemberType] = useState({})
+
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
   const group_id = props.group.id
@@ -27,25 +27,22 @@ const GroupInfo = props => {
     : null
   console.log('props', props)
   console.log('privacy', privacy)
-  const token = useGetToken();
+  const token = useGetToken()
 
   useEffect(() => {
     // Fetch user type and groups_users id
     const fetchDataUserType = async () => {
       if (group_id) {
-        console.log('group_id', group_id);
-        const response = await axios.post(
-          `http://localhost:5000/api/groups_users/search`,
-          {
-            user_id: user.id,
-            group_id: group_id,
-          }
-        )
-        const data = response.data.relationExists;
+        console.log('group_id', group_id)
+        const response = await axios.post(`/groups_users/search`, {
+          user_id: user.id,
+          group_id: group_id,
+        })
+        const data = response.data.relationExists
         if (data) {
           setMemberType({
             userType: data[0].user_type,
-            relationId: data[0].id
+            relationId: data[0].id,
           })
         } else {
           setMemberType({})
@@ -59,34 +56,36 @@ const GroupInfo = props => {
     evt.preventDefault()
     if (token) {
       try {
-          const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
-          if (deleted) {
-            const notification = await axiosWithAuth([token]).post(
-              `/users/${user_id}/notifications`,
-              {
-                user_id,
-                invoker_id: user.id,
-                type_id: group_id,
-                type: 'group_accepted',
-              }
-            )
-            await axiosWithAuth([token]).post(`/groups_users`, {
+        const deleted = await axiosWithAuth([token]).delete(
+          `/private/group/${group_id}/${user_id}`
+        )
+        if (deleted) {
+          const notification = await axiosWithAuth([token]).post(
+            `/users/${user_id}/notifications`,
+            {
               user_id,
-              group_id,
-              user_type: 'member',
-            })
-            console.log('emit socket', notification);
-            socket.emit('send notification', {
-              userIds: [user_id],
-              notification: {
-                ...notification.data,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                image: user.image,
-              },
-            })
-            props.setTrigger(!props.trigger)
-          }
+              invoker_id: user.id,
+              type_id: group_id,
+              type: 'group_accepted',
+            }
+          )
+          await axiosWithAuth([token]).post(`/groups_users`, {
+            user_id,
+            group_id,
+            user_type: 'member',
+          })
+          console.log('emit socket', notification)
+          socket.emit('send notification', {
+            userIds: [user_id],
+            notification: {
+              ...notification.data,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              image: user.image,
+            },
+          })
+          props.setTrigger(!props.trigger)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -113,7 +112,9 @@ const GroupInfo = props => {
   async function declineRequest(evt, user_id) {
     evt.preventDefault()
     try {
-      const deleted = await axiosWithAuth([token]).delete(`/private/group/${group_id}/${user_id}`)
+      const deleted = await axiosWithAuth([token]).delete(
+        `/private/group/${group_id}/${user_id}`
+      )
       if (deleted) {
         props.setTrigger(!props.trigger)
       }
@@ -159,9 +160,9 @@ const GroupInfo = props => {
             removeMember={removeMember}
             declineRequest={declineRequest}
           />
-          {memberType.userType &&
+          {memberType.userType && (
             <InviteModal members={props.members} group={props.group} />
-          }
+          )}
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
