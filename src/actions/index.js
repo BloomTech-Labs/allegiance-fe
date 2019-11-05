@@ -65,8 +65,14 @@ export const joinGroup = (token, data) => async dispatch => {
           id: group_id,
           user_type: user_type,
         }
-        await dispatch({ type: actionTypes.ADD_GROUP_SUCCESS, payload: addedGroup })
-        await dispatch({ type: actionTypes.CREATE_GROUP_SUCCESS, payload: addedGroup })
+        await dispatch({
+          type: actionTypes.ADD_GROUP_SUCCESS,
+          payload: addedGroup,
+        })
+        await dispatch({
+          type: actionTypes.CREATE_GROUP_SUCCESS,
+          payload: addedGroup,
+        })
         Mixpanel.activity(user_id, 'Joined Group')
       }
     } catch (err) {
@@ -480,8 +486,8 @@ export const createGroup = groupData => async dispatch => {
       'http://localhost:5000/api/groups',
       groupData
     )
-    console.log('creating new group', newGroup);
-    const createdGroup = newGroup.data.newGroup;
+    console.log('creating new group', newGroup)
+    const createdGroup = newGroup.data.newGroup
     if (createdGroup) {
       const addedGroup = {
         name: createdGroup.group_name,
@@ -495,11 +501,11 @@ export const createGroup = groupData => async dispatch => {
         payload: addedGroup,
       })
       // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-      return addedGroup;
+      return addedGroup
     } else {
-      throw new Error();
+      throw new Error()
     }
-  } catch(err) {
+  } catch (err) {
     await dispatch({
       type: actionTypes.CREATE_GROUP_FAILURE,
       payload: err,
@@ -509,10 +515,15 @@ export const createGroup = groupData => async dispatch => {
 
 export const deleteGroup = groupId => async dispatch => {
   try {
-    dispatch({type: actionTypes.DELETE_GROUP_REQUEST})
-    const deletedGroup = await axios.delete(`/groups/${groupId}`)
-    dispatch({type: actionTypes.DELETE_GROUP_SUCCESS, payload: groupId})
+    dispatch({ type: actionTypes.DELETE_GROUP_REQUEST })
+    const deletedGroup = await axios.delete(
+      `http://localhost:5000/api/groups/${groupId}`
+    )
+    dispatch({
+      type: actionTypes.DELETE_GROUP_SUCCESS,
+      payload: Number(groupId),
+    })
   } catch (err) {
-    dispatch({type: actionTypes.DELETE_GROUP_FAILURE, payload: err})
+    dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
   }
 }
