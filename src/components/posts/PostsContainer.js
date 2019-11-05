@@ -1,34 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { useSelector, useDispatch } from 'react-redux'
+import { useAuth0 } from '../auth/react-auth0-wrapper'
+
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-
+import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-const PostsContainer = props => {
-  // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
-  const [posts, setPosts] = useState([])
-  const [submitted, setSubmitted] = useState(false)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const id = props.groupId
-      if (token)
-        try {
-          const posts = await axiosWithAuth([token]).get(`/posts/group/${id}`)
-          setPosts(posts.data.postsLoaded.sort((a, b) => a.id - b.id))
-          setSubmitted(false)
-        } catch {
-          setPosts([])
-          setSubmitted(false)
-        }
-    }
-    fetchData()
-  }, [token, submitted, props.groupId])
+const PostsContainer = props => {
+  const { loginWithRedirect } = useAuth0()
+  // Fetches Auth0 token for axios call
+  const { posts } = props
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts
   const postsEndRef = useRef(null)
@@ -50,34 +35,54 @@ const PostsContainer = props => {
   } else {
     membership = currentUserType.user_type
   }
+  const userIn = useSelector(state => state.userReducer.loggedInUser)
+  if (userIn) {
+    return (
+      <PostsWrapper>
+        <PostListContainer>
+          {posts.length > 0 ? (
+            posts.map(post => {
+              return <PostCard post={post} key={post.id} />
+            })
+          ) : (
+            <PaperContainer elevation={20}>
+              <h2>Nobody has posted yet!</h2>
+            </PaperContainer>
+          )}
+        </PostListContainer>
 
-  return (
-    <PostsWrapper>
-      <PostListContainer>
-        {posts.length > 0 ? (
-          posts.map(post => {
-            return (
-              <PostCard post={post} key={post.id} setSubmitted={setSubmitted} />
-            )
-          })
-        ) : (
-          <PaperContainer elevation={20}>
-            <h2>Nobody has posted yet!</h2>
-          </PaperContainer>
+        <div ref={postsEndRef} />
+
+        {(membership === 'admin' || membership === 'member') && (
+          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
         )}
-      </PostListContainer>
+      </PostsWrapper>
+    )
+  } else {
+    return (
+      <PostsWrapper>
+        <PostListContainer>
+          <JoinBtn onClick={() => loginWithRedirect({})}>
+            LOG IN TO JOIN THE CONVERSATION!
+          </JoinBtn>
+          {posts.length > 0 ? (
+            posts.map(post => {
+              return <PostCard post={post} key={post.id} />
+            })
+          ) : (
+            <PaperContainer elevation={20}>
+              <h2>Nobody has posted yet!</h2>
+            </PaperContainer>
+          )}
+        </PostListContainer>
+        <div ref={postsEndRef} />
 
-      <div ref={postsEndRef} />
-
-      {(membership === 'admin' || membership === 'member') && (
-        <PostForm
-          setSubmitted={setSubmitted}
-          groupId={props.groupId}
-          scrollToBottom={scrollToBottom}
-        />
-      )}
-    </PostsWrapper>
-  )
+        {(membership === 'admin' || membership === 'member') && (
+          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
+        )}
+      </PostsWrapper>
+    )
+  }
 }
 
 const PostListContainer = styled.div`
@@ -93,6 +98,19 @@ const PostsWrapper = styled.div`
 `
 const PaperContainer = styled(Paper)`
   padding: 3.5rem;
+`
+const JoinBtn = styled.button`
+  height: 54px;
+  width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  background: #ed5959;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `
 
 export default PostsContainer

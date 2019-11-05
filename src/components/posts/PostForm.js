@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
-import { Mixpanel } from '../analytics/Mixpanel'
-
+// import { Mixpanel } from '../analytics/Mixpanel'
+import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
@@ -17,25 +17,26 @@ const PostForm = props => {
   const primary = green[500]
   // token for accessing authentication required backend routes
   const [token] = useGetToken()
-
+  const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // useForm custom hook and set timeout custom hook
   const { values, setValues, handleChange, handleSubmit } = useForm(submitPost)
 
   // callback function to handle submit
   async function submitPost(e) {
-    const post = await axiosWithAuth([token]).post(
-      `/posts/group/${props.groupId}`,
-      {
-        user_id: userId,
-        group_id: props.groupId,
-        post_content: values.post_content,
-      }
-    )
-    if (post.data.postResult) {
-      setValues('')
-      props.setSubmitted(true)
-      Mixpanel.activity(userId, 'Post Successfully Created.')
+    const { groupId } = props
+    var data = {
+      userId,
+      groupId,
+      post_content: values.post_content,
+    }
+
+    await dispatch(createGroupPost(token, data))
+
+    var data = {
+      userId,
+      groupId,
+      post_content: '',
     }
   }
 
@@ -80,6 +81,11 @@ const PostForm = props => {
             margin='normal'
             variant='outlined'
             onChange={handleChange}
+            // onKeyDown={e => {
+            //   if (e.keyCode === 13) {
+            //     handleSubmit()
+            //   }
+            // }}
             name='post_content'
             value={values.post_content || ''}
           />
@@ -111,7 +117,7 @@ const ReplyForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 801px;
   background-color: #dee4e7;
   align-items: center;
 `

@@ -1,4 +1,5 @@
-import React from 'react'
+// import React from 'react'
+// this component does NOTHING
 import { useSelector } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
@@ -6,7 +7,7 @@ import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import {
   Favorite,
-  FavoriteBorder,
+  ThumbUp,
   ChatBubbleOutline,
   DeleteOutline,
 } from '@material-ui/icons'
@@ -17,6 +18,7 @@ const PostActivity = props => {
   const postLikeId = props.post.likes.find(like => like.user_id === userId)
   async function addLike(e) {
     e.preventDefault()
+    console.log("add like function")
     const like = await axiosWithAuth([token]).post(
       `/posts_likes/post/${props.post.id}`,
       {
@@ -25,6 +27,12 @@ const PostActivity = props => {
       }
     )
     if (like.data.likeResult) {
+      // axiosWithAuth([token]).post(`/users/${}/notifications`, {
+      //   user_id: "",
+      //   invoker: "",
+      //   type_id: "",
+      //   type: 'like'
+      // })
       props.setSubmitted(true)
     }
   }
@@ -47,7 +55,7 @@ const PostActivity = props => {
       <hr />
       <BottomContainer>
         <LikeContainer>
-          {!postLikeId && <FavoriteBorder onClick={addLike} />}
+          {!postLikeId && <ThumbUp onClick={addLike} />}
           {postLikeId && <Favorite onClick={unLike} />}
         </LikeContainer>
 

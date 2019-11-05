@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "cypress": "^3.4.1",
+    "cypress": "^3.5.0",
     "jest-dom": "^4.0.0"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "react-dropzone": "^10.1.8",
     "react-ga": "^2.6.0",
     "react-moment": "^0.9.2",
+    "react-onclickoutside": "^6.9.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
@@ -30,7 +31,9 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.0",
-    "styled-components": "^4.3.2"
+    "socket.io-client": "^2.3.0",
+    "styled-components": "^4.3.2",
+    "use-onclickoutside": "^0.3.1"
   },
   "scripts": {
     "start": "react-scripts start",

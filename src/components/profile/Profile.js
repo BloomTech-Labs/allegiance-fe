@@ -6,9 +6,10 @@ import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
-import { ENTER_PROFILE } from 'reducers/userReducer'
+import * as types from 'actions/actionTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
+import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
@@ -25,11 +26,16 @@ const Profile = props => {
     if (loggedInUser && token) {
       const fetchData = async () => {
         try {
+          dispatch({ type: types.FETCH_PROFILE_REQUEST })
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
             email: loggedInUser.email,
           })
-          dispatch({ type: ENTER_PROFILE, payload: result.data.userInfo })
-        } catch {
+          dispatch({
+            type: types.FETCH_PROFILE_SUCCESS,
+            payload: result.data.userInfo,
+          })
+        } catch (err) {
+          dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
           console.log("There was an issue retrieving the user's profile.")
         }
       }
@@ -105,6 +111,7 @@ const Profile = props => {
             <MyAllegianceGroups
               content={loggedInAllegiances || []}
               type='allegiance'
+              default={Default}
             />
           </>
           <>

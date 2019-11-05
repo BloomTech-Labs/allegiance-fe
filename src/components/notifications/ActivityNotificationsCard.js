@@ -1,38 +1,30 @@
 import React from 'react'
 import { withRouter } from 'react-router'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
+import { deleteNotification } from 'actions/index'
 
-const NotificationsCard = props => {
+const ActivityNotificationsCard = props => {
   // De-structure props to gain access to keys
   const {
     // note: various other key/value pairs available, see postman documentation
     id,
     first_name,
     last_name,
-    user_image,
-    liker_id,
-    liker_name,
-    liker_image,
-    poster_id,
-    poster_name,
-    replier_id,
-    replier_name,
-    post_id,
-    post_content,
-    reply_id,
-    reply_content,
+    type,
+    type_id,
     created_at,
-    tag,
-    group_image,
-    acronym,
+    username,
+    image,
+    content,
   } = props.activity
 
+  const dispatch = useDispatch()
   // Material UI styling
   const useStyles = makeStyles({
     newCard: {
@@ -56,41 +48,41 @@ const NotificationsCard = props => {
     },
   })
 
+  const [token] = useGetToken()
+
   const classes = useStyles()
 
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
   const fullName = first_name + ' ' + last_name
 
   // Streamline post id and reply id for linking
-  let postId
-  if (tag === 'post') {
-    postId = id
-  }
-  if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
-    postId = post_id
-  }
-  let replyId
-  if (tag === 'reply') {
-    replyId = id
-  }
-  if (tag === 'replyLike') {
-    replyId = reply_id
-  }
+  // let postId
+  // if (tag === 'post') {
+  //   postId = id
+  // }
+  // if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
+  //   postId = post_id
+  // }
+  // let replyId
+  // if (tag === 'reply') {
+  //   replyId = id
+  // }
+  // if (tag === 'replyLike') {
+  //   replyId = reply_id
+  // }
 
   // Maintain max allowable content length for posts and replies
-  let postContent, replyContent
-  if (post_content) postContent = post_content.slice(0, 20)
-  if (reply_content) replyContent = reply_content.slice(0, 20)
-  if (post_content && post_content.length > 20) postContent += '...'
-  if (reply_content && reply_content.length > 20) replyContent += '...'
+  let notifyContent = ''
+  if (content) notifyContent = content.slice(0, 20)
+  if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
-  const goToPost = e => {
+  const goToNote = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: `/post/${postId}`,
+      pathname: type !== 'group_request' && type !== 'group_accepted' ? `/post/${type_id}` : `/group/${type_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
-      replyNumber: replyId || null,
+      // replyNumber: replyId || null,
     })
   }
 
@@ -104,20 +96,20 @@ const NotificationsCard = props => {
   if (created_at > timeStamp || timeStamp === null) checkIfNew = true
 
   return (
-    <NotificationCardDiv onClick={e => goToPost(e)}>
+    <NotificationCardDiv onClick={e => goToNote(e)}>
       <Card className={checkIfNew ? classes.newCard : classes.card}>
         <CardIcon>
           <Avatar
             aria-label='author_avatar'
             className={classes.avatar}
-            src={liker_image || user_image}
+            src={image}
             alt={'Avatar'}
           />
         </CardIcon>
         <CardMessage>
           <div>
-            <span>{liker_name || fullName}</span>{' '}
-            {tag === 'post' && <>made a post: {postContent}</>}
+            <span>{fullName || username}</span>{' '}
+            {/* {tag === 'post' && <>made a post: {postContent}</>}
             {tag === 'reply' && <>replied to a post: {replyContent}</>}
             {tag === 'postLike' && (
               <>
@@ -133,7 +125,12 @@ const NotificationsCard = props => {
                 {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
                 reply: {replyContent}
               </>
-            )}{' '}
+            )} */}
+            {type === 'like' && <>liked your post: {content}</>}
+            {type === 'reply' && <>replied to your post: {content}</>}
+            {type === 'reply_like' && <>liked your reply: {content}</>}
+            {type === 'group_request' && <>requested membership to your group: {content}</>}
+            {type === 'group_accepted' && <>has accepted your membership request to group: {content}</>}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
@@ -141,7 +138,13 @@ const NotificationsCard = props => {
             </p>
           </div>
         </CardMessage>
-        <CardGroup>
+
+        {/* <DelButton onClick={() => selectNotification(user_id, invoker_id, timestamp/create_at) {
+          useSelector(grab state and filter to get notification id)
+          returns id
+          deleteNotification(notificationId)
+        }}>Delete</DelButton> */}
+        {/* <CardGroup>
           <Avatar
             aria-label='group_avatar'
             className={classes.avatar}
@@ -149,7 +152,15 @@ const NotificationsCard = props => {
             alt={'Avatar'}
           />
           <p>{acronym}</p>
-        </CardGroup>
+        </CardGroup> */}
+        <DelButton
+          onClick={evt => {
+            evt.stopPropagation()
+            dispatch(deleteNotification(token, id))
+          }}
+        >
+          X
+        </DelButton>
       </Card>
     </NotificationCardDiv>
   )
@@ -188,12 +199,25 @@ const CardMessage = styled.div`
   overflow: hidden;
 `
 
-const CardGroup = styled.div`
+// const CardGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 20%;
+//   margin: 1%;
+// `
+const DelButton = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 20%;
+  justify-content: center;
+  background: red;
+  font-weight: 700;
+  border-radius: 5px;
+  color: white;
+  width: 10%;
   margin: 1%;
+  border-style: none;
 `
 
-export default withRouter(NotificationsCard)
+export default withRouter(ActivityNotificationsCard)

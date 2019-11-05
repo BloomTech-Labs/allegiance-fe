@@ -11,20 +11,15 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core/'
-import red from '@material-ui/core/colors/red'
+import black from '@material-ui/core/colors/red'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
-import {
-  Favorite,
-  ModeCommentOutlined,
-  DeleteOutline,
-  FavoriteBorder,
-} from '@material-ui/icons'
-
+import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { likePost, dislikePost } from 'actions'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
-
-import { useSelector } from 'react-redux'
+import { deleteGroupPost } from 'actions'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function PostCard(props) {
   const {
@@ -39,18 +34,20 @@ export default function PostCard(props) {
     created_at,
     group_id,
   } = props.post
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const socket = useSelector(state => state.socketReducer.socket)
   const userStatus =
     userGroups.filter(group => group.id === group_id).length > 0
       ? userGroups.filter(group => group.id === group_id)[0].user_type
       : null
 
   const [token] = useGetToken()
-  const postLikeId = likes.find(like => like.user_id === userId)
+  const postLikeId = likes.find(like => like.user_id === user.id)
 
-  const primary = red[600]
+  const primary = '#4267b2'
   const useStyles = makeStyles(theme => ({
     card: {
       width: 400,
@@ -96,7 +93,7 @@ export default function PostCard(props) {
       margin: 0,
       marginBottom: 3,
       padding: 1,
-      color: primary,
+      color: 'grey',
       paddingRight: 0,
     },
     likesCount: {
@@ -109,34 +106,24 @@ export default function PostCard(props) {
 
   const classes = useStyles()
 
-  const deletePost = async () => {
-    const post = await axiosWithAuth([token]).delete(`/posts/${id}`)
-    if (post) {
-      props.setSubmitted(true)
-    }
+  async function deletePost(e) {
+    await dispatch(deleteGroupPost(token, id))
   }
 
   async function addLike(e) {
-    e.preventDefault()
-    const like = await axiosWithAuth([token]).post(`/posts_likes/post/${id}`, {
-      user_id: userId,
-      post_id: id,
-    })
-    if (like.data.likeResult) {
-      props.setSubmitted(true)
+    const data = {
+      user: user,
+      id,
+      user_id,
     }
+    await dispatch(likePost(token, data, socket))
   }
 
   async function unLike(e) {
-    e.preventDefault()
-    const unLike = await axiosWithAuth([token]).delete(
-      `/posts_likes/${postLikeId.id}`
-    )
-    if (unLike) {
-      props.setSubmitted(true)
-    }
+    await dispatch(dislikePost(token, postLikeId.id))
   }
 
+  // *************change icon number to reg number*************
   return (
     <Card raised className={classes.card}>
       <CardHeader
@@ -153,9 +140,9 @@ export default function PostCard(props) {
           />
         }
         action={
-          (userId === user_id || userStatus === 'admin') &&
+          (user.id === user_id || userStatus === 'admin') &&
           !window.location.pathname.includes('/post') && (
-            <IconButton onClick={() => deletePost()} aria-label='settings'>
+            <IconButton onClick={(e) => deletePost(e)} aria-label='settings'>
               <DeleteOutline />
             </IconButton>
           )
@@ -185,10 +172,14 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={addLike}
+              style={{ backgroundColor: 'transparent' }}
             >
-              <FavoriteBorder className={classes.unlikedIcon} />
+              <ThumbUp className={classes.unlikedIcon} />
             </IconButton>
-            <IconButton className={classes.likesCount}>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>
@@ -199,21 +190,35 @@ export default function PostCard(props) {
               className={classes.buttonDiv}
               aria-label='add to favorites'
               onClick={unLike}
+              style={{ backgroundColor: 'transparent' }}
             >
-              <Favorite className={classes.likedIcon} />
+              <ThumbUp
+                className={classes.likedIcon}
+                style={{ backgroundColor: 'transparent' }}
+              />
             </IconButton>
-            <IconButton className={classes.likesCount}>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <h4 className='likes-count'> {likes.length} </h4>
             </IconButton>
           </div>
         )}
         <div>
           <Link to={`/post/${id}`}>
-            <IconButton aria-label='share' className={classes.buttonDiv}>
+            <IconButton
+              aria-label='share'
+              className={classes.buttonDiv}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <ModeCommentOutlined />
             </IconButton>
-            <IconButton className={classes.likesCount}>
-              <h4> {replies.length} </h4>
+            <IconButton
+              className={classes.likesCount}
+              style={{ backgroundColor: 'transparent' }}
+            >
+              {replies && <h4> {replies.length} </h4>}
             </IconButton>
           </Link>
         </div>
