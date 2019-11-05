@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { Divider } from 'semantic-ui-react'
 import styled from 'styled-components'
-import { useAuth0 } from '../auth/react-auth0-wrapper'
 import GroupList from './GroupList'
 import SearchBar from './SearchBar'
 import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 import NearbyGroups from './NearbyGroups'
 import { withRouter } from 'react-router-dom'
 function GroupContainer(props) {
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const groups = useSelector(state => state.myGroups)
   const userIn = useSelector(state => state.userReducer.loggedInUser)
 
   if (userIn) {
@@ -22,7 +21,7 @@ function GroupContainer(props) {
             <H3>MY GROUPS</H3>
           </GroupTitleHolder>
           <>
-            <MyAllegianceGroups content={loggedInGroups} type={'group'} />
+            <MyAllegianceGroups content={groups} type={'group'} />
           </>
         </MyGroups>
         <Divider />
@@ -30,7 +29,7 @@ function GroupContainer(props) {
         <NearbyGroups />
         <Divider />
         <H3>DISCOVER</H3>
-        <GroupList />
+        <GroupList groups={groups} />
       </Container>
     )
   } else {
@@ -38,7 +37,7 @@ function GroupContainer(props) {
       <Container>
         <SearchBar {...props} />
         <H3>DISCOVER</H3>
-        <GroupList />
+        <GroupList groups={groups} />
       </Container>
     )
   }

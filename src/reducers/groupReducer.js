@@ -155,6 +155,11 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         memberType: action.payload.user_type,
       }
+    case types.EDIT_MEMBER_TYPE_SUCCESS:
+      return {
+        ...state,
+        memberType: action.payload,
+      }
     default:
       return state
   }

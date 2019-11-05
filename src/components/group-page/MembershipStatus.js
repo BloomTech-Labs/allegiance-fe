@@ -17,6 +17,7 @@ import {
   requestJoinPrivate,
   cancelRequestJoinPrivate,
   joinGroup,
+  editUserMembership,
 } from 'actions'
 import axios from 'axios'
 
@@ -47,38 +48,10 @@ const MembershipStatus = props => {
     hasRequest = privateGroupRequests.includes(group_id)
   }, [privateGroupRequests])
 
-  async function joinGroup(e) {
+  async function joinGroupHandler(e) {
     e.preventDefault()
-    if (token) {
-      try {
-        const result = await axiosWithAuth([token]).post(`/groups_users`, {
-          user_id: user.id,
-          group_id,
-          user_type: 'member',
-        })
-        if (result.data.newGroupUsers) {
-          setMemberType('member')
-          const {
-            group_name,
-            group_image,
-            group_id,
-            user_type,
-          } = result.data.newGroupUsers
-          const addedGroup = {
-            name: group_name,
-            image: group_image,
-            id: group_id,
-            user_type: user_type,
-          }
-          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-          setTrigger(true)
-          Mixpanel.activity(user.id, 'Joined Group')
-        }
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      }
-    }
+    await dispatch(joinGroup({ user_id: user.id, group_id }))
+    await dispatch(editUserMembership({ user_type: 'member' }))
   }
 
   async function leaveGroup(e) {
@@ -145,9 +118,9 @@ const MembershipStatus = props => {
 
   return (
     <GroupMemberStatus>
-      {memberType.userType && (
+      {memberType && (
         <>
-          {memberType.userType === 'admin' && (
+          {memberType === 'admin' && (
             <>
               <Chip
                 variant='outlined'
@@ -165,7 +138,7 @@ const MembershipStatus = props => {
               </Button>
             </>
           )}
-          {memberType.userType === 'member' && (
+          {memberType === 'member' && (
             <>
               <Chip
                 variant='outlined'
@@ -185,13 +158,13 @@ const MembershipStatus = props => {
           )}
         </>
       )}
-      {!memberType.userType && (
+      {!memberType && (
         <>
           {privacy === 'public' && (
             <>
               <NotMember>Holder</NotMember>
               <Button
-                onClick={e => joinGroup(e)}
+                onClick={e => joinGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.join}

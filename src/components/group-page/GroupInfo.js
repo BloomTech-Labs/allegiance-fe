@@ -13,45 +13,17 @@ import useGetToken from 'components/utils/useGetToken'
 import axios from 'components/utils/axiosWithoutAuth'
 
 const GroupInfo = props => {
-  const [memberType, setMemberType] = useState({})
-  // const {memberType} = props
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
   const group_id = props.group.id
+  const memberType = props.group.memberType
 
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
-  const isAdmin = loggedInGroups
-    ? loggedInGroups.find(group => group.id === props.group.id)
-    : null
   
   console.log('props', props)
   console.log('privacy', privacy)
   const token = useGetToken()
-
-  useEffect(() => {
-    // Fetch user type and groups_users id
-    const fetchDataUserType = async () => {
-      if (group_id) {
-        console.log('group_id', group_id)
-        const response = await axios.post(`/groups_users/search`, {
-          user_id: user.id,
-          group_id: group_id,
-        })
-        const data = response.data.relationExists
-        if (data) {
-          setMemberType({
-            userType: data[0].user_type,
-            relationId: data[0].id,
-          })
-        } else {
-          setMemberType({})
-        }
-      }
-    }
-    fetchDataUserType()
-  }, [group_id, user])
 
   async function addToGroup(evt, user_id) {
     evt.preventDefault()
@@ -134,7 +106,7 @@ const GroupInfo = props => {
           members={props.members}
           privacy={privacy}
           memberType={memberType}
-          setMemberType={setMemberType}
+          // setMemberType={setMemberType}
           setTrigger={props.setTrigger}
         />
       </ImageDiv>
@@ -161,14 +133,14 @@ const GroupInfo = props => {
             removeMember={removeMember}
             declineRequest={declineRequest}
           />
-          {memberType.userType && (
+          {memberType && (
             <InviteModal members={props.members} group={props.group} />
           )}
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
       </InfoDiv>
       <Settings>
-        {isAdmin && isAdmin.user_type === 'admin' ? (
+        {memberType === 'admin' ? (
           <Link
             to={{
               pathname: `/editgroup/${props.group.id}`,

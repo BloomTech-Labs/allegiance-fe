@@ -32,7 +32,7 @@ const MemberList = props => {
     },
   ]
 
-  if (memberType.userType === 'admin') {
+  if (memberType === 'admin') {
     panes.push({
       menuItem: (
         <Menu.Item key='messages'>

@@ -11,15 +11,11 @@ import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
 const GroupPage = props => {
-  // Fetches Auth0 token for axios call
-  // const [token] = useGetToken()
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
-  // const [group, setGroup] = useState({})
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
-  const posts = group.posts
+  const { memberType, posts } = group
   const [allegiances, setAllegiances] = useState([])
   const [members, setMembers] = useState([])
   const [requests, setRequests] = useState([])
@@ -42,6 +38,7 @@ const GroupPage = props => {
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
   }, [user])
+
   if (Object.keys(group).length === 0) {
     return (
       <Loader active size='large'>
@@ -49,15 +46,7 @@ const GroupPage = props => {
       </Loader>
     )
   }
-  // checking to see if current user is a member of current group
-  const currentUserType = userGroups.find(group => group.id === id)
-  // if they are undefined, we set membership to a string so we don't get an error
-  let membership
-  if (currentUserType === undefined) {
-    membership = 'non-member'
-  } else {
-    membership = currentUserType.user_type
-  }
+
   return (
     <GroupPageContainer>
       <PaperContainer elevation={3}>
@@ -71,9 +60,9 @@ const GroupPage = props => {
         />
       </PaperContainer>
       {group.privacy_setting === 'public' ||
-      membership === 'member' ||
-      membership === 'admin' ? (
-        <PostsContainer groupId={id} members={members} posts={posts} />
+      memberType === 'member' ||
+      memberType === 'admin' ? (
+        <PostsContainer groupId={id} memberType={memberType} members={members} posts={posts} />
       ) : (
         <BlockedView />
       )}

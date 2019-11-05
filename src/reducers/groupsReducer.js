@@ -4,7 +4,7 @@ export const groupsReducer = (state = [], action) => {
   switch (action.type) {
     case types.FETCH_MY_GROUPS_SUCCESS:
       return action.payload
-    case types.CREATE_GROUP_SUCCESS:
+    case types.ADD_GROUP_SUCCESS:
       return [...state, action.payload]
     case types.EDIT_GROUP_SUCCESS:
       return state.map(group => {

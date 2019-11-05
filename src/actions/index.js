@@ -43,11 +43,11 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
-export const joinGroup = (token, data) => async dispatch => {
+export const joinGroupOld = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
-      await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
+      await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
       const result = await axiosWithAuth([token]).post(
         `api/groups_users/search`,
         {
@@ -70,16 +70,11 @@ export const joinGroup = (token, data) => async dispatch => {
           type: actionTypes.ADD_GROUP_SUCCESS,
           payload: addedGroup,
         })
-        await dispatch({
-          type: actionTypes.CREATE_GROUP_SUCCESS,
-          payload: addedGroup,
-        })
         Mixpanel.activity(user_id, 'Joined Group')
       }
     } catch (err) {
       console.log(err)
       await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
-      await dispatch({ type: actionTypes.CREATE_GROUP_FAILURE, payload: err })
     }
   }
 }
@@ -479,7 +474,6 @@ export const editGroup = (groupId, data) => async dispatch => {
 
 export const createGroup = groupData => async dispatch => {
   try {
-    await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
     const newGroup = await axios.post('/groups', groupData)
     console.log('creating new group', newGroup)
@@ -493,17 +487,51 @@ export const createGroup = groupData => async dispatch => {
       }
       console.log('new group created', addedGroup)
       await dispatch({
-        type: actionTypes.CREATE_GROUP_SUCCESS,
+        type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
-      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
       return addedGroup
     } else {
       throw new Error()
     }
   } catch (err) {
     await dispatch({
-      type: actionTypes.CREATE_GROUP_FAILURE,
+      type: actionTypes.ADD_GROUP_FAILURE,
+      payload: err,
+    })
+  }
+}
+
+export const joinGroup = groupData => async dispatch => {
+  const { user_id, group_id } = groupData
+  try {
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const result = await axios.post(`/groups_users`, {
+      user_id,
+      group_id,
+      user_type: 'member',
+    })
+    console.log('joining new group', result)
+    const newGroup = result.data.newGroupUsers
+    if (newGroup) {
+      const addedGroup = {
+        name: newGroup.group_name,
+        image: newGroup.group_image,
+        id: newGroup.id,
+        user_type: newGroup.user_type,
+      }
+      console.log('new group joined', addedGroup)
+      await dispatch({
+        type: actionTypes.ADD_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      return addedGroup
+    } else {
+      throw new Error()
+    }
+  } catch (err) {
+    await dispatch({
+      type: actionTypes.ADD_GROUP_FAILURE,
       payload: err,
     })
   }
@@ -545,4 +573,11 @@ export const fetchUserMembership = data => async dispatch => {
       type: actionTypes.FETCH_MEMBER_TYPE_FAILURE,
     })
   }
+}
+
+export const editUserMembership = data => async dispatch => {
+  console.log('editing membership', data)
+  const { user_type } = data
+  await dispatch({ type: actionTypes.EDIT_MEMBER_TYPE_REQUEST })
+  await dispatch({ type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS, payload: user_type })
 }
