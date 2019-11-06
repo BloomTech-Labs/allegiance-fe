@@ -90,7 +90,7 @@ const Notifications = () => {
     (!notifications && !invites) ||
     (notifications.length === 0 && invites.length === 0)
   ) {
-    return <h1>No notifications</h1>
+    return <h1>No Notifications</h1>
   }
 
   // // Filter out activity performed by the user, future versions should combine likes on same post/reply

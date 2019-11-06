@@ -98,7 +98,7 @@ const Profile = props => {
                 alignItems: 'center',
               }}
             >
-              <H3>MY ALLEGIANCES</H3>
+              <H2>MY ALLEGIANCES</H2>
               <Link to='/addallegiance'>
                 <Icon
                   name='edit outline'
@@ -170,9 +170,15 @@ const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
 `
+const H2 = styled.h2`
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+`
 
 const H3 = styled.h3`
-  font-size: 1rem;
+  padding-left: 20px;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 0;

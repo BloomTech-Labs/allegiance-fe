@@ -96,7 +96,8 @@ const GroupTitleHolder = styled.div`
 `
 
 const H3 = styled.h3`
-  font-size: 1rem;
+  padding-top: 10px;
+  font-size: 3rem;
   font-weight: bold;
   margin: 1% 0;
 `
