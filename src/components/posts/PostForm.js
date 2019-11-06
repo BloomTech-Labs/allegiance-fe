@@ -114,7 +114,7 @@ const DownNav = styled.div`
   width: 10%;
 `
 const ReplyForm = styled.form`
-  border: 1px solid red;
+  margin-top: 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;

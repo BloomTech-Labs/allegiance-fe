@@ -84,13 +84,12 @@ const PostsContainer = props => {
 }
 
 const PostListContainer = styled.div`
-  border: 1px solid red;
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
   background-color: #dee4e7;
-  padding-bottom: 15%;
+  // padding-bottom: 15%;
 `
 const PostsWrapper = styled.div`
   background-color: #dee4e7;
