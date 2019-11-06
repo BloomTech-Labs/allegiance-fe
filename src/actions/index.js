@@ -250,16 +250,15 @@ export const dislikePost = (token, data) => async dispatch => {
   }
 }
 
-export const fetchPost = (token, id) => async dispatch => {
-  if (token) {
-    try {
-      dispatch({ type: actionTypes.FETCH_POST_REQUEST })
-      const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-      const postObj = response.data.postLoaded
-      dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
-    } catch (err) {
-      dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
-    }
+export const fetchPost = id => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.FETCH_POST_REQUEST })
+    const response = await axios.get(`/posts/${id}`)
+    const postObj = response.data.postLoaded
+    dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
+    return postObj
+  } catch (err) {
+    dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
   }
 }
 export const likeReply = (token, data, socket) => async dispatch => {
@@ -585,7 +584,7 @@ export const fetchUserMembership = data => async dispatch => {
   if (relation) {
     dispatch({
       type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
-      payload: relation[0] || 'non-member',
+      payload: relation[0],
     })
   } else {
     dispatch({
@@ -598,5 +597,8 @@ export const editUserMembership = data => async dispatch => {
   console.log('editing membership', data)
   const { user_type } = data
   await dispatch({ type: actionTypes.EDIT_MEMBER_TYPE_REQUEST })
-  await dispatch({ type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS, payload: user_type })
+  await dispatch({
+    type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS,
+    payload: user_type,
+  })
 }

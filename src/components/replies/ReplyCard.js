@@ -35,10 +35,6 @@ const ReplyCard = props => {
   // Obtaining the current users status within the current group
   const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const { group_id } = props.post
-  const userStatus =
-    userGroups.filter(group => group.id === group_id).length > 0
-      ? userGroups.filter(group => group.id === group_id)[0].user_type
-      : null
 
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
@@ -139,7 +135,7 @@ const ReplyCard = props => {
             </div>
           )}
 
-          {(user.id === user_id || userStatus === 'admin') && (
+          {(user.id === user_id || props.group.memberType === 'admin') && (
             <IconButton
               onClick={() => deleteReply()}
               aria-label='settings'

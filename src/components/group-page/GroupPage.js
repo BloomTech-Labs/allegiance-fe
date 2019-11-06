@@ -62,7 +62,13 @@ const GroupPage = props => {
       {group.privacy_setting === 'public' ||
       memberType === 'member' ||
       memberType === 'admin' ? (
-        <PostsContainer groupId={id} memberType={memberType} members={members} posts={posts} />
+        <PostsContainer
+          groupId={id}
+          memberType={memberType}
+          members={members}
+          posts={posts}
+          group={group}
+        />
       ) : (
         <BlockedView />
       )}

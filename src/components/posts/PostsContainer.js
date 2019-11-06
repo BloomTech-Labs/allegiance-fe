@@ -9,11 +9,10 @@ import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-
 const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
   // Fetches Auth0 token for axios call
-  const { posts, memberType } = props
+  const { posts, memberType, group } = props
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts
   const postsEndRef = useRef(null)
@@ -67,7 +66,7 @@ const PostsContainer = props => {
           </JoinBtn>
           {posts.length > 0 ? (
             posts.map(post => {
-              return <PostCard post={post} key={post.id} />
+              return <PostCard post={post} key={post.id} group={group} />
             })
           ) : (
             <PaperContainer elevation={20}>
