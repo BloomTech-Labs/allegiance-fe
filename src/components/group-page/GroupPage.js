@@ -8,7 +8,7 @@ import PostsContainer from '../posts/PostsContainer'
 import { fetchGroup, fetchGroupPosts } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Dimmer } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
 const GroupPage = props => {
   // Fetches Auth0 token for axios call
@@ -69,7 +69,9 @@ const GroupPage = props => {
       {group.privacy_setting === 'public' ||
       membership === 'member' ||
       membership === 'admin' ? (
-        <PostsContainer groupId={id} members={members} posts={posts} />
+        group.arePostsLoading 
+        ? <Loader size='large' active></Loader> 
+        : <PostsContainer groupId={id} members={members} posts={posts} />
       ) : (
         <BlockedView />
       )}
