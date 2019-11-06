@@ -95,22 +95,16 @@ const NavBar = props => {
       }
 
       if (data.notification.type === 'group_accepted') {
-<<<<<<< HEAD
+        const group_id = data.notification.type_id
         dispatch(
-          joinGroup(token, {
-            user_id: user.id,
-            group_id: data.notification.type_id,
-            Mixpanel,
+          receivingGroup({
+            user,
+            group_id,
+            fromGroupView: window.location.pathname.includes(
+              `/group/${group_id}`
+            ),
           })
         )
-=======
-        const group_id = data.notification.type_id
-        dispatch(receivingGroup({
-          user,
-          group_id,
-          fromGroupView: window.location.pathname.includes(`/group/${group_id}`)
-        }))
->>>>>>> ad8b7fa159e08c3f0be0941d9bc9fe1ef381f9b9
       }
     })
     socket.on('new invite', async data => {
