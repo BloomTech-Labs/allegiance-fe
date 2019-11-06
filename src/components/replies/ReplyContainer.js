@@ -140,7 +140,7 @@ const ReplyContainer = props => {
 
   // Sort replies by id (which is chronological)
   const sortedReplies = post.replies
-    ? post.replies.sort((a, b) => a.id - b.id)
+    ? post.replies.sort((a, b) => a.id - b.id).reverse()
     : null
 
   return (
@@ -148,24 +148,6 @@ const ReplyContainer = props => {
       {!!Object.values(post).length && (
         <PostCard post={post} setSubmitted={setSubmitted} group={group} />
       )}
-      {sortedReplies && (
-        <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
-              </div>
-            )
-          })}
-        </ReplyCardsContainer>
-      )}
-
-      <div ref={repliesEndRef} />
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
@@ -202,6 +184,25 @@ const ReplyContainer = props => {
           </ReplyForm>
         </ContainerBottom>
       )}
+
+      {sortedReplies && (
+        <ReplyCardsContainer>
+          {sortedReplies.map(reply => {
+            return (
+              <div ref={replyRefs[reply.id]} key={reply.id}>
+                <ReplyCard
+                  reply={reply}
+                  setSubmitted={setSubmitted}
+                  post={post}
+                  group={group}
+                />
+              </div>
+            )
+          })}
+        </ReplyCardsContainer>
+      )}
+
+      <div ref={repliesEndRef} />
     </ReplyViewContainer>
   )
 }
@@ -213,7 +214,6 @@ const ReplyViewContainer = styled.div`
   background-color: #dee4e7;
   min-height: 87vh;
   justify-content: flex-start;
-  border: 5px solid pink;
 `
 const ReplyCardsContainer = styled.div`
   width: 100%;
@@ -221,9 +221,8 @@ const ReplyCardsContainer = styled.div`
   padding-bottom: 18%;
 `
 const ContainerBottom = styled.div`
+  z-index: 0;
   display: flex;
-  position: fixed;
-  bottom: 6.5%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -231,7 +230,7 @@ const ContainerBottom = styled.div`
 `
 const DownNav = styled.div`
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   align-items: center;
   width: 10%;
 `

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Moment from 'react-moment'
 
 import styled from 'styled-components'
+import { Feed, Icon } from 'semantic-ui-react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
@@ -16,8 +17,9 @@ import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined'
 
 const useStyles = makeStyles({
   card: {
-    width: '90%',
+    width: '60vw',
     marginBottom: 20,
+    margin: 'auto',
   },
   avatar: {
     marginRight: 15,
@@ -134,8 +136,8 @@ const LikeFeedCard = props => {
 }
 
 const LikeCardDiv = styled.div`
-  display: flex;
-  justify-content: center;
+width: 100vw
+margin: auto
 `
 
 const HeaderDiv = styled.div`

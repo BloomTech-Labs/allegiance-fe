@@ -17,8 +17,9 @@ import SmsOutlinedIcon from '@material-ui/icons/SmsOutlined'
 
 const useStyles = makeStyles({
   card: {
-    width: '90%',
+    width: '60vw',
     marginBottom: 20,
+    margin: 'auto',
   },
   avatar: {
     marginRight: 15,

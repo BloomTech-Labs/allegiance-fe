@@ -38,6 +38,16 @@ const PostsContainer = props => {
   if (userIn) {
     return (
       <PostsWrapper>
+        {/* {(membership === 'admin' || memberType === 'member') && (
+          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
+        )} */}
+
+        <div ref={postsEndRef} />
+
+        {(memberType === 'admin' || memberType === 'member') && (
+          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
+        )}
+
         <PostListContainer>
           {posts.length > 0 ? (
             posts.map(post => {
@@ -49,12 +59,6 @@ const PostsContainer = props => {
             </PaperContainer>
           )}
         </PostListContainer>
-
-        <div ref={postsEndRef} />
-
-        {(memberType === 'admin' || memberType === 'member') && (
-          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
-        )}
       </PostsWrapper>
     )
   } else {
@@ -87,10 +91,10 @@ const PostsContainer = props => {
 const PostListContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   background-color: #dee4e7;
-  padding-bottom: 15%;
+  // padding-bottom: 15%;
 `
 const PostsWrapper = styled.div`
   background-color: #dee4e7;

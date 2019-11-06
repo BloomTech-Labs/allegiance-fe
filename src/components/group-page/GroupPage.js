@@ -59,23 +59,23 @@ const GroupPage = props => {
           requests={group.reqs}
         />
       </PaperContainer>
-      {
-        group.privacy_setting === 'public' ||
-        memberType === 'member' ||
-        memberType === 'admin' ? (
-          group.arePostsLoading 
-          ? <Loader size='large' active></Loader> 
-          : <PostsContainer
-              groupId={id}
-              memberType={memberType}
-              members={members}
-              posts={posts}
-              group={group}
-            />
+      {group.privacy_setting === 'public' ||
+      memberType === 'member' ||
+      memberType === 'admin' ? (
+        group.arePostsLoading ? (
+          <Loader size='large' active></Loader>
         ) : (
-          <BlockedView />
+          <PostsContainer
+            groupId={id}
+            memberType={memberType}
+            members={members}
+            posts={posts}
+            group={group}
+          />
         )
-      }
+      ) : (
+        <BlockedView />
+      )}
     </GroupPageContainer>
   )
 }
@@ -89,6 +89,9 @@ const GroupPageContainer = styled.div`
   justify-content: flex-start;
 `
 const PaperContainer = styled(Paper)`
-  margin-bottom: 5%;
+  // margin-bottom: 5%;
+  padding-top: 25px
+  display: flex;
+  justify-content: center;
 `
 export default GroupPage
