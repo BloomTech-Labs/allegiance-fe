@@ -2,6 +2,7 @@ import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
 import axios from 'components/utils/axiosWithoutAuth'
+import { types } from '@babel/core'
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
 }
@@ -43,44 +44,52 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
-export const joinGroup = (token, data) => async dispatch => {
-  const { user_id, group_id, Mixpanel } = data
-  if (token) {
-    try {
-      await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
-      const result = await axiosWithAuth([token]).post(
-        `api/groups_users/search`,
-        {
-          user_id,
-          group_id,
-        }
-      )
-      const relation = result.data.relationExists
-      if (relation) {
-        const data = relation[0]
-        console.log('data', data)
-        const { group_name, group_image, group_id, user_type } = data
-        const addedGroup = {
-          name: group_name,
-          image: group_image,
-          id: group_id,
-          user_type: user_type,
-        }
-        await dispatch({
-          type: actionTypes.ADD_GROUP_SUCCESS,
-          payload: addedGroup,
-        })
-        await dispatch({
-          type: actionTypes.CREATE_GROUP_SUCCESS,
-          payload: addedGroup,
-        })
-        Mixpanel.activity(user_id, 'Joined Group')
+export const receivingGroup = groupData => async dispatch => {
+  const { user, group_id, fromGroupView } = groupData
+  try {
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const result = await axios.post(
+      `/groups_users/search`,
+      {
+        user_id: user.id,
+        group_id,
       }
-    } catch (err) {
-      console.log(err)
-      await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
-      await dispatch({ type: actionTypes.CREATE_GROUP_FAILURE, payload: err })
+    )
+    const relation = result.data.relationExists
+    if (relation) {
+      const data = relation[0]
+      console.log('data', data)
+      const { group_name, group_image, group_id, user_type } = data
+      const addedGroup = {
+        name: group_name,
+        image: group_image,
+        id: group_id,
+        user_type: user_type,
+      }
+      await dispatch({
+        type: actionTypes.ADD_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      await dispatch({
+        type: actionTypes.CLEAN_UP_PENDING_GROUP_REQUESTS,
+        payload: group_id,
+      })
+      if (fromGroupView) {
+        await dispatch({
+          type: actionTypes.ADD_MEMBER_SUCCESS,
+          payload: user,
+        })
+        await dispatch({
+          type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS,
+          payload: addedGroup.user_type,
+        })
+      }
+    } else {
+      throw new Error()
     }
+  } catch (err) {
+    console.log(err)
+    await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
   }
 }
 
@@ -151,9 +160,9 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
 }
 
 export const acceptInvite = (token, data) => async dispatch => {
-  const { user_id, sender_id, group_id } = data
-  await dispatch(joinGroup(token, data))
-  await dispatch(deleteInvite(token, user_id, sender_id, group_id, true))
+  const { user, sender_id, group_id } = data
+  await dispatch(joinGroup(data))
+  await dispatch(deleteInvite(token, user.id, sender_id, group_id, true))
 }
 
 export const declineInvite = (
@@ -254,16 +263,15 @@ export const dislikePost = (token, data) => async dispatch => {
   }
 }
 
-export const fetchPost = (token, id) => async dispatch => {
-  if (token) {
-    try {
-      dispatch({ type: actionTypes.FETCH_POST_REQUEST })
-      const response = await axiosWithAuth([token]).get(`/posts/${id}`)
-      const postObj = response.data.postLoaded
-      dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
-    } catch (err) {
-      dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
-    }
+export const fetchPost = id => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.FETCH_POST_REQUEST })
+    const response = await axios.get(`/posts/${id}`)
+    const postObj = response.data.postLoaded
+    dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
+    return postObj
+  } catch (err) {
+    dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
   }
 }
 export const likeReply = (token, data, socket) => async dispatch => {
@@ -479,7 +487,6 @@ export const editGroup = (groupId, data) => async dispatch => {
 
 export const createGroup = groupData => async dispatch => {
   try {
-    await dispatch({ type: actionTypes.CREATE_GROUP_REQUEST })
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
     const newGroup = await axios.post('/groups', groupData)
     console.log('creating new group', newGroup)
@@ -493,20 +500,133 @@ export const createGroup = groupData => async dispatch => {
       }
       console.log('new group created', addedGroup)
       await dispatch({
-        type: actionTypes.CREATE_GROUP_SUCCESS,
+        type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
-      // dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
       return addedGroup
     } else {
       throw new Error()
     }
   } catch (err) {
     await dispatch({
-      type: actionTypes.CREATE_GROUP_FAILURE,
+      type: actionTypes.ADD_GROUP_FAILURE,
       payload: err,
     })
   }
+}
+
+export const addToGroup = groupData => async dispatch => {
+  const { group_id, invoker, user_id, socket } = groupData
+  try {
+    const deleted = await axios.delete(
+      `/private/group/${group_id}/${user_id}`
+    )
+    if (deleted) {
+      const notification = await axios.post(
+        `/users/${user_id}/notifications`,
+        {
+          user_id,
+          invoker_id: invoker.id,
+          type_id: group_id,
+          type: 'group_accepted',
+        }
+      )
+      const result = await axios.post(`/groups_users`, {
+        user_id,
+        group_id,
+        user_type: 'member',
+      })
+      console.log('returning member?', result)
+      const user = result.data.newGroupUsers
+      dispatch({ 
+        type: actionTypes.ADD_MEMBER_SUCCESS, 
+        payload: 
+          {
+            ...user,
+            location: user.user_location,
+            status: user.user_type,
+            name: `${user.first_name} ${user.last_name}`,
+            image: user.user_image,
+            id: user.user_id
+          }
+      })
+      console.log('emit socket', notification)
+      socket.emit('send notification', {
+        userIds: [user_id],
+        notification: {
+          ...notification.data,
+          first_name: invoker.first_name,
+          last_name: invoker.last_name,
+          image: invoker.image,
+        },
+      })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const joinGroup = groupData => async dispatch => {
+  const { user, group_id, fromGroupView } = groupData
+  const user_id = user.id
+  try {
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const result = await axios.post(`/groups_users`, {
+      user_id,
+      group_id,
+      user_type: 'member',
+    })
+    console.log('joining new group', result)
+    const newGroup = result.data.newGroupUsers
+    if (newGroup) {
+      const addedGroup = {
+        name: newGroup.group_name,
+        image: newGroup.group_image,
+        id: newGroup.group_id,
+        user_type: newGroup.user_type,
+      }
+      console.log('new group joined', addedGroup)
+      await dispatch({
+        type: actionTypes.ADD_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      if (fromGroupView) {
+        await dispatch({
+          type: actionTypes.ADD_MEMBER_SUCCESS,
+          payload: user,
+        })
+      }
+      return addedGroup
+    } else {
+      throw new Error()
+    }
+  } catch (err) {
+    await dispatch({
+      type: actionTypes.ADD_GROUP_FAILURE,
+      payload: err,
+    })
+  }
+}
+
+export const leaveGroup = data => async dispatch => {
+  const { group_id, user_id } = data
+  dispatch({ type: actionTypes.LEAVE_GROUP_REQUEST })
+  const result = await axios.delete(
+    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+  )
+  console.log('leaving group', result)
+  if (result.data) {
+    dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
+    dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+  }
+}
+
+export const removeMember = data => async dispatch => {
+  const { group_id, user_id } = data
+  const result = await axios.delete(
+    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+  )
+  dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
 }
 
 export const deleteGroup = groupId => async dispatch => {
@@ -519,5 +639,64 @@ export const deleteGroup = groupId => async dispatch => {
     })
   } catch (err) {
     dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
+  }
+}
+
+export const fetchUserMembership = data => async dispatch => {
+  console.log('fetching membership', data)
+  const { group_id, user_id } = data
+
+  dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })
+
+  try {
+    const response = await axios.post(`/groups_users/search`, {
+      user_id,
+      group_id,
+    })
+    const relation = response.data.relationExists
+    console.log('membership', relation)
+
+    if (relation) {
+      dispatch({
+        type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
+        payload: relation[0],
+      })
+    } else {
+      console.log('throwing err')
+      throw new Error()
+    }
+  } catch (err) {
+    dispatch({
+      type: actionTypes.FETCH_MEMBER_TYPE_FAILURE,
+      payload: err,
+    })
+  }
+}
+
+export const editUserMembership = data => async dispatch => {
+  console.log('editing membership', data)
+  const { user_type } = data
+  await dispatch({ type: actionTypes.EDIT_MEMBER_TYPE_REQUEST })
+  await dispatch({
+    type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS,
+    payload: user_type,
+  })
+}
+
+export const removeRequest = data => async dispatch => {
+  dispatch({type: actionTypes.REMOVE_REQUEST_REQUEST})
+  const { group_id, user_id } = data
+  try {
+    const deleted = await axios.delete(
+      `/private/group/${group_id}/${user_id}`
+    )
+    if (deleted) {
+      dispatch({ type: actionTypes.REMOVE_REQUEST_SUCCESS, payload: user_id })
+    } else {
+      throw new Error()
+    }
+  } catch (err) {
+    console.log(err)
+    dispatch({type: actionTypes.REMOVE_REQUEST_FAILURE, payload: err})
   }
 }

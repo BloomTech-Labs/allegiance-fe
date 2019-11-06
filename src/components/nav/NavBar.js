@@ -22,9 +22,8 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import NavMiddle from './NavMiddle'
-import { joinGroup } from 'actions/index'
 import { Mixpanel } from '../analytics/Mixpanel'
-import { fetchPrivateRequests } from 'actions'
+import { fetchPrivateRequests, receivingGroup } from 'actions'
 
 const NavBar = props => {
   const { location } = props
@@ -70,7 +69,7 @@ const NavBar = props => {
             const unreadNum = response.filter(
               notify => notify.created_at > timeStamp || timeStamp === null
             ).length
-            await dispatch({
+            dispatch({
               type: SET_UNREAD_NOTIFICATION_NUM,
               payload: unreadNum,
             })
@@ -96,6 +95,7 @@ const NavBar = props => {
       }
 
       if (data.notification.type === 'group_accepted') {
+<<<<<<< HEAD
         dispatch(
           joinGroup(token, {
             user_id: user.id,
@@ -103,6 +103,14 @@ const NavBar = props => {
             Mixpanel,
           })
         )
+=======
+        const group_id = data.notification.type_id
+        dispatch(receivingGroup({
+          user,
+          group_id,
+          fromGroupView: window.location.pathname.includes(`/group/${group_id}`)
+        }))
+>>>>>>> ad8b7fa159e08c3f0be0941d9bc9fe1ef381f9b9
       }
     })
     socket.on('new invite', async data => {

@@ -17,11 +17,21 @@ import {
   requestJoinPrivate,
   cancelRequestJoinPrivate,
   joinGroup,
+  editUserMembership,
+  leaveGroup,
 } from 'actions'
 import axios from 'axios'
 
 const MembershipStatus = props => {
-  const { user, group_id, members, privacy, memberType, setMemberType, setTrigger } = props;
+  const {
+    user,
+    group_id,
+    members,
+    privacy,
+    memberType,
+    setMemberType,
+    setTrigger,
+  } = props
   const dispatch = useDispatch()
 
   // Fetches Auth0 token for axios call
@@ -39,93 +49,16 @@ const MembershipStatus = props => {
     hasRequest = privateGroupRequests.includes(group_id)
   }, [privateGroupRequests])
 
-  async function joinGroup(e) {
+  async function joinGroupHandler(e) {
     e.preventDefault()
-    if (token) {
-      try {
-        const result = await axiosWithAuth([token]).post(`/groups_users`, {
-          user_id: user.id,
-          group_id,
-          user_type: 'member',
-        })
-        if (result.data.newGroupUsers) {
-          setMemberType('member')
-          const {
-            group_name,
-            group_image,
-            group_id,
-            user_type,
-          } = result.data.newGroupUsers
-          const addedGroup = {
-            name: group_name,
-            image: group_image,
-            id: group_id,
-            user_type: user_type,
-          }
-          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-          setTrigger(true)
-          Mixpanel.activity(user.id, 'Joined Group')
-        }
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      }
-    }
+    await dispatch(joinGroup({ user, group_id, fromGroupView: true }))
+    await dispatch(editUserMembership({ user_type: 'member' }))
   }
 
-  async function joinGroupInvite(e) {
+  async function leaveGroupHandler(e) {
     e.preventDefault()
-    if (token) {
-      try {
-        const result = await axiosWithAuth([token]).put(
-          `/groups_users/${memberType.relationId}`,
-          {
-            user_id: user.id,
-            group_id,
-            user_type: 'member',
-          }
-        )
-        if (result.data.updated) {
-          setMemberType('member')
-          const {
-            group_name,
-            group_image,
-            group_id,
-            user_type,
-          } = result.data.updated
-          const addedGroup = {
-            name: group_name,
-            image: group_image,
-            id: group_id,
-            user_type: user_type,
-          }
-          // should be group invite, new actions
-          dispatch({ type: types.ADD_GROUP_SUCCESS, payload: addedGroup })
-          setTrigger(true)
-          // Mixpanel.activity(loggedInUser.id, 'Joined Group')
-        }
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-      }
-    }
-  }
-
-  async function leaveGroup(e) {
-    e.preventDefault()
-    if (token) {
-      const result = await axiosWithAuth([token]).delete(
-        `/groups_users/${memberType.relationId}`
-      )
-      if (
-        result.data.message === 'The user to group pairing has been deleted.'
-      ) {
-        setMemberType({})
-        dispatch({ type: types.LEAVE_GROUP_SUCCESS, payload: group_id })
-        setTrigger(true)
-        // Mixpanel.activity(loggedInUser.id, 'Left Group')
-      }
-    }
+    await dispatch(leaveGroup({ user_id: user.id, group_id }))
+    await dispatch(editUserMembership({ user_type: null }))
   }
 
   async function requestPrivate(e) {
@@ -175,9 +108,9 @@ const MembershipStatus = props => {
 
   return (
     <GroupMemberStatus>
-      {memberType.userType && (
+      {memberType && (
         <>
-          {memberType.userType === 'admin' && (
+          {memberType === 'admin' && (
             <>
               <Chip
                 variant='outlined'
@@ -186,7 +119,7 @@ const MembershipStatus = props => {
                 className={classes.chip}
               />
               <Button
-                onClick={e => leaveGroup(e)}
+                onClick={e => leaveGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.leave}
@@ -195,25 +128,7 @@ const MembershipStatus = props => {
               </Button>
             </>
           )}
-          {memberType.userType === 'invited' && (
-            <>
-              <Chip
-                variant='outlined'
-                size='small'
-                label='Invited'
-                className={classes.chip}
-              />
-              <Button
-                onClick={e => joinGroupInvite(e)}
-                variant='contained'
-                size='small'
-                className={classes.join}
-              >
-                Join
-              </Button>
-            </>
-          )}
-          {memberType.userType === 'member' && (
+          {memberType === 'member' && (
             <>
               <Chip
                 variant='outlined'
@@ -222,7 +137,7 @@ const MembershipStatus = props => {
                 className={classes.chip}
               />
               <Button
-                onClick={e => leaveGroup(e)}
+                onClick={e => leaveGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.leave}
@@ -233,13 +148,13 @@ const MembershipStatus = props => {
           )}
         </>
       )}
-      {!memberType.userType && (
+      {!memberType && (
         <>
           {privacy === 'public' && (
             <>
               <NotMember>Holder</NotMember>
               <Button
-                onClick={e => joinGroup(e)}
+                onClick={e => joinGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.join}

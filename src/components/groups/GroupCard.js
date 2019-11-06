@@ -82,6 +82,7 @@ const MiddleDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
   height: 7vh;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;

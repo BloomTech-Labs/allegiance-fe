@@ -55,12 +55,12 @@ function App(props) {
             username: user.nickname,
             image: user.picture,
           })
-          await dispatch({
+          dispatch({
             type: types.FETCH_LOGIN_SUCCESS,
             payload: result.data.userInfo,
           })
           if (result.data.userInfo.basicGroupInfo !== undefined) {
-            await dispatch({
+            dispatch({
               type: types.FETCH_MY_GROUPS_SUCCESS,
               payload: result.data.userInfo.basicGroupInfo,
             })

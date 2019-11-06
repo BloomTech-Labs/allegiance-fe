@@ -15,7 +15,6 @@ const NavRight = props => {
 
   useEffect(() => {}, [notifyReducer])
   if (userIn) {
-    console.log('NOTIFY REDUCER', notifyReducer.unread)
     return (
       <StyledNavRight>
         <ul>

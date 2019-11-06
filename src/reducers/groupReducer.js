@@ -18,6 +18,7 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
+  memberType: null
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -145,6 +146,7 @@ export const groupReducer = (state = initialState, action) => {
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)
       return {
+        ...state,
         posts: state.posts.filter(post => post.id !== action.payload.id),
       }
     case types.FETCH_POST_FAILURE:
@@ -156,6 +158,31 @@ export const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+      }
+    case types.ADD_MEMBER_SUCCESS:
+      return {
+        ...state,
+        members: [...state.members, action.payload]
+      }
+    case types.REMOVE_MEMBER_SUCCESS:
+      return {
+        ...state,
+        members: state.members.filter(member => member.id !== action.payload)
+      }
+    case types.FETCH_MEMBER_TYPE_SUCCESS:
+      return {
+        ...state,
+        memberType: action.payload.user_type,
+      }
+    case types.EDIT_MEMBER_TYPE_SUCCESS:
+      return {
+        ...state,
+        memberType: action.payload,
+      }
+    case types.REMOVE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        reqs: state.reqs.filter(req => req.id !== action.payload)
       }
     default:
       return state
