@@ -138,7 +138,7 @@ const GroupInfo = props => {
         />
       </ImageDiv>
       <InfoDiv>
-        <h1>{props.group.group_name}</h1>
+        <Header>{props.group.group_name}</Header>
         <h2>{props.group.description}</h2>
         <SubInfo>
           <h3>
@@ -163,19 +163,24 @@ const GroupInfo = props => {
           {/* {memberType.userType && (
             <InviteModal members={props.members} group={props.group} />
           )} */}
+          <h3>
+            <AllegiancePopover allegiances={props.allegiances} />
+          </h3>
         </SubInfo>
-        <AllegiancePopover allegiances={props.allegiances} />
-        <MemberList
-          memberType={memberType}
-          requests={props.requests}
-          members={props.members}
-          addToGroup={addToGroup}
-          removeMember={removeMember}
-          declineRequest={declineRequest}
-        />
-        {memberType.userType && (
-          <InviteModal members={props.members} group={props.group} />
-        )}
+
+        <ModalWrapper>
+          <MemberList
+            memberType={memberType}
+            requests={props.requests}
+            members={props.members}
+            addToGroup={addToGroup}
+            removeMember={removeMember}
+            declineRequest={declineRequest}
+          />
+          {memberType.userType && (
+            <InviteModal members={props.members} group={props.group} />
+          )}
+        </ModalWrapper>
       </InfoDiv>
       <Settings>
         {isAdmin && isAdmin.user_type === 'admin' ? (
@@ -198,6 +203,8 @@ const GroupInfoDiv = styled.div`
   flex-direction: row;
   margin: 0 4% 4% 4%;
   justify-content: space-around;
+  align-items: center;
+  width: 500px;
 `
 const ImageDiv = styled.div`
   display: flex;
@@ -206,8 +213,8 @@ const ImageDiv = styled.div`
 
 const SubInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const GroupLogo = styled.img`
@@ -242,7 +249,6 @@ const InfoDiv = styled.div`
   h3 {
     font-size: 1rem;
     text-align: left;
-    margin: 0 0 2% 0;
   }
 `
 
@@ -250,6 +256,15 @@ const Settings = styled.div`
   position: absolute;
   top: 8%;
   right: 2%;
+`
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+`
+
+const Header = styled.h1`
+  font-weight: 700;
 `
 
 export default GroupInfo

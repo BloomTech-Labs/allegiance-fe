@@ -91,6 +91,8 @@ const GroupPageContainer = styled.div`
 `
 const PaperContainer = styled(Paper)`
   // margin-bottom: 5%;
-  // display: flex;
+  padding-top: 25px
+  display: flex;
+  justify-content: center;
 `
 export default GroupPage
