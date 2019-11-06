@@ -1,7 +1,9 @@
-import React from 'react'
+// SKELETON CODE TO RENDER ALLEGIANCE TO NAV IF IMPLEMENTED
 
-const AllegianceNav = () => {
-  return <h1>AllegianceNav</h1>
-}
+// import React from 'react'
 
-export default AllegianceNav
+// const AllegianceNav = () => {
+//   return <h1>AllegianceNav</h1>
+// }
+
+// export default AllegianceNav
