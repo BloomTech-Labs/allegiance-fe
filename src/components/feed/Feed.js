@@ -103,6 +103,10 @@ const H3 = styled.h3`
   margin: 1% 0;
 `
 
-const FeedContainer = styled.div``
+const FeedContainer = styled.div`
+  display: flex
+  justify-content: center;
+  width: 100vw
+`
 
 export default Feed
