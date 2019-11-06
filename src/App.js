@@ -42,7 +42,6 @@ function App(props) {
     logPageView()
   }, [])
   useEffect(() => {
-    console.log('[rerender] => APP HOME', user)
     if (isAuthenticated && !loggedInUser && user && loading) {
       // once variable user is defined - this if statement will be true
       console.log('in here ...')
@@ -55,24 +54,27 @@ function App(props) {
             username: user.nickname,
             image: user.picture,
           })
-          dispatch({
+          await dispatch({
             type: types.FETCH_LOGIN_SUCCESS,
             payload: result.data.userInfo,
           })
-          dispatch({
-            type: types.FETCH_MY_GROUPS_SUCCESS,
-            payload: result.data.userInfo.basicGroupInfo,
-          })
+          if (result.data.userInfo.basicGroupInfo !== undefined) {
+            await dispatch({
+              type: types.FETCH_MY_GROUPS_SUCCESS,
+              payload: result.data.userInfo.basicGroupInfo,
+            })
+          }
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
+          console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
           }
-          if (currentUser && currentUser.first_name !== null) {
+          if (currentUser) {
             const pushTo =
-              window.location.pathname !== '/'
-                ? window.location.pathname
-                : '/home'
+              window.location.pathname === '/'
+                ? '/home'
+                : window.location.pathname
             props.history.push(`${pushTo}`)
             // Mixpanel.login(currentUser, 'Successful login.')
           }
@@ -82,6 +84,7 @@ function App(props) {
             id: socketUserId,
           })
         } catch (err) {
+          console.log(err, '🌋')
           // Mixpanel.track('Unsuccessful login')
         }
       }

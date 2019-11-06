@@ -10,7 +10,7 @@ export const groupsReducer = (state = [], action) => {
       return state.map(group => {
         console.log(group.id === action.payload.id, group.id, action.payload.id)
         if (group.id === action.payload.id) {
-          return { ...action.payload, ...group }
+          return { ...action.payload, ...group, image: action.payload.image }
         } else {
           return group
         }
