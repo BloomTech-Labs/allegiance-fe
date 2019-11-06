@@ -16,7 +16,7 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost, createReply } from 'actions'
+import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
   // const [post, setPost] = useState()
@@ -26,7 +26,7 @@ const ReplyContainer = props => {
 
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-
+  const group = useSelector(state => state.group)
   const dispatch = useDispatch()
 
   // useForm custom hook and set timeout custom hook
@@ -36,8 +36,16 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
-    dispatch(fetchPost(token, id))
-  }, [token, id, submitted, dispatch])
+    dispatch(fetchPost(id)).then(res => {
+      console.log('res', res)
+      console.log(post && post.group_id)
+      dispatch(
+        fetchUserMembership({ group_id: res.group_id, user_id: user.id })
+      )
+    })
+  }, [])
+
+  // token, id, submitted, dispatch
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -115,7 +123,7 @@ const ReplyContainer = props => {
   }
 
   // Obtain groups the user has a relation to, check for membership after post is loaded
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
 
   if (!post) {
     return (
@@ -126,42 +134,20 @@ const ReplyContainer = props => {
   }
 
   // Checking to see if current user is a member of current group
-  const currentUserType = userGroups.find(group => group.id === post.group_id)
+
   // If they are undefined, we set membership to a string so we don't get an error
-  let membership
-  if (currentUserType === undefined) {
-    membership = 'non-member'
-  } else {
-    membership = currentUserType.user_type
-  }
+  let membership = group.memberType
 
   // Sort replies by id (which is chronological)
   const sortedReplies = post.replies
-    ? post.replies.sort((a, b) => a.id - b.id)
+    ? post.replies.sort((a, b) => a.id - b.id).reverse()
     : null
 
   return (
     <ReplyViewContainer>
       {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} />
+        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
       )}
-      {sortedReplies && (
-        <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                />
-              </div>
-            )
-          })}
-        </ReplyCardsContainer>
-      )}
-
-      <div ref={repliesEndRef} />
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
@@ -198,6 +184,25 @@ const ReplyContainer = props => {
           </ReplyForm>
         </ContainerBottom>
       )}
+
+      {sortedReplies && (
+        <ReplyCardsContainer>
+          {sortedReplies.map(reply => {
+            return (
+              <div ref={replyRefs[reply.id]} key={reply.id}>
+                <ReplyCard
+                  reply={reply}
+                  setSubmitted={setSubmitted}
+                  post={post}
+                  group={group}
+                />
+              </div>
+            )
+          })}
+        </ReplyCardsContainer>
+      )}
+
+      <div ref={repliesEndRef} />
     </ReplyViewContainer>
   )
 }
@@ -218,8 +223,6 @@ const ReplyCardsContainer = styled.div`
 const ContainerBottom = styled.div`
   z-index: 0;
   display: flex;
-  position: fixed;
-  bottom: 6.5%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -227,7 +230,7 @@ const ContainerBottom = styled.div`
 `
 const DownNav = styled.div`
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   align-items: center;
   width: 10%;
 `

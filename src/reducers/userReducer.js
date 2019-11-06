@@ -3,7 +3,6 @@ import * as types from 'actions/actionTypes'
 const initialState = {
   loggedInUser: '',
   loggedInPosts: '',
-  loggedInGroups: [],
   loggedInAllegiances: [],
   pendingInvites: [],
   error: '',
@@ -17,11 +16,6 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedInUser: action.payload.currentUser || action.payload.newUser,
-        loggedInGroups: action.payload.basicGroupInfo
-          ? action.payload.basicGroupInfo.filter(
-              group => group.user_type !== 'invited'
-            )
-          : [],
         loggedInAllegiances: action.payload.basicAllegianceInfo,
         error: '',
       }
@@ -34,11 +28,6 @@ export const userReducer = (state = initialState, action) => {
       //Refreshes logged in user's info, groups and allegiances upon entering their profile.
       return {
         ...state,
-        loggedInGroups: action.payload.basicGroupInfo
-          ? action.payload.basicGroupInfo.filter(
-              group => group.user_type !== 'invited'
-            )
-          : [],
         loggedInAllegiances: action.payload.basicAllegianceInfo,
         error: '',
       }
@@ -55,30 +44,6 @@ export const userReducer = (state = initialState, action) => {
         error: '',
       }
     case types.UPDATE_USER_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      }
-    case types.ADD_GROUP_SUCCESS:
-      //Updates logged in user's groups when they join a new group.
-      return {
-        ...state,
-        loggedInGroups: [...state.loggedInGroups, action.payload],
-      }
-    case types.ADD_GROUP_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      }
-    case types.LEAVE_GROUP_SUCCESS:
-      //Updates logged in user's groups when they leave a group.
-      return {
-        ...state,
-        loggedInGroups: state.loggedInGroups.filter(
-          group => group.id !== action.payload
-        ),
-      }
-    case types.LEAVE_GROUP_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -141,6 +106,7 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         error: action.payload
       }
+    case types.CLEAN_UP_PENDING_GROUP_REQUESTS:
     case types.CANCEL_JOIN_PRIVATE_SUCCESS:
       return {
         ...state,
