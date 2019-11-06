@@ -16,7 +16,7 @@ import useForm from '../utils/useForm'
 
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost, createReply } from 'actions'
+import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
   // const [post, setPost] = useState()
@@ -26,7 +26,7 @@ const ReplyContainer = props => {
 
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-
+  const group = useSelector(state => state.group)
   const dispatch = useDispatch()
 
   // useForm custom hook and set timeout custom hook
@@ -36,8 +36,16 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
-    dispatch(fetchPost(token, id))
-  }, [token, id, submitted, dispatch])
+    dispatch(fetchPost(id)).then(res => {
+      console.log('res', res)
+      console.log(post && post.group_id)
+      dispatch(
+        fetchUserMembership({ group_id: res.group_id, user_id: user.id })
+      )
+    })
+  }, [])
+
+  // token, id, submitted, dispatch
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -115,7 +123,7 @@ const ReplyContainer = props => {
   }
 
   // Obtain groups the user has a relation to, check for membership after post is loaded
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
 
   if (!post) {
     return (
@@ -126,14 +134,9 @@ const ReplyContainer = props => {
   }
 
   // Checking to see if current user is a member of current group
-  const currentUserType = userGroups.find(group => group.id === post.group_id)
+
   // If they are undefined, we set membership to a string so we don't get an error
-  let membership
-  if (currentUserType === undefined) {
-    membership = 'non-member'
-  } else {
-    membership = currentUserType.user_type
-  }
+  let membership = group.memberType
 
   // Sort replies by id (which is chronological)
   const sortedReplies = post.replies
@@ -143,7 +146,7 @@ const ReplyContainer = props => {
   return (
     <ReplyViewContainer>
       {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} />
+        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
       )}
       {sortedReplies && (
         <ReplyCardsContainer>
@@ -154,6 +157,7 @@ const ReplyContainer = props => {
                   reply={reply}
                   setSubmitted={setSubmitted}
                   post={post}
+                  group={group}
                 />
               </div>
             )
@@ -209,6 +213,7 @@ const ReplyViewContainer = styled.div`
   background-color: #dee4e7;
   min-height: 87vh;
   justify-content: flex-start;
+  border: 5px solid pink;
 `
 const ReplyCardsContainer = styled.div`
   width: 100%;

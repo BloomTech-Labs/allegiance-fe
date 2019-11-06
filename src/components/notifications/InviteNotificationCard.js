@@ -128,7 +128,7 @@ const InviteNotificationsCard = props => {
               onClick={evt => {
                 evt.stopPropagation()
                 const data = {
-                  user_id,
+                  user: props.user,
                   sender_id,
                   group_id,
                   Mixpanel,

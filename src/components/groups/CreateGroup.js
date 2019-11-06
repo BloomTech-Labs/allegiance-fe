@@ -63,7 +63,6 @@ const CreateGroup = props => {
     }
     await dispatch(createGroup(newGroup)).then(res => {
       props.history.push(`/group/${res.id}`)
-      dispatch({ type: types.ADD_GROUP_SUCCESS, payload: res })
     })
     // const result = await axiosWithAuth([token]).post('/groups/', newGroup)
     // const addedGroup = {

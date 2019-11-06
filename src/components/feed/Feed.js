@@ -11,7 +11,7 @@ import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 
 const Feed = () => {
   const [feed, setFeed] = useState()
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
 
   // Fetches Auth0 token for axios call

@@ -9,43 +9,31 @@ import styled from 'styled-components'
 
 import GroupCard from './GroupCard'
 
-const GroupList = () => {
+const GroupList = props => {
   const [data, setData] = useState({ groups: [] })
-
-  // Fetches Auth0 token for axios call
-  // const [token] = useGetToken()
-
-  // Fetches user groups from Redux
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const { groups } = props
 
   useEffect(() => {
     const fetchData = async () => {
-      // if (token) {
-      const groups = await axios.post(`/groups/search`, {
+      const groupResult = await axios.post(`/groups/search`, {
         column: 'group_name',
         row: '',
       })
-      console.log(groups.data)
+      console.log(groupResult.data)
 
       // Get array of ids for groups the user already is a member of
-      const loggedInIDs = loggedInGroups.map(group => group.id)
+      const loggedInIDs = groups.map(group => group.id)
 
-      const uniqueGroups = groups.data.groupByFilter.filter(
+      const uniqueGroups = groupResult.data.groupByFilter.filter(
         group => !loggedInIDs.includes(group.id)
       )
-      // filtering group list to remove hidden groups from public display
-      // const accessGroups = uniqueGroups.filter(
-      //   group => group.privacy_setting !== 'hidden'
-      // )
-      // sorting groups by number of members
       uniqueGroups.sort((a, b) => b.members.length - a.members.length)
 
       setData({ groups: uniqueGroups })
-      // }
     }
 
     fetchData()
-  }, [loggedInGroups])
+  }, [groups])
 
   if (!data) {
     return (

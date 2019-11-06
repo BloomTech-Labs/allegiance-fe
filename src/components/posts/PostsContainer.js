@@ -9,11 +9,10 @@ import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-
 const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
   // Fetches Auth0 token for axios call
-  const { posts } = props
+  const { posts, memberType, group } = props
 
   // Create ref and scrollToBottom function to align view upon entering tab and on new posts
   const postsEndRef = useRef(null)
@@ -25,16 +24,16 @@ const PostsContainer = props => {
   }
 
   // Obtain groups the user has a relation to
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  // const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   // checking to see if current user is a member of current group
-  const currentUserType = userGroups.find(group => group.id === props.groupId)
-  // if they are undefined, we set membership to a string so we don't get an error
-  let membership
-  if (currentUserType === undefined) {
-    membership = 'non-member'
-  } else {
-    membership = currentUserType.user_type
-  }
+  // const currentUserType = userGroups.find(group => group.id === props.groupId)
+  // // if they are undefined, we set membership to a string so we don't get an error
+  // let membership
+  // if (currentUserType === undefined) {
+  //   membership = 'non-member'
+  // } else {
+  //   membership = currentUserType.user_type
+  // }
   const userIn = useSelector(state => state.userReducer.loggedInUser)
   if (userIn) {
     return (
@@ -42,7 +41,7 @@ const PostsContainer = props => {
         <PostListContainer>
           {posts.length > 0 ? (
             posts.map(post => {
-              return <PostCard post={post} key={post.id} />
+              return <PostCard post={post} key={post.id} group={group} />
             })
           ) : (
             <PaperContainer elevation={20}>
@@ -53,7 +52,7 @@ const PostsContainer = props => {
 
         <div ref={postsEndRef} />
 
-        {(membership === 'admin' || membership === 'member') && (
+        {(memberType === 'admin' || memberType === 'member') && (
           <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
         )}
       </PostsWrapper>
@@ -67,7 +66,7 @@ const PostsContainer = props => {
           </JoinBtn>
           {posts.length > 0 ? (
             posts.map(post => {
-              return <PostCard post={post} key={post.id} />
+              return <PostCard post={post} key={post.id} group={group} />
             })
           ) : (
             <PaperContainer elevation={20}>
@@ -77,7 +76,7 @@ const PostsContainer = props => {
         </PostListContainer>
         <div ref={postsEndRef} />
 
-        {(membership === 'admin' || membership === 'member') && (
+        {(memberType === 'admin' || memberType === 'member') && (
           <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
         )}
       </PostsWrapper>

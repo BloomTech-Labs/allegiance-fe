@@ -37,72 +37,10 @@ export default function PostCard(props) {
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
   const socket = useSelector(state => state.socketReducer.socket)
-  const userStatus =
-    userGroups.filter(group => group.id === group_id).length > 0
-      ? userGroups.filter(group => group.id === group_id)[0].user_type
-      : null
 
   const [token] = useGetToken()
   const postLikeId = likes.find(like => like.user_id === user.id)
-
-  const primary = '#4267b2'
-  const useStyles = makeStyles(theme => ({
-    card: {
-      width: 400,
-      marginBottom: 20,
-    },
-    cardHeader: {
-      padding: 0,
-      borderBottom: '1px solid lightgray',
-    },
-    postActivity: {
-      justifyContent: 'space-between',
-      borderTop: '1px solid lightgray',
-      padding: 0,
-      paddingLeft: 10,
-      paddingRight: 20,
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 14,
-      fontWeight: 'bold',
-    },
-    avatar: {
-      margin: '1%',
-      width: 60,
-      height: 60,
-    },
-    typography: {
-      fontSize: 20,
-      color: 'black',
-    },
-    buttonDiv: {
-      paddingRight: 1,
-      paddingBottom: 3,
-    },
-    likedIcon: {
-      margin: 0,
-      marginBottom: 3,
-      padding: 1,
-      color: primary,
-      paddingRight: 0,
-    },
-    unlikedIcon: {
-      margin: 0,
-      marginBottom: 3,
-      padding: 1,
-      color: 'grey',
-      paddingRight: 0,
-    },
-    likesCount: {
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingBottom: 4,
-      marginBottom: 1,
-    },
-  }))
 
   const classes = useStyles()
 
@@ -140,9 +78,9 @@ export default function PostCard(props) {
           />
         }
         action={
-          (user.id === user_id || userStatus === 'admin') &&
+          (user.id === user_id || props.group.memberType === 'admin') &&
           !window.location.pathname.includes('/post') && (
-            <IconButton onClick={(e) => deletePost(e)} aria-label='settings'>
+            <IconButton onClick={e => deletePost(e)} aria-label='settings'>
               <DeleteOutline />
             </IconButton>
           )
@@ -226,3 +164,60 @@ export default function PostCard(props) {
     </Card>
   )
 }
+
+const primary = '#4267b2'
+const useStyles = makeStyles(theme => ({
+  card: {
+    width: 400,
+    marginBottom: 20,
+  },
+  cardHeader: {
+    padding: 0,
+    borderBottom: '1px solid lightgray',
+  },
+  postActivity: {
+    justifyContent: 'space-between',
+    borderTop: '1px solid lightgray',
+    padding: 0,
+    paddingLeft: 10,
+    paddingRight: 20,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  avatar: {
+    margin: '1%',
+    width: 60,
+    height: 60,
+  },
+  typography: {
+    fontSize: 20,
+    color: 'black',
+  },
+  buttonDiv: {
+    paddingRight: 1,
+    paddingBottom: 3,
+  },
+  likedIcon: {
+    margin: 0,
+    marginBottom: 3,
+    padding: 1,
+    color: primary,
+    paddingRight: 0,
+  },
+  unlikedIcon: {
+    margin: 0,
+    marginBottom: 3,
+    padding: 1,
+    color: 'grey',
+    paddingRight: 0,
+  },
+  likesCount: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingBottom: 4,
+    marginBottom: 1,
+  },
+}))
