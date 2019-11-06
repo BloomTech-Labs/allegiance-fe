@@ -11,6 +11,7 @@ import SearchBar from './groups/SearchBar'
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
+import LandingImage2 from '../assets/landing/LandingImage2.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
 import instagram from '../assets/landing/instagram.png'
 import twitter from '../assets/landing/twitter.png'
@@ -40,7 +41,7 @@ const Landing = props => {
           <ImageMini
             path='/instagram'
             onClick={() => {
-              window.location.href = 'https://instagram.com'
+              window.location.href = 'https://www.instagram.com/allegiance17'
             }}
             src={instagram}
             alt={'Insta'}
@@ -48,7 +49,7 @@ const Landing = props => {
           <ImageMini
             path='/twitter'
             onClick={() => {
-              window.location.href = 'https://twitter.com'
+              window.location.href = 'https://twitter.com/Allegiance_17'
             }}
             src={twitter}
             alt={'Twitter'}
@@ -56,7 +57,8 @@ const Landing = props => {
           <ImageMini
             path='/facebook'
             onClick={() => {
-              window.location.href = 'https://facebook.com'
+              window.location.href =
+                'https://www.facebook.com/pg/Allegiance17-107082330737587/about/?ref=page_internal'
             }}
             src={facebook}
             alt={'Facebook'}
@@ -174,7 +176,13 @@ const Bottom = styled.div`
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  height: 489px;
+  // background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  min-width: 500px;
+  min-height: 500px;
+  margin: 0 auto;
   @media (max-width: 700px) {
     background-image: url(${Baseball});
   }
@@ -219,7 +227,7 @@ const LeftBottom4 = styled.div`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 43px;
+  height: 10vh;
   align-items: center;
 `
 const FooterLeft = styled.div`

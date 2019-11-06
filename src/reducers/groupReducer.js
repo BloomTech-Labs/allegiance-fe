@@ -2,6 +2,7 @@ import * as types from 'actions/actionTypes'
 
 const initialState = {
   posts: [],
+  arePostsLoading: false,
   post: {},
   error: '',
   acronym: null,
@@ -21,15 +22,22 @@ const initialState = {
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.FETCH_POSTS_REQUEST:
+      return {
+        ...state,
+        arePostsLoading: true,
+      }
     case types.FETCH_POSTS_SUCCESS:
       return {
         ...state,
         posts: action.payload,
+        arePostsLoading: false,
       }
     case types.FETCH_POSTS_FAILURE:
       return {
         ...state,
         error: action.payload,
+        arePostsLoading: false,
       }
     case types.CREATE_POST_SUCCESS:
       return {

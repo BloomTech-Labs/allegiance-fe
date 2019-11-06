@@ -8,7 +8,7 @@ import PostsContainer from '../posts/PostsContainer'
 import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Dimmer } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
 const GroupPage = props => {
   // Defines id to be group id from params
@@ -59,19 +59,23 @@ const GroupPage = props => {
           requests={group.reqs}
         />
       </PaperContainer>
-      {group.privacy_setting === 'public' ||
-      memberType === 'member' ||
-      memberType === 'admin' ? (
-        <PostsContainer
-          groupId={id}
-          memberType={memberType}
-          members={members}
-          posts={posts}
-          group={group}
-        />
-      ) : (
-        <BlockedView />
-      )}
+      {
+        group.privacy_setting === 'public' ||
+        memberType === 'member' ||
+        memberType === 'admin' ? (
+          group.arePostsLoading 
+          ? <Loader size='large' active></Loader> 
+          : <PostsContainer
+              groupId={id}
+              memberType={memberType}
+              members={members}
+              posts={posts}
+              group={group}
+            />
+        ) : (
+          <BlockedView />
+        )
+      }
     </GroupPageContainer>
   )
 }

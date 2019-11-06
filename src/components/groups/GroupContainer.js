@@ -55,6 +55,7 @@ const MyGroups = styled.div`
 `
 
 const GroupTitleHolder = styled.div`
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -65,7 +66,7 @@ const GroupTitleHolder = styled.div`
 `
 
 const H3 = styled.h3`
-  font-size: 1rem;
+  font-size: 3rem;
   font-weight: bold;
   margin: 1% 0;
 `
