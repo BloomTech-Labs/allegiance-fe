@@ -44,7 +44,7 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
-export const joinGroupOld = (token, data) => async dispatch => {
+export const joinGroupThroughInvite = (token, data) => async dispatch => {
   const { user_id, group_id, Mixpanel } = data
   if (token) {
     try {
@@ -147,9 +147,9 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
 }
 
 export const acceptInvite = (token, data) => async dispatch => {
-  const { user_id, sender_id, group_id } = data
-  await dispatch(joinGroup(token, data))
-  await dispatch(deleteInvite(token, user_id, sender_id, group_id, true))
+  const { user, sender_id, group_id } = data
+  await dispatch(joinGroup(data))
+  await dispatch(deleteInvite(token, user.id, sender_id, group_id, true))
 }
 
 export const declineInvite = (
@@ -503,7 +503,7 @@ export const createGroup = groupData => async dispatch => {
 }
 
 export const joinGroup = groupData => async dispatch => {
-  const { user, group_id } = groupData
+  const { user, group_id, fromGroupView } = groupData
   const user_id = user.id
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
@@ -526,10 +526,12 @@ export const joinGroup = groupData => async dispatch => {
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
-      await dispatch({
-        type: actionTypes.ADD_MEMBER_SUCCESS,
-        payload: user,
-      })
+      if (fromGroupView) {
+        await dispatch({
+          type: actionTypes.ADD_MEMBER_SUCCESS,
+          payload: user,
+        })
+      }
       return addedGroup
     } else {
       throw new Error()
