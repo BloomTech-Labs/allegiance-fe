@@ -101,6 +101,7 @@ const MiddleDiv = styled.div`
   }
 `
 const BottomDiv = styled.div`
+  border: 1px solid red;
   display: flex;
   height: 4vh;
   color: black;

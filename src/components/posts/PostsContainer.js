@@ -9,7 +9,6 @@ import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 
-
 const PostsContainer = props => {
   const { loginWithRedirect } = useAuth0()
   // Fetches Auth0 token for axios call
@@ -39,6 +38,9 @@ const PostsContainer = props => {
   if (userIn) {
     return (
       <PostsWrapper>
+        {(membership === 'admin' || membership === 'member') && (
+          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
+        )}
         <PostListContainer>
           {posts.length > 0 ? (
             posts.map(post => {
@@ -52,10 +54,6 @@ const PostsContainer = props => {
         </PostListContainer>
 
         <div ref={postsEndRef} />
-
-        {(membership === 'admin' || membership === 'member') && (
-          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
-        )}
       </PostsWrapper>
     )
   } else {
@@ -86,9 +84,10 @@ const PostsContainer = props => {
 }
 
 const PostListContainer = styled.div`
+  border: 1px solid red;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   background-color: #dee4e7;
   padding-bottom: 15%;
