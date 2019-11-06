@@ -11,7 +11,7 @@ import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
 import useGetToken from 'components/utils/useGetToken'
 import axios from 'components/utils/axiosWithoutAuth'
-import { addToGroup } from '../../actions/index'
+import { addToGroup, removeRequest, removeMember } from 'actions'
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
@@ -32,42 +32,21 @@ const GroupInfo = props => {
     if (token) {
       try {
         dispatch(addToGroup({ group_id, invoker: user, user_id, socket }))
-        props.setTrigger(!props.trigger)
+        dispatch(removeRequest({ group_id, user_id }))
       } catch (err) {
         console.log(err)
       }
     }
   }
 
-  async function removeMember(evt, user_id) {
+  async function removeMemberHandler(evt, user_id) {
     evt.preventDefault()
-    if (token) {
-      const result = await axiosWithAuth([token]).delete(`/groups_users/`, {
-        data: {
-          user_id,
-          group_id,
-        },
-      })
-      if (
-        result.data.message === 'The user to group pairing has been deleted.'
-      ) {
-        props.setTrigger(!props.trigger)
-      }
-    }
+    dispatch(removeMember({ group_id, user_id }))
   }
 
   async function declineRequest(evt, user_id) {
     evt.preventDefault()
-    try {
-      const deleted = await axiosWithAuth([token]).delete(
-        `/private/group/${group_id}/${user_id}`
-      )
-      if (deleted) {
-        props.setTrigger(!props.trigger)
-      }
-    } catch (err) {
-      console.log(err)
-    }
+    dispatch(removeRequest({ group_id, user_id }))
   }
 
   return (
@@ -104,7 +83,7 @@ const GroupInfo = props => {
             requests={props.requests}
             members={props.members}
             addToGroup={addToGroupHandler}
-            removeMember={removeMember}
+            removeMember={removeMemberHandler}
             declineRequest={declineRequest}
           />
           {memberType && (

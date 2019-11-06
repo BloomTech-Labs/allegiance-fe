@@ -170,6 +170,11 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         memberType: action.payload,
       }
+    case types.REMOVE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        reqs: state.reqs.filter(req => req.id !== action.payload)
+      }
     default:
       return state
   }

@@ -106,6 +106,7 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         error: action.payload
       }
+    case types.CLEAN_UP_PENDING_GROUP_REQUESTS:
     case types.CANCEL_JOIN_PRIVATE_SUCCESS:
       return {
         ...state,

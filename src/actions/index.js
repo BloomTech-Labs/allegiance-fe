@@ -70,6 +70,10 @@ export const receivingGroup = groupData => async dispatch => {
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
+      await dispatch({
+        type: actionTypes.CLEAN_UP_PENDING_GROUP_REQUESTS,
+        payload: group_id,
+      })
       if (fromGroupView) {
         await dispatch({
           type: actionTypes.ADD_MEMBER_SUCCESS,
@@ -534,7 +538,18 @@ export const addToGroup = groupData => async dispatch => {
       })
       console.log('returning member?', result)
       const user = result.data.newGroupUsers
-      dispatch({ type: actionTypes.ADD_MEMBER_SUCCESS, payload: user })
+      dispatch({ 
+        type: actionTypes.ADD_MEMBER_SUCCESS, 
+        payload: 
+          {
+            ...user,
+            location: user.user_location,
+            status: user.user_type,
+            name: `${user.first_name} ${user.last_name}`,
+            image: user.user_image,
+            id: user.user_id
+          }
+      })
       console.log('emit socket', notification)
       socket.emit('send notification', {
         userIds: [user_id],
@@ -606,6 +621,14 @@ export const leaveGroup = data => async dispatch => {
   }
 }
 
+export const removeMember = data => async dispatch => {
+  const { group_id, user_id } = data
+  const result = await axios.delete(
+    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+  )
+  dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+}
+
 export const deleteGroup = groupId => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST })
@@ -658,4 +681,22 @@ export const editUserMembership = data => async dispatch => {
     type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS,
     payload: user_type,
   })
+}
+
+export const removeRequest = data => async dispatch => {
+  dispatch({type: actionTypes.REMOVE_REQUEST_REQUEST})
+  const { group_id, user_id } = data
+  try {
+    const deleted = await axios.delete(
+      `/private/group/${group_id}/${user_id}`
+    )
+    if (deleted) {
+      dispatch({ type: actionTypes.REMOVE_REQUEST_SUCCESS, payload: user_id })
+    } else {
+      throw new Error()
+    }
+  } catch (err) {
+    console.log(err)
+    dispatch({type: actionTypes.REMOVE_REQUEST_FAILURE, payload: err})
+  }
 }
