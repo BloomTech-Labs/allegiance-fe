@@ -150,6 +150,11 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       }
+    case types.ADD_MEMBER_SUCCESS:
+      return {
+        ...state,
+        members: [...state.members, action.payload]
+      }
     case types.REMOVE_MEMBER_SUCCESS:
       return {
         ...state,

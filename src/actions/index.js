@@ -504,7 +504,8 @@ export const createGroup = groupData => async dispatch => {
 }
 
 export const joinGroup = groupData => async dispatch => {
-  const { user_id, group_id } = groupData
+  const { user, group_id } = groupData
+  const user_id = user.id
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
     const result = await axios.post(`/groups_users`, {
@@ -525,6 +526,10 @@ export const joinGroup = groupData => async dispatch => {
       await dispatch({
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
+      })
+      await dispatch({
+        type: actionTypes.ADD_MEMBER_SUCCESS,
+        payload: user,
       })
       return addedGroup
     } else {
