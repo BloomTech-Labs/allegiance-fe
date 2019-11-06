@@ -146,6 +146,7 @@ export const groupReducer = (state = initialState, action) => {
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)
       return {
+        ...state,
         posts: state.posts.filter(post => post.id !== action.payload.id),
       }
     case types.FETCH_POST_FAILURE:

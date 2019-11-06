@@ -146,7 +146,7 @@ const ReplyContainer = props => {
   return (
     <ReplyViewContainer>
       {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} />
+        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
       )}
       {sortedReplies && (
         <ReplyCardsContainer>

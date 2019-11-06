@@ -41,7 +41,7 @@ const PostsContainer = props => {
         <PostListContainer>
           {posts.length > 0 ? (
             posts.map(post => {
-              return <PostCard post={post} key={post.id} />
+              return <PostCard post={post} key={post.id} group={group} />
             })
           ) : (
             <PaperContainer elevation={20}>
