@@ -18,6 +18,7 @@ import {
   cancelRequestJoinPrivate,
   joinGroup,
   editUserMembership,
+  leaveGroup,
 } from 'actions'
 import axios from 'axios'
 
@@ -54,21 +55,10 @@ const MembershipStatus = props => {
     await dispatch(editUserMembership({ user_type: 'member' }))
   }
 
-  async function leaveGroup(e) {
+  async function leaveGroupHandler(e) {
     e.preventDefault()
-    if (token) {
-      const result = await axiosWithAuth([token]).delete(
-        `/groups_users/${memberType.relationId}`
-      )
-      if (
-        result.data.message === 'The user to group pairing has been deleted.'
-      ) {
-        setMemberType({})
-        dispatch({ type: types.LEAVE_GROUP_SUCCESS, payload: group_id })
-        setTrigger(true)
-        // Mixpanel.activity(loggedInUser.id, 'Left Group')
-      }
-    }
+    await dispatch(leaveGroup({ user_id: user.id, group_id }))
+    await dispatch(editUserMembership({ user_type: null }))
   }
 
   async function requestPrivate(e) {
@@ -129,7 +119,7 @@ const MembershipStatus = props => {
                 className={classes.chip}
               />
               <Button
-                onClick={e => leaveGroup(e)}
+                onClick={e => leaveGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.leave}
@@ -147,7 +137,7 @@ const MembershipStatus = props => {
                 className={classes.chip}
               />
               <Button
-                onClick={e => leaveGroup(e)}
+                onClick={e => leaveGroupHandler(e)}
                 variant='contained'
                 size='small'
                 className={classes.leave}

@@ -2,6 +2,7 @@ import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
 import axios from 'components/utils/axiosWithoutAuth'
+import { types } from '@babel/core'
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
 }
@@ -534,6 +535,19 @@ export const joinGroup = groupData => async dispatch => {
       type: actionTypes.ADD_GROUP_FAILURE,
       payload: err,
     })
+  }
+}
+
+export const leaveGroup = data => async dispatch => {
+  const { group_id, user_id } = data
+  dispatch({ type: actionTypes.LEAVE_GROUP_REQUEST })
+  const result = await axios.delete(
+    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+  )
+  console.log('leaving group', result)
+  if (result.data) {
+    dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
+    dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
   }
 }
 

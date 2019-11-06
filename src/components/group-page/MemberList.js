@@ -16,7 +16,7 @@ const MemberList = props => {
             members.map(member => (
               <Fragment key={member.id}>
                 <List.Item>
-                  {memberType.userType === 'admin' &&
+                  {memberType === 'admin' &&
                     <List.Content floated='right'>
                       <Button icon color="red" onClick={(evt) => removeMember(evt, member.id)}><Icon name='remove' /></Button>
                     </List.Content>
