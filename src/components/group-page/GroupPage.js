@@ -91,5 +91,6 @@ const GroupPageContainer = styled.div`
 `
 const PaperContainer = styled(Paper)`
   // margin-bottom: 5%;
+  // display: flex;
 `
 export default GroupPage
