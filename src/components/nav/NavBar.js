@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import NavLeft from './NavLeft'
+import NavRight from './NavRight'
+import NavBottom from './NavBottom'
 import styled from 'styled-components'
 import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
-import NavRight from './NavRight'
 import {
   CreateNotification,
   createInvite,
@@ -95,11 +96,13 @@ const NavBar = props => {
       }
 
       if (data.notification.type === 'group_accepted') {
-        dispatch(joinGroup(token, {
-          user_id: user.id,
-          group_id: data.notification.type_id,
-          Mixpanel,
-        }))
+        dispatch(
+          joinGroup(token, {
+            user_id: user.id,
+            group_id: data.notification.type_id,
+            Mixpanel,
+          })
+        )
       }
     })
     socket.on('new invite', async data => {
