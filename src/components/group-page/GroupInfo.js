@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import InviteModal from './InviteModal'
 import MembershipStatus from './MembershipStatus'
@@ -11,6 +11,7 @@ import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
 import useGetToken from 'components/utils/useGetToken'
 import axios from 'components/utils/axiosWithoutAuth'
+import { addToGroup } from '../../actions/index'
 
 const GroupInfo = props => {
   // define privacy variable for reusable formatting
@@ -20,45 +21,18 @@ const GroupInfo = props => {
 
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  
+  const dispatch = useDispatch()
+
   console.log('props', props)
   console.log('privacy', privacy)
   const token = useGetToken()
 
-  async function addToGroup(evt, user_id) {
+  async function addToGroupHandler(evt, user_id) {
     evt.preventDefault()
     if (token) {
       try {
-        const deleted = await axiosWithAuth([token]).delete(
-          `/private/group/${group_id}/${user_id}`
-        )
-        if (deleted) {
-          const notification = await axiosWithAuth([token]).post(
-            `/users/${user_id}/notifications`,
-            {
-              user_id,
-              invoker_id: user.id,
-              type_id: group_id,
-              type: 'group_accepted',
-            }
-          )
-          await axiosWithAuth([token]).post(`/groups_users`, {
-            user_id,
-            group_id,
-            user_type: 'member',
-          })
-          console.log('emit socket', notification)
-          socket.emit('send notification', {
-            userIds: [user_id],
-            notification: {
-              ...notification.data,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              image: user.image,
-            },
-          })
-          props.setTrigger(!props.trigger)
-        }
+        dispatch(addToGroup({ group_id, invoker: user, user_id, socket }))
+        props.setTrigger(!props.trigger)
       } catch (err) {
         console.log(err)
       }
@@ -129,7 +103,7 @@ const GroupInfo = props => {
             memberType={memberType}
             requests={props.requests}
             members={props.members}
-            addToGroup={addToGroup}
+            addToGroup={addToGroupHandler}
             removeMember={removeMember}
             declineRequest={declineRequest}
           />

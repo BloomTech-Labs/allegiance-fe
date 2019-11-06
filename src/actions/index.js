@@ -44,39 +44,48 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
-export const joinGroupThroughInvite = (token, data) => async dispatch => {
-  const { user_id, group_id, Mixpanel } = data
-  if (token) {
-    try {
-      await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
-      const result = await axiosWithAuth([token]).post(
-        `api/groups_users/search`,
-        {
-          user_id,
-          group_id,
-        }
-      )
-      const relation = result.data.relationExists
-      if (relation) {
-        const data = relation[0]
-        console.log('data', data)
-        const { group_name, group_image, group_id, user_type } = data
-        const addedGroup = {
-          name: group_name,
-          image: group_image,
-          id: group_id,
-          user_type: user_type,
-        }
-        await dispatch({
-          type: actionTypes.ADD_GROUP_SUCCESS,
-          payload: addedGroup,
-        })
-        Mixpanel.activity(user_id, 'Joined Group')
+export const receivingGroup = groupData => async dispatch => {
+  const { user, group_id, fromGroupView } = groupData
+  try {
+    await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
+    const result = await axios.post(
+      `/groups_users/search`,
+      {
+        user_id: user.id,
+        group_id,
       }
-    } catch (err) {
-      console.log(err)
-      await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
+    )
+    const relation = result.data.relationExists
+    if (relation) {
+      const data = relation[0]
+      console.log('data', data)
+      const { group_name, group_image, group_id, user_type } = data
+      const addedGroup = {
+        name: group_name,
+        image: group_image,
+        id: group_id,
+        user_type: user_type,
+      }
+      await dispatch({
+        type: actionTypes.ADD_GROUP_SUCCESS,
+        payload: addedGroup,
+      })
+      if (fromGroupView) {
+        await dispatch({
+          type: actionTypes.ADD_MEMBER_SUCCESS,
+          payload: user,
+        })
+        await dispatch({
+          type: actionTypes.EDIT_MEMBER_TYPE_SUCCESS,
+          payload: addedGroup.user_type,
+        })
+      }
+    } else {
+      throw new Error()
     }
+  } catch (err) {
+    console.log(err)
+    await dispatch({ type: actionTypes.ADD_GROUP_FAILURE, payload: err })
   }
 }
 
@@ -499,6 +508,46 @@ export const createGroup = groupData => async dispatch => {
       type: actionTypes.ADD_GROUP_FAILURE,
       payload: err,
     })
+  }
+}
+
+export const addToGroup = groupData => async dispatch => {
+  const { group_id, invoker, user_id, socket } = groupData
+  try {
+    const deleted = await axios.delete(
+      `/private/group/${group_id}/${user_id}`
+    )
+    if (deleted) {
+      const notification = await axios.post(
+        `/users/${user_id}/notifications`,
+        {
+          user_id,
+          invoker_id: invoker.id,
+          type_id: group_id,
+          type: 'group_accepted',
+        }
+      )
+      const result = await axios.post(`/groups_users`, {
+        user_id,
+        group_id,
+        user_type: 'member',
+      })
+      console.log('returning member?', result)
+      const user = result.data.newGroupUsers
+      dispatch({ type: actionTypes.ADD_MEMBER_SUCCESS, payload: user })
+      console.log('emit socket', notification)
+      socket.emit('send notification', {
+        userIds: [user_id],
+        notification: {
+          ...notification.data,
+          first_name: invoker.first_name,
+          last_name: invoker.last_name,
+          image: invoker.image,
+        },
+      })
+    }
+  } catch (err) {
+    console.log(err)
   }
 }
 
