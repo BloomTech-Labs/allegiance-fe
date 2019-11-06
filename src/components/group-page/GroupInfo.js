@@ -152,19 +152,30 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          <MemberList
+          {/* <MemberList
             memberType={memberType}
             requests={props.requests}
             members={props.members}
             addToGroup={addToGroup}
             removeMember={removeMember}
             declineRequest={declineRequest}
-          />
-          {memberType.userType && (
+          /> */}
+          {/* {memberType.userType && (
             <InviteModal members={props.members} group={props.group} />
-          )}
+          )} */}
         </SubInfo>
         <AllegiancePopover allegiances={props.allegiances} />
+        <MemberList
+          memberType={memberType}
+          requests={props.requests}
+          members={props.members}
+          addToGroup={addToGroup}
+          removeMember={removeMember}
+          declineRequest={declineRequest}
+        />
+        {memberType.userType && (
+          <InviteModal members={props.members} group={props.group} />
+        )}
       </InfoDiv>
       <Settings>
         {isAdmin && isAdmin.user_type === 'admin' ? (

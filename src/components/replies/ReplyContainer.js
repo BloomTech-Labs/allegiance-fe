@@ -216,6 +216,7 @@ const ReplyCardsContainer = styled.div`
   padding-bottom: 18%;
 `
 const ContainerBottom = styled.div`
+  z-index: 0;
   display: flex;
   position: fixed;
   bottom: 6.5%;
