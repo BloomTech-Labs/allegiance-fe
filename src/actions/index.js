@@ -518,7 +518,7 @@ export const joinGroup = groupData => async dispatch => {
       const addedGroup = {
         name: newGroup.group_name,
         image: newGroup.group_image,
-        id: newGroup.id,
+        id: newGroup.group_id,
         user_type: newGroup.user_type,
       }
       console.log('new group joined', addedGroup)
@@ -576,21 +576,27 @@ export const fetchUserMembership = data => async dispatch => {
 
   dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })
 
-  const response = await axios.post(`/groups_users/search`, {
-    user_id,
-    group_id,
-  })
-  const relation = response.data.relationExists
-  console.log('membership', relation)
-
-  if (relation) {
-    dispatch({
-      type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
-      payload: relation[0],
+  try {
+    const response = await axios.post(`/groups_users/search`, {
+      user_id,
+      group_id,
     })
-  } else {
+    const relation = response.data.relationExists
+    console.log('membership', relation)
+
+    if (relation) {
+      dispatch({
+        type: actionTypes.FETCH_MEMBER_TYPE_SUCCESS,
+        payload: relation[0],
+      })
+    } else {
+      console.log('throwing err')
+      throw new Error()
+    }
+  } catch (err) {
     dispatch({
       type: actionTypes.FETCH_MEMBER_TYPE_FAILURE,
+      payload: err,
     })
   }
 }
