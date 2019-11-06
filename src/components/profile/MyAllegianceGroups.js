@@ -60,7 +60,8 @@ const LogoHolder = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  background-color: #dee4e7;
+  margin-left: 1%;
+  // background-color: white;
   &::-webkit-scrollbar {
     display: none;
   }
