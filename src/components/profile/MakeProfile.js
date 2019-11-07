@@ -114,37 +114,34 @@ const MakeProfile = props => {
             >
               <UploaderUI displayImage={image || values.image} />
             </Modal>
-            <NameHolder>
-              <Form.Group inline style={{ fontSize: '1.2rem' }}>
-                <BoldInput
-                  required
-                  placeholder='First Name'
-                  transparent
-                  onChange={handleChange}
-                  value={values.first_name || ''}
-                  name='first_name'
-                  type='text'
-                />
-                <BoldInput
-                  required
-                  placeholder='Last Name'
-                  transparent
-                  onChange={handleChange}
-                  value={values.last_name || ''}
-                  name='last_name'
-                  type='text'
-                />
-              </Form.Group>
-              <Form.Input
-                placeholder='Bio'
-                transparent
-                onChange={handleChange}
-                value={values.bio || ''}
-                name='bio'
-                type='text'
-              />
-            </NameHolder>
           </BasicInfoHolder>
+          <Form.Input
+            required
+            label='First Name'
+            placeholder='First Name'
+            onChange={handleChange}
+            value={values.first_name || ''}
+            name='first_name'
+            type='text'
+          />
+          <Form.Input
+            required
+            label='Last Name'
+            placeholder='Last Name'
+            onChange={handleChange}
+            value={values.last_name || ''}
+            name='last_name'
+            type='text'
+          />
+          <Form.Input
+            placeholder='Bio'
+            label='Bio'
+            onChange={handleChange}
+            value={values.bio || ''}
+            name='bio'
+            type='text'
+          />
+
           <Form.Input
             key={'email'}
             required
@@ -192,7 +189,8 @@ const MakeProfile = props => {
 }
 
 const FormHolder = styled.div`
-  @media (max-width: 320px) {
+  display: flex;
+  justify-content:center @media (max-width: 320px) {
     height: 87vh;
   }
 `
@@ -201,6 +199,7 @@ const FormSegment = styled(Segment)`
   width: 90%;
   margin: auto;
   marginbottom: 15%;
+  max-width: 800px;
 `
 
 const BoldInput = styled(Form.Input)`
