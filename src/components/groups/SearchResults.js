@@ -1,8 +1,5 @@
-import React, { useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import { Link } from 'react-router-dom'
-// import { Mixpanel } from '../analytics/Mixpanel'
-
 import styled from 'styled-components'
 import { device } from 'styled/device'
 

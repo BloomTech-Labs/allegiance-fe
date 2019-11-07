@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, Input, Icon, Label } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -11,7 +11,9 @@ const InviteModal = props => {
   const [token] = useGetToken()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const { values, setValues, isLoading, setLoading, handleChange, handleSubmit } = useForm(sendInvite)
+  const { values, isLoading, setLoading, handleChange, handleSubmit } = useForm(
+    sendInvite
+  )
   const [response, setResponse] = useState(null)
 
   console.log(props.members)
@@ -26,7 +28,7 @@ const InviteModal = props => {
       console.log(result.data)
       setResponse({
         isError: false,
-        message: 'Invite Successfully Sent!'
+        message: 'Invite Successfully Sent!',
       })
       socket.emit('send invite', {
         userIds: [userId],
@@ -42,7 +44,7 @@ const InviteModal = props => {
       const error = err.response.data.message
       setResponse({
         isError: true,
-        message: error || 'Unsuccessful Invite'
+        message: error || 'Unsuccessful Invite',
       })
       console.log(err.response)
     } finally {
@@ -66,15 +68,22 @@ const InviteModal = props => {
               name='username'
               autoFocus={true}
             />
-            <Button color="blue" loading={isLoading} animated style={ButtonSpacing}>
+            <Button
+              color='blue'
+              loading={isLoading}
+              animated
+              style={ButtonSpacing}
+            >
               <Button.Content visible>Send Invite</Button.Content>
               <Button.Content hidden>
                 <Icon name='arrow right' />
               </Button.Content>
             </Button>
-            {
-              response && <Label basic color={response.isError ? 'red' : 'green'}>{response.message}</Label>
-            }
+            {response && (
+              <Label basic color={response.isError ? 'red' : 'green'}>
+                {response.message}
+              </Label>
+            )}
             {/* <Label basic color='green'>
               Invite Successfully Sent
             </Label>
@@ -90,7 +99,7 @@ const InviteModal = props => {
           </FormWrapper>
           <Modal.Description>
             <DescriptionP>
-                Send an invite to notify a user to join your group.
+              Send an invite to notify a user to join your group.
             </DescriptionP>
           </Modal.Description>
         </ContentWrapper>

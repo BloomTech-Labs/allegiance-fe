@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
-
-import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-import * as types from 'actions/actionTypes'
 import PostForm from './PostForm'
 import PostCard from './PostCard'
 

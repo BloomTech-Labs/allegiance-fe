@@ -14,16 +14,13 @@ import SearchResults from './SearchResults'
 const SearchBar = props => {
   // useStates for results and is searching status
   const [results, setResults] = useState([])
-  // token for accessing authentication required backend routes
-  // const [token] = useGetToken()
   // useForm custom hook and set timeout custom hook
-  const { values, setValues, handleChange, handleSubmit } = useForm(fillSearch)
+  const { values, setValues, handleChange } = useForm(fillSearch)
   const debouncedSearchTerm = useDebounce(values.group_name, 1000)
   // useStates for handling up and down arrow key selections
   const [activeSuggestion, setSuggestion] = useState(0)
   // added useRef
   const node = useRef()
-
   // callback function to handle submit
   function fillSearch(e, group) {
     if (group) {

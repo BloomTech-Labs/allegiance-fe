@@ -1,17 +1,12 @@
 import React from 'react'
-import { Button, Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
-
 import SearchBar from './groups/SearchBar'
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
-import LandingImage2 from '../assets/landing/LandingImage2.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
 import instagram from '../assets/landing/instagram.png'
 import twitter from '../assets/landing/twitter.png'
@@ -238,12 +233,12 @@ const FooterRight = styled.div`
   display: flex;
   margin-right: 24px;
 `
-const GlobalStyles = createGlobalStyle`
-body {
-  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
-  font-family: 'Roboto', sans-serif;
-}
-`
+// const GlobalStyles = createGlobalStyle`
+// body {
+//   <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
+//   font-family: 'Roboto', sans-serif;
+// }
+// `
 const H1 = styled.h1`
   font-size: 1rem;
   color: grey;

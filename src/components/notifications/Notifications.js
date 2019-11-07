@@ -5,10 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import moment from 'moment'
-
-// import { UPDATE_USER } from '../../reducers/userReducer'
 import * as types from 'actions/actionTypes'
-
 import ActivityNotificationsCard from './ActivityNotificationsCard'
 import InviteNotificationCard from './InviteNotificationCard'
 import { fetchNotifications, fetchInvites } from 'actions/index'

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, withRouter, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Avatar } from './Avatar'
 import { Icon, Loader } from 'semantic-ui-react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
+
 const NavRight = props => {
   const { loginWithRedirect } = useAuth0()
   const notifyReducer = useSelector(state => state.notifyReducer)
@@ -12,8 +13,17 @@ const NavRight = props => {
   const dispatch = useDispatch()
   const { location, user } = props
   const { pathname } = location
+  const { loading } = useAuth0()
 
   useEffect(() => {}, [notifyReducer])
+  if (loading) {
+    return (
+      <Loader active size='large'>
+        {' '}
+        Loading{' '}
+      </Loader>
+    )
+  }
   if (userIn) {
     return (
       <StyledNavRight>
@@ -86,12 +96,12 @@ const StyledNavRight = styled.div`
 const NavIcon = styled(Icon)`
   color: white;
 `
-const MenuItem = styled(Link)`
-  width: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
+// const MenuItem = styled(Link)`
+//   width: 20%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `
 const PlaceHolder = styled.div`
   width: 30%;
   text-decoration: none;

@@ -238,16 +238,16 @@ const FormSegment = styled(Segment)`
   max-width: 800px;
 `
 
-const BoldInput = styled(Form.Input)`
-  input: first-child {
-    font-weight: bold;
-  }
-`
+// const BoldInput = styled(Form.Input)`
+//   input: first-child {
+//     font-weight: bold;
+//   }
+// `
 
-const UploadIcon = styled(Icon)`
-  display: flex;
-  justify-content: center;
-`
+// const UploadIcon = styled(Icon)`
+//   display: flex;
+//   justify-content: center;
+// `
 
 const ProfilePic = styled.img`
   border-color: black;
@@ -265,12 +265,12 @@ const BasicInfoHolder = styled.div`
   justify-content: center;
 `
 
-const NameHolder = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space - evenly;
-  margin-left: 7px;
-  margin-bottom: 1rem;
-  width: 100%;
-`
+// const NameHolder = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space - evenly;
+//   margin-left: 7px;
+//   margin-bottom: 1rem;
+//   width: 100%;
+// `
 export default MakeProfile

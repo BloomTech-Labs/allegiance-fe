@@ -72,15 +72,18 @@ const ActivityNotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let notifyContent = ''
-  if (content) notifyContent = content.slice(0, 20)
-  if (content && content.length > 20) notifyContent += '...'
+  // let notifyContent = ''
+  // if (content) notifyContent = content.slice(0, 20)
+  // if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToNote = e => {
     e.stopPropagation()
     props.history.push({
-      pathname: type !== 'group_request' && type !== 'group_accepted' ? `/post/${type_id}` : `/group/${type_id}`,
+      pathname:
+        type !== 'group_request' && type !== 'group_accepted'
+          ? `/post/${type_id}`
+          : `/group/${type_id}`,
       // Provide replyId if appropriate for scrolling into focus upon navigation
       // replyNumber: replyId || null,
     })
@@ -129,8 +132,12 @@ const ActivityNotificationsCard = props => {
             {type === 'like' && <>liked your post: {content}</>}
             {type === 'reply' && <>replied to your post: {content}</>}
             {type === 'reply_like' && <>liked your reply: {content}</>}
-            {type === 'group_request' && <>requested membership to your group: {content}</>}
-            {type === 'group_accepted' && <>has accepted your membership request to group: {content}</>}{' '}
+            {type === 'group_request' && (
+              <>requested membership to your group: {content}</>
+            )}
+            {type === 'group_accepted' && (
+              <>has accepted your membership request to group: {content}</>
+            )}{' '}
             <p>
               <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
                 <Moment fromNow>{created_at}</Moment>
