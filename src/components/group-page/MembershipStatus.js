@@ -9,8 +9,6 @@ import { Button, Chip } from '@material-ui/core/'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 
-import { Mixpanel } from '../analytics/Mixpanel'
-
 import styled from 'styled-components'
 
 import {

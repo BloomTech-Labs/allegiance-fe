@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import { editGroup, createGroup, deleteGroup } from 'actions'
 
-// // import { Mixpanel } from '../analytics/Mixpanel'
+import { Mixpanel } from '../analytics/Mixpanel'
 
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'

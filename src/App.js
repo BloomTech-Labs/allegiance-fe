@@ -13,6 +13,8 @@ import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import NavBar from './components/nav/NavBar'
 import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
+import { Mixpanel } from './components/analytics/Mixpanel'
+import MixpanelMessages from './components/analytics/MixpanelMessages'
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
 const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
@@ -70,6 +72,7 @@ function App(props) {
           console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
+            Mixpanel.login(newUser, MixpanelMessages.NEW_USER)
           }
           if (currentUser) {
             const pushTo =
@@ -77,16 +80,15 @@ function App(props) {
                 ? '/home'
                 : window.location.pathname
             props.history.push(`${pushTo}`)
-            // Mixpanel.login(currentUser, 'Successful login.')
+            Mixpanel.login(currentUser, MixpanelMessages.LOGIN)
           }
-          // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
           socket.emit('join', {
             id: socketUserId,
           })
         } catch (err) {
           console.log(err, '🌋')
-          // Mixpanel.track('Unsuccessful login')
+          Mixpanel.track(MixpanelMessages.FAILED_LOGIN)
         }
       }
       registerUser()
