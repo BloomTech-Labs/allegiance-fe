@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Button } from 'semantic-ui-react'
 
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 import GroupCard from './GroupCard'
 
-const NearbyGroups = () => {
+const NearbyGroups = props => {
   const [data, setData] = useState()
 
   // Fetches Auth0 token for axios call
@@ -63,6 +63,11 @@ const NearbyGroups = () => {
     )
   }
 
+  const goToCreateGroup = (evt) => {
+    evt.preventDefault();
+    props.history.push('/creategroup')
+  }
+
   return (
     <SectionContainer>
       <NearbyGroupsContainer>
@@ -79,7 +84,12 @@ const NearbyGroups = () => {
           })}
         {data.groups.length === 0 && (
           <h4 style={{ margin: '3% auto' }}>
-            {loggedInUser.location && `No Groups Found Near Your Location`}
+            {loggedInUser.location && 
+              <ResultsDiv>
+                <h1>No groups found near your location. Start one now to engage with your local community!</h1>
+                <CreateGroupButton primary onClick={goToCreateGroup}>Create a Group</CreateGroupButton>
+              </ResultsDiv>
+            }
             {!loggedInUser.location && 'Please Provide A Location In Profile!'}
           </h4>
         )}
@@ -87,6 +97,20 @@ const NearbyGroups = () => {
     </SectionContainer>
   )
 }
+
+const ResultsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+`
+
+const CreateGroupButton = styled(Button)`
+  margin-top: 20px !important;
+  font-size: 1.8rem !important;
+  background-color: #1a4570 !important;
+`
 
 // LoaderDiv to keep sections from moving during load
 const LoaderDiv = styled.div`
