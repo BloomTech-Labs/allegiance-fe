@@ -94,14 +94,14 @@ const MakeProfile = props => {
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error>
-          <h4>Select Image</h4>
+          <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
-            <UploadIcon
+            {/* <UploadIcon
               name='edit'
               size='large'
               color='black'
               onClick={() => setModal(true)}
-            />
+            /> */}
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
@@ -118,63 +118,69 @@ const MakeProfile = props => {
           </BasicInfoHolder>
           <FieldHolder>
             <ColumnHolder>
-              <Form.Input
-                required
-                label='First Name'
-                placeholder='First Name'
-                onChange={handleChange}
-                value={values.first_name || ''}
-                name='first_name'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Last Name'
-                placeholder='Last Name'
-                onChange={handleChange}
-                value={values.last_name || ''}
-                name='last_name'
-                type='text'
-              />
-              <Form.Input
-                placeholder='Bio'
-                label='Bio'
-                onChange={handleChange}
-                value={values.bio || ''}
-                name='bio'
-                type='text'
-              />
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='First Name'
+                  placeholder='First Name'
+                  onChange={handleChange}
+                  value={values.first_name || ''}
+                  name='first_name'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Last Name'
+                  placeholder='Last Name'
+                  onChange={handleChange}
+                  value={values.last_name || ''}
+                  name='last_name'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  placeholder='Bio'
+                  label='Bio'
+                  onChange={handleChange}
+                  value={values.bio || ''}
+                  name='bio'
+                  type='text'
+                />
 
-              <Form.Input
-                key={'email'}
-                required
-                label='E-mail Address'
-                placeholder='E-Mail'
-                onChange={handleChange}
-                value={values.email || ''}
-                name='email'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Username'
-                placeholder='Username'
-                onChange={handleChange}
-                value={values.username || ''}
-                name='username'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Zip Code'
-                placeholder='Zip Code (To Discover Local Groups)'
-                minLength='5'
-                maxLength='5'
-                onChange={handleChange}
-                value={values.location || ''}
-                name='location'
-                type='text'
-              />
+                <Form.Input
+                  key={'email'}
+                  required
+                  label='E-mail Address'
+                  placeholder='E-Mail'
+                  onChange={handleChange}
+                  value={values.email || ''}
+                  name='email'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Username'
+                  placeholder='Username'
+                  onChange={handleChange}
+                  value={values.username || ''}
+                  name='username'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Zip Code'
+                  placeholder='Zip Code (To Discover Local Groups)'
+                  minLength='5'
+                  maxLength='5'
+                  onChange={handleChange}
+                  value={values.location || ''}
+                  name='location'
+                  type='text'
+                />
+              </Form.Group>
               <Form.Input
                 label='Banner Image'
                 placeholder='Banner Image'
@@ -241,8 +247,6 @@ const BoldInput = styled(Form.Input)`
 const UploadIcon = styled(Icon)`
   display: flex;
   justify-content: center;
-  top: 2.8rem;
-  left: 2.8rem;
 `
 
 const ProfilePic = styled.img`
@@ -267,5 +271,6 @@ const NameHolder = styled.div`
   justify-content: space - evenly;
   margin-left: 7px;
   margin-bottom: 1rem;
+  width: 100%;
 `
 export default MakeProfile

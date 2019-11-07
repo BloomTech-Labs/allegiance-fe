@@ -109,13 +109,14 @@ const CreateGroup = props => {
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error>
+          <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
-            <UploadIcon
+            {/* <UploadIcon
               name='edit'
               size='large'
               color='black'
               onClick={() => setModal(true)}
-            />
+            /> */}
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
@@ -129,75 +130,80 @@ const CreateGroup = props => {
             >
               <UploaderUI displayImage={image || values.image} />
             </Modal>
-            <NameHolder>
-              <BoldInput
-                required
-                transparent
-                placeholder='Name Your Group (Max 50)'
-                onChange={handleChange}
-                value={values.group_name || ''}
-                maxLength='50'
-                name='group_name'
-                type='text'
-              />
-              <Form.Input
-                required
-                transparent
-                placeholder='Group Slogan'
-                onChange={handleChange}
-                value={values.description || ''}
-                name='description'
-                type='text'
-              />
-            </NameHolder>
           </BasicInfoHolder>
-          <Form.Group widths='equal'>
-            <Form.Input
-              required
-              label='Zip Code'
-              placeholder='Zip Code'
-              minLength='5'
-              maxLength='5'
-              onChange={handleChange}
-              value={values.location || ''}
-              name='location'
-              type='text'
-            />
-            <Form.Input
-              required
-              label='Acronym (Max 4 Characters)'
-              placeholder='Acronym'
-              maxLength='4'
-              onChange={handleChange}
-              value={values.acronym || ''}
-              name='acronym'
-              type='text'
-            />
-          </Form.Group>
-          <Form.Field
-            required
-            label='Privacy Setting'
-            onChange={handleChange}
-            name='privacy_setting'
-            control='select'
-            defaultValue={values.privacy_setting || ''}
-          >
-            <option value={values.privacy_setting}>{privacy || ''}</option>
-            {privacy !== 'Public' && privacy !== undefined && (
-              <option value='public'>Public</option>
-            )}
-            {privacy !== 'Private' && privacy !== undefined && (
-              <option value='private'>Private</option>
-            )}
-            {privacy !== 'Hidden' && privacy !== undefined && (
-              <option value='hidden'>Hidden</option>
-            )}
-          </Form.Field>
-          <ErrorMessage />
-          <SubmitButton />
-          {window.location.pathname.includes('/editgroup') && (
-            <DeleteGroup delete={handleDeleteGroup} />
-          )}
+          <FieldHolder>
+            <ColumnHolder>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Group Name'
+                  placeholder='Name Your Group'
+                  onChange={handleChange}
+                  value={values.group_name || ''}
+                  maxLength='50'
+                  name='group_name'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Group Slogan'
+                  placeholder='Create Your Group Slogan'
+                  onChange={handleChange}
+                  value={values.description || ''}
+                  name='description'
+                  type='text'
+                />
+              </Form.Group>
+
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Zip Code'
+                  placeholder='Zip Code'
+                  minLength='5'
+                  maxLength='5'
+                  onChange={handleChange}
+                  value={values.location || ''}
+                  name='location'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Acronym (Max 4 Characters)'
+                  placeholder='Acronym'
+                  maxLength='4'
+                  onChange={handleChange}
+                  value={values.acronym || ''}
+                  name='acronym'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Field
+                required
+                label='Privacy Setting'
+                onChange={handleChange}
+                name='privacy_setting'
+                control='select'
+                defaultValue={values.privacy_setting || ''}
+              >
+                <option value={values.privacy_setting}>{privacy || ''}</option>
+                {privacy !== 'Public' && privacy !== undefined && (
+                  <option value='public'>Public</option>
+                )}
+                {privacy !== 'Private' && privacy !== undefined && (
+                  <option value='private'>Private</option>
+                )}
+                {privacy !== 'Hidden' && privacy !== undefined && (
+                  <option value='hidden'>Hidden</option>
+                )}
+              </Form.Field>
+              <ErrorMessage />
+              <SubmitButton />
+              {window.location.pathname.includes('/editgroup') && (
+                <DeleteGroup delete={handleDeleteGroup} />
+              )}
+            </ColumnHolder>
+          </FieldHolder>
         </Form>
       </FormSegment>
     </FormHolder>
@@ -205,15 +211,29 @@ const CreateGroup = props => {
 }
 
 const FormHolder = styled.div`
-  background-color: #dee4e7;
-  min-height: 90vh;
-  @media (max-width: 320px) {
+  justify-content:center @media (max-width: 320px) {
     height: 87vh;
   }
 `
 
+const FieldHolder = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+`
+
+const ColumnHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+`
+
 const FormSegment = styled(Segment)`
-  width: 90%;
+  max-width: 800px;
   margin: auto;
   marginbottom: 15%;
 `
@@ -225,9 +245,8 @@ const BoldInput = styled(Form.Input)`
 `
 
 const UploadIcon = styled(Icon)`
-  position: absolute;
-  top: 2.8rem;
-  left: 2.8rem;
+  display: flex;
+  justify-content: center;
 `
 
 const ProfilePic = styled.img`
@@ -243,7 +262,7 @@ const ProfilePic = styled.img`
 
 const BasicInfoHolder = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: center;
 `
 
 const NameHolder = styled.div`
