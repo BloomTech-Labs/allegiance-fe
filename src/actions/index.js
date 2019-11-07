@@ -52,13 +52,10 @@ export const receivingGroup = groupData => async dispatch => {
   const { user, group_id, fromGroupView } = groupData
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
-    const result = await axios.post(
-      `/groups_users/search`,
-      {
-        user_id: user.id,
-        group_id,
-      }
-    )
+    const result = await axios.post(`/groups_users/search`, {
+      user_id: user.id,
+      group_id,
+    })
     const relation = result.data.relationExists
     if (relation) {
       const data = relation[0]
@@ -100,11 +97,13 @@ export const receivingGroup = groupData => async dispatch => {
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
+    
     try {
       dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_REQUEST })
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
+      console.log("NOTIFIC", notifications)
       dispatch({
         type: actionTypes.FETCH_NOTIFICATIONS_SUCCESS,
         payload: notifications.data,
@@ -272,8 +271,10 @@ export const fetchPost = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POST_REQUEST })
     const response = await axios.get(`/posts/${id}`)
+    console.log("reponse", response)
     const postObj = response.data.postLoaded
     dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
+    console.log(postObj)
     return postObj
   } catch (err) {
     dispatch({ type: actionTypes.FETCH_POST_FAILURE, payload: err })
@@ -526,20 +527,15 @@ export const createGroup = groupData => async dispatch => {
 export const addToGroup = groupData => async dispatch => {
   const { group_id, invoker, user_id, socket } = groupData
   try {
-    const deleted = await axios.delete(
-      `/private/group/${group_id}/${user_id}`
-    )
+    const deleted = await axios.delete(`/private/group/${group_id}/${user_id}`)
     if (deleted) {
       Mixpanel.activity(group_id, MixpanelMessages.REQUEST_ACCEPT)
-      const notification = await axios.post(
-        `/users/${user_id}/notifications`,
-        {
-          user_id,
-          invoker_id: invoker.id,
-          type_id: group_id,
-          type: 'group_accepted',
-        }
-      )
+      const notification = await axios.post(`/users/${user_id}/notifications`, {
+        user_id,
+        invoker_id: invoker.id,
+        type_id: group_id,
+        type: 'group_accepted',
+      })
       const result = await axios.post(`/groups_users`, {
         user_id,
         group_id,
@@ -547,17 +543,16 @@ export const addToGroup = groupData => async dispatch => {
       })
       console.log('returning member?', result)
       const user = result.data.newGroupUsers
-      dispatch({ 
-        type: actionTypes.ADD_MEMBER_SUCCESS, 
-        payload: 
-          {
-            ...user,
-            location: user.user_location,
-            status: user.user_type,
-            name: `${user.first_name} ${user.last_name}`,
-            image: user.user_image,
-            id: user.user_id
-          }
+      dispatch({
+        type: actionTypes.ADD_MEMBER_SUCCESS,
+        payload: {
+          ...user,
+          location: user.user_location,
+          status: user.user_type,
+          name: `${user.first_name} ${user.last_name}`,
+          image: user.user_image,
+          id: user.user_id,
+        },
       })
       console.log('emit socket', notification)
       socket.emit('send notification', {
@@ -599,7 +594,7 @@ export const joinGroup = groupData => async dispatch => {
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
-      Mixpanel.activity(user.id, MixpanelMessages.GROUP_JOINED);
+      Mixpanel.activity(user.id, MixpanelMessages.GROUP_JOINED)
       if (fromGroupView) {
         await dispatch({
           type: actionTypes.ADD_MEMBER_SUCCESS,
@@ -627,7 +622,7 @@ export const leaveGroup = data => async dispatch => {
   console.log('leaving group', result)
   if (result.data) {
     dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
-    Mixpanel.activity(user_id, MixpanelMessages.GROUP_LEFT);
+    Mixpanel.activity(user_id, MixpanelMessages.GROUP_LEFT)
     dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
   }
 }
@@ -695,12 +690,10 @@ export const editUserMembership = data => async dispatch => {
 }
 
 export const removeRequest = data => async dispatch => {
-  dispatch({type: actionTypes.REMOVE_REQUEST_REQUEST})
+  dispatch({ type: actionTypes.REMOVE_REQUEST_REQUEST })
   const { group_id, user_id } = data
   try {
-    const deleted = await axios.delete(
-      `/private/group/${group_id}/${user_id}`
-    )
+    const deleted = await axios.delete(`/private/group/${group_id}/${user_id}`)
     if (deleted) {
       dispatch({ type: actionTypes.REMOVE_REQUEST_SUCCESS, payload: user_id })
     } else {
@@ -708,6 +701,6 @@ export const removeRequest = data => async dispatch => {
     }
   } catch (err) {
     console.log(err)
-    dispatch({type: actionTypes.REMOVE_REQUEST_FAILURE, payload: err})
+    dispatch({ type: actionTypes.REMOVE_REQUEST_FAILURE, payload: err })
   }
 }

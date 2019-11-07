@@ -34,7 +34,7 @@ const ReplyContainer = props => {
   useEffect(() => {
     // Fetch group related data
     dispatch(fetchPost(id)).then(res => {
-      console.log('res', res)
+      console.log('id', id)
       console.log(post && post.group_id)
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
