@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { NavLink, withRouter, Link } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import { Avatar } from './Avatar'
 import { Icon, Loader } from 'semantic-ui-react'
@@ -10,7 +10,6 @@ const NavRight = props => {
   const { loginWithRedirect } = useAuth0()
   const notifyReducer = useSelector(state => state.notifyReducer)
   const userIn = useSelector(state => state.userReducer.loggedInUser)
-  const dispatch = useDispatch()
   const { location, user } = props
   const { pathname } = location
   const { loading } = useAuth0()

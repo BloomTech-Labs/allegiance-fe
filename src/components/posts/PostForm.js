@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
+
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
@@ -20,7 +20,7 @@ const PostForm = props => {
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   // useForm custom hook and set timeout custom hook
-  const { values, setValues, handleChange, handleSubmit } = useForm(submitPost)
+  const { values, handleChange, handleSubmit } = useForm(submitPost)
 
   // callback function to handle submit
   async function submitPost(e) {

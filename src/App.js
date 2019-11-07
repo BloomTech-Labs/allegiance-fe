@@ -33,7 +33,6 @@ function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const notifications = useSelector(state => state.notifyReducer.notifications)
   const { loading, user, isAuthenticated } = useAuth0()
   useEffect(() => {
     if (!window.GA_INITIALIZED) {

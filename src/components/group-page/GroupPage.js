@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
-import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
@@ -8,17 +6,16 @@ import PostsContainer from '../posts/PostsContainer'
 import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-import { Loader, Dimmer } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
+
 const GroupPage = props => {
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
   const { memberType, posts } = group
-  const [allegiances, setAllegiances] = useState([])
   const [members, setMembers] = useState([])
-  const [requests, setRequests] = useState([])
   const [trigger, setTrigger] = useState(false)
   const dispatch = useDispatch()
   useEffect(() => {

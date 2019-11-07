@@ -1,11 +1,10 @@
 import React from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import logo from 'assets/logo192.png'
 import jersey from 'assets/jersey.png'
 const NavLeft = props => {
-  const { location } = props
   const userIn = useSelector(state => state.userReducer.loggedInUser)
 
   if (userIn) {
@@ -14,7 +13,7 @@ const NavLeft = props => {
         <ul>
           <li>
             <NavLink to='/home'>
-              <img src={logo} style={{ width: '25px' }} />
+              <img src={logo} style={{ width: '25px' }} alt={'Logo Image'} />
               <span>Home</span>
             </NavLink>
           </li>

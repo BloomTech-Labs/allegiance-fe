@@ -8,7 +8,7 @@ import moment from 'moment'
 import * as types from 'actions/actionTypes'
 import ActivityNotificationsCard from './ActivityNotificationsCard'
 import InviteNotificationCard from './InviteNotificationCard'
-import { fetchNotifications, fetchInvites } from 'actions/index'
+import { fetchNotifications } from 'actions/index'
 
 const Notifications = () => {
   const notifications = useSelector(state => state.notifyReducer.notifications)
@@ -32,7 +32,7 @@ const Notifications = () => {
             userId,
           }
           if (!notifications.length) {
-            const response = await dispatch(fetchNotifications(token, data))
+            await dispatch(fetchNotifications(token, data))
           }
           setMountTime(moment().toISOString())
         } catch (error) {
@@ -81,6 +81,14 @@ const Notifications = () => {
       }
     }
   }, [dispatch, email, location, userId, mountTime])
+
+  if (!notifications) {
+    return (
+      <Loader active size='large'>
+        Loading
+      </Loader>
+    )
+  }
 
   if (
     (!notifications && !invites) ||
