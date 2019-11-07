@@ -267,5 +267,6 @@ const NameHolder = styled.div`
   justify-content: space - evenly;
   margin-left: 7px;
   margin-bottom: 1rem;
+  width: 100%;
 `
 export default MakeProfile

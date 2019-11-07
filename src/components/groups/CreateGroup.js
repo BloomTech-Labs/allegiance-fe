@@ -131,77 +131,79 @@ const CreateGroup = props => {
             </Modal>
             <NameHolder></NameHolder>
           </BasicInfoHolder>
-          <ColumnHolder>
-            <Form.Group widths='equal'>
-              <Form.Input
-                required
-                label='Group Name'
-                placeholder='Name Your Group'
-                onChange={handleChange}
-                value={values.group_name || ''}
-                maxLength='50'
-                name='group_name'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Group Slogan'
-                placeholder='Create Your Group Slogan'
-                onChange={handleChange}
-                value={values.description || ''}
-                name='description'
-                type='text'
-              />
-            </Form.Group>
+          <FieldHolder>
+            <ColumnHolder>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Group Name'
+                  placeholder='Name Your Group'
+                  onChange={handleChange}
+                  value={values.group_name || ''}
+                  maxLength='50'
+                  name='group_name'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Group Slogan'
+                  placeholder='Create Your Group Slogan'
+                  onChange={handleChange}
+                  value={values.description || ''}
+                  name='description'
+                  type='text'
+                />
+              </Form.Group>
 
-            <Form.Group widths='equal'>
-              <Form.Input
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Zip Code'
+                  placeholder='Zip Code'
+                  minLength='5'
+                  maxLength='5'
+                  onChange={handleChange}
+                  value={values.location || ''}
+                  name='location'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Acronym (Max 4 Characters)'
+                  placeholder='Acronym'
+                  maxLength='4'
+                  onChange={handleChange}
+                  value={values.acronym || ''}
+                  name='acronym'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Field
                 required
-                label='Zip Code'
-                placeholder='Zip Code'
-                minLength='5'
-                maxLength='5'
+                label='Privacy Setting'
                 onChange={handleChange}
-                value={values.location || ''}
-                name='location'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Acronym (Max 4 Characters)'
-                placeholder='Acronym'
-                maxLength='4'
-                onChange={handleChange}
-                value={values.acronym || ''}
-                name='acronym'
-                type='text'
-              />
-            </Form.Group>
-            <Form.Field
-              required
-              label='Privacy Setting'
-              onChange={handleChange}
-              name='privacy_setting'
-              control='select'
-              defaultValue={values.privacy_setting || ''}
-            >
-              <option value={values.privacy_setting}>{privacy || ''}</option>
-              {privacy !== 'Public' && privacy !== undefined && (
-                <option value='public'>Public</option>
+                name='privacy_setting'
+                control='select'
+                defaultValue={values.privacy_setting || ''}
+              >
+                <option value={values.privacy_setting}>{privacy || ''}</option>
+                {privacy !== 'Public' && privacy !== undefined && (
+                  <option value='public'>Public</option>
+                )}
+                {privacy !== 'Private' && privacy !== undefined && (
+                  <option value='private'>Private</option>
+                )}
+                {privacy !== 'Hidden' && privacy !== undefined && (
+                  <option value='hidden'>Hidden</option>
+                )}
+              </Form.Field>
+              <ErrorMessage />
+              <SubmitButton />
+              {window.location.pathname.includes('/editgroup') && (
+                <DeleteGroup delete={handleDeleteGroup} />
               )}
-              {privacy !== 'Private' && privacy !== undefined && (
-                <option value='private'>Private</option>
-              )}
-              {privacy !== 'Hidden' && privacy !== undefined && (
-                <option value='hidden'>Hidden</option>
-              )}
-            </Form.Field>
-            <ErrorMessage />
-            <SubmitButton />
-            {window.location.pathname.includes('/editgroup') && (
-              <DeleteGroup delete={handleDeleteGroup} />
-            )}
-          </ColumnHolder>
+            </ColumnHolder>
+          </FieldHolder>
         </Form>
       </FormSegment>
     </FormHolder>
@@ -209,16 +211,20 @@ const CreateGroup = props => {
 }
 
 const FormHolder = styled.div`
+  justify-content:center @media (max-width: 320px) {
+    height: 87vh;
+  }
+`
+
+const FieldHolder = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  background-color: #dee4e7;
-  min-height: 90vh;
-  @media (max-width: 320px) {
-    height: 87vh;
-  }
 `
+
 const ColumnHolder = styled.div`
   display: flex;
   flex-direction: column;
