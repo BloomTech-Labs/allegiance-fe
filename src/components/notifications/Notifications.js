@@ -94,6 +94,7 @@ const Notifications = () => {
   ) {
     return (
       <Wrapper>
+        <Header>No Notifications</Header>
         <Img src={undrawCompleteTask} />
         <br />
       </Wrapper>
@@ -152,7 +153,8 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex
-  justify-content: center
+  flex-direction: column;
+  align-items: center;
   margin-top: 25px;
 `
 
@@ -161,6 +163,9 @@ const Header = styled.h1`
   font-weight: 700;
 `
 
-const Img = styled.img``
+const Img = styled.img`
+  width: 70vw;
+  height: 70vh;
+`
 
 export default Notifications
