@@ -6,7 +6,6 @@ const GroupsNav = () => {
   const loggedInGroups = useSelector(state => state.myGroups)
   return (
     <>
-      <h1>My Groups</h1>
       <MyAllegianceGroups content={loggedInGroups || []} type='group' />
     </>
   )

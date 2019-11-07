@@ -17,7 +17,7 @@ function GroupContainer(props) {
         <SearchBar {...props} />
         <Divider />
         <H3>GROUPS NEAR YOU</H3>
-        <NearbyGroups />
+        <NearbyGroups history={props.history} />
         <Divider />
         <H3>DISCOVER</H3>
         <GroupList groups={groups} />
