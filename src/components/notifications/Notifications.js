@@ -9,6 +9,9 @@ import moment from 'moment'
 // import { UPDATE_USER } from '../../reducers/userReducer'
 import * as types from 'actions/actionTypes'
 
+//import PICTURES (SVG)
+import undrawCompleteTask from '../../assets/undraw/undrawCompleteTask.svg'
+
 import ActivityNotificationsCard from './ActivityNotificationsCard'
 import InviteNotificationCard from './InviteNotificationCard'
 import { fetchNotifications, fetchInvites } from 'actions/index'
@@ -91,7 +94,7 @@ const Notifications = () => {
   ) {
     return (
       <Wrapper>
-        <Header>No Notifications</Header>
+        <Img src={undrawCompleteTask} />
         <br />
       </Wrapper>
     )
@@ -157,5 +160,7 @@ const Header = styled.h1`
   font-size: 30px;
   font-weight: 700;
 `
+
+const Img = styled.img``
 
 export default Notifications
