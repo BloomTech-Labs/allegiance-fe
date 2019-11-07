@@ -7,9 +7,12 @@ import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
+import { Link } from 'react-router-dom'
+
+import undrawFans from '../../assets/undraw/undrawFans.svg'
 
 const Feed = () => {
-  const [feed, setFeed] = useState()
+  const [feed, setFeed] = useState([])
   const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
 
@@ -35,20 +38,25 @@ const Feed = () => {
     fetchData()
   }, [token, userGroups])
 
-  if (!feed) {
-    return (
-      <Loader active size='large'>
-        {' '}
-        Loading{' '}
-      </Loader>
-    )
-  }
+  // <Loader active size='large'>
+  //   {' '}
+  //   Loading{' '}
+  // </Loader>
   // Filter feed for activity by user
   const filteredFeed = feed.filter(
     act => userId !== act.user_id && userId !== act.liker_id
   )
 
-  return (
+  return feed.length === 0 ? (
+    <FansDiv>
+      {/* <Header>Your feed is currently empty...</Header>
+      <br /> */}
+      <Link to='/groups'>
+        <Header>Select a group to join!</Header>
+      </Link>
+      <Img src={undrawFans} />
+    </FansDiv>
+  ) : (
     <Container>
       {filteredFeed.map(activity => {
         return (
@@ -97,6 +105,24 @@ const FeedContainer = styled.div`
   display: flex
   justify-content: center;
   width: 100vw
+`
+const FansDiv = styled.div`
+  display: flex;
+  flex-flow: column nowrap
+  align-items: center;
+  width: 100vw
+`
+
+const Img = styled.img`
+  width: 70vw;
+  height: 70vh;
+`
+
+const Header = styled.h1`
+  margin-top: 10px
+  padding: 10px;
+  font-size: 3rem;
+  font-weight: 700;
 `
 
 export default Feed
