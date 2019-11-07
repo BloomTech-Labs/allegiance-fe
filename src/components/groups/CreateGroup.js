@@ -129,11 +129,14 @@ const CreateGroup = props => {
             >
               <UploaderUI displayImage={image || values.image} />
             </Modal>
-            <NameHolder>
-              <BoldInput
+            <NameHolder></NameHolder>
+          </BasicInfoHolder>
+          <ColumnHolder>
+            <Form.Group widths='equal'>
+              <Form.Input
                 required
-                transparent
-                placeholder='Name Your Group (Max 50)'
+                label='Group Name'
+                placeholder='Name Your Group'
                 onChange={handleChange}
                 value={values.group_name || ''}
                 maxLength='50'
@@ -142,62 +145,63 @@ const CreateGroup = props => {
               />
               <Form.Input
                 required
-                transparent
-                placeholder='Group Slogan'
+                label='Group Slogan'
+                placeholder='Create Your Group Slogan'
                 onChange={handleChange}
                 value={values.description || ''}
                 name='description'
                 type='text'
               />
-            </NameHolder>
-          </BasicInfoHolder>
-          <Form.Group widths='equal'>
-            <Form.Input
+            </Form.Group>
+
+            <Form.Group widths='equal'>
+              <Form.Input
+                required
+                label='Zip Code'
+                placeholder='Zip Code'
+                minLength='5'
+                maxLength='5'
+                onChange={handleChange}
+                value={values.location || ''}
+                name='location'
+                type='text'
+              />
+              <Form.Input
+                required
+                label='Acronym (Max 4 Characters)'
+                placeholder='Acronym'
+                maxLength='4'
+                onChange={handleChange}
+                value={values.acronym || ''}
+                name='acronym'
+                type='text'
+              />
+            </Form.Group>
+            <Form.Field
               required
-              label='Zip Code'
-              placeholder='Zip Code'
-              minLength='5'
-              maxLength='5'
+              label='Privacy Setting'
               onChange={handleChange}
-              value={values.location || ''}
-              name='location'
-              type='text'
-            />
-            <Form.Input
-              required
-              label='Acronym (Max 4 Characters)'
-              placeholder='Acronym'
-              maxLength='4'
-              onChange={handleChange}
-              value={values.acronym || ''}
-              name='acronym'
-              type='text'
-            />
-          </Form.Group>
-          <Form.Field
-            required
-            label='Privacy Setting'
-            onChange={handleChange}
-            name='privacy_setting'
-            control='select'
-            defaultValue={values.privacy_setting || ''}
-          >
-            <option value={values.privacy_setting}>{privacy || ''}</option>
-            {privacy !== 'Public' && privacy !== undefined && (
-              <option value='public'>Public</option>
+              name='privacy_setting'
+              control='select'
+              defaultValue={values.privacy_setting || ''}
+            >
+              <option value={values.privacy_setting}>{privacy || ''}</option>
+              {privacy !== 'Public' && privacy !== undefined && (
+                <option value='public'>Public</option>
+              )}
+              {privacy !== 'Private' && privacy !== undefined && (
+                <option value='private'>Private</option>
+              )}
+              {privacy !== 'Hidden' && privacy !== undefined && (
+                <option value='hidden'>Hidden</option>
+              )}
+            </Form.Field>
+            <ErrorMessage />
+            <SubmitButton />
+            {window.location.pathname.includes('/editgroup') && (
+              <DeleteGroup delete={handleDeleteGroup} />
             )}
-            {privacy !== 'Private' && privacy !== undefined && (
-              <option value='private'>Private</option>
-            )}
-            {privacy !== 'Hidden' && privacy !== undefined && (
-              <option value='hidden'>Hidden</option>
-            )}
-          </Form.Field>
-          <ErrorMessage />
-          <SubmitButton />
-          {window.location.pathname.includes('/editgroup') && (
-            <DeleteGroup delete={handleDeleteGroup} />
-          )}
+          </ColumnHolder>
         </Form>
       </FormSegment>
     </FormHolder>
@@ -205,15 +209,25 @@ const CreateGroup = props => {
 }
 
 const FormHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
   background-color: #dee4e7;
   min-height: 90vh;
   @media (max-width: 320px) {
     height: 87vh;
   }
 `
+const ColumnHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+`
 
 const FormSegment = styled(Segment)`
-  width: 90%;
+  max-width: 800px;
   margin: auto;
   marginbottom: 15%;
 `
@@ -243,7 +257,7 @@ const ProfilePic = styled.img`
 
 const BasicInfoHolder = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: center;
 `
 
 const NameHolder = styled.div`
