@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import NavLeft from './NavLeft'
+import NavRight from './NavRight'
+import NavBottom from './NavBottom'
 import styled from 'styled-components'
 import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
-import NavRight from './NavRight'
 import {
   CreateNotification,
   createInvite,
@@ -34,7 +35,7 @@ const NavBar = props => {
   // Retrieve notifications while not on notifications tab to update number counter on icon
   const [navNotifications, setNavNotifications] = useState()
   // Retrieve all groups where user has a relation
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
@@ -95,11 +96,15 @@ const NavBar = props => {
 
       if (data.notification.type === 'group_accepted') {
         const group_id = data.notification.type_id
-        dispatch(receivingGroup({
-          user,
-          group_id,
-          fromGroupView: window.location.pathname.includes(`/group/${group_id}`)
-        }))
+        dispatch(
+          receivingGroup({
+            user,
+            group_id,
+            fromGroupView: window.location.pathname.includes(
+              `/group/${group_id}`
+            ),
+          })
+        )
       }
     })
     socket.on('new invite', async data => {

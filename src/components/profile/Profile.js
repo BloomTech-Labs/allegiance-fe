@@ -13,7 +13,7 @@ import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const loggedInGroups = useSelector(state => state.myGroups)
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
@@ -113,10 +113,6 @@ const Profile = props => {
               type='allegiance'
               default={Default}
             />
-          </>
-          <>
-            <H3>MY GROUPS</H3>
-            <MyAllegianceGroups content={loggedInGroups || []} type='group' />
           </>
         </InfoHolder>
       </div>

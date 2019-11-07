@@ -16,10 +16,6 @@ const GroupPage = props => {
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
   const { memberType, posts } = group
-  const [allegiances, setAllegiances] = useState([])
-  const [members, setMembers] = useState([])
-  const [requests, setRequests] = useState([])
-  const [trigger, setTrigger] = useState(false)
   const dispatch = useDispatch()
   useEffect(() => {
     // Fetch group related data
@@ -54,8 +50,6 @@ const GroupPage = props => {
           group={group}
           members={group.members}
           allegiances={group.allegiances}
-          trigger={trigger}
-          setTrigger={setTrigger}
           requests={group.reqs}
         />
       </PaperContainer>
@@ -68,7 +62,7 @@ const GroupPage = props => {
           <PostsContainer
             groupId={id}
             memberType={memberType}
-            members={members}
+            members={group.members}
             posts={posts}
             group={group}
           />
