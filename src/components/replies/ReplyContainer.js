@@ -226,7 +226,7 @@ const ContainerBottom = styled.div`
 `
 const DownNav = styled.div`
   display: flex;
-  // justify-content: flex-end;
+  justify-content: flex-end;
   align-items: center;
   width: 10%;
 `
