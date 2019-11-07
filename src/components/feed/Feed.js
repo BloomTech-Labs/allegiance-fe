@@ -9,8 +9,10 @@ import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
 import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 
+import undrawFans from '../../assets/undraw/undrawFans.png'
+
 const Feed = () => {
-  const [feed, setFeed] = useState()
+  const [feed, setFeed] = useState([])
   const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
 
@@ -36,14 +38,19 @@ const Feed = () => {
     fetchData()
   }, [token, userGroups])
 
-  if (!feed) {
+  if (feed.length === 0) {
     return (
-      <Loader active size='large'>
-        {' '}
-        Loading{' '}
-      </Loader>
+      <div>
+        <h1></h1>
+        <img src={undrawFans} />
+      </div>
     )
   }
+
+  // <Loader active size='large'>
+  //   {' '}
+  //   Loading{' '}
+  // </Loader>
   // Filter feed for activity by user
   const filteredFeed = feed.filter(
     act => userId !== act.user_id && userId !== act.liker_id
