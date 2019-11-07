@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Add, VerticalAlignBottom } from '@material-ui/icons/'
 import { Mixpanel } from '../analytics/Mixpanel'
 
+import { Feed, Comment } from 'semantic-ui-react'
+
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
@@ -186,26 +188,31 @@ const ReplyContainer = props => {
       )}
 
       {sortedReplies && (
-        <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
-              </div>
-            )
-          })}
-        </ReplyCardsContainer>
+        <RepliesWrapper>
+          <Comment.Group>
+            {sortedReplies.map(reply => {
+              return (
+                <div ref={replyRefs[reply.id]} key={reply.id}>
+                  <ReplyCard
+                    className='ReplyCard'
+                    reply={reply}
+                    setSubmitted={setSubmitted}
+                    post={post}
+                    group={group}
+                  />
+                </div>
+              )
+            })}
+          </Comment.Group>
+        </RepliesWrapper>
       )}
 
       <div ref={repliesEndRef} />
     </ReplyViewContainer>
   )
 }
+
+const RepliesWrapper = styled.div``
 
 const ReplyViewContainer = styled.div`
   display: flex;

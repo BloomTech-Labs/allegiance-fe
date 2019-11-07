@@ -15,6 +15,7 @@ import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
 import Tooltip from '@material-ui/core/Tooltip'
 import { likeReply, dislikeReply } from 'actions'
+import { Feed, Card, Icon, Comment } from 'semantic-ui-react'
 
 const ReplyCard = props => {
   const {
@@ -64,90 +65,144 @@ const ReplyCard = props => {
   }
 
   return (
-    <div className={'reply-div'}>
-      <BubbleContainer user={user.id === user_id ? 'mine' : 'yours'} key={id}>
-        <Avatar
-          className={classes.avatar}
-          src={!image ? avi : image}
-          alt={'Avatar'}
-        />
-        <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
-          <Content
-            className={classes.content}
-            color={user.id === user_id ? 'me' : 'you'}
-          >
-            <Typography
-              className={classes.typography2}
-              variant='body1'
-              color='textPrimary'
-              component='p'
-            >
-              {first_name} {last_name}
-            </Typography>
-            <Typography
-              className={classes.typography}
-              variant='body2'
-              color='textSecondary'
-              component='p'
-            >
-              {reply_content}
-            </Typography>
-          </Content>
-        </Tooltip>
-        <Activity>
-          {!replyLikeId && (
-            <div>
-              <IconButton
-                className={classes.icon}
-                aria-label='add to favorites'
-                onClick={addReplyLike}
-                style={{ backgroundColor: 'transparent' }}
-              >
-                <ThumbUp
-                  className={classes.unlikedIcon}
-                  style={{ backgroundColor: 'transparent' }}
-                />
-              </IconButton>
-              <IconButton className={classes.countIcon}>
-                <h4> {replyLikes.length} </h4>
-              </IconButton>
-            </div>
-          )}
-          {replyLikeId && (
-            <div>
-              <IconButton
-                className={classes.icon}
-                aria-label='add to favorites'
-                onClick={unLikeReply}
-                style={{ backgroundColor: 'transparent' }}
-              >
-                <ThumbUp
-                  className={classes.likedIcon}
-                  style={{ backgroundColor: 'transparent' }}
-                />
-              </IconButton>
-              <IconButton
-                className={classes.countIcon}
-                style={{ backgroundColor: 'transparent' }}
-              >
-                <h4> {replyLikes.length} </h4>
-              </IconButton>
-            </div>
-          )}
+    <CommentWrapper>
+      <Comment>
+        <Comment.Avatar src={image} />
+        <Comment.Content>
+          <Comment.Author as='a'>{`${first_name} ${last_name}`}</Comment.Author>
+          <ContentWrapper>
+            <Comment.Text>{reply_content}</Comment.Text>
+          </ContentWrapper>
+        </Comment.Content>
+        <ActionWrapper>
+          <Comment.Actions>
+            <IconWrapper>
+              {(user.id === user_id || props.group.memberType === 'admin') && (
+                <Icon
+                  name='trash alternate'
+                  onClick={() => deleteReply()}
+                ></Icon>
+              )}
 
-          {(user.id === user_id || props.group.memberType === 'admin') && (
-            <IconButton
-              onClick={() => deleteReply()}
-              aria-label='settings'
-              className={classes.icon}
-              style={{ backgroundColor: 'transparent' }}
-            >
-              <DeleteOutline />
-            </IconButton>
-          )}
-        </Activity>
-      </BubbleContainer>
-    </div>
+              {!replyLikeId && (
+                <div>
+                  <Icon
+                    name='thumbs up outline'
+                    onClick={addReplyLike}
+                    style={{ backgroundColor: 'transparent' }}
+                  ></Icon>
+                  <IconButton className={classes.countIcon}>
+                    <h4> {replyLikes.length} </h4>
+                  </IconButton>
+                </div>
+              )}
+              {replyLikeId && (
+                <div>
+                  <Icon
+                    name='thumbs up outline'
+                    onClick={unLikeReply}
+                    style={{ backgroundColor: 'transparent' }}
+                  ></Icon>
+                  <IconButton
+                    className={classes.countIcon}
+                    style={{ backgroundColor: 'transparent' }}
+                  >
+                    <h4> {replyLikes.length} </h4>
+                  </IconButton>
+                </div>
+              )}
+            </IconWrapper>
+          </Comment.Actions>
+        </ActionWrapper>
+      </Comment>
+    </CommentWrapper>
+
+    // <div className={'reply-div'}>
+    //   {/* <BubbleContainer user={user.id === user_id ? 'mine' : 'yours'} key={id}> */}
+    //   <div>
+    //     <Avatar
+    //       className={classes.avatar}
+    //       src={!image ? avi : image}
+    //       alt={'Avatar'}
+    //     />
+    //     <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
+    //       <Content
+    //         className={classes.content}
+    //         color={user.id === user_id ? 'me' : 'you'}
+    //       >
+    //         <Typography
+    //           className={classes.typography2}
+    //           variant='body1'
+    //           color='textPrimary'
+    //           component='p'
+    //         >
+    //           {first_name} {last_name}
+    //         </Typography>
+    //         <Typography
+    //           className={classes.typography}
+    //           variant='body2'
+    //           color='textSecondary'
+    //           component='p'
+    //         >
+    //           {reply_content}
+    //         </Typography>
+    //       </Content>
+    //     </Tooltip>
+    //     <Activity>
+    //       {!replyLikeId && (
+    //         <div>
+    //           <IconButton
+    //             className={classes.icon}
+    //             aria-label='add to favorites'
+    //             onClick={addReplyLike}
+    //             style={{ backgroundColor: 'transparent' }}
+    //           >
+    //             <ThumbUp
+    //               className={classes.unlikedIcon}
+    //               style={{ backgroundColor: 'transparent' }}
+    //             />
+    //           </IconButton>
+    //           <IconButton className={classes.countIcon}>
+    //             <h4> {replyLikes.length} </h4>
+    //           </IconButton>
+    //         </div>
+    //       )}
+    //       {replyLikeId && (
+    //         <div>
+    //           <IconButton
+    //             className={classes.icon}
+    //             aria-label='add to favorites'
+    //             onClick={unLikeReply}
+    //             style={{ backgroundColor: 'transparent' }}
+    //           >
+    //             <ThumbUp
+    //               className={classes.likedIcon}
+    //               style={{ backgroundColor: 'transparent' }}
+    //             />
+    //           </IconButton>
+    //           <IconButton
+    //             className={classes.countIcon}
+    //             style={{ backgroundColor: 'transparent' }}
+    //           >
+    //             <h4> {replyLikes.length} </h4>
+    //           </IconButton>
+    //         </div>
+    //       )}
+
+    //       {(user.id === user_id || props.group.memberType === 'admin') && (
+    //         <IconButton
+    //           onClick={() => deleteReply()}
+    //           aria-label='settings'
+    //           className={classes.icon}
+    //           style={{ backgroundColor: 'transparent' }}
+    //         >
+    //           <DeleteOutline />
+    //         </IconButton>
+    //       )}
+    //     </Activity>
+    //   </div>
+    //   {/* </BubbleContainer> */}
+    // </div>
   )
 }
 
@@ -226,31 +281,52 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const BubbleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  &:last-child {
-    padding-bottom: 0;
-  }
-  flex-direction: ${props => {
-    return props.user === 'mine' ? 'row-reverse' : 'row'
-  }};
-  justify-content: ${props => {
-    return props.user === 'yours' ? 'flex-start' : 'none'
-  }};
+const IconWrapper = styled.div`
+  display: flex
+  justify-content: space-between
 `
 
-const Content = styled(CardContent)`
-  background-color: ${props => {
-    return props.color === 'me' ? '#8f5db7' : '#f2f2f2'
-  }};
+const CommentWrapper = styled.div`
+  margin-top: 15px;
+  background: white;
+  padding: 20px 10px 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  font-size: 1.5rem;
+  width: 30vw;
+  min-width: 250px;
 `
+
+const ContentWrapper = styled.div`
+  display: flex;
+`
+const ActionWrapper = styled.div`
+  padding-left: 10px;
+  display: flex;
+  justify-content: flex-end;
+`
+
+// const BubbleContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   &:last-child {
+//     padding-bottom: 0;
+//   }
+//   flex-direction: ${props => {
+//     return props.user === 'mine' ? 'row-reverse' : 'row'
+//   }};
+//   justify-content: ${props => {
+//     return props.user === 'yours' ? 'flex-start' : 'none'
+//   }};
+// `
+
+const Content = styled(CardContent)``
 
 const Activity = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
 `
 
 export default ReplyCard
