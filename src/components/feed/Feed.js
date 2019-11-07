@@ -7,7 +7,6 @@ import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
-import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 
 import undrawFans from '../../assets/undraw/undrawFans.png'
 
@@ -58,15 +57,6 @@ const Feed = () => {
 
   return (
     <Container>
-      <MyGroups elevation={10}>
-        <GroupTitleHolder>
-          <H3>MY GROUPS</H3>
-        </GroupTitleHolder>
-        <>
-          <MyAllegianceGroups content={userGroups} type={'group'} />
-        </>
-      </MyGroups>
-
       {filteredFeed.map(activity => {
         return (
           <FeedContainer key={activity.tag + activity.id}>

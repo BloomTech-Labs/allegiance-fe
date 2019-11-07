@@ -8,9 +8,6 @@ import { green } from '@material-ui/core/colors'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
 import { Add, VerticalAlignBottom } from '@material-ui/icons/'
-import { Mixpanel } from '../analytics/Mixpanel'
-
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 
@@ -56,7 +53,6 @@ const ReplyContainer = props => {
       user_id: post.user_id,
     }
     dispatch(createReply(token, data, socket))
-    //   Mixpanel.activity(userId, 'Reply Successfully Created.')
   }
 
   // Material UI
@@ -230,7 +226,7 @@ const ContainerBottom = styled.div`
 `
 const DownNav = styled.div`
   display: flex;
-  // justify-content: flex-end;
+  justify-content: flex-end;
   align-items: center;
   width: 10%;
 `
