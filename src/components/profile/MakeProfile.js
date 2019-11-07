@@ -118,63 +118,69 @@ const MakeProfile = props => {
           </BasicInfoHolder>
           <FieldHolder>
             <ColumnHolder>
-              <Form.Input
-                required
-                label='First Name'
-                placeholder='First Name'
-                onChange={handleChange}
-                value={values.first_name || ''}
-                name='first_name'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Last Name'
-                placeholder='Last Name'
-                onChange={handleChange}
-                value={values.last_name || ''}
-                name='last_name'
-                type='text'
-              />
-              <Form.Input
-                placeholder='Bio'
-                label='Bio'
-                onChange={handleChange}
-                value={values.bio || ''}
-                name='bio'
-                type='text'
-              />
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='First Name'
+                  placeholder='First Name'
+                  onChange={handleChange}
+                  value={values.first_name || ''}
+                  name='first_name'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Last Name'
+                  placeholder='Last Name'
+                  onChange={handleChange}
+                  value={values.last_name || ''}
+                  name='last_name'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  placeholder='Bio'
+                  label='Bio'
+                  onChange={handleChange}
+                  value={values.bio || ''}
+                  name='bio'
+                  type='text'
+                />
 
-              <Form.Input
-                key={'email'}
-                required
-                label='E-mail Address'
-                placeholder='E-Mail'
-                onChange={handleChange}
-                value={values.email || ''}
-                name='email'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Username'
-                placeholder='Username'
-                onChange={handleChange}
-                value={values.username || ''}
-                name='username'
-                type='text'
-              />
-              <Form.Input
-                required
-                label='Zip Code'
-                placeholder='Zip Code (To Discover Local Groups)'
-                minLength='5'
-                maxLength='5'
-                onChange={handleChange}
-                value={values.location || ''}
-                name='location'
-                type='text'
-              />
+                <Form.Input
+                  key={'email'}
+                  required
+                  label='E-mail Address'
+                  placeholder='E-Mail'
+                  onChange={handleChange}
+                  value={values.email || ''}
+                  name='email'
+                  type='text'
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  required
+                  label='Username'
+                  placeholder='Username'
+                  onChange={handleChange}
+                  value={values.username || ''}
+                  name='username'
+                  type='text'
+                />
+                <Form.Input
+                  required
+                  label='Zip Code'
+                  placeholder='Zip Code (To Discover Local Groups)'
+                  minLength='5'
+                  maxLength='5'
+                  onChange={handleChange}
+                  value={values.location || ''}
+                  name='location'
+                  type='text'
+                />
+              </Form.Group>
               <Form.Input
                 label='Banner Image'
                 placeholder='Banner Image'
