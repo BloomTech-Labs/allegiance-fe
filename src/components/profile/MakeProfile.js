@@ -94,6 +94,7 @@ const MakeProfile = props => {
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error>
+          <h4>Select Image</h4>
           <BasicInfoHolder>
             <UploadIcon
               name='edit'
@@ -114,93 +115,121 @@ const MakeProfile = props => {
             >
               <UploaderUI displayImage={image || values.image} />
             </Modal>
-            <NameHolder>
-              <Form.Group inline style={{ fontSize: '1.2rem' }}>
-                <BoldInput
-                  required
-                  placeholder='First Name'
-                  transparent
-                  onChange={handleChange}
-                  value={values.first_name || ''}
-                  name='first_name'
-                  type='text'
-                />
-                <BoldInput
-                  required
-                  placeholder='Last Name'
-                  transparent
-                  onChange={handleChange}
-                  value={values.last_name || ''}
-                  name='last_name'
-                  type='text'
-                />
-              </Form.Group>
+          </BasicInfoHolder>
+          <FieldHolder>
+            <ColumnHolder>
+              <Form.Input
+                required
+                label='First Name'
+                placeholder='First Name'
+                onChange={handleChange}
+                value={values.first_name || ''}
+                name='first_name'
+                type='text'
+              />
+              <Form.Input
+                required
+                label='Last Name'
+                placeholder='Last Name'
+                onChange={handleChange}
+                value={values.last_name || ''}
+                name='last_name'
+                type='text'
+              />
               <Form.Input
                 placeholder='Bio'
-                transparent
+                label='Bio'
                 onChange={handleChange}
                 value={values.bio || ''}
                 name='bio'
                 type='text'
               />
-            </NameHolder>
-          </BasicInfoHolder>
-          <Form.Input
-            key={'email'}
-            required
-            label='E-mail Address'
-            placeholder='E-Mail'
-            onChange={handleChange}
-            value={values.email || ''}
-            name='email'
-            type='text'
-          />
-          <Form.Input
-            required
-            label='Username'
-            placeholder='Username'
-            onChange={handleChange}
-            value={values.username || ''}
-            name='username'
-            type='text'
-          />
-          <Form.Input
-            required
-            label='Zip Code'
-            placeholder='Zip Code (To Discover Local Groups)'
-            minLength='5'
-            maxLength='5'
-            onChange={handleChange}
-            value={values.location || ''}
-            name='location'
-            type='text'
-          />
-          <Form.Input
-            label='Banner Image'
-            placeholder='Banner Image'
-            onChange={handleChange}
-            value={values.banner_image || ''}
-            name='banner_image'
-            type='text'
-          />
+
+              <Form.Input
+                key={'email'}
+                required
+                label='E-mail Address'
+                placeholder='E-Mail'
+                onChange={handleChange}
+                value={values.email || ''}
+                name='email'
+                type='text'
+              />
+              <Form.Input
+                required
+                label='Username'
+                placeholder='Username'
+                onChange={handleChange}
+                value={values.username || ''}
+                name='username'
+                type='text'
+              />
+              <Form.Input
+                required
+                label='Zip Code'
+                placeholder='Zip Code (To Discover Local Groups)'
+                minLength='5'
+                maxLength='5'
+                onChange={handleChange}
+                value={values.location || ''}
+                name='location'
+                type='text'
+              />
+              <Form.Input
+                label='Banner Image'
+                placeholder='Banner Image'
+                onChange={handleChange}
+                value={values.banner_image || ''}
+                name='banner_image'
+                type='text'
+              />
+              <SubmitButton style={StyledButton} />
+            </ColumnHolder>
+          </FieldHolder>
           <ErrorMessage />
-          <SubmitButton />
         </Form>
       </FormSegment>
     </FormHolder>
   )
 }
 
+// this doesnt change anything, attempting stop button from stretching too big
+const StyledButton = {
+  borderRadius: 18,
+  width: 200,
+  marginLeft: 160,
+  marginTop: 20,
+  backgroundColor: 'green',
+  color: 'white',
+  maxWidth: '400px',
+}
+
 const FormHolder = styled.div`
-  @media (max-width: 320px) {
+  justify-content:center @media (max-width: 320px) {
     height: 87vh;
   }
 `
 
+const FieldHolder = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+`
+
+const ColumnHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+`
+
 const FormSegment = styled(Segment)`
-  width: 90%;
   margin: auto;
   marginbottom: 15%;
+  max-width: 800px;
 `
 
 const BoldInput = styled(Form.Input)`
@@ -210,7 +239,8 @@ const BoldInput = styled(Form.Input)`
 `
 
 const UploadIcon = styled(Icon)`
-  position: absolute;
+  display: flex;
+  justify-content: center;
   top: 2.8rem;
   left: 2.8rem;
 `
@@ -228,7 +258,7 @@ const ProfilePic = styled.img`
 
 const BasicInfoHolder = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: center;
 `
 
 const NameHolder = styled.div`
