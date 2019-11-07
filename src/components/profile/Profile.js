@@ -88,7 +88,7 @@ const Profile = props => {
               <Link to='/makeprofile'>Profile Settings</Link>
             )}
           </Name>
-          <p>{loggedInUser.bio}</p>
+          {/* <p>{loggedInUser.bio}</p> */}
           <>
             <div
               style={{
