@@ -89,48 +89,37 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         pendingGroupRequests: [...state.pendingGroupRequests, action.payload],
-        error: ''
+        error: '',
       }
     case types.JOIN_PRIVATE_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.FETCH_PRIVATE_SUCCESS:
       return {
         ...state,
-        pendingGroupRequests: action.payload
+        pendingGroupRequests: action.payload,
       }
     case types.FETCH_PRIVATE_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     case types.CLEAN_UP_PENDING_GROUP_REQUESTS:
     case types.CANCEL_JOIN_PRIVATE_SUCCESS:
       return {
         ...state,
-        pendingGroupRequests: state.pendingGroupRequests.filter(request => request !== action.payload)
+        pendingGroupRequests: state.pendingGroupRequests.filter(
+          request => request !== action.payload
+        ),
       }
     case types.CANCEL_JOIN_PRIVATE_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       }
     default:
       return state
-    }
   }
-
-  
-  
-  
-  
-
-  // loggedInUser: action.payload.currentUser || action.payload.newUser,
-  // loggedInGroups: action.payload.basicGroupInfo,
-    // ? action.payload.basicGroupInfo.filter(
-    //     group => group.
-    //   )
-    // : [],
-  // loggedInAllegiances: action.payload.basicAllegianceInfo,
+}

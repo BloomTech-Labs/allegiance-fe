@@ -35,7 +35,7 @@ const NavBar = props => {
   // Retrieve notifications while not on notifications tab to update number counter on icon
   const [navNotifications, setNavNotifications] = useState()
   // Retrieve all groups where user has a relation
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
