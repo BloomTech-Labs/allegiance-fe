@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink, withRouter, Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Avatar } from './Avatar'
 import { Icon, Loader } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,21 +21,24 @@ const NavRight = props => {
           <li>
             <NavLink to='/notifications'>
               {/* Placeholder to keep alignment of icon center as desired */}
-              <PlaceHolder />
-              <NavIcon
-                size='large'
-                name='bell outline'
-                number={10}
-                alt={'Notifications'}
-              />
+              {/* <PlaceHolder /> */}
+              <BellWrapper>
+                <NavIcon
+                  size='large'
+                  name='bell'
+                  number={10}
+                  alt={'Notifications'}
+                />
+              </BellWrapper>
+
               {/* Notification count only shows when not navigated to notification 
                   component and when there is more than zero notifications to show */}
               {pathname !== '/notifications' && notifyReducer.unread > 0 && (
                 <NotificationNumber>{notifyReducer.unread}</NotificationNumber>
               )}
               {/* Placeholder to keep alignment of icon center as desired */}
-              {(pathname === '/notifications' ||
-                notifyReducer.notifications.length === 0) && <PlaceHolder />}
+              {/* {(pathname === '/notifications' ||
+                notifyReducer.notifications.length === 0) && <PlaceHolder />} */}
             </NavLink>
           </li>
           <li className='avatar'>
@@ -52,6 +55,21 @@ const NavRight = props => {
 }
 export default withRouter(NavRight)
 
+const pulse = keyframes`
+  0% {
+
+    box-shadow: 0 0 0 0 rgba(255, 0, 34, 0.4);
+  }
+  70% {
+
+    box-shadow: 0 0 0 10px rgba(255, 0, 34, 0);
+  } 
+  100% {
+
+    box-shadow: 0 0 0 0 rgba(255, 0, 34, 0);
+  }
+}
+`
 const StyledNavRight = styled.div`
   width: 100%;
   display: flex;
@@ -82,10 +100,18 @@ const StyledNavRight = styled.div`
     }
   }
 `
+const BellWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const NavIcon = styled(Icon)`
-  color: white;
+  color: #f0f0f0;
+  &:hover {
+    color: white;
+  }
 `
+
 const MenuItem = styled(Link)`
   width: 20%;
   display: flex;
@@ -100,14 +126,20 @@ const PlaceHolder = styled.div`
 `
 const NotificationNumber = styled.div`
   width: 17px;
-  height: 23px;
+  height: 17px;
   color: whitesmoke;
-  background-color: #f03737;
-  border-radius: 50%;
-  border: 2px solid green;
-  position: relative;
-  top: -11px;
-  left: -14px;
+  background-color: #ff0022;
+  border-radius: 3px;
+  position: absolute;
+  top: 8px;
+  right: 81px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  animation: ${pulse} 2s infinite;
 `
 const RegisterBtn = styled.button`
   height: 53px;
