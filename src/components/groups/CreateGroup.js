@@ -4,7 +4,7 @@ import { editGroup, createGroup, deleteGroup } from 'actions'
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'
 import DeleteGroup from './DeleteGroup'
-import { Form, Icon, Modal, Segment } from 'semantic-ui-react'
+import { Form, Modal, Segment } from 'semantic-ui-react'
 import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 

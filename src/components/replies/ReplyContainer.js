@@ -28,13 +28,11 @@ const ReplyContainer = props => {
   useEffect(() => {
     // Fetch group related data
     dispatch(fetchPost(id)).then(res => {
-      console.log('res', res)
-      console.log(post && post.group_id)
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
     })
-  }, [])
+  }, [dispatch, id, post, user.id])
 
   // callback function to handle submit
   async function submitReply(e) {

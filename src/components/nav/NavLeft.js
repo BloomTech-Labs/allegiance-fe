@@ -13,13 +13,17 @@ const NavLeft = props => {
         <ul>
           <li>
             <NavLink to='/home'>
-              <img src={logo} style={{ width: '25px' }} alt={'Logo Image'} />
+              <img
+                src={logo}
+                style={{ width: '25px' }}
+                alt={'Allegiance Logo'}
+              />
               <span>Home</span>
             </NavLink>
           </li>
           <li>
             <NavLink to='/groups'>
-              <img src={jersey} style={{ width: '25px' }} />
+              <img src={jersey} style={{ width: '25px' }} alt={'Team Jersey'} />
               <span>Discover</span>
             </NavLink>
           </li>
@@ -32,13 +36,13 @@ const NavLeft = props => {
         <ul>
           <li>
             <NavLink to='/'>
-              <img src={logo} style={{ width: '25px' }} />
+              <img src={logo} style={{ width: '25px' }} alt={'Team'} />
               <span>Home</span>
             </NavLink>
           </li>
           <li>
             <NavLink to='/groups'>
-              <img src={jersey} style={{ width: '25px' }} />
+              <img src={jersey} style={{ width: '25px' }} alt={'Team Jersey'} />
               <span>Discover</span>
             </NavLink>
           </li>

@@ -34,7 +34,7 @@ const GroupPage = props => {
     }
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
-  }, [user])
+  }, [user, dispatch, id])
 
   if (Object.keys(group).length === 0) {
     return (
