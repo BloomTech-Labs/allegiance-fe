@@ -2,11 +2,14 @@ import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import { async } from 'q'
 import axios from 'components/utils/axiosWithoutAuth'
+import { Mixpanel } from '../components/analytics/Mixpanel'
+import MixpanelMessages from '../components/analytics/MixpanelMessages'
 import { types } from '@babel/core'
+
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
 }
-const log = console.log
+
 export const fetchGroupPosts = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POSTS_REQUEST })
@@ -36,6 +39,7 @@ export const createGroupPost = (token, data) => async dispatch => {
           type: actionTypes.CREATE_POST_SUCCESS,
           payload: post.data.postResult,
         })
+        Mixpanel.activity(userId, MixpanelMessages.POST_CREATED)
       } catch (err) {
         console.log(err)
         dispatch({ type: actionTypes.CREATE_POST_FAILURE, payload: err })
@@ -162,6 +166,7 @@ export const deleteNotification = (token, notificationId) => async dispatch => {
 export const acceptInvite = (token, data) => async dispatch => {
   const { user, sender_id, group_id } = data
   await dispatch(joinGroup(data))
+  Mixpanel.activity(user.id, MixpanelMessages.INVITE_ACCEPT)
   await dispatch(deleteInvite(token, user.id, sender_id, group_id, true))
 }
 
@@ -322,6 +327,7 @@ export const createReply = (token, data, socket) => async dispatch => {
       type: actionTypes.CREATE_REPLY_SUCCESS,
       payload: post.data.reply,
     })
+    Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
     if (user.id !== user_id) {
       const notification = await axiosWithAuth([token]).post(
         `/users/${user_id}/notifications`,
@@ -382,6 +388,7 @@ export const requestJoinPrivate = (token, data, socket) => async dispatch => {
         type: actionTypes.JOIN_PRIVATE_SUCCESS,
         payload: privateGroup.data[0].group_id,
       })
+      Mixpanel.activity(privateGroupID, MixpanelMessages.REQUEST_SENT)
       let notifications = []
       adminIds.forEach(id => {
         notifications.push(
@@ -503,6 +510,7 @@ export const createGroup = groupData => async dispatch => {
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
+      Mixpanel.activity(createdGroup.id, MixpanelMessages.GROUP_CREATED)
       return addedGroup
     } else {
       throw new Error()
@@ -522,6 +530,7 @@ export const addToGroup = groupData => async dispatch => {
       `/private/group/${group_id}/${user_id}`
     )
     if (deleted) {
+      Mixpanel.activity(group_id, MixpanelMessages.REQUEST_ACCEPT)
       const notification = await axios.post(
         `/users/${user_id}/notifications`,
         {
@@ -590,6 +599,7 @@ export const joinGroup = groupData => async dispatch => {
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
       })
+      Mixpanel.activity(user.id, MixpanelMessages.GROUP_JOINED);
       if (fromGroupView) {
         await dispatch({
           type: actionTypes.ADD_MEMBER_SUCCESS,
@@ -617,6 +627,7 @@ export const leaveGroup = data => async dispatch => {
   console.log('leaving group', result)
   if (result.data) {
     dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
+    Mixpanel.activity(user_id, MixpanelMessages.GROUP_LEFT);
     dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
   }
 }
