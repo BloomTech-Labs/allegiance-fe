@@ -99,8 +99,8 @@ const PostForm = props => {
 
 const FormContainer = styled.div`
   display: flex;
-  position: fixed;
-  bottom: 6.5%;
+  // position: fixed;
+  // bottom: 55%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -113,6 +113,7 @@ const DownNav = styled.div`
   width: 10%;
 `
 const ReplyForm = styled.form`
+  margin-top: 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;
