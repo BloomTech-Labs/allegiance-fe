@@ -94,14 +94,14 @@ const MakeProfile = props => {
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error>
-          <h4>Select Image</h4>
+          <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
-            <UploadIcon
+            {/* <UploadIcon
               name='edit'
               size='large'
               color='black'
               onClick={() => setModal(true)}
-            />
+            /> */}
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
@@ -247,8 +247,6 @@ const BoldInput = styled(Form.Input)`
 const UploadIcon = styled(Icon)`
   display: flex;
   justify-content: center;
-  top: 2.8rem;
-  left: 2.8rem;
 `
 
 const ProfilePic = styled.img`
