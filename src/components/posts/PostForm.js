@@ -5,7 +5,6 @@ import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
-// import { Mixpanel } from '../analytics/Mixpanel'
 import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -100,8 +99,8 @@ const PostForm = props => {
 
 const FormContainer = styled.div`
   display: flex;
-  position: fixed;
-  bottom: 6.5%;
+  // position: fixed;
+  // bottom: 55%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -114,6 +113,7 @@ const DownNav = styled.div`
   width: 10%;
 `
 const ReplyForm = styled.form`
+  margin-top: 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;

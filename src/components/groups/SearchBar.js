@@ -39,6 +39,9 @@ const SearchBar = props => {
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
+      '&:hover': {
+        background: 'white',
+      },
     },
     dense: {
       marginTop: theme.spacing(2),
@@ -126,7 +129,7 @@ const SearchBar = props => {
   return (
     <SearchFormWrapper ref={node}>
       {/* form to handle group search text from user */}
-      <SearchForm>
+      <SearchForm autoComplete='off'>
         <TextField
           onClick={handleClick}
           value={values.group_name || ''}
@@ -170,9 +173,6 @@ const SearchForm = styled.form`
   @media (max-width: 800px) {
     width: 92.4vw;
     height: 100px;
-  }
-  &:hover {
-    background: #add8e6;
   }
 `
 

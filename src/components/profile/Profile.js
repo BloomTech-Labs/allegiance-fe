@@ -13,7 +13,7 @@ import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const loggedInGroups = useSelector(state => state.myGroups)
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
@@ -98,7 +98,7 @@ const Profile = props => {
                 alignItems: 'center',
               }}
             >
-              <H3>MY ALLEGIANCES</H3>
+              <H2>MY ALLEGIANCES</H2>
               <Link to='/addallegiance'>
                 <Icon
                   name='edit outline'
@@ -113,10 +113,6 @@ const Profile = props => {
               type='allegiance'
               default={Default}
             />
-          </>
-          <>
-            <H3>MY GROUPS</H3>
-            <MyAllegianceGroups content={loggedInGroups || []} type='group' />
           </>
         </InfoHolder>
       </div>
@@ -170,9 +166,15 @@ const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
 `
+const H2 = styled.h2`
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+`
 
 const H3 = styled.h3`
-  font-size: 1rem;
+  padding-left: 20px;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 0;

@@ -19,9 +19,8 @@ const Notifications = () => {
   // Keep track of when notifications component mounts so that timestamp
   // can be passed to the put in the cleanup useEffect
   const [mountTime, setMountTime] = useState()
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
-  const userId = useSelector(state => state.userReducer.loggedInUser.id)
-
+  const user = useSelector(state => state.userReducer.loggedInUser)
+  const userId = user.id
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
   const dispatch = useDispatch()
@@ -90,7 +89,12 @@ const Notifications = () => {
     (!notifications && !invites) ||
     (notifications.length === 0 && invites.length === 0)
   ) {
-    return <h1>No notifications</h1>
+    return (
+      <Wrapper>
+        <Header>No Notifications</Header>
+        <br />
+      </Wrapper>
+    )
   }
 
   // // Filter out activity performed by the user, future versions should combine likes on same post/reply
@@ -119,15 +123,16 @@ const Notifications = () => {
 
   return (
     <Container>
-      <h1>Pending Invites</h1>
+      <Header>Pending Invites</Header>
       <br />
       {inviteNotifications.map(invite => (
         <InviteNotificationCard
           invite={invite}
+          user={user}
           key={`${invite.user_id}${invite.group_id}${invite.sender_id}`}
         />
       ))}
-      <h1>Activity</h1>
+      <Header>Activity</Header>
       <br />
       {activityNotifications.map(activity => (
         <ActivityNotificationsCard activity={activity} key={activity.id} />
@@ -140,6 +145,17 @@ const Container = styled.div`
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
+`
+
+const Wrapper = styled.div`
+  display: flex
+  justify-content: center
+  margin-top: 25px;
+`
+
+const Header = styled.h1`
+  font-size: 30px;
+  font-weight: 700;
 `
 
 export default Notifications

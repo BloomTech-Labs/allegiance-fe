@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import NavLeft from './NavLeft'
+import NavRight from './NavRight'
+import NavBottom from './NavBottom'
 import styled from 'styled-components'
 import { Icon, Loader } from 'semantic-ui-react'
 import IconButton from '@material-ui/core/IconButton'
 import { ArrowBack } from '@material-ui/icons'
-import NavRight from './NavRight'
 import {
   CreateNotification,
   createInvite,
@@ -21,9 +22,8 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import NavMiddle from './NavMiddle'
-import { joinGroup } from 'actions/index'
 import { Mixpanel } from '../analytics/Mixpanel'
-import { fetchPrivateRequests } from 'actions'
+import { fetchPrivateRequests, receivingGroup } from 'actions'
 
 const NavBar = props => {
   const { location } = props
@@ -35,7 +35,7 @@ const NavBar = props => {
   // Retrieve notifications while not on notifications tab to update number counter on icon
   const [navNotifications, setNavNotifications] = useState()
   // Retrieve all groups where user has a relation
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
@@ -69,7 +69,7 @@ const NavBar = props => {
             const unreadNum = response.filter(
               notify => notify.created_at > timeStamp || timeStamp === null
             ).length
-            await dispatch({
+            dispatch({
               type: SET_UNREAD_NOTIFICATION_NUM,
               payload: unreadNum,
             })
@@ -95,11 +95,16 @@ const NavBar = props => {
       }
 
       if (data.notification.type === 'group_accepted') {
-        dispatch(joinGroup(token, {
-          user_id: user.id,
-          group_id: data.notification.type_id,
-          Mixpanel,
-        }))
+        const group_id = data.notification.type_id
+        dispatch(
+          receivingGroup({
+            user,
+            group_id,
+            fromGroupView: window.location.pathname.includes(
+              `/group/${group_id}`
+            ),
+          })
+        )
       }
     })
     socket.on('new invite', async data => {

@@ -7,11 +7,10 @@ import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
-import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 
 const Feed = () => {
   const [feed, setFeed] = useState()
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
 
   // Fetches Auth0 token for axios call
@@ -51,15 +50,6 @@ const Feed = () => {
 
   return (
     <Container>
-      <MyGroups elevation={10}>
-        <GroupTitleHolder>
-          <H3>MY GROUPS</H3>
-        </GroupTitleHolder>
-        <>
-          <MyAllegianceGroups content={userGroups} type={'group'} />
-        </>
-      </MyGroups>
-
       {filteredFeed.map(activity => {
         return (
           <FeedContainer key={activity.tag + activity.id}>
@@ -90,17 +80,23 @@ const GroupTitleHolder = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  background-color: #dee4e7;
   h3 {
     margin: 0 1%;
   }
 `
 
 const H3 = styled.h3`
-  font-size: 1rem;
+  padding-top: 10px;
+  font-size: 3rem;
   font-weight: bold;
   margin: 1% 0;
 `
 
-const FeedContainer = styled.div``
+const FeedContainer = styled.div`
+  display: flex
+  justify-content: center;
+  width: 100vw
+`
 
 export default Feed

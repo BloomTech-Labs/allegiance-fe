@@ -11,7 +11,10 @@ import PrivateRoute from './components/PrivateRoute'
 import { initGA, logPageView } from './components/analytics/Analytics'
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import NavBar from './components/nav/NavBar'
+import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
+import { Mixpanel } from './components/analytics/Mixpanel'
+import MixpanelMessages from './components/analytics/MixpanelMessages'
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
 const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
@@ -42,7 +45,6 @@ function App(props) {
     logPageView()
   }, [])
   useEffect(() => {
-    console.log('[rerender] => APP HOME', user)
     if (isAuthenticated && !loggedInUser && user && loading) {
       // once variable user is defined - this if statement will be true
       console.log('in here ...')
@@ -59,30 +61,34 @@ function App(props) {
             type: types.FETCH_LOGIN_SUCCESS,
             payload: result.data.userInfo,
           })
-          dispatch({
-            type: types.FETCH_MY_GROUPS_SUCCESS,
-            payload: result.data.userInfo.basicGroupInfo,
-          })
+          if (result.data.userInfo.basicGroupInfo !== undefined) {
+            dispatch({
+              type: types.FETCH_MY_GROUPS_SUCCESS,
+              payload: result.data.userInfo.basicGroupInfo,
+            })
+          }
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
+          console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
+            Mixpanel.login(newUser, MixpanelMessages.NEW_USER)
           }
-          if (currentUser && currentUser.first_name !== null) {
+          if (currentUser) {
             const pushTo =
-              window.location.pathname !== '/'
-                ? window.location.pathname
-                : '/home'
+              window.location.pathname === '/'
+                ? '/home'
+                : window.location.pathname
             props.history.push(`${pushTo}`)
-            // Mixpanel.login(currentUser, 'Successful login.')
+            Mixpanel.login(currentUser, MixpanelMessages.LOGIN)
           }
-          // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
           socket.emit('join', {
             id: socketUserId,
           })
         } catch (err) {
-          // Mixpanel.track('Unsuccessful login')
+          console.log(err, '🌋')
+          Mixpanel.track(MixpanelMessages.FAILED_LOGIN)
         }
       }
       registerUser()
@@ -120,6 +126,7 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div style={{ margin: '0 auto' }}>
+        <NavBottom />
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />

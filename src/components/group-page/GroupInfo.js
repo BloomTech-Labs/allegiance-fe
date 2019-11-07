@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import InviteModal from './InviteModal'
 import MembershipStatus from './MembershipStatus'
@@ -11,116 +11,42 @@ import MemberList from './MemberList'
 import Default from '../../assets/walter-avi.png'
 import useGetToken from 'components/utils/useGetToken'
 import axios from 'components/utils/axiosWithoutAuth'
+import { addToGroup, removeRequest, removeMember } from 'actions'
 
 const GroupInfo = props => {
-  const [memberType, setMemberType] = useState({})
-
   // define privacy variable for reusable formatting
   const privacy = props.group.privacy_setting
   const group_id = props.group.id
+  const memberType = props.group.memberType
 
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
-  const isAdmin = loggedInGroups
-    ? loggedInGroups.find(group => group.id === props.group.id)
-    : null
+  const dispatch = useDispatch()
+
   console.log('props', props)
   console.log('privacy', privacy)
   const token = useGetToken()
 
-  useEffect(() => {
-    // Fetch user type and groups_users id
-    const fetchDataUserType = async () => {
-      if (group_id) {
-        console.log('group_id', group_id)
-        const response = await axios.post(`/groups_users/search`, {
-          user_id: user.id,
-          group_id: group_id,
-        })
-        const data = response.data.relationExists
-        if (data) {
-          setMemberType({
-            userType: data[0].user_type,
-            relationId: data[0].id,
-          })
-        } else {
-          setMemberType({})
-        }
-      }
-    }
-    fetchDataUserType()
-  }, [group_id, user])
-
-  async function addToGroup(evt, user_id) {
+  async function addToGroupHandler(evt, user_id) {
     evt.preventDefault()
     if (token) {
       try {
-        const deleted = await axiosWithAuth([token]).delete(
-          `/private/group/${group_id}/${user_id}`
-        )
-        if (deleted) {
-          const notification = await axiosWithAuth([token]).post(
-            `/users/${user_id}/notifications`,
-            {
-              user_id,
-              invoker_id: user.id,
-              type_id: group_id,
-              type: 'group_accepted',
-            }
-          )
-          await axiosWithAuth([token]).post(`/groups_users`, {
-            user_id,
-            group_id,
-            user_type: 'member',
-          })
-          console.log('emit socket', notification)
-          socket.emit('send notification', {
-            userIds: [user_id],
-            notification: {
-              ...notification.data,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              image: user.image,
-            },
-          })
-          props.setTrigger(!props.trigger)
-        }
+        dispatch(addToGroup({ group_id, invoker: user, user_id, socket }))
+        dispatch(removeRequest({ group_id, user_id }))
       } catch (err) {
         console.log(err)
       }
     }
   }
 
-  async function removeMember(evt, user_id) {
+  async function removeMemberHandler(evt, user_id) {
     evt.preventDefault()
-    if (token) {
-      const result = await axiosWithAuth([token]).delete(`/groups_users/`, {
-        data: {
-          user_id,
-          group_id,
-        },
-      })
-      if (
-        result.data.message === 'The user to group pairing has been deleted.'
-      ) {
-        props.setTrigger(!props.trigger)
-      }
-    }
+    dispatch(removeMember({ group_id, user_id }))
   }
 
   async function declineRequest(evt, user_id) {
     evt.preventDefault()
-    try {
-      const deleted = await axiosWithAuth([token]).delete(
-        `/private/group/${group_id}/${user_id}`
-      )
-      if (deleted) {
-        props.setTrigger(!props.trigger)
-      }
-    } catch (err) {
-      console.log(err)
-    }
+    dispatch(removeRequest({ group_id, user_id }))
   }
 
   return (
@@ -133,12 +59,12 @@ const GroupInfo = props => {
           members={props.members}
           privacy={privacy}
           memberType={memberType}
-          setMemberType={setMemberType}
+          // setMemberType={setMemberType}
           setTrigger={props.setTrigger}
         />
       </ImageDiv>
       <InfoDiv>
-        <h1>{props.group.group_name}</h1>
+        <Header>{props.group.group_name}</Header>
         <h2>{props.group.description}</h2>
         <SubInfo>
           <h3>
@@ -152,22 +78,38 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          <MemberList
+          {/* <MemberList
             memberType={memberType}
             requests={props.requests}
             members={props.members}
             addToGroup={addToGroup}
             removeMember={removeMember}
             declineRequest={declineRequest}
+          /> */}
+          {/* {memberType.userType && (
+            <InviteModal members={props.members} group={props.group} />
+          )} */}
+          <h3>
+            <AllegiancePopover allegiances={props.allegiances} />
+          </h3>
+        </SubInfo>
+
+        <ModalWrapper>
+          <MemberList
+            memberType={memberType}
+            requests={props.requests}
+            members={props.members}
+            addToGroup={addToGroupHandler}
+            removeMember={removeMemberHandler}
+            declineRequest={declineRequest}
           />
-          {memberType.userType && (
+          {memberType && (
             <InviteModal members={props.members} group={props.group} />
           )}
-        </SubInfo>
-        <AllegiancePopover allegiances={props.allegiances} />
+        </ModalWrapper>
       </InfoDiv>
       <Settings>
-        {isAdmin && isAdmin.user_type === 'admin' ? (
+        {memberType === 'admin' ? (
           <Link
             to={{
               pathname: `/editgroup/${props.group.id}`,
@@ -187,6 +129,8 @@ const GroupInfoDiv = styled.div`
   flex-direction: row;
   margin: 0 4% 4% 4%;
   justify-content: space-around;
+  align-items: center;
+  width: 500px;
 `
 const ImageDiv = styled.div`
   display: flex;
@@ -195,8 +139,8 @@ const ImageDiv = styled.div`
 
 const SubInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const GroupLogo = styled.img`
@@ -231,7 +175,6 @@ const InfoDiv = styled.div`
   h3 {
     font-size: 1rem;
     text-align: left;
-    margin: 0 0 2% 0;
   }
 `
 
@@ -239,6 +182,15 @@ const Settings = styled.div`
   position: absolute;
   top: 8%;
   right: 2%;
+`
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+`
+
+const Header = styled.h1`
+  font-weight: 700;
 `
 
 export default GroupInfo

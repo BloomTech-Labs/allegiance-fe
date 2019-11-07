@@ -2,6 +2,7 @@ import * as types from 'actions/actionTypes'
 
 const initialState = {
   posts: [],
+  arePostsLoading: false,
   post: {},
   error: '',
   acronym: null,
@@ -17,18 +18,26 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
+  memberType: null
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.FETCH_POSTS_REQUEST:
+      return {
+        ...state,
+        arePostsLoading: true,
+      }
     case types.FETCH_POSTS_SUCCESS:
       return {
         ...state,
         posts: action.payload,
+        arePostsLoading: false,
       }
     case types.FETCH_POSTS_FAILURE:
       return {
         ...state,
         error: action.payload,
+        arePostsLoading: false,
       }
     case types.CREATE_POST_SUCCESS:
       return {
@@ -137,6 +146,7 @@ export const groupReducer = (state = initialState, action) => {
     case types.DELETE_POST_SUCCESS:
       console.log(action.payload)
       return {
+        ...state,
         posts: state.posts.filter(post => post.id !== action.payload.id),
       }
     case types.FETCH_POST_FAILURE:
@@ -148,6 +158,31 @@ export const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+      }
+    case types.ADD_MEMBER_SUCCESS:
+      return {
+        ...state,
+        members: [...state.members, action.payload]
+      }
+    case types.REMOVE_MEMBER_SUCCESS:
+      return {
+        ...state,
+        members: state.members.filter(member => member.id !== action.payload)
+      }
+    case types.FETCH_MEMBER_TYPE_SUCCESS:
+      return {
+        ...state,
+        memberType: action.payload.user_type,
+      }
+    case types.EDIT_MEMBER_TYPE_SUCCESS:
+      return {
+        ...state,
+        memberType: action.payload,
+      }
+    case types.REMOVE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        reqs: state.reqs.filter(req => req.id !== action.payload)
       }
     default:
       return state
