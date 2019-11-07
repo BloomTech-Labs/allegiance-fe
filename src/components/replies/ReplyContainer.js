@@ -20,7 +20,6 @@ const ReplyContainer = props => {
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
   const dispatch = useDispatch()
-
   // useForm custom hook and set timeout custom hook
   const { values, handleChange, handleSubmit } = useForm(submitReply)
   // Fetches Auth0 token for axios call

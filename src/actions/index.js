@@ -603,7 +603,7 @@ export const leaveGroup = data => async dispatch => {
   const result = await axios.delete(
     `/groups_users/?group_id=${group_id}&user_id=${user_id}`
   )
-  console.log('leaving group', result)
+
   if (result.data) {
     dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
     dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
@@ -611,21 +611,29 @@ export const leaveGroup = data => async dispatch => {
 }
 
 export const removeMember = data => async dispatch => {
-  const { group_id, user_id } = data
-  const result = await axios.delete(
-    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
-  )
-  dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+  try {
+    const { group_id, user_id } = data
+    const result = await axios.delete(
+      `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+    )
+    if (result) {
+      dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+    }
+  } catch (err) {
+    dispatch({ type: actionTypes.REMOVE_MEMBER_FAILURE, payload: err })
+  }
 }
 
 export const deleteGroup = groupId => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST })
     const deletedGroup = await axios.delete(`/groups/${groupId}`)
-    dispatch({
-      type: actionTypes.DELETE_GROUP_SUCCESS,
-      payload: Number(groupId),
-    })
+    if (deletedGroup) {
+      dispatch({
+        type: actionTypes.DELETE_GROUP_SUCCESS,
+        payload: Number(groupId),
+      })
+    }
   } catch (err) {
     dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
   }

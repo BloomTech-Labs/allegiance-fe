@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as types from 'actions/actionTypes'
-
-// // import { Mixpanel } from '../analytics/Mixpanel'
-
 import useForm from '../utils/useForm'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import useImageUploader from '../utils/useImageUploader'
-
-import { Form, Icon, Modal, Segment } from 'semantic-ui-react'
+import { Form, Modal, Segment } from 'semantic-ui-react'
 import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 
@@ -96,12 +92,6 @@ const MakeProfile = props => {
         <Form onSubmit={handleSubmit} error>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
-            {/* <UploadIcon
-              name='edit'
-              size='large'
-              color='black'
-              onClick={() => setModal(true)}
-            /> */}
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
@@ -238,17 +228,6 @@ const FormSegment = styled(Segment)`
   max-width: 800px;
 `
 
-// const BoldInput = styled(Form.Input)`
-//   input: first-child {
-//     font-weight: bold;
-//   }
-// `
-
-// const UploadIcon = styled(Icon)`
-//   display: flex;
-//   justify-content: center;
-// `
-
 const ProfilePic = styled.img`
   border-color: black;
   object-fit: cover;
@@ -265,12 +244,4 @@ const BasicInfoHolder = styled.div`
   justify-content: center;
 `
 
-// const NameHolder = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space - evenly;
-//   margin-left: 7px;
-//   margin-bottom: 1rem;
-//   width: 100%;
-// `
 export default MakeProfile
