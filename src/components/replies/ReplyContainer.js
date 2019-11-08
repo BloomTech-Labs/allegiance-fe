@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef, createRef } from 'react'
+import React, { useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { VIEW_REPLIES } from '../../reducers/navReducer'
-import * as types from 'actions/actionTypes'
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
@@ -17,33 +15,24 @@ import ReplyCard from './ReplyCard'
 import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
-  // const [post, setPost] = useState()
   const post = useSelector(state => state.group.post)
-  const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
-
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
   const dispatch = useDispatch()
-
-  // useForm custom hook and set timeout custom hook
-  const { values, setValues, handleChange, handleSubmit } = useForm(submitReply)
-  // Fetches Auth0 token for axios call
+  const { values, handleChange, handleSubmit } = useForm(submitReply)
   const [token] = useGetToken()
 
   useEffect(() => {
     // Fetch group related data
+    console.log('this?')
     dispatch(fetchPost(id)).then(res => {
-      console.log('id', id)
-      console.log(post && post.group_id)
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
     })
-  }, [])
-
-  // token, id, submitted, dispatch
+  }, [dispatch, id, user.id])
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -86,41 +75,36 @@ const ReplyContainer = props => {
     : null
 
   // On component mount, if a replyNumber is received from props, scroll the reply into view
-  useEffect(
-    () => {
-      if (props.location.replyNumber && replyRefs !== null) {
-        let yCoordinate
-        const scrollRef = () => {
-          // Subtract 50 px to account for padding top from top nav bar
-          const yOffset = -50
-          window.scrollTo({
-            top: yCoordinate + yOffset,
-            behavior: 'smooth',
-          })
-        }
-
-        // Set ycoord to position of reply using replyNumber from props
-        yCoordinate =
-          replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-            .top + window.pageYOffset
-
-        scrollRef()
-        // Set replyNumber to null to prevent re-render and scrollRef() when typing
-        props.location.replyNumber = null
+  useEffect(() => {
+    if (props.location.replyNumber && replyRefs !== null) {
+      let yCoordinate
+      const scrollRef = () => {
+        // Subtract 50 px to account for padding top from top nav bar
+        const yOffset = -50
+        window.scrollTo({
+          top: yCoordinate + yOffset,
+          behavior: 'smooth',
+        })
       }
+
+      // Set ycoord to position of reply using replyNumber from props
+      yCoordinate =
+        replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+          .top + window.pageYOffset
+
+      scrollRef()
+      // Set replyNumber to null to prevent re-render and scrollRef() when typing
+      props.location.replyNumber = null
     }
-    // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
-  )
+  })
 
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)
+
   const scrollToBottom = () => {
     if (repliesEndRef.current)
       repliesEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
-
-  // Obtain groups the user has a relation to, check for membership after post is loaded
-  const userGroups = useSelector(state => state.myGroups)
 
   if (!post) {
     return (
@@ -131,7 +115,6 @@ const ReplyContainer = props => {
   }
 
   // Checking to see if current user is a member of current group
-
   // If they are undefined, we set membership to a string so we don't get an error
   let membership = group.memberType
 
@@ -142,9 +125,7 @@ const ReplyContainer = props => {
 
   return (
     <ReplyViewContainer>
-      {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
-      )}
+      {!!Object.values(post).length && <PostCard post={post} group={group} />}
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
@@ -179,24 +160,17 @@ const ReplyContainer = props => {
           </ReplyForm>
         </ContainerBottom>
       )}
-
       {sortedReplies && (
         <ReplyCardsContainer>
           {sortedReplies.map(reply => {
             return (
               <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
+                <ReplyCard reply={reply} post={post} group={group} />
               </div>
             )
           })}
         </ReplyCardsContainer>
       )}
-
       <div ref={repliesEndRef} />
     </ReplyViewContainer>
   )

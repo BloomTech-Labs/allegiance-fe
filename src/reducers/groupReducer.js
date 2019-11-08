@@ -169,6 +169,11 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         members: state.members.filter(member => member.id !== action.payload)
       }
+      case types.REMOVE_MEMBER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      }
     case types.FETCH_MEMBER_TYPE_SUCCESS:
       return {
         ...state,

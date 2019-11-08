@@ -72,7 +72,7 @@ const ActivityNotificationsCard = props => {
       pathname = `/post/${type_id}`
     }
     props.history.push({
-      pathname
+      pathname,
     })
   }
 
