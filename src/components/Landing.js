@@ -124,14 +124,17 @@ const LandingDiv = styled.div`
   background-color: white;
 `
 const Top = styled.div`
-  // border: 1px solid blue;
   display: flex;
   justify-content: space-between;
   height: 67px;
+  @media (max-width: 470px) {
+    flex-direction: column;
+    height: 100px;
+  }
 `
 const LeftTop = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   // border: 1px solid purple;
   width: 400px;
