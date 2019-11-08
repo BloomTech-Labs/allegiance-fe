@@ -37,8 +37,6 @@ const SearchBar = props => {
       flexWrap: 'wrap',
     },
     textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
       '&:hover': {
         background: 'white',
       },
@@ -46,9 +44,7 @@ const SearchBar = props => {
     dense: {
       marginTop: theme.spacing(2),
     },
-    menu: {
-      width: 200,
-    },
+    menu: {},
   }))
 
   const classes = useStyles()
@@ -172,7 +168,6 @@ const SearchForm = styled.form`
   width: 50vw;
   @media (max-width: 800px) {
     width: 92.4vw;
-    height: 100px;
   }
 `
 

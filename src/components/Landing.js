@@ -120,25 +120,35 @@ const Landing = props => {
 }
 
 const LandingDiv = styled.div`
-  // border: 1px solid red;
   background-color: white;
 `
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
   height: 67px;
+  @media (max-width: 800px) {
+    margin-bottom: 30px;
+  }
   @media (max-width: 470px) {
     flex-direction: column;
     height: 100px;
+    margin-top: 10px;
   }
 `
+
 const LeftTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // border: 1px solid purple;
+
   width: 400px;
   margin-left: 5px;
+  @media (max-width: 470px) {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 `
 const RightTop = styled.div`
   display: flex;
@@ -150,9 +160,7 @@ const RightTop = styled.div`
 const Middle = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 67px;
   @media (max-width: 800px) {
-    height: 100px;
     align-items: center;
     flex-direction: column-reverse;
   }
@@ -161,18 +169,18 @@ const LeftMiddle = styled.div`
   display: flex;
   align-items: center;
   width: 480px;
-  height: 37px;
+  // height: 37px;
   margin-left: 24px;
   @media (max-width: 800px) {
     justify-content: center;
     margin-left: 0px;
+    width: 100%;
   }
   margin-top: 15px;
 `
 const RightMiddle = styled.div`
   display: flex;
   // margin-right: 0px;
-  // border: 1px solid red;
 `
 const Bottom = styled.div`
   display: flex;
@@ -183,8 +191,6 @@ const Bottom = styled.div`
   background-repeat: no-repeat;
   width: 100%;
   height: 100vh;
-  min-width: 500px;
-  min-height: 500px;
   margin: 0 auto;
   @media (max-width: 700px) {
     background-image: url(${Baseball});
@@ -207,9 +213,12 @@ const LeftBottom2 = styled.div`
   margin-top: 34px;
   margin-left: 49px;
   width: 500px;
+  @media (max-width: 535px) {
+    width: 90%;
+  }
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
   }
 `
 const LeftBottom3 = styled.div`
@@ -252,6 +261,7 @@ const H1 = styled.h1`
   color: grey;
 `
 const RegisterBtn = styled.button`
+
   &:hover{
     background: #ed5959;
   }
