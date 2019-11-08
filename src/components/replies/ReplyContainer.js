@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Comment } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -161,15 +161,17 @@ const ReplyContainer = props => {
         </ContainerBottom>
       )}
       {sortedReplies && (
-        <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard reply={reply} post={post} group={group} />
-              </div>
-            )
-          })}
-        </ReplyCardsContainer>
+        <Comment.Group size='large'>
+          <ReplyCardsContainer>
+            {sortedReplies.map(reply => {
+              return (
+                <div ref={replyRefs[reply.id]} key={reply.id}>
+                  <ReplyCard reply={reply} post={post} group={group} />
+                </div>
+              )
+            })}
+          </ReplyCardsContainer>
+        </Comment.Group>
       )}
       <div ref={repliesEndRef} />
     </ReplyViewContainer>
@@ -188,6 +190,7 @@ const ReplyCardsContainer = styled.div`
   width: 100%;
   height: 100%;
   padding-bottom: 18%;
+  font-size: 1.4rem;
 `
 const ContainerBottom = styled.div`
   z-index: 0;
