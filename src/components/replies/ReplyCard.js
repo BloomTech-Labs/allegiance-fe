@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { Comment, Icon, Label, Item } from 'semantic-ui-react'
 import avi from '../../assets/walter-avi.png'
 import { ThumbUp, DeleteOutline } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
@@ -62,6 +62,40 @@ const ReplyCard = props => {
       props.setSubmitted(true)
     }
   }
+
+  return (
+    <CommentCard>
+      <Comment>
+        <Comment.Avatar src={image} />
+        <Comment.Content>
+          <HeaderWrapper>
+            <Comment.Author as='a'>{`${first_name} ${last_name}`}</Comment.Author>
+            <Icon link name='trash alternate' onClick={deleteReply} />
+          </HeaderWrapper>
+          <CommentText>{reply_content}</CommentText>
+          <Comment.Actions>
+            <ActionsWrapper>
+              <Comment.Action>
+                <LikesWrapper>
+                  <Label
+                    onClick={replyLikeId ? unLikeReply : addReplyLike}
+                    style={{ fontSize: '1.2rem' }}
+                    color={replyLikeId ? 'blue' : ''}
+                  >
+                    <Icon name='thumbs up' />
+                    {replyLikes.length}
+                  </Label>
+                </LikesWrapper>
+              </Comment.Action>
+              <Comment.Metadata>
+                <Moment fromNow>{created_at}</Moment>
+              </Comment.Metadata>
+            </ActionsWrapper>
+          </Comment.Actions>
+        </Comment.Content>
+      </Comment>
+    </CommentCard>
+  )
 
   return (
     <div className={'reply-div'}>
@@ -226,6 +260,30 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const CommentText = styled(Comment.Text)`
+  margin-top: 5px !important;
+  margin-right: 30px !important;
+`
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const LikesWrapper = styled.div`
+  display: flex;
+  font-size: 1.4rem;
+  vertical-align: middle;
+`
+
+const CommentCard = styled.div`
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  padding: 20px 10px 5px 10px;
+  margin-top: 15px;
+`
+
 const BubbleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -252,5 +310,36 @@ const Activity = styled.div`
   height: 100%;
   justify-content: space-between;
 `
+
+const ActionsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+`
+// const fade = keyframes`
+//   0% {
+//     color:#transparent;
+//   }
+//   50% {
+//     color:#e23b3b;
+//   }
+//   100% {
+//     color:#transparent;
+//   }
+// }
+// `
+// const fade = keyframes`
+//   0% {
+//     padding:10px 12px 8px;
+//   }
+//   50% {
+//     padding:14px 16px 12px;
+//     margin-top:-4px;
+//   }
+//   100% {
+//     padding:10px 12px 8px;
+//   }
+// }
+// `
 
 export default ReplyCard

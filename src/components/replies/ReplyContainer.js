@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 // import { VIEW_REPLIES } from '../../reducers/navReducer'
 import * as types from 'actions/actionTypes'
 import styled from 'styled-components'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Comment } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -181,20 +181,22 @@ const ReplyContainer = props => {
       )}
 
       {sortedReplies && (
-        <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
-              </div>
-            )
-          })}
-        </ReplyCardsContainer>
+        <Comment.Group size='large'>
+          <ReplyCardsContainer>
+            {sortedReplies.map(reply => {
+              return (
+                <div ref={replyRefs[reply.id]} key={reply.id}>
+                  <ReplyCard
+                    reply={reply}
+                    setSubmitted={setSubmitted}
+                    post={post}
+                    group={group}
+                  />
+                </div>
+              )
+            })}
+          </ReplyCardsContainer>
+        </Comment.Group>
       )}
 
       <div ref={repliesEndRef} />
@@ -214,6 +216,7 @@ const ReplyCardsContainer = styled.div`
   width: 100%;
   height: 100%;
   padding-bottom: 18%;
+  font-size: 1.4rem;
 `
 const ContainerBottom = styled.div`
   z-index: 0;
