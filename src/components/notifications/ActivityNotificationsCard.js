@@ -56,23 +56,6 @@ const ActivityNotificationsCard = props => {
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
   const fullName = first_name + ' ' + last_name
 
-  // Streamline post id and reply id for linking
-  // let postId
-  // if (tag === 'post') {
-  //   postId = id
-  // }
-  // if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
-  //   postId = post_id
-  // }
-  // let replyId
-  // if (tag === 'reply') {
-  //   replyId = id
-  // }
-  // if (tag === 'replyLike') {
-  //   replyId = reply_id
-  // }
-
-  // Maintain max allowable content length for posts and replies
   let notifyContent = ''
   if (content) notifyContent = content.slice(0, 20)
   if (content && content.length > 20) notifyContent += '...'
@@ -90,8 +73,6 @@ const ActivityNotificationsCard = props => {
     }
     props.history.push({
       pathname,
-      // Provide replyId if appropriate for scrolling into focus upon navigation
-      // replyNumber: replyId || null,
     })
   }
 

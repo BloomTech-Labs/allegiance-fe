@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { axiosWithoutAuth } from '../utils/axiosWithoutAuth'
-import useGetToken from '../utils/useGetToken'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
@@ -8,8 +6,9 @@ import PostsContainer from '../posts/PostsContainer'
 import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
-import { Loader, Dimmer } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
+
 const GroupPage = props => {
   // Defines id to be group id from params
   const id = parseInt(props.match.params.id)
@@ -33,7 +32,7 @@ const GroupPage = props => {
     }
     fetchData()
     return () => dispatch({ type: types.CLEAR_POSTS })
-  }, [user])
+  }, [user, dispatch, id])
 
   if (Object.keys(group).length === 0) {
     return (
@@ -62,7 +61,6 @@ const GroupPage = props => {
           <PostsContainer
             groupId={id}
             memberType={memberType}
-            members={group.members}
             posts={posts}
             group={group}
           />

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import styled from 'styled-components'
 import { Comment, Icon, Label } from 'semantic-ui-react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
@@ -44,10 +43,7 @@ const ReplyCard = props => {
   }
 
   const deleteReply = async () => {
-    const reply = await axiosWithAuth([token]).delete(`/replies/${id}`)
-    if (reply) {
-      props.setSubmitted(true)
-    }
+    await axiosWithAuth([token]).delete(`/replies/${id}`)
   }
 
   return (
