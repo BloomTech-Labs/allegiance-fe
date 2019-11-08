@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Add, VerticalAlignBottom } from '@material-ui/icons/'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
+import Button from '@material-ui/core/Button'
+import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
 import { fetchPost, createReply, fetchUserMembership } from 'actions'
@@ -56,9 +58,9 @@ const ReplyContainer = props => {
       margin: theme.spacing(1),
     },
     button: {
-      marginTop: 10,
-      height: 30,
-      width: 30,
+      margin: theme.spacing(1),
+      backgroundColor: '#1A4570',
+      marginTop: '15px',
     },
   }))
 
@@ -127,12 +129,6 @@ const ReplyContainer = props => {
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
-          <DownNav>
-            <VerticalAlignBottom
-              className={classes.button}
-              onClick={scrollToBottom}
-            />
-          </DownNav>
           <ReplyForm onSubmit={handleSubmit}>
             <InputDiv>
               <TextField
@@ -150,13 +146,17 @@ const ReplyContainer = props => {
                 value={values.reply_content || ''}
               />
             </InputDiv>
-            <Fab
-              classes={{ root: classes.root }}
+            <Button
+              size='large'
+              variant='contained'
+              color='primary'
+              className={classes.button}
+              endIcon={<SendIcon />}
               type='submit'
               aria-label='Reply'
             >
-              <Add />
-            </Fab>
+              Send
+            </Button>
           </ReplyForm>
         </ContainerBottom>
       )}
@@ -197,18 +197,13 @@ const ContainerBottom = styled.div`
   justify-content: center;
   background-color: #dee4e7;
 `
-const DownNav = styled.div`
-  display: flex;
-  // justify-content: flex-end;
-  align-items: center;
-  width: 10%;
-`
 
 const ReplyForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 801px;
+
   background-color: #dee4e7;
   align-items: center;
 `

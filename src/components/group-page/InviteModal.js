@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import useForm from '../utils/useForm'
 import useGetToken from '../utils/useGetToken'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
+import { Mixpanel } from '../analytics/Mixpanel'
+import MixpanelMessages from '../analytics/MixpanelMessages'
 
 const InviteModal = props => {
   const { id, group_name, image } = props.group
@@ -27,6 +29,7 @@ const InviteModal = props => {
         isError: false,
         message: 'Invite Successfully Sent!',
       })
+      Mixpanel.activity(loggedInUser.id, MixpanelMessages.INVITE_SENT)
       socket.emit('send invite', {
         userIds: [userId],
         invite: {

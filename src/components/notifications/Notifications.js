@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import moment from 'moment'
 import * as types from 'actions/actionTypes'
+//import PICTURES (SVG)
+import undrawCompleteTask from '../../assets/undraw/undrawCompleteTask.svg'
 import ActivityNotificationsCard from './ActivityNotificationsCard'
 import InviteNotificationCard from './InviteNotificationCard'
 import { fetchNotifications } from 'actions/index'
@@ -94,6 +96,7 @@ const Notifications = () => {
     return (
       <Wrapper>
         <Header>No Notifications</Header>
+        <Img src={undrawCompleteTask} />
         <br />
       </Wrapper>
     )
@@ -147,13 +150,19 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex
-  justify-content: center
+  flex-direction: column;
+  align-items: center;
   margin-top: 25px;
 `
 
 const Header = styled.h1`
   font-size: 30px;
   font-weight: 700;
+`
+
+const Img = styled.img`
+  width: 70vw;
+  height: 70vh;
 `
 
 export default Notifications

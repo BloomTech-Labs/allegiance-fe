@@ -1,6 +1,6 @@
 import mixpanel from 'mixpanel-browser'
 
-mixpanel.init('7c1d028ede1f4d4c03b1e0683f8a097c')
+mixpanel.init('7c1d028ede1f4d4c03b1e0683f8a097c', { api_host: "https://api.mixpanel.com" })
 
 //let env_check = process.env.NODE_ENV === 'development';
 

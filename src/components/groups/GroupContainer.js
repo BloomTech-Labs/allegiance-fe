@@ -16,17 +16,8 @@ function GroupContainer(props) {
       <Container>
         <SearchBar {...props} />
         <Divider />
-        <MyGroups>
-          <GroupTitleHolder>
-            <H3>MY GROUPS</H3>
-          </GroupTitleHolder>
-          <>
-            <MyAllegianceGroups content={groups} type={'group'} />
-          </>
-        </MyGroups>
-        <Divider />
         <H3>GROUPS NEAR YOU</H3>
-        <NearbyGroups />
+        <NearbyGroups history={props.history} />
         <Divider />
         <H3>DISCOVER</H3>
         <GroupList groups={groups} />
@@ -49,9 +40,6 @@ const Container = styled.div`
     text-align: left;
     margin-left: 5%;
   }
-`
-const MyGroups = styled.div`
-  margin: 2% 5%;
 `
 
 const GroupTitleHolder = styled.div`

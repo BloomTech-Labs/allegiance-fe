@@ -13,7 +13,7 @@ import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const loggedInGroups = useSelector(state => state.myGroups)
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
@@ -75,20 +75,20 @@ const Profile = props => {
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.first_name && (
+            {loggedInUser.username && (
               <Typography
                 variant='h5'
                 noWrap={true}
                 style={{ fontWeight: 'bold' }}
-              >{`${loggedInUser.first_name} ${loggedInUser.last_name}`}</Typography>
-            )}
-            {props.match.url === '/profile' && (
-              <Link to='/makeprofile'>
-                <Icon name='edit outline' />
-              </Link>
+              >{`${loggedInUser.username}`}</Typography>
             )}
           </Name>
-          <p>{loggedInUser.bio}</p>
+          <Name>
+            {props.match.url === '/profile' && (
+              <Link to='/makeprofile'>Profile Settings</Link>
+            )}
+          </Name>
+          {/* <p>{loggedInUser.bio}</p> */}
           <>
             <div
               style={{
@@ -96,27 +96,17 @@ const Profile = props => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom: '5px',
               }}
             >
-              <H2>MY ALLEGIANCES</H2>
-              <Link to='/addallegiance'>
-                <Icon
-                  name='edit outline'
-                  color='blue'
-                  size='small'
-                  style={{ marginBottom: '1.5rem' }}
-                />
-              </Link>
+              <Link to='/addallegiance'>Select your allegiances</Link>
             </div>
+            <H2>MY ALLEGIANCES</H2>
             <MyAllegianceGroups
               content={loggedInAllegiances || []}
               type='allegiance'
               default={Default}
             />
-          </>
-          <>
-            <H3>MY GROUPS</H3>
-            <MyAllegianceGroups content={loggedInGroups || []} type='group' />
           </>
         </InfoHolder>
       </div>
@@ -127,8 +117,6 @@ const Profile = props => {
 const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: -4.5%;
-  margin-bottom: 10%;
 `
 
 const Banner = styled.div``
@@ -142,8 +130,6 @@ const BannerImage = styled.img`
 
 const InfoHolder = styled.div`
   margin-top: 5%;
-  padding-bottom: 1rem;
-  border-bottom: 0.5px solid lightgray;
 `
 
 const Name = styled.div`
@@ -151,6 +137,7 @@ const Name = styled.div`
   flex-direction: row;
   justify-content: center;
   overflow: hidden;
+  margin-bottom: 10px;
 `
 
 const ImageCrop = styled.div`
@@ -172,8 +159,8 @@ const ProfileImage = styled.img`
 `
 const H2 = styled.h2`
   font-size: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `
 
 const H3 = styled.h3`

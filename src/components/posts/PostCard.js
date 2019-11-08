@@ -165,7 +165,8 @@ export default function PostCard(props) {
 const primary = '#4267b2'
 const useStyles = makeStyles(theme => ({
   card: {
-    width: 400,
+    width: '95%',
+    maxWidth: '800px',
     marginBottom: 20,
   },
   cardHeader: {

@@ -5,6 +5,9 @@ import useForm from '../utils/useForm'
 import styled from 'styled-components'
 import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
+import SendIcon from '@material-ui/icons/Send'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
 import { green } from '@material-ui/core/colors'
@@ -42,9 +45,9 @@ const PostForm = props => {
       margin: theme.spacing(1),
     },
     button: {
-      marginTop: 10,
-      height: 30,
-      width: 30,
+      margin: theme.spacing(1),
+      backgroundColor: '#1A4570',
+      marginTop: '15px',
     },
   }))
 
@@ -52,12 +55,6 @@ const PostForm = props => {
 
   return (
     <FormContainer>
-      <DownNav>
-        <VerticalAlignBottomIcon
-          className={classes.button}
-          onClick={props.scrollToBottom}
-        />
-      </DownNav>
       <ReplyForm onSubmit={handleSubmit}>
         <InputDiv>
           <TextField
@@ -75,9 +72,17 @@ const PostForm = props => {
             value={values.post_content || ''}
           />
         </InputDiv>
-        <Fab classes={{ root: classes.root }} type='submit' aria-label='Reply'>
-          <AddIcon />
-        </Fab>
+        <Button
+          size='large'
+          variant='contained'
+          color='primary'
+          className={classes.button}
+          endIcon={<SendIcon />}
+          type='submit'
+          aria-label='Reply'
+        >
+          Send
+        </Button>
       </ReplyForm>
     </FormContainer>
   )

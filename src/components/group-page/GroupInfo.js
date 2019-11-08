@@ -58,7 +58,21 @@ const GroupInfo = props => {
         />
       </ImageDiv>
       <InfoDiv>
-        <Header>{props.group.group_name}</Header>
+        <HeaderWrapper>
+          <Header>{props.group.group_name}</Header>
+          <Settings>
+            {memberType === 'admin' ? (
+              <Link
+                to={{
+                  pathname: `/editgroup/${props.group.id}`,
+                  state: { group: props.group },
+                }}
+              >
+                <Icon name='setting' size='large' />
+              </Link>
+            ) : null}
+          </Settings>
+        </HeaderWrapper>
         <h2>{props.group.description}</h2>
         <SubInfo>
           <h3>
@@ -91,18 +105,6 @@ const GroupInfo = props => {
           )}
         </ModalWrapper>
       </InfoDiv>
-      <Settings>
-        {memberType === 'admin' ? (
-          <Link
-            to={{
-              pathname: `/editgroup/${props.group.id}`,
-              state: { group: props.group },
-            }}
-          >
-            <Icon name='setting' size='large' />
-          </Link>
-        ) : null}
-      </Settings>
     </GroupInfoDiv>
   )
 }
@@ -161,10 +163,13 @@ const InfoDiv = styled.div`
   }
 `
 
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 const Settings = styled.div`
-  position: absolute;
-  top: 8%;
-  right: 2%;
+  margin-left: 10%;
 `
 
 const ModalWrapper = styled.div`

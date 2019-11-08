@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { editGroup, createGroup, deleteGroup } from 'actions'
+import { Mixpanel } from '../analytics/Mixpanel'
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'
 import DeleteGroup from './DeleteGroup'

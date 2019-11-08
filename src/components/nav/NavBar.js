@@ -20,7 +20,6 @@ import { fetchPrivateRequests, receivingGroup } from 'actions'
 
 const NavBar = props => {
   const { location } = props
-  // Retrieve all groups where user has a relation
   const user = useSelector(state => state.userReducer.loggedInUser)
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check

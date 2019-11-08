@@ -22,6 +22,7 @@ const ActivityNotificationsCard = props => {
     username,
     image,
     content,
+    post_id,
   } = props.activity
 
   const dispatch = useDispatch()
@@ -79,11 +80,16 @@ const ActivityNotificationsCard = props => {
   // Onclick handler for notifications to direct user to correct app path
   const goToNote = e => {
     e.stopPropagation()
+    let pathname
+    if (type === 'group_request' || type === 'group_accepted') {
+      pathname = `/group/${type_id}`
+    } else if (type === 'reply_like') {
+      pathname = `/post/${post_id}`
+    } else {
+      pathname = `/post/${type_id}`
+    }
     props.history.push({
-      pathname:
-        type !== 'group_request' && type !== 'group_accepted'
-          ? `/post/${type_id}`
-          : `/group/${type_id}`,
+      pathname,
       // Provide replyId if appropriate for scrolling into focus upon navigation
       // replyNumber: replyId || null,
     })
