@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 export const AvatarPopup = ({ user }) => {
-  const { isAuthenticated, logout } = useAuth0()
+  const { logout } = useAuth0()
   const logoutWithRedirect = () =>
     logout({
       returnTo: window.location.origin,

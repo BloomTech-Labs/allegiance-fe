@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import replies from '../../assets/replies.png'
 import LockIcon from '@material-ui/icons/Lock'
 import { withRouter } from 'react-router-dom'
 

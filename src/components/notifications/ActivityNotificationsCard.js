@@ -73,9 +73,9 @@ const ActivityNotificationsCard = props => {
   // }
 
   // Maintain max allowable content length for posts and replies
-  let notifyContent = ''
-  if (content) notifyContent = content.slice(0, 20)
-  if (content && content.length > 20) notifyContent += '...'
+  // let notifyContent = ''
+  // if (content) notifyContent = content.slice(0, 20)
+  // if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToNote = e => {

@@ -1,6 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import avi from '../../assets/walter-avi.png'
+import Moment from 'react-moment'
+import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { likePost, dislikePost } from 'actions'
+import useGetToken from '../utils/useGetToken'
+import { deleteGroupPost } from 'actions'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,
   CardHeader,
@@ -11,15 +18,6 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core/'
-import black from '@material-ui/core/colors/red'
-import avi from '../../assets/walter-avi.png'
-import Moment from 'react-moment'
-import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
-import { likePost, dislikePost } from 'actions'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
-import { useSelector, useDispatch } from 'react-redux'
 
 export default function PostCard(props) {
   const {
@@ -32,7 +30,6 @@ export default function PostCard(props) {
     likes,
     replies,
     created_at,
-    group_id,
   } = props.post
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.loggedInUser)
