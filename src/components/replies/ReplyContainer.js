@@ -166,12 +166,7 @@ const ReplyContainer = props => {
             {sortedReplies.map(reply => {
               return (
                 <div ref={replyRefs[reply.id]} key={reply.id}>
-                  <ReplyCard
-                    reply={reply}
-                    setSubmitted={setSubmitted}
-                    post={post}
-                    group={group}
-                  />
+                  <ReplyCard reply={reply} post={post} group={group} />
                 </div>
               )
             })}
