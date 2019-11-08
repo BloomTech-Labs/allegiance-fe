@@ -155,6 +155,7 @@ const RightTop = styled.div`
   height: 15px;
 `
 const Middle = styled.div`
+  border: 3px solid red;
   display: flex;
   justify-content: space-between;
   @media (max-width: 800px) {
@@ -167,7 +168,6 @@ const LeftMiddle = styled.div`
   display: flex;
   align-items: center;
   width: 480px;
-  // height: 37px;
   margin-left: 24px;
   @media (max-width: 800px) {
     justify-content: center;
@@ -263,7 +263,7 @@ const RegisterBtn = styled.button`
   &:hover{
     background: #ed5959;
   }
-  height: 67px;
+  
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1
   width: 163px;
