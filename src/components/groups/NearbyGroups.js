@@ -17,7 +17,7 @@ const NearbyGroups = props => {
 
   // Fetches user information and user groups from Redux
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups)
+  const loggedInGroups = useSelector(state => state.myGroups)
 
   useEffect(() => {
     const fetchData = async () => {
