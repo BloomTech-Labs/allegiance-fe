@@ -37,7 +37,6 @@ const SearchBar = props => {
       flexWrap: 'wrap',
     },
     textField: {
-      border: '3px solid blue',
       '&:hover': {
         background: 'white',
       },
@@ -133,8 +132,8 @@ const SearchBar = props => {
           id='outlined-with-placeholder'
           label='Search Groups'
           placeholder='Search Groups'
-          // className={classes.textField}
-          // variant='outlined'
+          className={classes.textField}
+          variant='outlined'
           name='group_name'
         />
       </SearchForm>
@@ -152,7 +151,6 @@ const SearchBar = props => {
 }
 
 const SearchFormWrapper = styled.div`
-  border: 3px solid pink;
   display: flex;
   flex-direction: column;
   align-items: center;

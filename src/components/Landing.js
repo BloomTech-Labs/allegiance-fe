@@ -93,19 +93,10 @@ const Landing = props => {
       </Bottom>
       <Footer>
         <FooterLeft>
-          {/* <Image
-            path='/facebook'
-            onClick={() => {
-              window.location.href = 'https://facebook.com'
-            }}
-            src={facebook}
-            alt={'Facebook'}
-          /> */}
-
           <About
             onClick={() => {
               window.location.href =
-                'https://github.com/orgs/Lambda-School-Labs/teams/labs-17-allegiance/repositories '
+                'https://github.com/Lambda-School-Labs/allegiance-fe'
             }}
           >
             About Us
@@ -155,7 +146,7 @@ const RightTop = styled.div`
   height: 15px;
 `
 const Middle = styled.div`
-  border: 3px solid red;
+  
   display: flex;
   justify-content: space-between;
   @media (max-width: 800px) {
@@ -259,9 +250,9 @@ const H1 = styled.h1`
   color: grey;
 `
 const RegisterBtn = styled.button`
-
   &:hover{
     background: #ed5959;
+    cursor: pointer
   }
   
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -279,6 +270,7 @@ const RegisterBtn = styled.button`
 const JoinBtn = styled.button`
   &:hover {
     background: #4483cd;
+    cursor: pointer;
   }
   height: 54px;
   width: 192px;
@@ -297,12 +289,14 @@ const ImageMini = styled.img`
     transition: all 0.2s ease-in-out;
 
      transform: scale(1.5);
+    cursor: pointer;
   }
 `
 const About = styled.div`
   &:hover {
     transition: all 0.2s ease-in-out;
     transform: scale(1.5);
+    cursor: pointer;
   }
 `
 
