@@ -27,14 +27,7 @@ const PostForm = props => {
       groupId,
       post_content: values.post_content,
     }
-
     await dispatch(createGroupPost(token, data))
-
-    var data = {
-      userId,
-      groupId,
-      post_content: '',
-    }
   }
 
   // Material UI
@@ -78,11 +71,6 @@ const PostForm = props => {
             margin='normal'
             variant='outlined'
             onChange={handleChange}
-            // onKeyDown={e => {
-            //   if (e.keyCode === 13) {
-            //     handleSubmit()
-            //   }
-            // }}
             name='post_content'
             value={values.post_content || ''}
           />

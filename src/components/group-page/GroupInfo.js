@@ -16,13 +16,9 @@ const GroupInfo = props => {
   const privacy = props.group.privacy_setting
   const group_id = props.group.id
   const memberType = props.group.memberType
-
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const dispatch = useDispatch()
-
-  console.log('props', props)
-  console.log('privacy', privacy)
   const token = useGetToken()
 
   async function addToGroupHandler(evt, user_id) {
@@ -76,17 +72,6 @@ const GroupInfo = props => {
               : null}{' '}
             Group
           </h3>
-          {/* <MemberList
-            memberType={memberType}
-            requests={props.requests}
-            members={props.members}
-            addToGroup={addToGroup}
-            removeMember={removeMember}
-            declineRequest={declineRequest}
-          /> */}
-          {/* {memberType.userType && (
-            <InviteModal members={props.members} group={props.group} />
-          )} */}
           <h3>
             <AllegiancePopover allegiances={props.allegiances} />
           </h3>

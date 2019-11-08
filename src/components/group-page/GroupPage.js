@@ -15,7 +15,6 @@ const GroupPage = props => {
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
   const { memberType, posts } = group
-  const [members, setMembers] = useState([])
   const [trigger, setTrigger] = useState(false)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -65,7 +64,6 @@ const GroupPage = props => {
           <PostsContainer
             groupId={id}
             memberType={memberType}
-            members={members}
             posts={posts}
             group={group}
           />

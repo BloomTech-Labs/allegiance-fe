@@ -44,7 +44,6 @@ function App(props) {
   useEffect(() => {
     if (isAuthenticated && !loggedInUser && user && loading) {
       // once variable user is defined - this if statement will be true
-      console.log('in here ...')
       const registerUser = async () => {
         try {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
@@ -66,7 +65,6 @@ function App(props) {
           }
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
-          console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
           }
@@ -76,7 +74,6 @@ function App(props) {
                 ? '/home'
                 : window.location.pathname
             props.history.push(`${pushTo}`)
-            // Mixpanel.login(currentUser, 'Successful login.')
           }
           // dispatch(updateSocket(socket))
           const socketUserId = newUser ? newUser.id : currentUser.id
@@ -153,9 +150,3 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `
 export default withRouter(App)
-// text-align: center;
-// position: relative;
-// background-color: #dee4e7;
-// min-height: 100vh;
-// margin: 0 auto;
-// border: 4px solid blue;

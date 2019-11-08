@@ -87,15 +87,6 @@ const Landing = props => {
       </Bottom>
       <Footer>
         <FooterLeft>
-          {/* <Image
-            path='/facebook'
-            onClick={() => {
-              window.location.href = 'https://facebook.com'
-            }}
-            src={facebook}
-            alt={'Facebook'}
-          /> */}
-
           <About
             onClick={() => {
               window.location.href =
@@ -232,12 +223,6 @@ const FooterRight = styled.div`
   display: flex;
   margin-right: 24px;
 `
-// const GlobalStyles = createGlobalStyle`
-// body {
-//   <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
-//   font-family: 'Roboto', sans-serif;
-// }
-// `
 const H1 = styled.h1`
   font-size: 1rem;
   color: grey;

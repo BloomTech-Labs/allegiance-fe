@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from 'react'
+import React, { useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
@@ -14,15 +14,12 @@ import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
   const post = useSelector(state => state.group.post)
-  const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
   const dispatch = useDispatch()
-  // useForm custom hook and set timeout custom hook
   const { values, handleChange, handleSubmit } = useForm(submitReply)
-  // Fetches Auth0 token for axios call
   const [token] = useGetToken()
 
   useEffect(() => {
@@ -126,9 +123,7 @@ const ReplyContainer = props => {
 
   return (
     <ReplyViewContainer>
-      {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
-      )}
+      {!!Object.values(post).length && <PostCard post={post} group={group} />}
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
@@ -170,12 +165,7 @@ const ReplyContainer = props => {
           {sortedReplies.map(reply => {
             return (
               <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
+                <ReplyCard reply={reply} post={post} group={group} />
               </div>
             )
           })}

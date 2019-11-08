@@ -52,34 +52,15 @@ const SearchBar = props => {
 
   const onKeyDown = e => {
     // Checks if inside search bar
-    // if (node.current.contains(e.target)) {
     if (e.keyCode === 13) {
       e.preventDefault()
       // Check that results from SearchResults has something to fill
-      console.log('RESULTS', results)
       if (results.length > 0) {
         setSuggestion(0)
-        // setValues(results[activeSuggestion])
-        // props.history.push(`/group/${results[0].id}`)
       } else {
-        console.log('ELSE')
         setValues(['NO GROUPS'])
       }
     }
-    //User pressed the up arrow
-    // if (e.keyCode === 38) {
-    //   if (activeSuggestion === 0) {
-    //     return
-    //   }
-    //   setSuggestion(activeSuggestion - 1)
-    // }
-    // // User pressed the down arrow
-    // else if (e.keyCode === 40) {
-    //   if (activeSuggestion + 1 === results.length) {
-    //     return
-    //   }
-    //   setSuggestion(activeSuggestion + 1)
-    // }
   }
 
   //useEffect to grab groups that are searched for from the backend (column and row filters for only group results that are being searched)
@@ -108,19 +89,8 @@ const SearchBar = props => {
 
   const [showResults, setShowResults] = useState(false)
   const [loading, setLoading] = useState(true)
-  const handleClick = e => {
-    // console.log('VALS', values)
-    // if (values.length === 0) {
-    //   return
-    // } else {
-    //   setShowResults(true)
-    // }
-  }
-  // const handleSearchChange = (e) => {
-  //   handleChange(e)
-  // }
+
   useOnClickOutside(node, e => {
-    console.log(e.target)
     setShowResults(false)
   })
   return (
@@ -128,7 +98,6 @@ const SearchBar = props => {
       {/* form to handle group search text from user */}
       <SearchForm autoComplete='off'>
         <TextField
-          onClick={handleClick}
           value={values.group_name || ''}
           onChange={handleChange}
           onKeyDown={onKeyDown}

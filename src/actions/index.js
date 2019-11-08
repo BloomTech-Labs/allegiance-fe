@@ -640,7 +640,6 @@ export const deleteGroup = groupId => async dispatch => {
 }
 
 export const fetchUserMembership = data => async dispatch => {
-  console.log('fetching membership', data)
   const { group_id, user_id } = data
 
   dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })

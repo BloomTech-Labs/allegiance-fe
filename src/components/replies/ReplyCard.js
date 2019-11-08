@@ -51,9 +51,6 @@ const ReplyCard = props => {
 
   const deleteReply = async () => {
     const reply = await axiosWithAuth([token]).delete(`/replies/${id}`)
-    if (reply) {
-      props.setSubmitted(true)
-    }
   }
 
   return (
@@ -143,9 +140,6 @@ const ReplyCard = props => {
     </div>
   )
 }
-
-// Material UI Styling
-// const primary = red[600]
 const primary = '#4267b2'
 
 const useStyles = makeStyles(theme => ({

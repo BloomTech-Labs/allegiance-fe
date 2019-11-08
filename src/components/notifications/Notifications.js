@@ -13,12 +13,9 @@ import { fetchNotifications } from 'actions/index'
 const Notifications = () => {
   const notifications = useSelector(state => state.notifyReducer.notifications)
   const invites = useSelector(state => state.notifyReducer.invites)
-  // Keep track of when notifications component mounts so that timestamp
-  // can be passed to the put in the cleanup useEffect
   const [mountTime, setMountTime] = useState()
   const user = useSelector(state => state.userReducer.loggedInUser)
   const userId = user.id
-  // Fetches Auth0 token for axios call
   const [token] = useGetToken()
   const dispatch = useDispatch()
 
@@ -45,7 +42,7 @@ const Notifications = () => {
       })
     }
     fetchData()
-  }, [dispatch, token, userId])
+  }, [dispatch, token, userId, notifications.length])
 
   // Retrieve email and location as those are required by JOI check on backend
   const { email, location } = useSelector(
@@ -103,10 +100,6 @@ const Notifications = () => {
   }
 
   // // Filter out activity performed by the user, future versions should combine likes on same post/reply
-  // const filteredNotifications = notifications.filter(
-  //   act => userId !== act.user_id && userId !== act.liker_id
-  // )
-
   const activityNotifications = notifications.sort((e1, e2) => {
     if (e1.created_at < e2.created_at) {
       return 1

@@ -27,9 +27,6 @@ const NavBar = props => {
   )
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
-
-  const invites = useSelector(state => state.notifyReducer.invites)
-
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const { loading } = useAuth0()
@@ -41,7 +38,7 @@ const NavBar = props => {
       }
       fetchRequests()
     }
-  }, [user])
+  }, [user, dispatch, token])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,9 +57,7 @@ const NavBar = props => {
               payload: unreadNum,
             })
           }
-
           dispatch(fetchInvites(token, data))
-          console.log(invites)
         } catch (error) {
           console.log(error)
         }
@@ -72,7 +67,6 @@ const NavBar = props => {
     socket.on('new notification', async data => {
       console.log('new notification data', data)
       await dispatch(CreateNotification(data))
-      // i don't want to increment unread num if I am viewing the notifications
       if (location.pathname !== '/notifications') {
         dispatch({
           type: INCREMENT_UNREAD_NOTIFICATION_NUM,
@@ -107,7 +101,16 @@ const NavBar = props => {
       socket.off('new notification')
       socket.off('new invite')
     }
-  }, [user, token, timeStamp, socket, dispatch, props.location.pathname])
+  }, [
+    user,
+    token,
+    timeStamp,
+    socket,
+    dispatch,
+    props.location.pathname,
+    location.pathname,
+    notifications.length,
+  ])
 
   if (loading) {
     return (

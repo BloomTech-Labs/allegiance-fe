@@ -20,31 +20,14 @@ const PostsContainer = props => {
     }
   }
 
-  // Obtain groups the user has a relation to
-  // const userGroups = useSelector(state => state.userReducer.loggedInGroups)
-  // checking to see if current user is a member of current group
-  // const currentUserType = userGroups.find(group => group.id === props.groupId)
-  // // if they are undefined, we set membership to a string so we don't get an error
-  // let membership
-  // if (currentUserType === undefined) {
-  //   membership = 'non-member'
-  // } else {
-  //   membership = currentUserType.user_type
-  // }
   const userIn = useSelector(state => state.userReducer.loggedInUser)
   if (userIn) {
     return (
       <PostsWrapper>
-        {/* {(membership === 'admin' || memberType === 'member') && (
-          <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
-        )} */}
-
         <div ref={postsEndRef} />
-
         {(memberType === 'admin' || memberType === 'member') && (
           <PostForm groupId={props.groupId} scrollToBottom={scrollToBottom} />
         )}
-
         <PostListContainer>
           {posts.length > 0 ? (
             posts.map(post => {

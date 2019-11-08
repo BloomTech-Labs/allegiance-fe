@@ -16,8 +16,6 @@ const InviteModal = props => {
   )
   const [response, setResponse] = useState(null)
 
-  console.log(props.members)
-
   async function sendInvite() {
     try {
       const result = await axiosWithAuth(token).post(`/groups/${id}/invitees`, {
@@ -25,7 +23,6 @@ const InviteModal = props => {
         username: values.username,
       })
       const userId = result.data[0].user_id
-      console.log(result.data)
       setResponse({
         isError: false,
         message: 'Invite Successfully Sent!',
@@ -84,18 +81,6 @@ const InviteModal = props => {
                 {response.message}
               </Label>
             )}
-            {/* <Label basic color='green'>
-              Invite Successfully Sent
-            </Label>
-            <Label basic color='red'>
-              Could not find user
-            </Label>
-            <Label basic color='red'>
-              User already has a pending invite
-            </Label>
-            <Label basic color='red'>
-              User is already a member of this group
-            </Label> */}
           </FormWrapper>
           <Modal.Description>
             <DescriptionP>

@@ -3,19 +3,9 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { device } from 'styled/device'
 
-// Need to refine search so it doesn't return every result, cap at x number initially
 const SearchResults = props => {
-  // Fetches user information from Redux
-  // const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  // const mixpanelCheck = () =>
-  //   Mixpanel.activity(loggedInUser.id, 'Visited Group Using Search')
-
   // filtering search results to not include hidden groups
-  // const filteredResults = props.results.filter(
-  //   result => result.privacy_setting !== 'hidden'
-  // )
   const filteredResults = props.results
-  console.log(filteredResults)
   if (props.loading) {
     return <h1>Loading</h1>
   }
@@ -28,7 +18,6 @@ const SearchResults = props => {
   }
   return (
     <ResultsContainer>
-      {/* bring activeSuggestion number from SearchBar, format entry with suggestion-active class */}
       {filteredResults.map((group, index) => {
         let className
         if (index === props.activeSuggestion) {

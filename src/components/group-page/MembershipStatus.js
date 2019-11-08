@@ -30,7 +30,6 @@ const MembershipStatus = props => {
   let hasRequest = privateGroupRequests.includes(group_id)
 
   useEffect(() => {
-    console.log('hasRequest?', hasRequest)
     hasRequest = privateGroupRequests.includes(group_id)
   }, [privateGroupRequests])
 
@@ -58,7 +57,6 @@ const MembershipStatus = props => {
         return acc
       }, []),
     }
-    console.log('adminIds:', data)
     await dispatch(requestJoinPrivate(token, data, socket))
   }
 
