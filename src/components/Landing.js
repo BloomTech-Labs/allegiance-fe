@@ -105,11 +105,9 @@ const Landing = props => {
 }
 
 const LandingDiv = styled.div`
-  // border: 1px solid red;
   background-color: white;
 `
 const Top = styled.div`
-  // border: 1px solid blue;
   display: flex;
   justify-content: space-between;
   height: 67px;
@@ -118,7 +116,6 @@ const LeftTop = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  // border: 1px solid purple;
   width: 400px;
   margin-left: 5px;
 `
@@ -153,15 +150,12 @@ const LeftMiddle = styled.div`
 `
 const RightMiddle = styled.div`
   display: flex;
-  // margin-right: 0px;
-  // border: 1px solid red;
 `
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  // background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
   height: 100vh;
@@ -228,12 +222,12 @@ const H1 = styled.h1`
   color: grey;
 `
 const RegisterBtn = styled.button`
-  &:hover{
+  &:hover {
     background: #ed5959;
   }
   height: 67px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1
+  z-index: 1;
   width: 163px;
   color: white;
   background: #4483cd;
