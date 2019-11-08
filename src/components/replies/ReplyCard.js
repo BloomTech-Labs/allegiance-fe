@@ -50,7 +50,7 @@ const ReplyCard = props => {
   }
 
   const deleteReply = async () => {
-    const reply = await axiosWithAuth([token]).delete(`/replies/${id}`)
+    await axiosWithAuth([token]).delete(`/replies/${id}`)
   }
 
   return (

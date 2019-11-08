@@ -24,12 +24,13 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
+    console.log('this?')
     dispatch(fetchPost(id)).then(res => {
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
     })
-  }, [dispatch, id, post, user.id])
+  }, [dispatch, id, user.id])
 
   // callback function to handle submit
   async function submitReply(e) {
@@ -40,7 +41,6 @@ const ReplyContainer = props => {
       user_id: post.user_id,
     }
     dispatch(createReply(token, data, socket))
-    //   Mixpanel.activity(userId, 'Reply Successfully Created.')
   }
 
   // Material UI

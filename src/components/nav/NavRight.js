@@ -95,12 +95,7 @@ const StyledNavRight = styled.div`
 const NavIcon = styled(Icon)`
   color: white;
 `
-// const MenuItem = styled(Link)`
-//   width: 20%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `
+
 const PlaceHolder = styled.div`
   width: 30%;
   text-decoration: none;

@@ -77,7 +77,7 @@ const Notifications = () => {
         }
       }
     }
-  }, [dispatch, email, location, userId, mountTime])
+  }, [dispatch, email, location, userId, mountTime, token])
 
   if (!notifications) {
     return (
