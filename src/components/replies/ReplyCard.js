@@ -1,9 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
-
 import avi from '../../assets/walter-avi.png'
 import { ThumbUp, DeleteOutline } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
@@ -32,14 +30,9 @@ const ReplyCard = props => {
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const replyLikeId = replyLikes.find(like => like.user_id === user.id)
-  // Obtaining the current users status within the current group
-  const userGroups = useSelector(state => state.userReducer.loggedInGroups)
-  const { group_id } = props.post
-
   // Fetches Auth0 token for axios call
   const [token] = useGetToken()
   // For Styled components -- see bottom of page
-
   const classes = useStyles()
   // Functions for liking & unliking replies
   async function addReplyLike(e) {
@@ -57,10 +50,7 @@ const ReplyCard = props => {
   }
 
   const deleteReply = async () => {
-    const reply = await axiosWithAuth([token]).delete(`/replies/${id}`)
-    if (reply) {
-      props.setSubmitted(true)
-    }
+    await axiosWithAuth([token]).delete(`/replies/${id}`)
   }
 
   return (
@@ -150,9 +140,6 @@ const ReplyCard = props => {
     </div>
   )
 }
-
-// Material UI Styling
-// const primary = red[600]
 const primary = '#4267b2'
 
 const useStyles = makeStyles(theme => ({

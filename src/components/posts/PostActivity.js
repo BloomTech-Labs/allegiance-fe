@@ -1,5 +1,7 @@
 // import React from 'react'
-// this component does NOTHING
+
+// ***********  this component does NOTHING  **********************
+
 import { useSelector } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
@@ -18,7 +20,6 @@ const PostActivity = props => {
   const postLikeId = props.post.likes.find(like => like.user_id === userId)
   async function addLike(e) {
     e.preventDefault()
-    console.log("add like function")
     const like = await axiosWithAuth([token]).post(
       `/posts_likes/post/${props.post.id}`,
       {
@@ -26,15 +27,6 @@ const PostActivity = props => {
         post_id: props.post.id,
       }
     )
-    if (like.data.likeResult) {
-      // axiosWithAuth([token]).post(`/users/${}/notifications`, {
-      //   user_id: "",
-      //   invoker: "",
-      //   type_id: "",
-      //   type: 'like'
-      // })
-      props.setSubmitted(true)
-    }
   }
 
   async function unLike(e) {
@@ -43,7 +35,6 @@ const PostActivity = props => {
       `/posts_likes/${postLikeId.id}`
     )
     if (unLike) {
-      props.setSubmitted(true)
     }
   }
 

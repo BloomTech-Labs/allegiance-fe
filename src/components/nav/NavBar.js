@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import NavLeft from './NavLeft'
 import NavRight from './NavRight'
-import NavBottom from './NavBottom'
 import styled from 'styled-components'
-import { Icon, Loader } from 'semantic-ui-react'
-import IconButton from '@material-ui/core/IconButton'
-import { ArrowBack } from '@material-ui/icons'
+import { Loader } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -21,32 +16,19 @@ import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
-import NavMiddle from './NavMiddle'
-import { Mixpanel } from '../analytics/Mixpanel'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
 
 const NavBar = props => {
   const { location } = props
-
-  const { isAuthenticated, logout } = useAuth0()
-  // Obtain last viewed replies thread's group_id from redux
-  const groupId = useSelector(state => state.navReducer.groupID)
-
-  // Retrieve notifications while not on notifications tab to update number counter on icon
-  const [navNotifications, setNavNotifications] = useState()
-  // Retrieve all groups where user has a relation
-  const userGroups = useSelector(state => state.myGroups)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const timeStamp = useSelector(
     state => state.userReducer.loggedInUser.notification_check
   )
   const socket = useSelector(state => state.socketReducer.socket)
   const notifications = useSelector(state => state.notifyReducer.notifications)
-
-  const invites = useSelector(state => state.notifyReducer.invites)
-
   const dispatch = useDispatch()
   const [token] = useGetToken()
+  const { loading } = useAuth0()
 
   useEffect(() => {
     if (user) {
@@ -55,7 +37,7 @@ const NavBar = props => {
       }
       fetchRequests()
     }
-  }, [user])
+  }, [user, dispatch, token])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,9 +56,7 @@ const NavBar = props => {
               payload: unreadNum,
             })
           }
-
           dispatch(fetchInvites(token, data))
-          console.log(invites)
         } catch (error) {
           console.log(error)
         }
@@ -86,7 +66,6 @@ const NavBar = props => {
     socket.on('new notification', async data => {
       console.log('new notification data', data)
       await dispatch(CreateNotification(data))
-      // i don't want to increment unread num if I am viewing the notifications
       if (location.pathname !== '/notifications') {
         dispatch({
           type: INCREMENT_UNREAD_NOTIFICATION_NUM,
@@ -121,8 +100,25 @@ const NavBar = props => {
       socket.off('new notification')
       socket.off('new invite')
     }
-  }, [user, token, timeStamp, socket, dispatch, props.location.pathname])
+  }, [
+    user,
+    token,
+    timeStamp,
+    socket,
+    dispatch,
+    props.location.pathname,
+    location.pathname,
+    notifications.length,
+  ])
 
+  if (loading) {
+    return (
+      <Loader active size='large'>
+        {' '}
+        Loading{' '}
+      </Loader>
+    )
+  }
   return (
     <Sticky>
       <NavLeft />

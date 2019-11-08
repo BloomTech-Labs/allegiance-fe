@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
 import { useSelector } from 'react-redux'
 import { Loader, Button } from 'semantic-ui-react'
-
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
@@ -27,7 +25,6 @@ const NearbyGroups = props => {
             column: 'location',
             row: loggedInUser.location,
           })
-          console.log('NearbyGroups data', groups.data)
 
           // Get array of ids for groups the user already is a member of
           const loggedInIDs = loggedInGroups.map(group => group.id)
