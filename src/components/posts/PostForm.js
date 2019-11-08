@@ -1,11 +1,8 @@
 import React from 'react'
-
 import { useSelector, useDispatch } from 'react-redux'
-
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
-// import { Mixpanel } from '../analytics/Mixpanel'
 import { createGroupPost } from 'actions'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'

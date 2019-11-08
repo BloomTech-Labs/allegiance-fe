@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import NavAccordion from './NavAccordion'
 
 // ***ADD THESE 2 BACK IF WE ADD ALLEGIANCE TO NAV***

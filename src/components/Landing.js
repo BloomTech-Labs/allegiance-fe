@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
 import SearchBar from './groups/SearchBar'

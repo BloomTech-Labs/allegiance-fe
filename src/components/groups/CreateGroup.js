@@ -11,7 +11,6 @@ import Default from '../../assets/walter-avi.png'
 const CreateGroup = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const dispatch = useDispatch()
-
   //Imports image upload functions
   const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
@@ -38,7 +37,7 @@ const CreateGroup = props => {
       setValues(groupInfo)
       // Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
     }
-  }, [setValues, dispatch])
+  }, [setValues, dispatch, group])
 
   //Creates a new group and pushes the user to the group page after submission.
   async function handleGroupCreation() {

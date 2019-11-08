@@ -26,7 +26,7 @@ const GroupList = props => {
     }
 
     fetchData()
-  }, [groups])
+  }, [])
 
   if (!data) {
     return (
