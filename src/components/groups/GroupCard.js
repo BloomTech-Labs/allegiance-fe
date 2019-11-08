@@ -1,7 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import { Mixpanel } from '../analytics/Mixpanel'
 import styled from 'styled-components'
 import { device } from 'styled/device'
 import Default from '../../assets/walter-avi.png'

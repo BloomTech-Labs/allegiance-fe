@@ -1,17 +1,11 @@
 import React from 'react'
-import { Button, Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
-
 import SearchBar from './groups/SearchBar'
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
-import LandingImage2 from '../assets/landing/LandingImage2.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
 import instagram from '../assets/landing/instagram.png'
 import twitter from '../assets/landing/twitter.png'
@@ -93,15 +87,6 @@ const Landing = props => {
       </Bottom>
       <Footer>
         <FooterLeft>
-          {/* <Image
-            path='/facebook'
-            onClick={() => {
-              window.location.href = 'https://facebook.com'
-            }}
-            src={facebook}
-            alt={'Facebook'}
-          /> */}
-
           <About
             onClick={() => {
               window.location.href =
@@ -120,7 +105,6 @@ const Landing = props => {
 }
 
 const LandingDiv = styled.div`
-  // border: 1px solid red;
   background-color: white;
 `
 const Top = styled.div`
@@ -136,7 +120,6 @@ const LeftTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // border: 1px solid purple;
   width: 400px;
   margin-left: 5px;
 `
@@ -171,15 +154,12 @@ const LeftMiddle = styled.div`
 `
 const RightMiddle = styled.div`
   display: flex;
-  // margin-right: 0px;
-  // border: 1px solid red;
 `
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  // background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
   height: 100vh;
@@ -241,23 +221,17 @@ const FooterRight = styled.div`
   display: flex;
   margin-right: 24px;
 `
-const GlobalStyles = createGlobalStyle`
-body {
-  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
-  font-family: 'Roboto', sans-serif;
-}
-`
 const H1 = styled.h1`
   font-size: 1rem;
   color: grey;
 `
 const RegisterBtn = styled.button`
-  &:hover{
+  &:hover {
     background: #ed5959;
   }
   height: 67px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1
+  z-index: 1;
   width: 163px;
   color: white;
   background: #4483cd;

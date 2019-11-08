@@ -1,27 +1,17 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as types from 'actions/actionTypes'
 import { editGroup, createGroup, deleteGroup } from 'actions'
-
 import { Mixpanel } from '../analytics/Mixpanel'
-
 import useForm from '../utils/useForm'
 import useImageUploader from '../utils/useImageUploader'
-import useGetToken from '../utils/useGetToken'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import DeleteGroup from './DeleteGroup'
-
-import { Form, Icon, Modal, Segment } from 'semantic-ui-react'
+import { Form, Modal, Segment } from 'semantic-ui-react'
 import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 
 const CreateGroup = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const dispatch = useDispatch()
-
-  //Fetches Auth0 token for axios call
-  const [token] = useGetToken()
-
   //Imports image upload functions
   const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
 
@@ -36,8 +26,6 @@ const CreateGroup = props => {
     setValues,
     SubmitButton,
     ErrorMessage,
-    setError,
-    setLoading,
   } = useForm(requestType)
 
   //If in edit mode, sets group to equal props. Then sets form input values to the group's current info.
@@ -50,12 +38,10 @@ const CreateGroup = props => {
       setValues(groupInfo)
       // Mixpanel.activity(loggedInUser.id, 'Start Edit Group')
     }
-  }, [setValues, dispatch])
+  }, [setValues, dispatch, group])
 
   //Creates a new group and pushes the user to the group page after submission.
   async function handleGroupCreation() {
-    // try {
-
     const newGroup = {
       ...values,
       image: image || Default,
@@ -64,21 +50,6 @@ const CreateGroup = props => {
     await dispatch(createGroup(newGroup)).then(res => {
       props.history.push(`/group/${res.id}`)
     })
-    // const result = await axiosWithAuth([token]).post('/groups/', newGroup)
-    // const addedGroup = {
-    //   name: result.data.newGroup.group_name,
-    //   image: result.data.newGroup.image,
-    //   id: result.data.newGroup.id,
-    //   user_type: 'admin',
-    // }
-    // fetch_group_success??
-    // Mixpanel.activity(loggedInUser.id, 'Complete Create Group')
-    // } catch (err) {
-    //   dispatch({ type: types.ADD_GROUP_FAILURE, payload: err })
-    //   // Mixpanel.activity(loggedInUser.id, 'Group Creation Failed')
-    //   setError(true)
-    //   setLoading(false)
-    // }
   }
 
   //Edits existing group and pushes the user to the group page after submission.
@@ -93,7 +64,6 @@ const CreateGroup = props => {
     })
   }
 
-  //Deletes a group.
   async function handleDeleteGroup() {
     dispatch(
       deleteGroup(window.location.pathname.split('/editgroup/')[1])
@@ -111,12 +81,6 @@ const CreateGroup = props => {
         <Form onSubmit={handleSubmit} error>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
-            {/* <UploadIcon
-              name='edit'
-              size='large'
-              color='black'
-              onClick={() => setModal(true)}
-            /> */}
             <Modal
               open={modalOpen}
               onClose={() => setModal(false)}
@@ -238,17 +202,6 @@ const FormSegment = styled(Segment)`
   marginbottom: 15%;
 `
 
-const BoldInput = styled(Form.Input)`
-  input:first-child {
-    font-weight: bold;
-  }
-`
-
-const UploadIcon = styled(Icon)`
-  display: flex;
-  justify-content: center;
-`
-
 const ProfilePic = styled.img`
   border-color: black;
   object-fit: cover;
@@ -263,15 +216,6 @@ const ProfilePic = styled.img`
 const BasicInfoHolder = styled.div`
   display: flex;
   justify-content: center;
-`
-
-const NameHolder = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space - evenly;
-  margin-left: 7px;
-  margin-bottom: 1rem;
-  width: 100%;
 `
 
 export default CreateGroup

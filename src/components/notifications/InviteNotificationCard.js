@@ -22,7 +22,6 @@ const InviteNotificationsCard = props => {
     group_name,
     image,
     first_name,
-    last_name,
     accepted,
   } = props.invite
 
@@ -190,13 +189,14 @@ const CardMessage = styled.div`
   overflow: hidden;
 `
 
-const CardGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20%;
-  margin: 1%;
-`
+// const CardGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 20%;
+//   margin: 1%;
+// `
+
 const Accept = styled.button`
   display: flex;
   flex-direction: column;

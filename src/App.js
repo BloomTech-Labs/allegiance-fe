@@ -35,7 +35,6 @@ function App(props) {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
-  const notifications = useSelector(state => state.notifyReducer.notifications)
   const { loading, user, isAuthenticated } = useAuth0()
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
@@ -47,7 +46,6 @@ function App(props) {
   useEffect(() => {
     if (isAuthenticated && !loggedInUser && user && loading) {
       // once variable user is defined - this if statement will be true
-      console.log('in here ...')
       const registerUser = async () => {
         try {
           const result = await axios.post(process.env.REACT_APP_AUTHURL, {
@@ -69,7 +67,6 @@ function App(props) {
           }
           // Mixpanel.login calls a mixpanel function that logs user id, name and the message of our choice.
           const { newUser, currentUser } = result.data.userInfo
-          console.log(result.data.userInfo, '🕌')
           if (newUser) {
             props.history.push('/makeprofile')
             Mixpanel.login(newUser, MixpanelMessages.NEW_USER)
@@ -158,9 +155,3 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `
 export default withRouter(App)
-// text-align: center;
-// position: relative;
-// background-color: #dee4e7;
-// min-height: 100vh;
-// margin: 0 auto;
-// border: 4px solid blue;
