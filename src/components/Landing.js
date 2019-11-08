@@ -126,9 +126,6 @@ const Top = styled.div`
   display: flex;
   justify-content: space-between;
   height: 67px;
-  @media (max-width: 800px) {
-    margin-bottom: 30px;
-  }
   @media (max-width: 470px) {
     flex-direction: column;
     height: 100px;
@@ -163,6 +160,7 @@ const Middle = styled.div`
   @media (max-width: 800px) {
     align-items: center;
     flex-direction: column-reverse;
+    margin: 0px;
   }
 `
 const LeftMiddle = styled.div`
@@ -205,7 +203,7 @@ const LeftBottom1 = styled.div`
   width: 400px;
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
     margin-top: 100px;
   }
 `
@@ -226,7 +224,7 @@ const LeftBottom3 = styled.div`
   margin-left: 49px;
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
   }
 `
 const LeftBottom4 = styled.div`
@@ -291,7 +289,7 @@ const JoinBtn = styled.button`
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
   @media (max-width: 500px) {
-    width: 90vw;
+    width: 90%;
   }
 `
 const ImageMini = styled.img`
