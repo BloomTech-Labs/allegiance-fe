@@ -95,13 +95,12 @@ export const receivingGroup = groupData => async dispatch => {
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
-    
     try {
       dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_REQUEST })
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
-      console.log("NOTIFIC", notifications)
+      console.log('NOTIFIC', notifications)
       dispatch({
         type: actionTypes.FETCH_NOTIFICATIONS_SUCCESS,
         payload: notifications.data,
@@ -269,7 +268,7 @@ export const fetchPost = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POST_REQUEST })
     const response = await axios.get(`/posts/${id}`)
-    console.log("reponse", response)
+    console.log('reponse', response)
     const postObj = response.data.postLoaded
     dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
     console.log(postObj)
@@ -350,6 +349,17 @@ export const createReply = (token, data, socket) => async dispatch => {
     }
   }
 }
+
+export const deleteReply = id => async dispatch => {
+  try {
+    await dispatch({ type: actionTypes.DELETE_REPLY_REQUEST })
+    await axios.delete(`/replies/${id}`)
+    await dispatch({ type: actionTypes.DELETE_REPLY_SUCCESS, payload: id })
+  } catch (err) {
+    await dispatch({ type: actionTypes.DELETE_REPLY_FAILURE })
+  }
+}
+
 export const dislikeReply = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)

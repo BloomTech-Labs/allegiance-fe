@@ -5,7 +5,7 @@ import { Comment, Icon, Label } from 'semantic-ui-react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
-import { likeReply, dislikeReply } from 'actions'
+import { likeReply, dislikeReply, deleteReply } from 'actions'
 
 const ReplyCard = props => {
   const {
@@ -42,8 +42,8 @@ const ReplyCard = props => {
     dispatch(dislikeReply(token, replyLikeId.id))
   }
 
-  const deleteReply = async () => {
-    await axiosWithAuth([token]).delete(`/replies/${id}`)
+  const deleteReplyHandler = async () => {
+    await dispatch(deleteReply(id))
   }
 
   return (
@@ -53,7 +53,7 @@ const ReplyCard = props => {
         <Comment.Content>
           <HeaderWrapper>
             <Comment.Author as='a'>{`${first_name} ${last_name}`}</Comment.Author>
-            <Icon link name='trash alternate' onClick={deleteReply} />
+            <Icon link name='trash alternate' onClick={deleteReplyHandler} />
           </HeaderWrapper>
           <CommentText>{reply_content}</CommentText>
           <Comment.Actions>
