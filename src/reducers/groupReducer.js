@@ -18,10 +18,20 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
-  memberType: null
+  memberType: null,
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.DELETE_REPLY_SUCCESS:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: state.post.replies.filter(
+            reply => reply.id !== action.payload
+          ),
+        },
+      }
     case types.FETCH_POSTS_REQUEST:
       return {
         ...state,
@@ -162,14 +172,14 @@ export const groupReducer = (state = initialState, action) => {
     case types.ADD_MEMBER_SUCCESS:
       return {
         ...state,
-        members: [...state.members, action.payload]
+        members: [...state.members, action.payload],
       }
     case types.REMOVE_MEMBER_SUCCESS:
       return {
         ...state,
-        members: state.members.filter(member => member.id !== action.payload)
+        members: state.members.filter(member => member.id !== action.payload),
       }
-      case types.REMOVE_MEMBER_FAILURE:
+    case types.REMOVE_MEMBER_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -187,7 +197,7 @@ export const groupReducer = (state = initialState, action) => {
     case types.REMOVE_REQUEST_SUCCESS:
       return {
         ...state,
-        reqs: state.reqs.filter(req => req.id !== action.payload)
+        reqs: state.reqs.filter(req => req.id !== action.payload),
       }
     default:
       return state
