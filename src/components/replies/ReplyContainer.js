@@ -161,8 +161,8 @@ const ReplyContainer = props => {
         </ContainerBottom>
       )}
       {sortedReplies && (
-        <Comment.Group size='large'>
-          <ReplyCardsContainer>
+        <ReplyCardsContainer>
+          <Comment.Group size='large' style={{ width: '100%' }}>
             {sortedReplies.map(reply => {
               return (
                 <div ref={replyRefs[reply.id]} key={reply.id}>
@@ -170,8 +170,8 @@ const ReplyContainer = props => {
                 </div>
               )
             })}
-          </ReplyCardsContainer>
-        </Comment.Group>
+          </Comment.Group>
+        </ReplyCardsContainer>
       )}
       <div ref={repliesEndRef} />
     </ReplyViewContainer>
@@ -184,13 +184,19 @@ const ReplyViewContainer = styled.div`
   align-items: center;
   background-color: #dee4e7;
   min-height: 87vh;
-  justify-content: flex-start;
 `
 const ReplyCardsContainer = styled.div`
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 75%;
   height: 100%;
   padding-bottom: 18%;
   font-size: 1.4rem;
+  max-width: 800px;
+  @media (max-width: 500px) {
+    min-width: 350px;
+    width: 95%;
+  }
 `
 const ContainerBottom = styled.div`
   z-index: 0;
