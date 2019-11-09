@@ -3,7 +3,7 @@ import * as types from 'actions/actionTypes'
 const initialState = {
   posts: [],
   arePostsLoading: false,
-  post: {},
+  post: { replies: [], likes: [] },
   error: '',
   acronym: null,
   created_at: null,
@@ -18,7 +18,7 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
-  memberType: null
+  memberType: null,
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -162,14 +162,14 @@ export const groupReducer = (state = initialState, action) => {
     case types.ADD_MEMBER_SUCCESS:
       return {
         ...state,
-        members: [...state.members, action.payload]
+        members: [...state.members, action.payload],
       }
     case types.REMOVE_MEMBER_SUCCESS:
       return {
         ...state,
-        members: state.members.filter(member => member.id !== action.payload)
+        members: state.members.filter(member => member.id !== action.payload),
       }
-      case types.REMOVE_MEMBER_FAILURE:
+    case types.REMOVE_MEMBER_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -187,7 +187,15 @@ export const groupReducer = (state = initialState, action) => {
     case types.REMOVE_REQUEST_SUCCESS:
       return {
         ...state,
-        reqs: state.reqs.filter(req => req.id !== action.payload)
+        reqs: state.reqs.filter(req => req.id !== action.payload),
+      }
+    case types.RECEIVING_SINGLE_POST_REPLY:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: [...state.post.replies, action.payload],
+        },
       }
     default:
       return state

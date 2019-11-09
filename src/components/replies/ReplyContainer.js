@@ -26,7 +26,6 @@ const ReplyContainer = props => {
 
   useEffect(() => {
     // Fetch group related data
-    console.log('this?')
     dispatch(fetchPost(id)).then(res => {
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
@@ -88,13 +87,15 @@ const ReplyContainer = props => {
       }
 
       // Set ycoord to position of reply using replyNumber from props
-      yCoordinate =
-        replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-          .top + window.pageYOffset
+      if (props.location.replyNumber) {
+        yCoordinate =
+          replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+            .top + window.pageYOffset
 
-      scrollRef()
-      // Set replyNumber to null to prevent re-render and scrollRef() when typing
-      props.location.replyNumber = null
+        scrollRef()
+        // Set replyNumber to null to prevent re-render and scrollRef() when typing
+        props.location.replyNumber = null
+      }
     }
   })
 

@@ -7,6 +7,7 @@ import NavRight from './NavRight'
 import styled from 'styled-components'
 import { Loader } from 'semantic-ui-react'
 import {
+  // createReplySocket,
   CreateNotification,
   createInvite,
   fetchNotifications,
@@ -15,6 +16,7 @@ import {
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
+  REPLY_SOCKET_SUCCESS,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
 
@@ -63,6 +65,17 @@ const NavBar = props => {
       }
     }
     fetchData()
+    // socket.on('new reply', async data => {
+    //   console.log('new reply', data)
+    //   await dispatch(createReplySocket(data))
+    //   if (location.pathname !== '/notifications') {
+    //     dispatch({
+    //       type: REPLY_SOCKET_SUCCESS,
+    //       payload: 1???,
+    //     })
+    //   }
+    // })
+
     socket.on('new notification', async data => {
       console.log('new notification data', data)
       await dispatch(CreateNotification(data))
@@ -99,6 +112,7 @@ const NavBar = props => {
     return () => {
       socket.off('new notification')
       socket.off('new invite')
+      socket.off('new reply')
     }
   }, [
     user,

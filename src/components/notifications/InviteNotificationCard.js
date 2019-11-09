@@ -54,30 +54,6 @@ const InviteNotificationsCard = props => {
 
   const classes = useStyles()
 
-  // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
-  //   const fullName = first_name + ' ' + last_name
-
-  // Streamline post id and reply id for linking
-  // let postId
-  // if (tag === 'post') {
-  //   postId = id
-  // }
-  // if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
-  //   postId = post_id
-  // }
-  // let replyId
-  // if (tag === 'reply') {
-  //   replyId = id
-  // }
-  // if (tag === 'replyLike') {
-  //   replyId = reply_id
-  // }
-
-  // Maintain max allowable content length for posts and replies
-  //   let cutGroupName = ''
-  //   if (group_name) cutGroupName = group_name.slice(0, 20)
-  //   if (group_name && group_name.length > 20) cutGroupName += '...'
-
   // Onclick handler for notifications to direct user to correct app path
   const goToGroup = e => {
     e.stopPropagation()
