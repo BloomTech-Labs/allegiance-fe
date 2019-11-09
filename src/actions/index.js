@@ -95,13 +95,12 @@ export const receivingGroup = groupData => async dispatch => {
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
-    
     try {
       dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_REQUEST })
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
-      console.log("NOTIFIC", notifications)
+      console.log('NOTIFIC', notifications)
       dispatch({
         type: actionTypes.FETCH_NOTIFICATIONS_SUCCESS,
         payload: notifications.data,
@@ -131,6 +130,13 @@ export const fetchInvites = (token, data) => async dispatch => {
       dispatch({ type: actionTypes.FETCH_INVITES_FAILURE, payload: err })
     }
   }
+}
+
+export const createReplySocket = data => async dispatch => {
+  dispatch({
+    type: actionTypes.REPLY_SOCKET_SUCCESS,
+    payload: data['reply'],
+  })
 }
 
 export const CreateNotification = data => async dispatch => {
@@ -269,7 +275,7 @@ export const fetchPost = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POST_REQUEST })
     const response = await axios.get(`/posts/${id}`)
-    console.log("reponse", response)
+    console.log('reponse', response)
     const postObj = response.data.postLoaded
     dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
     console.log(postObj)
@@ -326,6 +332,7 @@ export const createReply = (token, data, socket) => async dispatch => {
       type: actionTypes.CREATE_REPLY_SUCCESS,
       payload: post.data.reply,
     })
+    Mixpanel.activity(user.id, MixpanelMessages.REPLY_SOCKET)
     Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
     if (user.id !== user_id) {
       const notification = await axiosWithAuth([token]).post(
