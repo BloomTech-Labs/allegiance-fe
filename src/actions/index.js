@@ -132,12 +132,12 @@ export const fetchInvites = (token, data) => async dispatch => {
   }
 }
 
-export const createReplySocket = data => async dispatch => {
-  dispatch({
-    type: actionTypes.REPLY_SOCKET_SUCCESS,
-    payload: data['reply'],
-  })
-}
+// export const createReplySocket = data => async dispatch => {
+//   dispatch({
+//     type: actionTypes.,
+//     payload: data['reply'],
+//   })
+// }
 
 export const CreateNotification = data => async dispatch => {
   dispatch({
@@ -332,6 +332,7 @@ export const createReply = (token, data, socket) => async dispatch => {
       type: actionTypes.CREATE_REPLY_SUCCESS,
       payload: post.data.reply,
     })
+    socket.emit('reply', post.data.reply)
     Mixpanel.activity(user.id, MixpanelMessages.REPLY_SOCKET)
     Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
     if (user.id !== user_id) {

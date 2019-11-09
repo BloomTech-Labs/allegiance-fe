@@ -5,7 +5,6 @@ const initialState = {
   unread: 0,
   invites: [],
   error: '',
-  replies: [],
 }
 export const notifyReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -41,16 +40,6 @@ export const notifyReducer = (state = initialState, action) => {
       return {
         ...state,
         notifications: [...state.notifications, action.payload],
-      }
-    case types.REPLY_SOCKET_SUCCESS:
-      return {
-        ...state,
-        replies: [...state.replies, action.payload],
-      }
-    case types.REPLY_SOCKET_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
       }
     case types.CREATE_INVITE_SUCCESS:
       return {
