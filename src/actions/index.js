@@ -53,9 +53,25 @@ export const createGroupPost = (token, data, socket) => async dispatch => {
   }
 }
 
-export const receiveGroupPost = (data) => async dispatch => {
-  console.log("DATA IN RECEIVE", data)
+export const receiveGroupPost = data => async dispatch => {
+  console.log('DATA IN RECEIVE', data)
   await dispatch({ type: actionTypes.RECEIVE_POST_SUCCESS, payload: data.post })
+}
+
+export const receiveGroupReply = data => async dispatch => {
+  console.log('DATA IN REPLY', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_GROUP_REPLY_SUCCESS,
+    payload: data.reply,
+  })
+}
+
+export const receivePostReply = data => async dispatch => {
+  console.log('DATA IN POST', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_POST_REPLY_SUCCESS,
+    payload: data.reply,
+  })
 }
 
 export const receivingGroup = groupData => async dispatch => {
@@ -325,7 +341,7 @@ export const likeReply = (token, data, socket) => async dispatch => {
   }
 }
 export const createReply = (token, data, socket) => async dispatch => {
-  const { user, user_id, id, reply_content } = data
+  const { user, user_id, id, reply_content, group } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
   const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
     user_id: user.id,
@@ -348,6 +364,10 @@ export const createReply = (token, data, socket) => async dispatch => {
           type: 'reply',
         }
       )
+      socket.emit('replyPost', {
+        room: group,
+        reply: post.data.reply,
+      })
       socket.emit('send notification', {
         userIds: [user_id],
         notification: {

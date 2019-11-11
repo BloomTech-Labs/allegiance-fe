@@ -134,6 +134,7 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         post: action.payload,
       }
+    case types.RECEIVE_POST_REPLY_SUCCESS:
     case types.CREATE_REPLY_SUCCESS:
       return {
         ...state,
@@ -200,6 +201,17 @@ export const groupReducer = (state = initialState, action) => {
       return {
         ...state,
         reqs: state.reqs.filter(req => req.id !== action.payload),
+      }
+    case types.RECEIVE_GROUP_REPLY_SUCCESS:
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.id === action.payload.post_id) {
+            return { ...post, replies: [...post.replies, action.payload] }
+          } else {
+            return post
+          }
+        }),
       }
     default:
       return state

@@ -12,7 +12,12 @@ import Button from '@material-ui/core/Button'
 import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost, createReply, fetchUserMembership } from 'actions'
+import {
+  fetchPost,
+  createReply,
+  fetchUserMembership,
+  receivePostReply,
+} from 'actions'
 
 const ReplyContainer = props => {
   const post = useSelector(state => state.group.post)
@@ -25,22 +30,27 @@ const ReplyContainer = props => {
   const [token] = useGetToken()
 
   useEffect(() => {
-    // Fetch group related data
-    console.log('this?')
     dispatch(fetchPost(id)).then(res => {
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
+      socket.on('replyPost', data => {
+        console.log('replyPost2', data)
+        dispatch(receivePostReply(data))
+      })
     })
+    return () => {
+      socket.off('replyPost')
+    }
   }, [dispatch, id, user.id])
 
-  // callback function to handle submit
   async function submitReply(e) {
     const data = {
       user,
       id,
       reply_content: values.reply_content,
       user_id: post.user_id,
+      group: group.id,
     }
     dispatch(createReply(token, data, socket))
   }

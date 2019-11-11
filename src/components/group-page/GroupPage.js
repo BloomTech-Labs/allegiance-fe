@@ -8,6 +8,7 @@ import {
   fetchGroupPosts,
   fetchUserMembership,
   receiveGroupPost,
+  receiveGroupReply,
 } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
@@ -40,7 +41,15 @@ const GroupPage = props => {
     socket.on('groupPost', data => {
       dispatch(receiveGroupPost(data))
     })
-    return () => dispatch({ type: types.CLEAR_POSTS })
+    socket.on('replyPost', data => {
+      console.log('data:', data)
+      // function that updates replies
+      dispatch(receiveGroupReply(data))
+    })
+    return () => {
+      dispatch({ type: types.CLEAR_POSTS })
+      socket.off('replyPost')
+    }
   }, [user, dispatch, id])
 
   if (Object.keys(group).length === 0) {
