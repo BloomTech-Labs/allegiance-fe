@@ -15,6 +15,7 @@ import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
 import { Mixpanel } from './components/analytics/Mixpanel'
 import MixpanelMessages from './components/analytics/MixpanelMessages'
+
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
 const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
@@ -61,7 +62,7 @@ function App(props) {
           })
           if (result.data.userInfo.basicGroupInfo !== undefined) {
             result.data.userInfo.basicGroupInfo.forEach(group => {
-              socket.emit('join.groups', group.name)
+              socket.emit('join.groups', group.id)
             })
             dispatch({
               type: types.FETCH_MY_GROUPS_SUCCESS,

@@ -49,6 +49,8 @@ export const groupReducer = (state = initialState, action) => {
         error: action.payload,
         arePostsLoading: false,
       }
+    case types.RECEIVE_POST_SUCCESS:
+
     case types.CREATE_POST_SUCCESS:
       return {
         ...state,

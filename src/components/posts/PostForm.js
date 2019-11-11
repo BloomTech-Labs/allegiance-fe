@@ -19,6 +19,7 @@ const PostForm = props => {
   const [token] = useGetToken()
   const dispatch = useDispatch()
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
+  const socket = useSelector(state => state.socketReducer.socket)
   // useForm custom hook and set timeout custom hook
   const { values, handleChange, handleSubmit } = useForm(submitPost)
 
@@ -30,7 +31,7 @@ const PostForm = props => {
       groupId,
       post_content: values.post_content,
     }
-    await dispatch(createGroupPost(token, data))
+    await dispatch(createGroupPost(token, data, socket))
   }
 
   // Material UI
