@@ -86,6 +86,9 @@ const NavBar = props => {
         )
       }
     })
+    socket.on('event', data => {
+      console.log(data)
+    })
     socket.on('new invite', async data => {
       await dispatch(createInvite(data))
       // i don't want to increment unread num if I am viewing the notifications
@@ -99,6 +102,7 @@ const NavBar = props => {
     return () => {
       socket.off('new notification')
       socket.off('new invite')
+      socket.off('event')
     }
   }, [
     user,
