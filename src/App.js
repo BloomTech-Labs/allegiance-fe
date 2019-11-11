@@ -60,6 +60,9 @@ function App(props) {
             payload: result.data.userInfo,
           })
           if (result.data.userInfo.basicGroupInfo !== undefined) {
+            result.data.userInfo.basicGroupInfo.forEach(group => {
+              socket.emit('join.groups', group.name)
+            })
             dispatch({
               type: types.FETCH_MY_GROUPS_SUCCESS,
               payload: result.data.userInfo.basicGroupInfo,
@@ -123,9 +126,9 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div style={{ margin: '0 auto' }}>
-        {
-          loggedInUser && props.location.pathname !== '/profile' && <NavBottom />
-        }
+        {loggedInUser && props.location.pathname !== '/profile' && (
+          <NavBottom />
+        )}
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />
