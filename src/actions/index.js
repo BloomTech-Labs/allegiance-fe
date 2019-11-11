@@ -19,9 +19,10 @@ export const fetchGroupPosts = id => async dispatch => {
     dispatch({ type: actionTypes.FETCH_POSTS_FAILURE, payload: err })
   }
 }
-export const createGroupPost = (token, data) => async dispatch => {
+export const createGroupPost = (token, data, socket) => async dispatch => {
   const { userId, groupId, post_content } = data
   if (token) {
+    // If post content is not blank
     if (!post_content.match(/^\s+$/)) {
       try {
         dispatch({ type: actionTypes.CREATE_POST_REQUEST })
@@ -37,6 +38,12 @@ export const createGroupPost = (token, data) => async dispatch => {
           type: actionTypes.CREATE_POST_SUCCESS,
           payload: post.data.postResult,
         })
+
+        socket.emit('groupPost', {
+          post: post.data.postResult,
+          room: groupId,
+        })
+
         Mixpanel.activity(userId, MixpanelMessages.POST_CREATED)
       } catch (err) {
         console.log(err)
@@ -44,6 +51,11 @@ export const createGroupPost = (token, data) => async dispatch => {
       }
     }
   }
+}
+
+export const receiveGroupPost = (data) => async dispatch => {
+  console.log("DATA IN RECEIVE", data)
+  await dispatch({ type: actionTypes.RECEIVE_POST_SUCCESS, payload: data.post })
 }
 
 export const receivingGroup = groupData => async dispatch => {

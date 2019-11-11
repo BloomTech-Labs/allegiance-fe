@@ -15,6 +15,7 @@ import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
 import { Mixpanel } from './components/analytics/Mixpanel'
 import MixpanelMessages from './components/analytics/MixpanelMessages'
+
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
 const GroupContainer = lazy(() => import('components/groups/GroupContainer'))
@@ -60,6 +61,9 @@ function App(props) {
             payload: result.data.userInfo,
           })
           if (result.data.userInfo.basicGroupInfo !== undefined) {
+            result.data.userInfo.basicGroupInfo.forEach(group => {
+              socket.emit('join.groups', group.id)
+            })
             dispatch({
               type: types.FETCH_MY_GROUPS_SUCCESS,
               payload: result.data.userInfo.basicGroupInfo,
@@ -123,9 +127,9 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div style={{ margin: '0 auto' }}>
-        {
-          loggedInUser && props.location.pathname !== '/profile' && <NavBottom />
-        }
+        {loggedInUser && props.location.pathname !== '/profile' && (
+          <NavBottom />
+        )}
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />

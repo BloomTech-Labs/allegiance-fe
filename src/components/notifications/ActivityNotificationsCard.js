@@ -99,23 +99,6 @@ const ActivityNotificationsCard = props => {
         <CardMessage>
           <div>
             <span>{fullName || username}</span>{' '}
-            {/* {tag === 'post' && <>made a post: {postContent}</>}
-            {tag === 'reply' && <>replied to a post: {replyContent}</>}
-            {tag === 'postLike' && (
-              <>
-                liked {liker_id === poster_id && 'their own'}
-                {liker_id !== poster_id && (
-                  <span>{poster_name}'s</span>
-                )} post: {postContent}
-              </>
-            )}
-            {tag === 'replyLike' && (
-              <>
-                liked {liker_id === replier_id && 'their own'}
-                {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
-                reply: {replyContent}
-              </>
-            )} */}
             {type === 'like' && <>liked your post: {content}</>}
             {type === 'reply' && <>replied to your post: {content}</>}
             {type === 'reply_like' && <>liked your reply: {content}</>}
@@ -133,20 +116,6 @@ const ActivityNotificationsCard = props => {
           </div>
         </CardMessage>
 
-        {/* <DelButton onClick={() => selectNotification(user_id, invoker_id, timestamp/create_at) {
-          useSelector(grab state and filter to get notification id)
-          returns id
-          deleteNotification(notificationId)
-        }}>Delete</DelButton> */}
-        {/* <CardGroup>
-          <Avatar
-            aria-label='group_avatar'
-            className={classes.avatar}
-            src={group_image}
-            alt={'Avatar'}
-          />
-          <p>{acronym}</p>
-        </CardGroup> */}
         <DelButton
           onClick={evt => {
             evt.stopPropagation()
