@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, createRef } from 'react'
+import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader, Comment } from 'semantic-ui-react'
@@ -25,6 +25,7 @@ const ReplyContainer = props => {
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
+  const [groupId, setGroupId] = useState(null)
   const dispatch = useDispatch()
   const { values, handleChange, handleSubmit } = useForm(submitReply)
   const [token] = useGetToken()
@@ -34,10 +35,11 @@ const ReplyContainer = props => {
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
-      socket.on('replyPost', data => {
-        console.log('replyPost2', data)
-        dispatch(receivePostReply(data))
-      })
+      setGroupId(res.group_id)
+    })
+    socket.on('replyPost', data => {
+      console.log('replyPost2', data)
+      dispatch(receivePostReply(data))
     })
     return () => {
       socket.off('replyPost')
@@ -45,12 +47,13 @@ const ReplyContainer = props => {
   }, [dispatch, id, user.id])
 
   async function submitReply(e) {
+    console.log('GROUPID:::::', groupId)
     const data = {
       user,
       id,
       reply_content: values.reply_content,
       user_id: post.user_id,
-      group: group.id,
+      group: groupId,
     }
     dispatch(createReply(token, data, socket))
   }
