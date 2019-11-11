@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import avi from '../../assets/walter-avi.png'
@@ -58,6 +58,14 @@ export default function PostCard(props) {
     await dispatch(dislikePost(token, postLikeId.id))
   }
 
+  const handleClick = () => {
+    console.log('handleCLick')
+    socket.emit('event', {
+      name: `${user.first_name} ✈️`,
+      room: 'FIVE FINGER POSSE',
+    })
+  }
+
   // *************change icon number to reg number*************
   return (
     <Card raised className={classes.card}>
@@ -96,6 +104,7 @@ export default function PostCard(props) {
           variant='body1'
           color='textSecondary'
           component='p'
+          onClick={handleClick}
         >
           {post_content}
         </Typography>

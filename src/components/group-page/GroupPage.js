@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
-import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
+import {
+  fetchGroup,
+  fetchGroupPosts,
+  fetchUserMembership,
+  receiveGroupPost,
+} from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
@@ -14,6 +19,7 @@ const GroupPage = props => {
   const id = parseInt(props.match.params.id)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
+  const socket = useSelector(state => state.socketReducer.socket)
   const { memberType, posts } = group
   const dispatch = useDispatch()
   useEffect(() => {
@@ -31,6 +37,9 @@ const GroupPage = props => {
       dispatch(fetchUserMembership({ group_id: id, user_id: user.id }))
     }
     fetchData()
+    socket.on('groupPost', data => {
+      dispatch(receiveGroupPost(data))
+    })
     return () => dispatch({ type: types.CLEAR_POSTS })
   }, [user, dispatch, id])
 
