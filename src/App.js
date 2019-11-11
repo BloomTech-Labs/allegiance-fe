@@ -63,6 +63,8 @@ function App(props) {
           if (result.data.userInfo.basicGroupInfo !== undefined) {
             result.data.userInfo.basicGroupInfo.forEach(group => {
               socket.emit('join.groups', group.id)
+              console.log('Joining Group Socket::::', group.id)
+              // console.log('Joining Group Socket::::', group.id)
             })
             dispatch({
               type: types.FETCH_MY_GROUPS_SUCCESS,
