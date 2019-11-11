@@ -358,6 +358,17 @@ export const createReply = (token, data, socket) => async dispatch => {
     }
   }
 }
+
+export const deleteReply = id => async dispatch => {
+  try {
+    await dispatch({ type: actionTypes.DELETE_REPLY_REQUEST })
+    await axios.delete(`/replies/${id}`)
+    await dispatch({ type: actionTypes.DELETE_REPLY_SUCCESS, payload: id })
+  } catch (err) {
+    await dispatch({ type: actionTypes.DELETE_REPLY_FAILURE })
+  }
+}
+
 export const dislikeReply = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)

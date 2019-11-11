@@ -22,6 +22,16 @@ const initialState = {
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.DELETE_REPLY_SUCCESS:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: state.post.replies.filter(
+            reply => reply.id !== action.payload
+          ),
+        },
+      }
     case types.FETCH_POSTS_REQUEST:
       return {
         ...state,
