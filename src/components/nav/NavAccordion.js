@@ -3,7 +3,7 @@ import { Accordion, Icon } from 'semantic-ui-react'
 import GroupsNav from './GroupsNav'
 
 const NavAccordion = () => {
-  const [activeIndex, setActiveIndex] = useState({ activeIndex: 1 })
+  const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
   const handleClick = (e, titleProps) => {
     const { index } = titleProps
 
