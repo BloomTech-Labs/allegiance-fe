@@ -18,6 +18,7 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core/'
+import styled from 'styled-components'
 
 export default function PostCard(props) {
   const {
@@ -164,7 +165,7 @@ export default function PostCard(props) {
               className={classes.likesCount}
               style={{ backgroundColor: 'transparent' }}
             >
-              {replies && <h4> {replies.length} </h4>}
+              {replies && <Replies> {` ${replies.length} Replies`} </Replies>}
             </IconButton>
           </Link>
         </div>
@@ -172,6 +173,12 @@ export default function PostCard(props) {
     </Card>
   )
 }
+
+const Replies = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6c6c6c;
+`
 
 const primary = '#4267b2'
 const useStyles = makeStyles(theme => ({

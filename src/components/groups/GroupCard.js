@@ -40,11 +40,11 @@ const GroupInfoCard = styled.div`
   flex-direction: column;
   height: 28vh;
   margin: 1%;
-  width: 40%;
+  width: 250px
+  max-width: 250px
+  min-width: 250px
   background-color: white;
-  min-width: ${props => props.minWidth || 'none'};
-  transition: box-shadow 0.3s;
-  box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
+  box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   border-radius: 2%;
 
