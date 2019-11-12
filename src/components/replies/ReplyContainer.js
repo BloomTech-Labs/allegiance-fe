@@ -37,13 +37,6 @@ const ReplyContainer = props => {
       )
       setGroupId(res.group_id)
     })
-    socket.on('replyPost', data => {
-      console.log('replyPost2', data)
-      dispatch(receivePostReply(data))
-    })
-    return () => {
-      socket.off('replyPost')
-    }
   }, [dispatch, id, user.id])
 
   async function submitReply(e) {

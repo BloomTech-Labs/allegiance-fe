@@ -16,6 +16,8 @@ import {
   receiveDislike,
   receiveReplyLike,
   receiveReplyDislike,
+  receiveGroupReply,
+  receivePostReply,
 } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
@@ -123,11 +125,19 @@ const NavBar = props => {
           dispatch(receiveGroupPost(data))
         }
     })
+    socket.on('replyPost', data => {
+      if (location.pathname === `/group/${data.room}`) {
+        dispatch(receiveGroupReply(data))
+      } else {
+        dispatch(receivePostReply(data))
+      }
+    })
     return () => {
       socket.off('new notification')
       socket.off('new invite')
       socket.off('event')
       socket.off('groupPost')
+      socket.off('replyPost')
     }
   }, [
     user,
