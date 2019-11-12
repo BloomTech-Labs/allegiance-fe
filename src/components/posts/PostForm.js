@@ -13,6 +13,8 @@ import AddIcon from '@material-ui/icons/Add'
 import { green } from '@material-ui/core/colors'
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 
+import { Input } from 'semantic-ui-react'
+
 const PostForm = props => {
   const primary = green[500]
   // token for accessing authentication required backend routes
@@ -46,9 +48,10 @@ const PostForm = props => {
       margin: theme.spacing(1),
     },
     button: {
-      margin: theme.spacing(1),
       backgroundColor: '#1A4570',
-      marginTop: '15px',
+      height: '35px',
+      width: '100px',
+      marginLeft: '10px',
     },
   }))
 
@@ -57,22 +60,14 @@ const PostForm = props => {
   return (
     <FormContainer>
       <ReplyForm onSubmit={handleSubmit}>
-        <InputDiv>
-          <TextField
-            id='outlined-textarea'
-            required
-            label='Post'
-            placeholder='Write a post to the group...'
-            multiline
-            fullWidth
-            className={classes.textField}
-            margin='normal'
-            variant='outlined'
-            onChange={handleChange}
-            name='post_content'
-            value={values.post_content || ''}
-          />
-        </InputDiv>
+        <Input
+          placeholder='Add a post'
+          onChange={handleChange}
+          name='post_content'
+          value={values.post_content || ''}
+          required
+          style={{ width: '75%' }}
+        />
         <Button
           size='large'
           variant='contained'
@@ -91,8 +86,6 @@ const PostForm = props => {
 
 const FormContainer = styled.div`
   display: flex;
-  // position: fixed;
-  // bottom: 55%;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -105,7 +98,8 @@ const DownNav = styled.div`
   width: 10%;
 `
 const ReplyForm = styled.form`
-  margin-top: 0px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
