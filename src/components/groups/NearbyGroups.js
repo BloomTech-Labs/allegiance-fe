@@ -60,8 +60,8 @@ const NearbyGroups = props => {
     )
   }
 
-  const goToCreateGroup = (evt) => {
-    evt.preventDefault();
+  const goToCreateGroup = evt => {
+    evt.preventDefault()
     props.history.push('/creategroup')
   }
 
@@ -70,23 +70,21 @@ const NearbyGroups = props => {
       <NearbyGroupsContainer>
         {data.groups.length > 0 &&
           data.groups.map(group => {
-            return (
-              <GroupCard
-                minWidth='40%'
-                group={group}
-                key={group.id}
-                nearby={true}
-              />
-            )
+            return <GroupCard group={group} key={group.id} nearby={true} />
           })}
         {data.groups.length === 0 && (
           <h4 style={{ margin: '3% auto' }}>
-            {loggedInUser.location && 
+            {loggedInUser.location && (
               <ResultsDiv>
-                <h1>No groups found near your location. Start one now to engage with your local community!</h1>
-                <CreateGroupButton primary onClick={goToCreateGroup}>Create a Group</CreateGroupButton>
+                <h1>
+                  No groups found near your location. Start one now to engage
+                  with your local community!
+                </h1>
+                <CreateGroupButton primary onClick={goToCreateGroup}>
+                  Create a Group
+                </CreateGroupButton>
               </ResultsDiv>
-            }
+            )}
             {!loggedInUser.location && 'Please Provide A Location In Profile!'}
           </h4>
         )}
