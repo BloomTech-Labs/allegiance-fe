@@ -61,6 +61,7 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.RECEIVE_LIKE_SUCCESS:
     case types.POST_LIKE_SUCCESS:
       const newState = state.posts.filter(obj => {
         if (obj.id === action.payload.post_id) {
@@ -77,6 +78,7 @@ export const groupReducer = (state = initialState, action) => {
           likes: state.post.likes ? [...state.post.likes, action.payload] : [],
         },
       }
+    case types.RECEIVE_DISLIKE_SUCCESS:
     case types.POST_UNLIKE_SUCCESS:
       const filterPosts = state.posts.filter(obj => {
         if (obj.id === action.payload.post_id) {
@@ -97,6 +99,7 @@ export const groupReducer = (state = initialState, action) => {
             : null,
         },
       }
+    case types.RECEIVE_REPLY_DISLIKE:
     case types.REPLY_DISLIKE_SUCCESS:
       return {
         ...state,
@@ -113,6 +116,7 @@ export const groupReducer = (state = initialState, action) => {
           }),
         },
       }
+    case types.RECEIVE_REPLY_LIKE:
     case types.REPLY_LIKE_SUCCESS:
       return {
         ...state,

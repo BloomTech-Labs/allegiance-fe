@@ -17,6 +17,7 @@ const ReplyCard = props => {
     user_id,
     replyLikes,
     created_at,
+    post_id,
   } = props.reply
 
   const dispatch = useDispatch()
@@ -34,12 +35,19 @@ const ReplyCard = props => {
       user_id, // id of user who owns the entity
       user, // id of user who is liking an entity
       id,
+      group_id: props.post.group_id,
+      post_id,
     }
+    console.log('data', data, 'props', props)
     dispatch(likeReply(token, data, socket))
   }
 
   async function unLikeReply(e) {
-    dispatch(dislikeReply(token, replyLikeId.id))
+    const data = {
+      group_id: props.post.group_id,
+      post_id,
+    }
+    dispatch(dislikeReply(token, replyLikeId.id, data, socket))
   }
 
   const deleteReplyHandler = async () => {

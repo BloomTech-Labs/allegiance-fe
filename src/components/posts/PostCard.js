@@ -30,6 +30,7 @@ export default function PostCard(props) {
     likes,
     replies,
     created_at,
+    group_id,
   } = props.post
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.loggedInUser)
@@ -50,12 +51,13 @@ export default function PostCard(props) {
       user: user,
       id,
       user_id,
+      group_id,
     }
     await dispatch(likePost(token, data, socket))
   }
 
   async function unLike(e) {
-    await dispatch(dislikePost(token, postLikeId.id))
+    await dispatch(dislikePost(token, postLikeId.id, group_id, socket))
   }
 
   const handleClick = () => {
