@@ -53,13 +53,29 @@ export const createGroupPost = (token, data, socket) => async dispatch => {
   }
 }
 
-export const receiveGroupPost = (data) => async dispatch => {
-  console.log("DATA IN RECEIVE", data)
+export const receiveGroupPost = data => async dispatch => {
+  console.log('DATA IN RECEIVE', data)
   await dispatch({ type: actionTypes.RECEIVE_POST_SUCCESS, payload: data.post })
 }
 
+export const receiveGroupReply = data => async dispatch => {
+  console.log('DATA IN REPLY', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_GROUP_REPLY_SUCCESS,
+    payload: data.reply,
+  })
+}
+
+export const receivePostReply = data => async dispatch => {
+  console.log('DATA IN POST', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_POST_REPLY_SUCCESS,
+    payload: data.reply,
+  })
+}
+
 export const receivingGroup = groupData => async dispatch => {
-  const { user, group_id, fromGroupView } = groupData
+  const { user, group_id, fromGroupView, socket } = groupData
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
     const result = await axios.post(`/groups_users/search`, {
@@ -77,6 +93,7 @@ export const receivingGroup = groupData => async dispatch => {
         id: group_id,
         user_type: user_type,
       }
+      socket.emit('join.groups', addedGroup.id)
       await dispatch({
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
@@ -325,40 +342,48 @@ export const likeReply = (token, data, socket) => async dispatch => {
   }
 }
 export const createReply = (token, data, socket) => async dispatch => {
-  const { user, user_id, id, reply_content } = data
+  const { user, user_id, id, reply_content, group } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
-  const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
-    user_id: user.id,
-    post_id: id,
-    reply_content: reply_content,
-  })
-  if (post.data.reply) {
-    dispatch({
-      type: actionTypes.CREATE_REPLY_SUCCESS,
-      payload: post.data.reply,
+  try {
+    const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
+      user_id: user.id,
+      post_id: id,
+      reply_content: reply_content,
     })
-    Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
-    if (user.id !== user_id) {
-      const notification = await axiosWithAuth([token]).post(
-        `/users/${user_id}/notifications`,
-        {
-          user_id,
-          invoker_id: user.id,
-          type_id: id,
+    if (post.data.reply) {
+      dispatch({
+        type: actionTypes.CREATE_REPLY_SUCCESS,
+        payload: post.data.reply,
+      })
+      Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
+      if (user.id !== user_id) {
+        const notification = await axiosWithAuth([token]).post(
+          `/users/${user_id}/notifications`,
+          {
+            user_id,
+            invoker_id: user.id,
+            type_id: id,
+            type: 'reply',
+          }
+        )
+        socket.emit('send notification', {
+          userIds: [user_id],
+          notification: {
+            ...notification.data,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            image: user.image,
+          },
           type: 'reply',
-        }
-      )
-      socket.emit('send notification', {
-        userIds: [user_id],
-        notification: {
-          ...notification.data,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          image: user.image,
-        },
-        type: 'reply',
+        })
+      }
+      socket.emit('replyPost', {
+        room: group,
+        reply: post.data.reply,
       })
     }
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -591,7 +616,7 @@ export const addToGroup = groupData => async dispatch => {
 }
 
 export const joinGroup = groupData => async dispatch => {
-  const { user, group_id, fromGroupView } = groupData
+  const { user, group_id, fromGroupView, socket } = groupData
   const user_id = user.id
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
@@ -610,6 +635,7 @@ export const joinGroup = groupData => async dispatch => {
         user_type: newGroup.user_type,
       }
       console.log('new group joined', addedGroup)
+      socket.emit('join.groups', addedGroup.id)
       await dispatch({
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
