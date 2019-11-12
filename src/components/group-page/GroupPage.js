@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
-import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import {
   fetchGroup,
   fetchGroupPosts,
@@ -54,7 +53,6 @@ const GroupPage = props => {
       dispatch({ type: types.CLEAR_POSTS })
       socket.off('replyPost')
     }
-
   }, [user, dispatch, id])
 
   if (Object.keys(group).length === 0) {
@@ -104,8 +102,7 @@ const GroupPageContainer = styled.div`
   justify-content: flex-start;
 `
 const PaperContainer = styled(Paper)`
-  // margin-bottom: 5%;
-  padding-top: 25px
+  padding-top: 25px;
   display: flex;
   justify-content: center;
 `

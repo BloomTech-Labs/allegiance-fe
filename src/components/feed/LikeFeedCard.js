@@ -134,8 +134,8 @@ const LikeFeedCard = props => {
 }
 
 const LikeCardDiv = styled.div`
-width: 100vw
-margin: auto
+  width: 100vw;
+  margin: auto;
 `
 
 const HeaderDiv = styled.div`
