@@ -43,12 +43,13 @@ const GroupInfoCard = styled.div`
   width: 40%;
   background-color: white;
   min-width: ${props => props.minWidth || 'none'};
-  box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
   transition: 0.3s;
-  border-radius: 5%;
+  border-radius: 2%;
 
   &:hover {
-    box-shadow: 5px 8px 16px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(33, 33, 33, 0.6);
   }
 
   @media ${device.tablet} {
@@ -74,7 +75,7 @@ const TopDiv = styled.div`
   display: flex;
   justify-content: center;
   height: 17vh;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid black;
 `
 const MiddleDiv = styled.div`
   display: flex;
@@ -82,7 +83,6 @@ const MiddleDiv = styled.div`
   justify-content: center;
   text-align: center;
   height: 7vh;
-  border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
   color: black;
   font-weight: heavy;
