@@ -53,8 +53,8 @@ export const createGroupPost = (token, data, socket) => async dispatch => {
   }
 }
 
-export const receiveGroupPost = (data) => async dispatch => {
-  console.log("DATA IN RECEIVE", data)
+export const receiveGroupPost = data => async dispatch => {
+  console.log('DATA IN RECEIVE', data)
   await dispatch({ type: actionTypes.RECEIVE_POST_SUCCESS, payload: data.post })
 }
 
@@ -215,7 +215,7 @@ export const deleteInvite = (
 }
 
 export const likePost = (token, data, socket) => async dispatch => {
-  const { user, id, user_id } = data
+  const { user, id, user_id, group_id } = data
   if (token) {
     try {
       dispatch({ type: actionTypes.POST_LIKE_REQUEST })
@@ -254,6 +254,11 @@ export const likePost = (token, data, socket) => async dispatch => {
         type: actionTypes.POST_LIKE_SUCCESS,
         payload: like.data.likeResult,
       })
+      socket.emit('groupPost', {
+        likeType: like.data.likeResult,
+        room: group_id,
+        type: 'like',
+      })
     } catch (err) {
       console.log(err)
       dispatch({ type: actionTypes.POST_LIKE_FAILURE, payload: err })
@@ -261,7 +266,16 @@ export const likePost = (token, data, socket) => async dispatch => {
   }
 }
 
-export const dislikePost = (token, data) => async dispatch => {
+export const receiveLike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_LIKE_SUCCESS, payload: data.likeType })
+}
+
+export const dislikePost = (
+  token,
+  data,
+  group_id,
+  socket
+) => async dispatch => {
   if (token) {
     try {
       dispatch({ type: actionTypes.POST_UNLIKE_REQUEST })
@@ -270,10 +284,22 @@ export const dislikePost = (token, data) => async dispatch => {
         type: actionTypes.POST_UNLIKE_SUCCESS,
         payload: unLike.data.deleted[0],
       })
+      socket.emit('groupPost', {
+        likeType: unLike.data.deleted[0],
+        room: group_id,
+        type: 'dislike',
+      })
     } catch (err) {
       console.log(err)
     }
   }
+}
+
+export const receiveDislike = data => dispatch => {
+  dispatch({
+    type: actionTypes.RECEIVE_DISLIKE_SUCCESS,
+    payload: data.likeType,
+  })
 }
 
 export const fetchPost = id => async dispatch => {
@@ -290,7 +316,7 @@ export const fetchPost = id => async dispatch => {
   }
 }
 export const likeReply = (token, data, socket) => async dispatch => {
-  const { user, id, user_id } = data
+  const { user, id, user_id, group_id, post_id } = data
   dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
   const like = await axiosWithAuth([token]).post(`/replies_likes/reply/${id}`, {
     user_id: user.id,
@@ -300,6 +326,11 @@ export const likeReply = (token, data, socket) => async dispatch => {
     dispatch({
       type: actionTypes.REPLY_LIKE_SUCCESS,
       payload: like.data.likeResult,
+    })
+    socket.emit('groupPost', {
+      room: group_id,
+      likeType: { ...like.data.likeResult, post_id },
+      type: 'reply_like',
     })
     if (user.id !== user_id) {
       const notification = await axiosWithAuth([token]).post(
@@ -324,6 +355,11 @@ export const likeReply = (token, data, socket) => async dispatch => {
     }
   }
 }
+
+export const receiveReplyLike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_REPLY_LIKE, payload: data.likeType })
+}
+
 export const createReply = (token, data, socket) => async dispatch => {
   const { user, user_id, id, reply_content } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
@@ -372,7 +408,8 @@ export const deleteReply = id => async dispatch => {
   }
 }
 
-export const dislikeReply = (token, id) => async dispatch => {
+export const dislikeReply = (token, id, data, socket) => async dispatch => {
+  const { group_id, post_id } = data
   dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)
   console.log(unLike.data.deleted[0], 'delete data')
@@ -380,7 +417,17 @@ export const dislikeReply = (token, id) => async dispatch => {
     type: actionTypes.REPLY_DISLIKE_SUCCESS,
     payload: unLike.data.deleted[0],
   })
+  socket.emit('groupPost', {
+    room: group_id,
+    likeType: { ...unLike.data.deleted[0], post_id },
+    type: 'reply_dislike',
+  })
 }
+
+export const receiveReplyDislike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_REPLY_DISLIKE, payload: data.likeType })
+}
+
 export const deleteGroupPost = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.DELETE_POST_REQUEST })
   const deletedPost = await axiosWithAuth([token]).delete(`/posts/${id}`)

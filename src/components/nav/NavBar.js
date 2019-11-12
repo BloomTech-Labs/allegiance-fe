@@ -11,6 +11,11 @@ import {
   createInvite,
   fetchNotifications,
   fetchInvites,
+  receiveGroupPost,
+  receiveLike,
+  receiveDislike,
+  receiveReplyLike,
+  receiveReplyDislike,
 } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
@@ -99,10 +104,29 @@ const NavBar = props => {
         })
       }
     })
+    socket.on('groupPost', data => {
+      console.log('data', data)
+      if (
+        location.pathname === `/post/${data.likeType.post_id}` ||
+        location.pathname === `/group/${data.room}`
+      )
+        if (data.type === 'like') {
+          dispatch(receiveLike(data))
+        } else if (data.type === 'dislike') {
+          dispatch(receiveDislike(data))
+        } else if (data.type === 'reply_like') {
+          dispatch(receiveReplyLike(data))
+        } else if (data.type === 'reply_dislike') {
+          dispatch(receiveReplyDislike(data))
+        } else {
+          dispatch(receiveGroupPost(data))
+        }
+    })
     return () => {
       socket.off('new notification')
       socket.off('new invite')
       socket.off('event')
+      socket.off('groupPost')
     }
   }, [
     user,
