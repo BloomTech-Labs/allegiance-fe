@@ -39,11 +39,6 @@ const GroupPage = props => {
     }
     fetchData()
 
-    return () => dispatch({ type: types.CLEAR_POSTS })
-
-    socket.on('groupPost', data => {
-      dispatch(receiveGroupPost(data))
-    })
     socket.on('replyPost', data => {
       console.log('data:', data)
       // function that updates replies

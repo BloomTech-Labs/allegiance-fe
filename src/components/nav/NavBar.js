@@ -107,7 +107,8 @@ const NavBar = props => {
     socket.on('groupPost', data => {
       console.log('data', data)
       if (
-        location.pathname === `/post/${data.likeType.post_id}` ||
+        location.pathname ===
+          `/post/${data.likeType ? data.likeType.post_id : data.post.id}` ||
         location.pathname === `/group/${data.room}`
       )
         if (data.type === 'like') {
