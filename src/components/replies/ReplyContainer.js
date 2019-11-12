@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { VIEW_REPLIES } from '../../reducers/navReducer'
-import * as types from 'actions/actionTypes'
 import styled from 'styled-components'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Comment } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,44 +12,48 @@ import Button from '@material-ui/core/Button'
 import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost, createReply, fetchUserMembership } from 'actions'
+import {
+  fetchPost,
+  createReply,
+  fetchUserMembership,
+  receivePostReply,
+} from 'actions'
 
 const ReplyContainer = props => {
-  // const [post, setPost] = useState()
   const post = useSelector(state => state.group.post)
-  const [submitted, setSubmitted] = useState(false)
   const id = props.match.params.id
-
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
+  const [groupId, setGroupId] = useState(null)
   const dispatch = useDispatch()
-
-  // useForm custom hook and set timeout custom hook
-  const { values, setValues, handleChange, handleSubmit } = useForm(submitReply)
-  // Fetches Auth0 token for axios call
+  const { values, handleChange, handleSubmit } = useForm(submitReply)
   const [token] = useGetToken()
 
   useEffect(() => {
-    // Fetch group related data
     dispatch(fetchPost(id)).then(res => {
-      console.log('id', id)
-      console.log(post && post.group_id)
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
+      setGroupId(res.group_id)
     })
-  }, [])
+    socket.on('replyPost', data => {
+      console.log('replyPost2', data)
+      dispatch(receivePostReply(data))
+    })
+    return () => {
+      socket.off('replyPost')
+    }
+  }, [dispatch, id, user.id])
 
-  // token, id, submitted, dispatch
-
-  // callback function to handle submit
   async function submitReply(e) {
+    console.log('GROUPID:::::', groupId)
     const data = {
       user,
       id,
       reply_content: values.reply_content,
       user_id: post.user_id,
+      group: groupId,
     }
     dispatch(createReply(token, data, socket))
   }
@@ -86,41 +88,36 @@ const ReplyContainer = props => {
     : null
 
   // On component mount, if a replyNumber is received from props, scroll the reply into view
-  useEffect(
-    () => {
-      if (props.location.replyNumber && replyRefs !== null) {
-        let yCoordinate
-        const scrollRef = () => {
-          // Subtract 50 px to account for padding top from top nav bar
-          const yOffset = -50
-          window.scrollTo({
-            top: yCoordinate + yOffset,
-            behavior: 'smooth',
-          })
-        }
-
-        // Set ycoord to position of reply using replyNumber from props
-        yCoordinate =
-          replyRefs[props.location.replyNumber].current.getBoundingClientRect()
-            .top + window.pageYOffset
-
-        scrollRef()
-        // Set replyNumber to null to prevent re-render and scrollRef() when typing
-        props.location.replyNumber = null
+  useEffect(() => {
+    if (props.location.replyNumber && replyRefs !== null) {
+      let yCoordinate
+      const scrollRef = () => {
+        // Subtract 50 px to account for padding top from top nav bar
+        const yOffset = -50
+        window.scrollTo({
+          top: yCoordinate + yOffset,
+          behavior: 'smooth',
+        })
       }
+
+      // Set ycoord to position of reply using replyNumber from props
+      yCoordinate =
+        replyRefs[props.location.replyNumber].current.getBoundingClientRect()
+          .top + window.pageYOffset
+
+      scrollRef()
+      // Set replyNumber to null to prevent re-render and scrollRef() when typing
+      props.location.replyNumber = null
     }
-    // No dependency array included as scrollRef render should only occur once (upon navigation from feed or notification)
-  )
+  })
 
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)
+
   const scrollToBottom = () => {
     if (repliesEndRef.current)
       repliesEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
-
-  // Obtain groups the user has a relation to, check for membership after post is loaded
-  const userGroups = useSelector(state => state.myGroups)
 
   if (!post) {
     return (
@@ -131,7 +128,6 @@ const ReplyContainer = props => {
   }
 
   // Checking to see if current user is a member of current group
-
   // If they are undefined, we set membership to a string so we don't get an error
   let membership = group.memberType
 
@@ -142,9 +138,7 @@ const ReplyContainer = props => {
 
   return (
     <ReplyViewContainer>
-      {!!Object.values(post).length && (
-        <PostCard post={post} setSubmitted={setSubmitted} group={group} />
-      )}
+      {!!Object.values(post).length && <PostCard post={post} group={group} />}
 
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
@@ -179,24 +173,19 @@ const ReplyContainer = props => {
           </ReplyForm>
         </ContainerBottom>
       )}
-
       {sortedReplies && (
         <ReplyCardsContainer>
-          {sortedReplies.map(reply => {
-            return (
-              <div ref={replyRefs[reply.id]} key={reply.id}>
-                <ReplyCard
-                  reply={reply}
-                  setSubmitted={setSubmitted}
-                  post={post}
-                  group={group}
-                />
-              </div>
-            )
-          })}
+          <Comment.Group size='large' style={{ width: '100%' }}>
+            {sortedReplies.map(reply => {
+              return (
+                <div ref={replyRefs[reply.id]} key={reply.id}>
+                  <ReplyCard reply={reply} post={post} group={group} />
+                </div>
+              )
+            })}
+          </Comment.Group>
         </ReplyCardsContainer>
       )}
-
       <div ref={repliesEndRef} />
     </ReplyViewContainer>
   )
@@ -208,12 +197,19 @@ const ReplyViewContainer = styled.div`
   align-items: center;
   background-color: #dee4e7;
   min-height: 87vh;
-  justify-content: flex-start;
 `
 const ReplyCardsContainer = styled.div`
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 75%;
   height: 100%;
   padding-bottom: 18%;
+  font-size: 1.4rem;
+  max-width: 800px;
+  @media (max-width: 500px) {
+    min-width: 350px;
+    width: 95%;
+  }
 `
 const ContainerBottom = styled.div`
   z-index: 0;

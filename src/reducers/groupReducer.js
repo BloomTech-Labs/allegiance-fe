@@ -18,10 +18,20 @@ const initialState = {
   allegiances: [],
   members: [],
   reqs: [],
-  memberType: null
+  memberType: null,
 }
 export const groupReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.DELETE_REPLY_SUCCESS:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          replies: state.post.replies.filter(
+            reply => reply.id !== action.payload
+          ),
+        },
+      }
     case types.FETCH_POSTS_REQUEST:
       return {
         ...state,
@@ -39,6 +49,8 @@ export const groupReducer = (state = initialState, action) => {
         error: action.payload,
         arePostsLoading: false,
       }
+    case types.RECEIVE_POST_SUCCESS:
+
     case types.CREATE_POST_SUCCESS:
       return {
         ...state,
@@ -49,6 +61,7 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
+    case types.RECEIVE_LIKE_SUCCESS:
     case types.POST_LIKE_SUCCESS:
       const newState = state.posts.filter(obj => {
         if (obj.id === action.payload.post_id) {
@@ -65,6 +78,7 @@ export const groupReducer = (state = initialState, action) => {
           likes: state.post.likes ? [...state.post.likes, action.payload] : [],
         },
       }
+    case types.RECEIVE_DISLIKE_SUCCESS:
     case types.POST_UNLIKE_SUCCESS:
       const filterPosts = state.posts.filter(obj => {
         if (obj.id === action.payload.post_id) {
@@ -85,6 +99,7 @@ export const groupReducer = (state = initialState, action) => {
             : null,
         },
       }
+    case types.RECEIVE_REPLY_DISLIKE:
     case types.REPLY_DISLIKE_SUCCESS:
       return {
         ...state,
@@ -101,6 +116,7 @@ export const groupReducer = (state = initialState, action) => {
           }),
         },
       }
+    case types.RECEIVE_REPLY_LIKE:
     case types.REPLY_LIKE_SUCCESS:
       return {
         ...state,
@@ -122,6 +138,7 @@ export const groupReducer = (state = initialState, action) => {
         ...state,
         post: action.payload,
       }
+    case types.RECEIVE_POST_REPLY_SUCCESS:
     case types.CREATE_REPLY_SUCCESS:
       return {
         ...state,
@@ -162,12 +179,17 @@ export const groupReducer = (state = initialState, action) => {
     case types.ADD_MEMBER_SUCCESS:
       return {
         ...state,
-        members: [...state.members, action.payload]
+        members: [...state.members, action.payload],
       }
     case types.REMOVE_MEMBER_SUCCESS:
       return {
         ...state,
-        members: state.members.filter(member => member.id !== action.payload)
+        members: state.members.filter(member => member.id !== action.payload),
+      }
+    case types.REMOVE_MEMBER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       }
     case types.FETCH_MEMBER_TYPE_SUCCESS:
       return {
@@ -182,7 +204,18 @@ export const groupReducer = (state = initialState, action) => {
     case types.REMOVE_REQUEST_SUCCESS:
       return {
         ...state,
-        reqs: state.reqs.filter(req => req.id !== action.payload)
+        reqs: state.reqs.filter(req => req.id !== action.payload),
+      }
+    case types.RECEIVE_GROUP_REPLY_SUCCESS:
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.id === action.payload.post_id) {
+            return { ...post, replies: [...post.replies, action.payload] }
+          } else {
+            return post
+          }
+        }),
       }
     default:
       return state

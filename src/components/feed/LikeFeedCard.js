@@ -1,10 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import Moment from 'react-moment'
-
 import styled from 'styled-components'
-import { Feed, Icon } from 'semantic-ui-react'
 import { makeStyles } from '@material-ui/core/styles'
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined'
 import {
   Card,
   CardActionArea,
@@ -13,7 +12,6 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core'
-import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined'
 
 const useStyles = makeStyles({
   card: {
@@ -136,8 +134,8 @@ const LikeFeedCard = props => {
 }
 
 const LikeCardDiv = styled.div`
-width: 100vw
-margin: auto
+  width: 100vw;
+  margin: auto;
 `
 
 const HeaderDiv = styled.div`

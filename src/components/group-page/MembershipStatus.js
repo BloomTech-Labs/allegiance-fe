@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
-
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as types from 'actions/actionTypes'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
 import { makeStyles } from '@material-ui/core/styles'
 import useGetToken from '../utils/useGetToken'
 import { Button, Chip } from '@material-ui/core/'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
-
 import styled from 'styled-components'
 
 import {
@@ -18,18 +14,9 @@ import {
   editUserMembership,
   leaveGroup,
 } from 'actions'
-import axios from 'axios'
 
 const MembershipStatus = props => {
-  const {
-    user,
-    group_id,
-    members,
-    privacy,
-    memberType,
-    setMemberType,
-    setTrigger,
-  } = props
+  const { user, group_id, members, privacy, memberType } = props
   const dispatch = useDispatch()
 
   // Fetches Auth0 token for axios call
@@ -43,13 +30,12 @@ const MembershipStatus = props => {
   let hasRequest = privateGroupRequests.includes(group_id)
 
   useEffect(() => {
-    console.log('hasRequest?', hasRequest)
     hasRequest = privateGroupRequests.includes(group_id)
   }, [privateGroupRequests])
 
   async function joinGroupHandler(e) {
     e.preventDefault()
-    await dispatch(joinGroup({ user, group_id, fromGroupView: true }))
+    await dispatch(joinGroup({ user, group_id, fromGroupView: true, socket }))
     await dispatch(editUserMembership({ user_type: 'member' }))
   }
 
@@ -71,7 +57,6 @@ const MembershipStatus = props => {
         return acc
       }, []),
     }
-    console.log('adminIds:', data)
     await dispatch(requestJoinPrivate(token, data, socket))
   }
 

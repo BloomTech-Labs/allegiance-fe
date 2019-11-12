@@ -1,17 +1,11 @@
 import React from 'react'
-import { Button, Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
-
 import SearchBar from './groups/SearchBar'
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
-import LandingImage2 from '../assets/landing/LandingImage2.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
 import instagram from '../assets/landing/instagram.png'
 import twitter from '../assets/landing/twitter.png'
@@ -93,19 +87,10 @@ const Landing = props => {
       </Bottom>
       <Footer>
         <FooterLeft>
-          {/* <Image
-            path='/facebook'
-            onClick={() => {
-              window.location.href = 'https://facebook.com'
-            }}
-            src={facebook}
-            alt={'Facebook'}
-          /> */}
-
           <About
             onClick={() => {
               window.location.href =
-                'https://github.com/orgs/Lambda-School-Labs/teams/labs-17-allegiance/repositories '
+                'https://github.com/Lambda-School-Labs/allegiance-fe'
             }}
           >
             About Us
@@ -120,22 +105,31 @@ const Landing = props => {
 }
 
 const LandingDiv = styled.div`
-  // border: 1px solid red;
   background-color: white;
 `
 const Top = styled.div`
-  // border: 1px solid blue;
   display: flex;
   justify-content: space-between;
   height: 67px;
+  @media (max-width: 470px) {
+    flex-direction: column;
+    height: 100px;
+    margin-top: 10px;
+  }
 `
+
 const LeftTop = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  // border: 1px solid purple;
   width: 400px;
   margin-left: 5px;
+  @media (max-width: 470px) {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 `
 const RightTop = styled.div`
   display: flex;
@@ -145,43 +139,38 @@ const RightTop = styled.div`
   height: 15px;
 `
 const Middle = styled.div`
+  
   display: flex;
   justify-content: space-between;
-  height: 67px;
   @media (max-width: 800px) {
-    height: 100px;
     align-items: center;
     flex-direction: column-reverse;
+    margin: 0px;
   }
 `
 const LeftMiddle = styled.div`
   display: flex;
   align-items: center;
   width: 480px;
-  height: 37px;
   margin-left: 24px;
   @media (max-width: 800px) {
     justify-content: center;
     margin-left: 0px;
+    width: 100%;
   }
   margin-top: 15px;
 `
 const RightMiddle = styled.div`
   display: flex;
-  // margin-right: 0px;
-  // border: 1px solid red;
 `
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url(${LandingImage});
   background-size: cover;
-  // background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
   height: 100vh;
-  min-width: 500px;
-  min-height: 500px;
   margin: 0 auto;
   @media (max-width: 700px) {
     background-image: url(${Baseball});
@@ -196,7 +185,7 @@ const LeftBottom1 = styled.div`
   width: 400px;
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
     margin-top: 100px;
   }
 `
@@ -204,9 +193,12 @@ const LeftBottom2 = styled.div`
   margin-top: 34px;
   margin-left: 49px;
   width: 500px;
+  @media (max-width: 535px) {
+    width: 90%;
+  }
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
   }
 `
 const LeftBottom3 = styled.div`
@@ -214,7 +206,7 @@ const LeftBottom3 = styled.div`
   margin-left: 49px;
   @media (max-width: 500px) {
     margin-left: 0px;
-    width: 75vw;
+    width: 90%;
   }
 `
 const LeftBottom4 = styled.div`
@@ -238,23 +230,18 @@ const FooterRight = styled.div`
   display: flex;
   margin-right: 24px;
 `
-const GlobalStyles = createGlobalStyle`
-body {
-  <link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
-  font-family: 'Roboto', sans-serif;
-}
-`
 const H1 = styled.h1`
   font-size: 1rem;
   color: grey;
 `
 const RegisterBtn = styled.button`
-  &:hover{
+  &:hover {
     background: #ed5959;
+    cursor: pointer
   }
-  height: 67px;
+  
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1
+  z-index: 1;
   width: 163px;
   color: white;
   background: #4483cd;
@@ -268,6 +255,7 @@ const RegisterBtn = styled.button`
 const JoinBtn = styled.button`
   &:hover {
     background: #4483cd;
+    cursor: pointer;
   }
   height: 54px;
   width: 192px;
@@ -278,7 +266,7 @@ const JoinBtn = styled.button`
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
   @media (max-width: 500px) {
-    width: 90vw;
+    width: 90%;
   }
 `
 const ImageMini = styled.img`
@@ -286,12 +274,14 @@ const ImageMini = styled.img`
     transition: all 0.2s ease-in-out;
 
      transform: scale(1.5);
+    cursor: pointer;
   }
 `
 const About = styled.div`
   &:hover {
     transition: all 0.2s ease-in-out;
     transform: scale(1.5);
+    cursor: pointer;
   }
 `
 

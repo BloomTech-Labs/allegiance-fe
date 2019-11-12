@@ -1,10 +1,8 @@
 import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
-import { async } from 'q'
 import axios from 'components/utils/axiosWithoutAuth'
 import { Mixpanel } from '../components/analytics/Mixpanel'
 import MixpanelMessages from '../components/analytics/MixpanelMessages'
-import { types } from '@babel/core'
 
 export const updateSocket = data => dispatch => {
   dispatch({ type: actionTypes.UPDATE_SOCKET, payload: data })
@@ -21,9 +19,10 @@ export const fetchGroupPosts = id => async dispatch => {
     dispatch({ type: actionTypes.FETCH_POSTS_FAILURE, payload: err })
   }
 }
-export const createGroupPost = (token, data) => async dispatch => {
+export const createGroupPost = (token, data, socket) => async dispatch => {
   const { userId, groupId, post_content } = data
   if (token) {
+    // If post content is not blank
     if (!post_content.match(/^\s+$/)) {
       try {
         dispatch({ type: actionTypes.CREATE_POST_REQUEST })
@@ -39,6 +38,12 @@ export const createGroupPost = (token, data) => async dispatch => {
           type: actionTypes.CREATE_POST_SUCCESS,
           payload: post.data.postResult,
         })
+
+        socket.emit('groupPost', {
+          post: post.data.postResult,
+          room: groupId,
+        })
+
         Mixpanel.activity(userId, MixpanelMessages.POST_CREATED)
       } catch (err) {
         console.log(err)
@@ -48,8 +53,29 @@ export const createGroupPost = (token, data) => async dispatch => {
   }
 }
 
+export const receiveGroupPost = data => async dispatch => {
+  console.log('DATA IN RECEIVE', data)
+  await dispatch({ type: actionTypes.RECEIVE_POST_SUCCESS, payload: data.post })
+}
+
+export const receiveGroupReply = data => async dispatch => {
+  console.log('DATA IN REPLY', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_GROUP_REPLY_SUCCESS,
+    payload: data.reply,
+  })
+}
+
+export const receivePostReply = data => async dispatch => {
+  console.log('DATA IN POST', data)
+  await dispatch({
+    type: actionTypes.RECEIVE_POST_REPLY_SUCCESS,
+    payload: data.reply,
+  })
+}
+
 export const receivingGroup = groupData => async dispatch => {
-  const { user, group_id, fromGroupView } = groupData
+  const { user, group_id, fromGroupView, socket } = groupData
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
     const result = await axios.post(`/groups_users/search`, {
@@ -67,6 +93,7 @@ export const receivingGroup = groupData => async dispatch => {
         id: group_id,
         user_type: user_type,
       }
+      socket.emit('join.groups', addedGroup.id)
       await dispatch({
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
@@ -97,13 +124,12 @@ export const receivingGroup = groupData => async dispatch => {
 export const fetchNotifications = (token, data) => async dispatch => {
   const { userId } = data
   if (token) {
-    
     try {
       dispatch({ type: actionTypes.FETCH_NOTIFICATIONS_REQUEST })
       const notifications = await axiosWithAuth([token]).get(
         `/users/${userId}/notifications`
       )
-      console.log("NOTIFIC", notifications)
+      console.log('NOTIFIC', notifications)
       dispatch({
         type: actionTypes.FETCH_NOTIFICATIONS_SUCCESS,
         payload: notifications.data,
@@ -206,7 +232,7 @@ export const deleteInvite = (
 }
 
 export const likePost = (token, data, socket) => async dispatch => {
-  const { user, id, user_id } = data
+  const { user, id, user_id, group_id } = data
   if (token) {
     try {
       dispatch({ type: actionTypes.POST_LIKE_REQUEST })
@@ -245,6 +271,11 @@ export const likePost = (token, data, socket) => async dispatch => {
         type: actionTypes.POST_LIKE_SUCCESS,
         payload: like.data.likeResult,
       })
+      socket.emit('groupPost', {
+        likeType: like.data.likeResult,
+        room: group_id,
+        type: 'like',
+      })
     } catch (err) {
       console.log(err)
       dispatch({ type: actionTypes.POST_LIKE_FAILURE, payload: err })
@@ -252,7 +283,16 @@ export const likePost = (token, data, socket) => async dispatch => {
   }
 }
 
-export const dislikePost = (token, data) => async dispatch => {
+export const receiveLike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_LIKE_SUCCESS, payload: data.likeType })
+}
+
+export const dislikePost = (
+  token,
+  data,
+  group_id,
+  socket
+) => async dispatch => {
   if (token) {
     try {
       dispatch({ type: actionTypes.POST_UNLIKE_REQUEST })
@@ -261,17 +301,29 @@ export const dislikePost = (token, data) => async dispatch => {
         type: actionTypes.POST_UNLIKE_SUCCESS,
         payload: unLike.data.deleted[0],
       })
+      socket.emit('groupPost', {
+        likeType: unLike.data.deleted[0],
+        room: group_id,
+        type: 'dislike',
+      })
     } catch (err) {
       console.log(err)
     }
   }
 }
 
+export const receiveDislike = data => dispatch => {
+  dispatch({
+    type: actionTypes.RECEIVE_DISLIKE_SUCCESS,
+    payload: data.likeType,
+  })
+}
+
 export const fetchPost = id => async dispatch => {
   try {
     dispatch({ type: actionTypes.FETCH_POST_REQUEST })
     const response = await axios.get(`/posts/${id}`)
-    console.log("reponse", response)
+    console.log('reponse', response)
     const postObj = response.data.postLoaded
     dispatch({ type: actionTypes.FETCH_POST_SUCCESS, payload: postObj })
     console.log(postObj)
@@ -281,7 +333,7 @@ export const fetchPost = id => async dispatch => {
   }
 }
 export const likeReply = (token, data, socket) => async dispatch => {
-  const { user, id, user_id } = data
+  const { user, id, user_id, group_id, post_id } = data
   dispatch({ type: actionTypes.REPLY_LIKE_REQUEST })
   const like = await axiosWithAuth([token]).post(`/replies_likes/reply/${id}`, {
     user_id: user.id,
@@ -291,6 +343,11 @@ export const likeReply = (token, data, socket) => async dispatch => {
     dispatch({
       type: actionTypes.REPLY_LIKE_SUCCESS,
       payload: like.data.likeResult,
+    })
+    socket.emit('groupPost', {
+      room: group_id,
+      likeType: { ...like.data.likeResult, post_id },
+      type: 'reply_like',
     })
     if (user.id !== user_id) {
       const notification = await axiosWithAuth([token]).post(
@@ -315,44 +372,69 @@ export const likeReply = (token, data, socket) => async dispatch => {
     }
   }
 }
+
+export const receiveReplyLike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_REPLY_LIKE, payload: data.likeType })
+}
+
 export const createReply = (token, data, socket) => async dispatch => {
-  const { user, user_id, id, reply_content } = data
+  const { user, user_id, id, reply_content, group } = data
   dispatch({ type: actionTypes.CREATE_REPLY_REQUEST })
-  const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
-    user_id: user.id,
-    post_id: id,
-    reply_content: reply_content,
-  })
-  if (post.data.reply) {
-    dispatch({
-      type: actionTypes.CREATE_REPLY_SUCCESS,
-      payload: post.data.reply,
+  try {
+    const post = await axiosWithAuth([token]).post(`/replies/post/${id}`, {
+      user_id: user.id,
+      post_id: id,
+      reply_content: reply_content,
     })
-    Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
-    if (user.id !== user_id) {
-      const notification = await axiosWithAuth([token]).post(
-        `/users/${user_id}/notifications`,
-        {
-          user_id,
-          invoker_id: user.id,
-          type_id: id,
+    if (post.data.reply) {
+      dispatch({
+        type: actionTypes.CREATE_REPLY_SUCCESS,
+        payload: post.data.reply,
+      })
+      Mixpanel.activity(user.id, MixpanelMessages.REPLY_CREATED)
+      if (user.id !== user_id) {
+        const notification = await axiosWithAuth([token]).post(
+          `/users/${user_id}/notifications`,
+          {
+            user_id,
+            invoker_id: user.id,
+            type_id: id,
+            type: 'reply',
+          }
+        )
+        socket.emit('send notification', {
+          userIds: [user_id],
+          notification: {
+            ...notification.data,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            image: user.image,
+          },
           type: 'reply',
-        }
-      )
-      socket.emit('send notification', {
-        userIds: [user_id],
-        notification: {
-          ...notification.data,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          image: user.image,
-        },
-        type: 'reply',
+        })
+      }
+      socket.emit('replyPost', {
+        room: group,
+        reply: post.data.reply,
       })
     }
+  } catch (err) {
+    console.log(err);
   }
 }
-export const dislikeReply = (token, id) => async dispatch => {
+
+export const deleteReply = id => async dispatch => {
+  try {
+    await dispatch({ type: actionTypes.DELETE_REPLY_REQUEST })
+    await axios.delete(`/replies/${id}`)
+    await dispatch({ type: actionTypes.DELETE_REPLY_SUCCESS, payload: id })
+  } catch (err) {
+    await dispatch({ type: actionTypes.DELETE_REPLY_FAILURE })
+  }
+}
+
+export const dislikeReply = (token, id, data, socket) => async dispatch => {
+  const { group_id, post_id } = data
   dispatch({ type: actionTypes.REPLY_DISLIKE_REQUEST })
   const unLike = await axiosWithAuth([token]).delete(`/replies_likes/${id}`)
   console.log(unLike.data.deleted[0], 'delete data')
@@ -360,7 +442,17 @@ export const dislikeReply = (token, id) => async dispatch => {
     type: actionTypes.REPLY_DISLIKE_SUCCESS,
     payload: unLike.data.deleted[0],
   })
+  socket.emit('groupPost', {
+    room: group_id,
+    likeType: { ...unLike.data.deleted[0], post_id },
+    type: 'reply_dislike',
+  })
 }
+
+export const receiveReplyDislike = data => dispatch => {
+  dispatch({ type: actionTypes.RECEIVE_REPLY_DISLIKE, payload: data.likeType })
+}
+
 export const deleteGroupPost = (token, id) => async dispatch => {
   dispatch({ type: actionTypes.DELETE_POST_REQUEST })
   const deletedPost = await axiosWithAuth([token]).delete(`/posts/${id}`)
@@ -571,7 +663,7 @@ export const addToGroup = groupData => async dispatch => {
 }
 
 export const joinGroup = groupData => async dispatch => {
-  const { user, group_id, fromGroupView } = groupData
+  const { user, group_id, fromGroupView, socket } = groupData
   const user_id = user.id
   try {
     await dispatch({ type: actionTypes.ADD_GROUP_REQUEST })
@@ -590,6 +682,7 @@ export const joinGroup = groupData => async dispatch => {
         user_type: newGroup.user_type,
       }
       console.log('new group joined', addedGroup)
+      socket.emit('join.groups', addedGroup.id)
       await dispatch({
         type: actionTypes.ADD_GROUP_SUCCESS,
         payload: addedGroup,
@@ -619,7 +712,7 @@ export const leaveGroup = data => async dispatch => {
   const result = await axios.delete(
     `/groups_users/?group_id=${group_id}&user_id=${user_id}`
   )
-  console.log('leaving group', result)
+
   if (result.data) {
     dispatch({ type: actionTypes.LEAVE_GROUP_SUCCESS, payload: group_id })
     Mixpanel.activity(user_id, MixpanelMessages.GROUP_LEFT)
@@ -628,28 +721,35 @@ export const leaveGroup = data => async dispatch => {
 }
 
 export const removeMember = data => async dispatch => {
-  const { group_id, user_id } = data
-  const result = await axios.delete(
-    `/groups_users/?group_id=${group_id}&user_id=${user_id}`
-  )
-  dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+  try {
+    const { group_id, user_id } = data
+    const result = await axios.delete(
+      `/groups_users/?group_id=${group_id}&user_id=${user_id}`
+    )
+    if (result) {
+      dispatch({ type: actionTypes.REMOVE_MEMBER_SUCCESS, payload: user_id })
+    }
+  } catch (err) {
+    dispatch({ type: actionTypes.REMOVE_MEMBER_FAILURE, payload: err })
+  }
 }
 
 export const deleteGroup = groupId => async dispatch => {
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST })
     const deletedGroup = await axios.delete(`/groups/${groupId}`)
-    dispatch({
-      type: actionTypes.DELETE_GROUP_SUCCESS,
-      payload: Number(groupId),
-    })
+    if (deletedGroup) {
+      dispatch({
+        type: actionTypes.DELETE_GROUP_SUCCESS,
+        payload: Number(groupId),
+      })
+    }
   } catch (err) {
     dispatch({ type: actionTypes.DELETE_GROUP_FAILURE, payload: err })
   }
 }
 
 export const fetchUserMembership = data => async dispatch => {
-  console.log('fetching membership', data)
   const { group_id, user_id } = data
 
   dispatch({ type: actionTypes.FETCH_MEMBER_TYPE_REQUEST })

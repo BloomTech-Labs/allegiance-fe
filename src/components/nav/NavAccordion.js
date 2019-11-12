@@ -26,7 +26,7 @@ export default class NavAccordion extends Component {
           <Icon name='dropdown' />
           My Groups
         </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
+        <Accordion.Content active={activeIndex === 1}>
           <GroupsNav />
         </Accordion.Content>
       </Accordion>

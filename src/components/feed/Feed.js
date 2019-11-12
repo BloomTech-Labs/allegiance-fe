@@ -102,15 +102,15 @@ const H3 = styled.h3`
 `
 
 const FeedContainer = styled.div`
-  display: flex
+  display: flex;
   justify-content: center;
-  width: 100vw
+  width: 100vw;
 `
 const FansDiv = styled.div`
   display: flex;
-  flex-flow: column nowrap
+  flex-flow: column nowrap;
   align-items: center;
-  width: 100vw
+  width: 100vw;
 `
 
 const Img = styled.img`
@@ -119,7 +119,7 @@ const Img = styled.img`
 `
 
 const Header = styled.h1`
-  margin-top: 10px
+  margin-top: 10px;
   padding: 10px;
   font-size: 3rem;
   font-weight: 700;

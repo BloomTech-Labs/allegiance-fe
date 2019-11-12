@@ -56,23 +56,6 @@ const ActivityNotificationsCard = props => {
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
   const fullName = first_name + ' ' + last_name
 
-  // Streamline post id and reply id for linking
-  // let postId
-  // if (tag === 'post') {
-  //   postId = id
-  // }
-  // if (tag === 'reply' || tag === 'replyLike' || tag === 'postLike') {
-  //   postId = post_id
-  // }
-  // let replyId
-  // if (tag === 'reply') {
-  //   replyId = id
-  // }
-  // if (tag === 'replyLike') {
-  //   replyId = reply_id
-  // }
-
-  // Maintain max allowable content length for posts and replies
   let notifyContent = ''
   if (content) notifyContent = content.slice(0, 20)
   if (content && content.length > 20) notifyContent += '...'
@@ -90,8 +73,6 @@ const ActivityNotificationsCard = props => {
     }
     props.history.push({
       pathname,
-      // Provide replyId if appropriate for scrolling into focus upon navigation
-      // replyNumber: replyId || null,
     })
   }
 
@@ -118,23 +99,6 @@ const ActivityNotificationsCard = props => {
         <CardMessage>
           <div>
             <span>{fullName || username}</span>{' '}
-            {/* {tag === 'post' && <>made a post: {postContent}</>}
-            {tag === 'reply' && <>replied to a post: {replyContent}</>}
-            {tag === 'postLike' && (
-              <>
-                liked {liker_id === poster_id && 'their own'}
-                {liker_id !== poster_id && (
-                  <span>{poster_name}'s</span>
-                )} post: {postContent}
-              </>
-            )}
-            {tag === 'replyLike' && (
-              <>
-                liked {liker_id === replier_id && 'their own'}
-                {liker_id !== replier_id && <span>{replier_name}'s</span>}{' '}
-                reply: {replyContent}
-              </>
-            )} */}
             {type === 'like' && <>liked your post: {content}</>}
             {type === 'reply' && <>replied to your post: {content}</>}
             {type === 'reply_like' && <>liked your reply: {content}</>}
@@ -152,20 +116,6 @@ const ActivityNotificationsCard = props => {
           </div>
         </CardMessage>
 
-        {/* <DelButton onClick={() => selectNotification(user_id, invoker_id, timestamp/create_at) {
-          useSelector(grab state and filter to get notification id)
-          returns id
-          deleteNotification(notificationId)
-        }}>Delete</DelButton> */}
-        {/* <CardGroup>
-          <Avatar
-            aria-label='group_avatar'
-            className={classes.avatar}
-            src={group_image}
-            alt={'Avatar'}
-          />
-          <p>{acronym}</p>
-        </CardGroup> */}
         <DelButton
           onClick={evt => {
             evt.stopPropagation()

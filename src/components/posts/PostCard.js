@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import avi from '../../assets/walter-avi.png'
+import Moment from 'react-moment'
+import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { likePost, dislikePost } from 'actions'
+import useGetToken from '../utils/useGetToken'
+import { deleteGroupPost } from 'actions'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,
   CardHeader,
@@ -11,15 +18,6 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core/'
-import black from '@material-ui/core/colors/red'
-import avi from '../../assets/walter-avi.png'
-import Moment from 'react-moment'
-import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
-import { likePost, dislikePost } from 'actions'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
-import { useSelector, useDispatch } from 'react-redux'
 
 export default function PostCard(props) {
   const {
@@ -53,12 +51,21 @@ export default function PostCard(props) {
       user: user,
       id,
       user_id,
+      group_id,
     }
     await dispatch(likePost(token, data, socket))
   }
 
   async function unLike(e) {
-    await dispatch(dislikePost(token, postLikeId.id))
+    await dispatch(dislikePost(token, postLikeId.id, group_id, socket))
+  }
+
+  const handleClick = () => {
+    console.log('handleCLick')
+    socket.emit('event', {
+      name: `${user.first_name} ✈️`,
+      room: 'FIVE FINGER POSSE',
+    })
   }
 
   // *************change icon number to reg number*************
@@ -99,6 +106,7 @@ export default function PostCard(props) {
           variant='body1'
           color='textSecondary'
           component='p'
+          onClick={handleClick}
         >
           {post_content}
         </Typography>
