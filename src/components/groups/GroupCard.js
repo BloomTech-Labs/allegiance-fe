@@ -44,7 +44,7 @@ const GroupInfoCard = styled.div`
   max-width: 250px
   min-width: 250px
   background-color: white;
-  box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
   transition: 0.3s;
   border-radius: 2%;
 
