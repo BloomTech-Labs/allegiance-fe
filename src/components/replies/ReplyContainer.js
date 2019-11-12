@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, createRef } from 'react'
+import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader, Comment } from 'semantic-ui-react'
@@ -12,7 +12,12 @@ import Button from '@material-ui/core/Button'
 import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import { fetchPost, createReply, fetchUserMembership } from 'actions'
+import {
+  fetchPost,
+  createReply,
+  fetchUserMembership,
+  receivePostReply,
+} from 'actions'
 
 const ReplyContainer = props => {
   const post = useSelector(state => state.group.post)
@@ -20,27 +25,35 @@ const ReplyContainer = props => {
   const user = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
   const group = useSelector(state => state.group)
+  const [groupId, setGroupId] = useState(null)
   const dispatch = useDispatch()
   const { values, handleChange, handleSubmit } = useForm(submitReply)
   const [token] = useGetToken()
 
   useEffect(() => {
-    // Fetch group related data
-    console.log('this?')
     dispatch(fetchPost(id)).then(res => {
       dispatch(
         fetchUserMembership({ group_id: res.group_id, user_id: user.id })
       )
+      setGroupId(res.group_id)
     })
+    socket.on('replyPost', data => {
+      console.log('replyPost2', data)
+      dispatch(receivePostReply(data))
+    })
+    return () => {
+      socket.off('replyPost')
+    }
   }, [dispatch, id, user.id])
 
-  // callback function to handle submit
   async function submitReply(e) {
+    console.log('GROUPID:::::', groupId)
     const data = {
       user,
       id,
       reply_content: values.reply_content,
       user_id: post.user_id,
+      group: groupId,
     }
     dispatch(createReply(token, data, socket))
   }

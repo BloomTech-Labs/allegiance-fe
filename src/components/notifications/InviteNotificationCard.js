@@ -25,6 +25,7 @@ const InviteNotificationsCard = props => {
     accepted,
   } = props.invite
 
+  const socket = useSelector(state => state.socketReducer.socket)
   const dispatch = useDispatch()
   // Material UI styling
   const useStyles = makeStyles({
@@ -131,6 +132,7 @@ const InviteNotificationsCard = props => {
                   sender_id,
                   group_id,
                   Mixpanel,
+                  socket
                 }
                 dispatch(acceptInvite(token, data))
               }}

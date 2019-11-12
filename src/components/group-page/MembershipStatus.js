@@ -35,7 +35,7 @@ const MembershipStatus = props => {
 
   async function joinGroupHandler(e) {
     e.preventDefault()
-    await dispatch(joinGroup({ user, group_id, fromGroupView: true }))
+    await dispatch(joinGroup({ user, group_id, fromGroupView: true, socket }))
     await dispatch(editUserMembership({ user_type: 'member' }))
   }
 

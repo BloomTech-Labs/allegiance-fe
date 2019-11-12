@@ -4,6 +4,13 @@ import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
 import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
+import {
+  fetchGroup,
+  fetchGroupPosts,
+  fetchUserMembership,
+  receiveGroupPost,
+  receiveGroupReply,
+} from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
@@ -34,6 +41,20 @@ const GroupPage = props => {
     fetchData()
 
     return () => dispatch({ type: types.CLEAR_POSTS })
+
+    socket.on('groupPost', data => {
+      dispatch(receiveGroupPost(data))
+    })
+    socket.on('replyPost', data => {
+      console.log('data:', data)
+      // function that updates replies
+      dispatch(receiveGroupReply(data))
+    })
+    return () => {
+      dispatch({ type: types.CLEAR_POSTS })
+      socket.off('replyPost')
+    }
+
   }, [user, dispatch, id])
 
   if (Object.keys(group).length === 0) {
