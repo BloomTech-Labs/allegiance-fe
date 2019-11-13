@@ -1,13 +1,11 @@
 import React, { useSelector } from 'react'
 import axios from 'components/utils/axiosWithoutAuth'
-import dispatch from 'dispatch'
 import * as types from './profileTypes'
 
-export const fetchProfile = async () => {
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+export const fetchProfile = loggedInUser => async dispatch => {
   try {
     dispatch({ type: types.FETCH_PROFILE_REQUEST })
-    const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+    const result = await axios.post('/auth', {
       email: loggedInUser.email,
     })
     dispatch({

@@ -1,18 +1,22 @@
+import * as types from 'components/profile/store/profileTypes'
+
 const initialState = {
-  loggedInAllegiances: [],
+  allegiances: [],
+  groups: [],
   error: [],
 }
 
-export const profileActions = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_PROFILE_SUCCESS:
       //Refreshes logged in user's info, groups and allegiances upon entering their profile.
       return {
         ...state,
-        loggedInAllegiances: action.payload.basicAllegianceInfo,
-        error: '',
+        ...action.payload.currentUser,
+        groups: action.payload.basicGroupInfo,
+        allegiances: action.payload.basicAllegianceInfo,
       }
-    case profileTypes.FETCH_PROFILE_FAILURE:
+    case types.FETCH_PROFILE_FAILURE:
       return {
         ...state,
         error: action.payload,

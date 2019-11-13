@@ -25,23 +25,7 @@ const Profile = props => {
 
   useEffect(() => {
     if (loggedInUser && token) {
-      fetchProfile()
-      // const fetchData = async () => {
-      //   try {
-      //     dispatch({ type: types.FETCH_PROFILE_REQUEST })
-      //     const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-      //       email: loggedInUser.email,
-      //     })
-      //     dispatch({
-      //       type: types.FETCH_PROFILE_SUCCESS,
-      //       payload: result.data.userInfo,
-      //     })
-      //   } catch (err) {
-      //     dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
-      //     console.log("There was an issue retrieving the user's profile.")
-      //   }
-      // }
-      // fetchData()
+      dispatch(fetchProfile(loggedInUser))
     }
   }, [loggedInUser, token, dispatch])
 
