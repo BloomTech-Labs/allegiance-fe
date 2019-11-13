@@ -12,8 +12,11 @@ import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
 
 const Profile = props => {
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.myGroups)
+  const profile = useSelector(state => state.profile)
+
+  const loggedInGroups = useSelector(state => state.profile.groups)
+  const loggedInPosts = useSelector(state => state.profile.posts)
+
   const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
@@ -23,13 +26,13 @@ const Profile = props => {
   const [token] = useGetToken()
 
   useEffect(() => {
-    if (loggedInUser && token) {
+    if (profile && token) {
       dispatch(fetchProfile(id))
       dispatch(fetchProfilePosts(id))
     }
-  }, [loggedInUser, token, dispatch])
+  }, [token, dispatch])
 
-  if (!loggedInUser) {
+  if (!profile) {
     return (
       <Loader active size='large'>
         Loading
@@ -42,13 +45,13 @@ const Profile = props => {
       <div style={{ maxWidth: '100%' }}>
         <Banner>
           <BannerImage
-            src={loggedInUser.banner_image || defaultBanner}
+            src={profile.banner_image || defaultBanner}
             alt='Banner'
           />
         </Banner>
         <ImageCrop>
-          {loggedInUser.image ? (
-            <ProfileImage src={loggedInUser.image} alt='Profile' />
+          {profile.image ? (
+            <ProfileImage src={profile.image} alt='Profile' />
           ) : (
             <Icon
               name='football ball'
@@ -60,12 +63,12 @@ const Profile = props => {
         </ImageCrop>
         <InfoHolder>
           <Name>
-            {loggedInUser.username && (
+            {profile.username && (
               <Typography
                 variant='h5'
                 noWrap={true}
                 style={{ fontWeight: 'bold' }}
-              >{`${loggedInUser.username}`}</Typography>
+              >{`${profile.username}`}</Typography>
             )}
           </Name>
           <Name>
