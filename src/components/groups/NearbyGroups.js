@@ -120,15 +120,15 @@ const SectionContainer = styled.div`
 `
 
 const NearbyGroupsContainer = styled.div`
-  width: 98%;
+  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-left: 1%;
   padding-bottom: 3%
   &::-webkit-scrollbar {
     display: none;
   }
+  margin-left: 5%;
 `
 
 export default NearbyGroups

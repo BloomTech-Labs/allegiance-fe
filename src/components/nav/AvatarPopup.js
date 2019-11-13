@@ -43,7 +43,7 @@ const StyledAvatarPopup = styled.div`
   top: 0;
   right: 0px;
   z-index: 50;
-  background-color: #fff;
+  background-color: #e8edf1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 12px;
   margin-top: 59px;

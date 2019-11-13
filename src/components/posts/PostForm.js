@@ -89,7 +89,7 @@ const FormContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 const DownNav = styled.div`
   display: flex;
@@ -104,7 +104,7 @@ const ReplyForm = styled.form`
   flex-direction: row;
   justify-content: center;
   width: 801px;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   align-items: center;
 `
 const InputDiv = styled.div`

@@ -39,25 +39,18 @@ const GroupInfoCard = styled.div`
   display: flex;
   flex-direction: column;
   height: 28vh;
-  margin: 1%;
-  width: 250px
+  margin: 10px;
+  width: 40%
   max-width: 250px
-  min-width: 250px
+  min-width: 175px
   background-color: white;
   box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
   transition: 0.3s;
   border-radius: 2%;
-
   &:hover {
     box-shadow: 0 0 15px rgba(33, 33, 33, 0.6);
   }
 
-  @media ${device.tablet} {
-    width: 25%;
-  }
-  @media ${device.laptop} {
-    width: 15%;
-  }
 `
 
 const CardContainer = styled.div`
@@ -65,10 +58,12 @@ const CardContainer = styled.div`
 `
 
 const CardImage = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+  // max-width: 100%;
+  // max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 5% 5% 0 0;
+  border-radius: 2% 2% 0 0;
 `
 
 const TopDiv = styled.div`
@@ -76,6 +71,7 @@ const TopDiv = styled.div`
   justify-content: center;
   height: 17vh;
   border-bottom: 2px solid black;
+  width: 100%;
 `
 const MiddleDiv = styled.div`
   display: flex;
@@ -100,7 +96,6 @@ const MiddleDiv = styled.div`
   }
 `
 const BottomDiv = styled.div`
-  // border: 1px solid red;
   display: flex;
   height: 4vh;
   color: black;
