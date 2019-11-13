@@ -1,25 +1,21 @@
-import React from 'react'
+import React, { useSelector } from 'react'
+import axios from 'components/utils/axiosWithoutAuth'
+import dispatch from 'dispatch'
+import * as types from './profileTypes'
 
-const initialState = {
-  loggedInAllegiances: [],
-  error: [],
-}
-
-export const profileActions = (state = initialState, action) => {
-  switch (action.type) {
-    case types.FETCH_PROFILE_SUCCESS:
-      //Refreshes logged in user's info, groups and allegiances upon entering their profile.
-      return {
-        ...state,
-        loggedInAllegiances: action.payload.basicAllegianceInfo,
-        error: '',
-      }
-    case profileTypes.FETCH_PROFILE_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      }
-    default:
-      return state
+export const fetchProfile = async () => {
+  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  try {
+    dispatch({ type: types.FETCH_PROFILE_REQUEST })
+    const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+      email: loggedInUser.email,
+    })
+    dispatch({
+      type: types.FETCH_PROFILE_SUCCESS,
+      payload: result.data.userInfo,
+    })
+  } catch (err) {
+    dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
+    console.log("There was an issue retrieving the user's profile.")
   }
 }

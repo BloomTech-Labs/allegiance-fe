@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
-import * as types from './store/profileTypes'
+import { fetchProfile } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
@@ -25,22 +25,23 @@ const Profile = props => {
 
   useEffect(() => {
     if (loggedInUser && token) {
-      const fetchData = async () => {
-        try {
-          dispatch({ type: types.FETCH_PROFILE_REQUEST })
-          const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-            email: loggedInUser.email,
-          })
-          dispatch({
-            type: types.FETCH_PROFILE_SUCCESS,
-            payload: result.data.userInfo,
-          })
-        } catch (err) {
-          dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
-          console.log("There was an issue retrieving the user's profile.")
-        }
-      }
-      fetchData()
+      fetchProfile()
+      // const fetchData = async () => {
+      //   try {
+      //     dispatch({ type: types.FETCH_PROFILE_REQUEST })
+      //     const result = await axios.post(process.env.REACT_APP_AUTHURL, {
+      //       email: loggedInUser.email,
+      //     })
+      //     dispatch({
+      //       type: types.FETCH_PROFILE_SUCCESS,
+      //       payload: result.data.userInfo,
+      //     })
+      //   } catch (err) {
+      //     dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
+      //     console.log("There was an issue retrieving the user's profile.")
+      //   }
+      // }
+      // fetchData()
     }
   }, [loggedInUser, token, dispatch])
 
