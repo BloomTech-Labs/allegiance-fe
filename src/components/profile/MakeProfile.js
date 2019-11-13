@@ -91,25 +91,6 @@ const MakeProfile = props => {
     // Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
   }, [setValues, loggedInUser])
 
-  const validateInput = value => {
-    if (value.test(new RegExp('^s['))) {
-      return false
-    } else {
-      return 'Please enter a valid value.'
-    }
-  }
-
-  // const validateSubmit = evt => {
-  //   let error = false;
-  //   if (values.last_name) {
-
-  //   }
-
-  //   if (!error) {
-  //     handleSubmit(evt)
-  //   }
-  // }
-
   return (
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
