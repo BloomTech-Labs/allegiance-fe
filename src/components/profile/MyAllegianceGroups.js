@@ -1,17 +1,17 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Popup, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-// import { Mixpanel } from '../analytics/Mixpanel'
 
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
 const MyAllegianceGroups = props => {
+  const name = useSelector(state => state.userReducer.loggedInUser.first_name)
   const mixpanelCheck = link => {
     if (props.type === 'group') {
-      // Mixpanel.activity(props.userId, 'Visited Group From Profile Page')
       props.history.push(link)
     }
   }
@@ -38,19 +38,28 @@ const MyAllegianceGroups = props => {
           </Link>
         </div>
       )}
-      {props.content.map(item => (
-        <div
-          key={item.id}
-          style={{ margin: '1%' }}
-          onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}
-        >
-          <Popup
-            content={item.name}
-            trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
-          />
-          <Nickname>{item.acronym && item.acronym}</Nickname>
-        </div>
-      ))}
+      {!!props.content.length &&
+        props.content.map(item => (
+          <div
+            key={item.id}
+            style={{ margin: '1%' }}
+            onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}
+          >
+            <Popup
+              content={item.name}
+              trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
+            />
+            <Nickname>{item.acronym && item.acronym}</Nickname>
+          </div>
+        ))}
+
+      {props.content.length === 0 && (
+        <Join>
+          <h4>
+            {`${name}, you don't belong to any groups yet.  Create one or join!!!`}
+          </h4>
+        </Join>
+      )}
     </LogoHolder>
   )
 }
@@ -65,6 +74,15 @@ const LogoHolder = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`
+
+const Join = styled.div`
+  display: flex;
+  flex-wrap: column;
+  align-items: center;
+  font-weight: bold;
+  letter-spacing: adjusting;
+  font-size: 2rem;
 `
 
 const Nickname = styled.p`

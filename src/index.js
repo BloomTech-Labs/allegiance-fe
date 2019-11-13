@@ -35,7 +35,7 @@ ReactDOM.render(
   >
     <Provider store={store}>
       <Router>
-        <App />
+        <App style={{ width: '800px' }} />
       </Router>
     </Provider>
   </Auth0Provider>,
