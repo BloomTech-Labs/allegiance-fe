@@ -16,12 +16,15 @@ import {
   receiveDislike,
   receiveReplyLike,
   receiveReplyDislike,
+  receiveGroupReply,
+  receivePostReply,
 } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
+import { receiveFeedLike, receiveFeedDislike, receiveFeedPost, receiveFeedReply } from '../feed/actions/index'
 
 const NavBar = props => {
   const { location } = props
@@ -122,12 +125,31 @@ const NavBar = props => {
         } else {
           dispatch(receiveGroupPost(data))
         }
+      else if (location.pathname === `/home`) {
+        if (data.type === 'like') {
+          dispatch(receiveFeedLike(data))
+        } else if (data.type === 'dislike') {
+          dispatch(receiveFeedDislike(data))
+        } else if (data.post) {
+          dispatch(receiveFeedPost(data))
+        }
+      }
+    })
+    socket.on('replyPost', data => {
+      if (location.pathname === `/group/${data.room}`) {
+        dispatch(receiveGroupReply(data))
+      } else if (location.pathname === `/post/${data.reply.post_id}`){
+        dispatch(receivePostReply(data))
+      } else if (location.pathname === `/home`) {
+        dispatch(receiveFeedReply(data))
+      }
     })
     return () => {
       socket.off('new notification')
       socket.off('new invite')
       socket.off('event')
       socket.off('groupPost')
+      socket.off('replyPost')
     }
   }, [
     user,

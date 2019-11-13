@@ -1,6 +1,6 @@
-import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import * as actionTypes from './actionTypes'
 import axios from 'components/utils/axiosWithoutAuth'
+import { axiosWithAuth } from '../components/utils/axiosWithAuth'
 import { Mixpanel } from '../components/analytics/Mixpanel'
 import MixpanelMessages from '../components/analytics/MixpanelMessages'
 

@@ -1,51 +1,47 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
 import { Link } from 'react-router-dom'
+import { fetchFeed } from './actions/index'
 
 import undrawFans from '../../assets/undraw/undrawFans.svg'
+import PostCard from 'components/posts/PostCard'
 
 const Feed = () => {
-  const [feed, setFeed] = useState([])
   const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
-
-  // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
+  const feed = useSelector(state => state.feedReducer.posts)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Fetch feed related data
-    const mappedGroupIds = userGroups.map(group => {
-      return group.id
-    })
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const response = await axiosWithAuth([token]).post(`/feed`, {
-            group_id: mappedGroupIds,
-            interval: 48,
-          })
-          setFeed(response.data.allActivity)
-        } catch {}
+    if (userGroups && userGroups.length > 0) {
+      const data = {
+        group_id: userGroups.map(group => group.id),
+        interval: 48,
       }
+      console.log(data);
+      dispatch(fetchFeed(data))
     }
-    fetchData()
-  }, [token, userGroups])
+  }, [userGroups])
 
   // <Loader active size='large'>
   //   {' '}
   //   Loading{' '}
   // </Loader>
   // Filter feed for activity by user
-  const filteredFeed = feed.filter(
-    act => userId !== act.user_id && userId !== act.liker_id
-  )
+  const filteredFeed = feed.filter(act => userId !== act.user_id).map(act => {
+    return {
+      ...act,
+      image: act.user_image || act.image
+    }
+  })
 
   return feed.length === 0 ? (
     <FansDiv>
@@ -58,23 +54,16 @@ const Feed = () => {
     </FansDiv>
   ) : (
     <Container>
-      {filteredFeed.map(activity => {
-        return (
-          <FeedContainer key={activity.tag + activity.id}>
-            {(activity.tag === 'post' || activity.tag === 'reply') && (
-              <ContentFeedCard activity={activity} />
-            )}
-            {(activity.tag === 'postLike' || activity.tag === 'replyLike') && (
-              <LikeFeedCard activity={activity} />
-            )}
-          </FeedContainer>
-        )
-      })}
+      {filteredFeed.map(activity => <PostCard key={activity.id} post={activity} />)}
     </Container>
   )
 }
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: #e8edf1;
 `
 

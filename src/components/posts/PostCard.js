@@ -86,7 +86,7 @@ export default function PostCard(props) {
           />
         }
         action={
-          (user.id === user_id || props.group.memberType === 'admin') &&
+          (user.id === user_id || (props.group && props.group.memberType === 'admin')) &&
           !window.location.pathname.includes('/post') && (
             <IconButton onClick={e => deletePost(e)} aria-label='settings'>
               <DeleteOutline />

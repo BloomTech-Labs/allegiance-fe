@@ -38,15 +38,8 @@ const GroupPage = props => {
       dispatch(fetchUserMembership({ group_id: id, user_id: user.id }))
     }
     fetchData()
-
-    socket.on('replyPost', data => {
-      console.log('data:', data)
-      // function that updates replies
-      dispatch(receiveGroupReply(data))
-    })
     return () => {
       dispatch({ type: types.CLEAR_POSTS })
-      socket.off('replyPost')
     }
   }, [user, dispatch, id])
 
