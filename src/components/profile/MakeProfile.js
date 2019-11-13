@@ -38,9 +38,14 @@ const MakeProfile = props => {
     try {
       dispatch({ type: types.UPDATE_USER_REQUEST })
       if (image) values.image = image
-      Object.keys(values).forEach(
-        key => values[key] === '' && (values[key] = null)
-      )
+      Object.keys(values).forEach(key => {
+        const val = values[key]
+        if (val === '' || !val) {
+          values[key] = null
+        } else {
+          values[key] = val.replace(/\s\s+/g, ' ').trim()
+        }
+      })
 
       const users = await axiosWithAuth([token]).get(`/users`)
 
@@ -85,6 +90,25 @@ const MakeProfile = props => {
     setValues(userInfo)
     // Mixpanel.activity(loggedInUser.id, 'Start Edit Profile')
   }, [setValues, loggedInUser])
+
+  const validateInput = value => {
+    if (value.test(new RegExp('^s['))) {
+      return false
+    } else {
+      return 'Please enter a valid value.'
+    }
+  }
+
+  // const validateSubmit = evt => {
+  //   let error = false;
+  //   if (values.last_name) {
+
+  //   }
+
+  //   if (!error) {
+  //     handleSubmit(evt)
+  //   }
+  // }
 
   return (
     <FormHolder>
