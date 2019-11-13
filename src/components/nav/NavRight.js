@@ -89,6 +89,7 @@ const StyledNavRight = styled.div`
     height: %100;
     list-style-type: none;
     justify-content: space-between;
+    align-items: center;
     width: 120px;
     li {
       list-style-type: none;
@@ -105,14 +106,17 @@ const StyledNavRight = styled.div`
       img {
         border-radius: 50%;
         width: 4.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
 `
-const BellWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`
+const BellWrapper = styled.div``
 
 const NavIcon = styled(Icon)`
   color: #f0f0f0;

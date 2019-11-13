@@ -123,6 +123,7 @@ const SearchFormWrapper = styled.div`
   margin: 0 auto;
   width: 80vw;
   // position: relative;
+  margin-bottom: 10px;
 `
 
 const SearchForm = styled.form`

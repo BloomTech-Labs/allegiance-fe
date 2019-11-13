@@ -52,7 +52,7 @@ const Feed = () => {
       {/* <Header>Your feed is currently empty...</Header>
       <br /> */}
       <Link to='/groups'>
-        <Header>Select a group to join!</Header>
+        <JoinBtn>Select a group to join!</JoinBtn>
       </Link>
       <Img src={undrawFans} />
     </FansDiv>
@@ -123,6 +123,23 @@ const Header = styled.h1`
   padding: 10px;
   font-size: 3rem;
   font-weight: 700;
+`
+
+const JoinBtn = styled.button`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  &:hover {
+    background: #4483cd;
+    cursor: pointer;
+  }
+  height: 54px;
+  width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  background: #ed5959;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
 `
 
 export default Feed

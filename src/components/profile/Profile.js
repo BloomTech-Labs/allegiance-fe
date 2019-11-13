@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
-import * as types from 'actions/actionTypes'
+import * as types from './store/profileTypes'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
@@ -14,12 +14,13 @@ import Default from '../../assets/walter-avi.png'
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const loggedInGroups = useSelector(state => state.myGroups)
+  console.log('loggedInUser', loggedInUser)
+  console.log('loggedInGroups', loggedInGroups)
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
   const dispatch = useDispatch()
 
-  //Fetches Auth0 token for axios call
   const [token] = useGetToken()
 
   useEffect(() => {
@@ -39,7 +40,6 @@ const Profile = props => {
           console.log("There was an issue retrieving the user's profile.")
         }
       }
-
       fetchData()
     }
   }, [loggedInUser, token, dispatch])
@@ -107,6 +107,7 @@ const Profile = props => {
               type='allegiance'
               default={Default}
             />
+            <h2>Posts</h2>
           </>
         </InfoHolder>
       </div>
