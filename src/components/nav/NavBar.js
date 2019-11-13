@@ -24,6 +24,7 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
+import { receiveFeedLike, receiveFeedDislike, receiveFeedPost, receiveFeedReply } from 'actions/index'
 
 const NavBar = props => {
   const { location } = props
@@ -124,12 +125,23 @@ const NavBar = props => {
         } else {
           dispatch(receiveGroupPost(data))
         }
+      else if (location.pathname === `/home`) {
+        if (data.type === 'like') {
+          dispatch(receiveFeedLike(data))
+        } else if (data.type === 'dislike') {
+          dispatch(receiveFeedDislike(data))
+        } else if (data.post) {
+          dispatch(receiveFeedPost(data))
+        }
+      }
     })
     socket.on('replyPost', data => {
       if (location.pathname === `/group/${data.room}`) {
         dispatch(receiveGroupReply(data))
-      } else {
+      } else if (location.pathname === `/post/${data.reply.post_id}`){
         dispatch(receivePostReply(data))
+      } else if (location.pathname === `/home`) {
+        dispatch(receiveFeedReply(data))
       }
     })
     return () => {

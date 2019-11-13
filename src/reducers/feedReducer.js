@@ -55,7 +55,7 @@ export const feedReducer = (state = initialState, action) => {
     case types.RECEIVE_FEED_POST_SUCCESS:
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+        posts: [action.payload, ...state.posts],
       }
     default:
       return state

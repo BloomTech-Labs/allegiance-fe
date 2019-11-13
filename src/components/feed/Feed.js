@@ -59,7 +59,12 @@ const Feed = () => {
   //   Loading{' '}
   // </Loader>
   // Filter feed for activity by user
-  const filteredFeed = feed.filter(act => userId !== act.user_id)
+  const filteredFeed = feed.filter(act => userId !== act.user_id).map(act => {
+    return {
+      ...act,
+      image: act.user_image || act.image
+    }
+  })
 
   return feed.length === 0 ? (
     <FansDiv>
