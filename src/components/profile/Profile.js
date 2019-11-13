@@ -10,20 +10,16 @@ import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
+import ProfilePostsCard from './ProfilePostsCard'
 
 const Profile = props => {
+  const dispatch = useDispatch()
+  const [token] = useGetToken()
   const profile = useSelector(state => state.profile)
-
-  const loggedInGroups = useSelector(state => state.profile.groups)
-  const loggedInPosts = useSelector(state => state.profile.posts)
-
   const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
-  const dispatch = useDispatch()
-
-  const [token] = useGetToken()
 
   useEffect(() => {
     if (profile && token) {
@@ -95,8 +91,16 @@ const Profile = props => {
               type='allegiance'
               default={Default}
             />
-            <h2>Posts</h2>
-            <h1>riiiiight herere lists</h1>
+            <H2>Posts</H2>
+            <div>
+              {profile.posts > 0 ? (
+                profile.posts.map(post => {
+                  return <ProfilePostsCard post={post} id={post.id} />
+                })
+              ) : (
+                <h2>User has no posts.</h2>
+              )}
+            </div>
           </>
         </InfoHolder>
       </div>
