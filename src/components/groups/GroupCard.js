@@ -39,24 +39,18 @@ const GroupInfoCard = styled.div`
   display: flex;
   flex-direction: column;
   height: 28vh;
-  margin: 1%;
-  width: 40%;
+  margin: 10px;
+  width: 40%
+  max-width: 250px
+  min-width: 175px
   background-color: white;
-  min-width: ${props => props.minWidth || 'none'};
-  box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
   transition: 0.3s;
-  border-radius: 5%;
-
+  border-radius: 2%;
   &:hover {
-    box-shadow: 5px 8px 16px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(33, 33, 33, 0.6);
   }
 
-  @media ${device.tablet} {
-    width: 25%;
-  }
-  @media ${device.laptop} {
-    width: 15%;
-  }
 `
 
 const CardContainer = styled.div`
@@ -64,17 +58,20 @@ const CardContainer = styled.div`
 `
 
 const CardImage = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+  // max-width: 100%;
+  // max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 5% 5% 0 0;
+  border-radius: 2% 2% 0 0;
 `
 
 const TopDiv = styled.div`
   display: flex;
   justify-content: center;
   height: 17vh;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid black;
+  width: 100%;
 `
 const MiddleDiv = styled.div`
   display: flex;
@@ -82,7 +79,6 @@ const MiddleDiv = styled.div`
   justify-content: center;
   text-align: center;
   height: 7vh;
-  border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
   color: black;
   font-weight: heavy;
@@ -100,7 +96,6 @@ const MiddleDiv = styled.div`
   }
 `
 const BottomDiv = styled.div`
-  // border: 1px solid red;
   display: flex;
   height: 4vh;
   color: black;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Loader, Comment } from 'semantic-ui-react'
+import { Loader, Comment, Input } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
 import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
@@ -64,9 +64,10 @@ const ReplyContainer = props => {
       margin: theme.spacing(1),
     },
     button: {
-      margin: theme.spacing(1),
       backgroundColor: '#1A4570',
-      marginTop: '15px',
+      height: '35px',
+      width: '100px',
+      marginLeft: '10px',
     },
   }))
 
@@ -136,22 +137,14 @@ const ReplyContainer = props => {
       {(membership === 'admin' || membership === 'member') && (
         <ContainerBottom>
           <ReplyForm onSubmit={handleSubmit}>
-            <InputDiv>
-              <TextField
-                id='outlined-textarea'
-                required
-                label='Reply to post'
-                placeholder='Reply...'
-                multiline
-                fullWidth
-                className={classes.textField}
-                margin='normal'
-                variant='outlined'
-                onChange={handleChange}
-                name='reply_content'
-                value={values.reply_content || ''}
-              />
-            </InputDiv>
+            <Input
+              placeholder='Add a reply'
+              onChange={handleChange}
+              name='reply_content'
+              value={values.reply_content || ''}
+              required
+              style={{ width: '75%' }}
+            />
             <Button
               size='large'
               variant='contained'
@@ -188,7 +181,7 @@ const ReplyViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 87vh;
 `
 const ReplyCardsContainer = styled.div`
@@ -210,7 +203,7 @@ const ContainerBottom = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 
 const ReplyForm = styled.form`
@@ -219,7 +212,7 @@ const ReplyForm = styled.form`
   justify-content: center;
   width: 801px;
 
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   align-items: center;
 `
 

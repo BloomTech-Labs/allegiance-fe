@@ -73,11 +73,11 @@ const PostListContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   // padding-bottom: 15%;
 `
 const PostsWrapper = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 const PaperContainer = styled(Paper)`
   padding: 3.5rem;

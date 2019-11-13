@@ -70,14 +70,7 @@ const NearbyGroups = props => {
       <NearbyGroupsContainer>
         {data.groups.length > 0 &&
           data.groups.map(group => {
-            return (
-              <GroupCard
-                minWidth='40%'
-                group={group}
-                key={group.id}
-                nearby={true}
-              />
-            )
+            return <GroupCard group={group} key={group.id} nearby={true} />
           })}
         {data.groups.length === 0 && (
           <h4 style={{ margin: '3% auto' }}>
@@ -127,14 +120,15 @@ const SectionContainer = styled.div`
 `
 
 const NearbyGroupsContainer = styled.div`
-  width: 98%;
+  width: 100%;
   display: flex;
   flex-wrap: nowrap;
-  margin-left: 1%;
+  overflow-x: auto;
   padding-bottom: 3%
   &::-webkit-scrollbar {
     display: none;
   }
+  margin-left: 5%;
 `
 
 export default NearbyGroups

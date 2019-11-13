@@ -133,7 +133,7 @@ const MakeAllegiance = props => {
   )
 }
 const FormHolder = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 90vh;
   @media (max-width: 320px) {
     height: 87vh;
