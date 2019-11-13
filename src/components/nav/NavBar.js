@@ -24,7 +24,7 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
-import { receiveFeedLike, receiveFeedDislike, receiveFeedPost, receiveFeedReply } from 'actions/index'
+import { receiveFeedLike, receiveFeedDislike, receiveFeedPost, receiveFeedReply } from '../feed/actions/index'
 
 const NavBar = props => {
   const { location } = props

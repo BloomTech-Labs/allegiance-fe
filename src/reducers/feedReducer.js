@@ -1,4 +1,5 @@
-import * as types from 'actions/actionTypes'
+import * as indexTypes from '../actions/actionTypes';
+import * as feedTypes from '../components/feed/actions/actionTypes'
 
 const initialState = {
   posts: [],
@@ -6,13 +7,13 @@ const initialState = {
 
 export const feedReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.FETCH_FEED_SUCCESS:
+    case feedTypes.FETCH_FEED_SUCCESS:
       return {
         ...state,
         posts: action.payload,
       }
-    case types.RECEIVE_FEED_LIKE_SUCCESS:
-    case types.POST_LIKE_SUCCESS:
+    case feedTypes.RECEIVE_FEED_LIKE_SUCCESS:
+    case indexTypes.POST_LIKE_SUCCESS:
       return {
         ...state,
         posts: state.posts.map(post => {
@@ -25,8 +26,8 @@ export const feedReducer = (state = initialState, action) => {
           return post;
         })
       }
-    case types.RECEIVE_FEED_DISLIKE_SUCCESS:
-    case types.POST_UNLIKE_SUCCESS:
+    case feedTypes.RECEIVE_FEED_DISLIKE_SUCCESS:
+    case indexTypes.POST_UNLIKE_SUCCESS:
       return {
         ...state,
         posts: state.posts.map(post => {
@@ -39,7 +40,7 @@ export const feedReducer = (state = initialState, action) => {
           return post;
         })
       }
-    case types.RECEIVE_FEED_REPLY_SUCCESS:
+    case feedTypes.RECEIVE_FEED_REPLY_SUCCESS:
       return {
         ...state,
         posts: state.posts.map(post => {
@@ -52,7 +53,7 @@ export const feedReducer = (state = initialState, action) => {
           return post;
         })
       }
-    case types.RECEIVE_FEED_POST_SUCCESS:
+    case feedTypes.RECEIVE_FEED_POST_SUCCESS:
       return {
         ...state,
         posts: [action.payload, ...state.posts],

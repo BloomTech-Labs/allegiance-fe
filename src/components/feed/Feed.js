@@ -8,13 +8,7 @@ import { Loader } from 'semantic-ui-react'
 import ContentFeedCard from './ContentFeedCard'
 import LikeFeedCard from './LikeFeedCard'
 import { Link } from 'react-router-dom'
-import { 
-  fetchFeed,
-  receiveFeedReply,
-  receiveFeedLike,
-  receiveFeedDislike,
-  receiveFeedPost
-} from '../../actions/index'
+import { fetchFeed } from './actions/index'
 
 import undrawFans from '../../assets/undraw/undrawFans.svg'
 import PostCard from 'components/posts/PostCard'
@@ -23,7 +17,6 @@ const Feed = () => {
   const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
   const feed = useSelector(state => state.feedReducer.posts)
-  const socket = useSelector(state => state.socketReducer.socket)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,22 +28,6 @@ const Feed = () => {
       }
       console.log(data);
       dispatch(fetchFeed(data))
-    }
-    console.log('register feed sockets')
-    socket.on('feed', data => {
-      console.log('feed', data)
-      if (data.type === 'like') {
-        dispatch(receiveFeedLike(data))
-      } else if (data.type === 'dislike') {
-        dispatch(receiveFeedDislike(data))
-      } else if (data.post) {
-        dispatch(receiveFeedPost(data))
-      } else if (data.reply) {
-        dispatch(receiveFeedReply(data))
-      }
-    })
-    return () => {
-      socket.off('feed')
     }
   }, [userGroups])
 
