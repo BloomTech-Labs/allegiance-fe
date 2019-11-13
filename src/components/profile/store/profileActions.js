@@ -1,12 +1,12 @@
-import React, { useSelector } from 'react'
+import React from 'react'
 import axios from 'components/utils/axiosWithoutAuth'
 import * as types from './profileTypes'
 
-export const fetchProfile = loggedInUser => async dispatch => {
+export const fetchProfile = id => async dispatch => {
+  dispatch({ type: types.FETCH_PROFILE_REQUEST })
   try {
-    dispatch({ type: types.FETCH_PROFILE_REQUEST })
-    const result = await axios.post('/auth', {
-      email: loggedInUser.email,
+    const result = await axios.post('/auth/profile', {
+      id: id,
     })
     dispatch({
       type: types.FETCH_PROFILE_SUCCESS,
@@ -15,5 +15,20 @@ export const fetchProfile = loggedInUser => async dispatch => {
   } catch (err) {
     dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
     console.log("There was an issue retrieving the user's profile.")
+  }
+}
+
+export const fetchProfilePosts = id => async dispatch => {
+  dispatch({ type: types.FETCH_PROFILE_POSTS_REQUEST })
+  // const userId = data.userId
+  try {
+    const result = await axios.get(`/posts/user/${id}`)
+    dispatch({
+      type: types.FETCH_PROFILE_POSTS_SUCCESS,
+      payload: result.data.postsLoaded,
+    })
+  } catch (err) {
+    dispatch({ type: types.FETCH_PROFILE_POSTS_FAILURE, payload: err })
+    console.log("There was an issue retrieving the user's posts.")
   }
 }

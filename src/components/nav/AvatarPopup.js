@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 export const AvatarPopup = ({ user }) => {
+  const id = user.id
   const { logout } = useAuth0()
   const logoutWithRedirect = () =>
     logout({
@@ -15,12 +16,12 @@ export const AvatarPopup = ({ user }) => {
       <div className='arrow-up'></div>
       <div className='user-details'>
         <div className='avatar-wrapper'>
-          <Link to='/profile'>
+          <Link to={`/profile/${id}`}>
             <img className='avatar-image' src={user.image} alt='avatar' />
           </Link>
         </div>
         <div className='user-info'>
-          <Link to='/profile' className='username'>
+          <Link to={`/profile/${id}`} className='username'>
             {user.username}
           </Link>
         </div>

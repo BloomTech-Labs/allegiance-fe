@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
-import { fetchProfile } from './store/profileActions'
+import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
@@ -14,8 +14,7 @@ import Default from '../../assets/walter-avi.png'
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const loggedInGroups = useSelector(state => state.myGroups)
-  console.log('loggedInUser', loggedInUser)
-  console.log('loggedInGroups', loggedInGroups)
+  const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
@@ -25,7 +24,8 @@ const Profile = props => {
 
   useEffect(() => {
     if (loggedInUser && token) {
-      dispatch(fetchProfile(loggedInUser))
+      dispatch(fetchProfile(id))
+      dispatch(fetchProfilePosts(id))
     }
   }, [loggedInUser, token, dispatch])
 
@@ -93,6 +93,7 @@ const Profile = props => {
               default={Default}
             />
             <h2>Posts</h2>
+            <h1>riiiiight herere lists</h1>
           </>
         </InfoHolder>
       </div>

@@ -139,7 +139,7 @@ function App(props) {
             <PrivateRoute path='/creategroup' component={CreateGroup} />
             <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
             <PrivateRoute path='/notifications' component={Notifications} />
-            <PrivateRoute path='/profile' component={Profile} />
+            <PrivateRoute path='/profile/:id' component={Profile} />
             <Route path='/group/:id' component={GroupPage} />
             <PrivateRoute
               path='/allegiance/:id'

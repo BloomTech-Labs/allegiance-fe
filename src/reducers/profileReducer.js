@@ -4,6 +4,7 @@ const initialState = {
   allegiances: [],
   groups: [],
   error: [],
+  posts: [],
 }
 
 export const profileReducer = (state = initialState, action) => {
@@ -17,6 +18,16 @@ export const profileReducer = (state = initialState, action) => {
         allegiances: action.payload.basicAllegianceInfo,
       }
     case types.FETCH_PROFILE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      }
+    case types.FETCH_PROFILE_POSTS_SUCCESS:
+      return {
+        ...state,
+        posts: action.payload,
+      }
+    case types.FETCH_PROFILE_POSTS_FAILURE:
       return {
         ...state,
         error: action.payload,
