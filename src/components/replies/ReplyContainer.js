@@ -188,7 +188,7 @@ const ReplyViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 87vh;
 `
 const ReplyCardsContainer = styled.div`
@@ -210,7 +210,7 @@ const ContainerBottom = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 
 const ReplyForm = styled.form`
@@ -219,7 +219,7 @@ const ReplyForm = styled.form`
   justify-content: center;
   width: 801px;
 
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   align-items: center;
 `
 

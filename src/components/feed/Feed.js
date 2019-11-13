@@ -75,7 +75,7 @@ const Feed = () => {
 }
 
 const Container = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 
 const MyGroups = styled(Paper)`
@@ -88,7 +88,7 @@ const GroupTitleHolder = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   h3 {
     margin: 0 1%;
   }

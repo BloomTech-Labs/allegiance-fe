@@ -143,7 +143,7 @@ const Notifications = () => {
 }
 
 const Container = styled.div`
-  background-color: whitesmoke;
+  background-color: #e8edf1;
   display: flex;
   flex-direction: column;
 `

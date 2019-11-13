@@ -60,14 +60,16 @@ const GroupPage = props => {
 
   return (
     <GroupPageContainer>
-      <PaperContainer elevation={3}>
-        <GroupInfo
-          group={group}
-          members={group.members}
-          allegiances={group.allegiances}
-          requests={group.reqs}
-        />
-      </PaperContainer>
+      <PaperWrapper>
+        <PaperContainer elevation={3}>
+          <GroupInfo
+            group={group}
+            members={group.members}
+            allegiances={group.allegiances}
+            requests={group.reqs}
+          />
+        </PaperContainer>
+      </PaperWrapper>
       {group.privacy_setting === 'public' ||
       memberType === 'member' ||
       memberType === 'admin' ? (
@@ -87,18 +89,25 @@ const GroupPage = props => {
     </GroupPageContainer>
   )
 }
+
+const PaperWrapper = styled.div`
+  display: flex
+  justify-content: center
+`
 const GroupPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 87vh;
-  justify-content: flex-start;
 `
 const PaperContainer = styled(Paper)`
   padding-top: 25px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
+  width: 95%;
+  max-width: 850px;
 `
 export default GroupPage

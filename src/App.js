@@ -155,7 +155,7 @@ function App(props) {
   )
 }
 const AppContainer = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 100vh;
 `
 export default withRouter(App)
