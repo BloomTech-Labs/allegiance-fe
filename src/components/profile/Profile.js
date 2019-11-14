@@ -63,13 +63,14 @@ const Profile = props => {
           )}
         </ImageCrop>
         <InfoHolder>
+          <Bio>{profile.username && <h1>{profile.bio}</h1>}</Bio>
           <Name>
             {profile.username && (
               <Typography
                 variant='h5'
                 noWrap={true}
                 style={{ fontWeight: 'bold' }}
-              >{`${profile.username}`}</Typography>
+              >{`${profile.first_name} ${profile.last_name}`}</Typography>
             )}
           </Name>
           <Name>
@@ -96,7 +97,7 @@ const Profile = props => {
               )}
             </div>
             <DivAllegiance>
-              <H2>MY ALLEGIANCES</H2>
+              <H2>ALLEGIANCES</H2>
             </DivAllegiance>
 
             <ProfileAllegiances
@@ -146,6 +147,13 @@ const InfoHolder = styled.div`
   }
 `
 const Name = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 10px;
+`
+const Bio = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
