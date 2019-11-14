@@ -177,6 +177,7 @@ const JoinBtn = styled.button`
   height: 54px;
   width: 192px;
   border: none;
+  margin-bottom: 10px
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   color: white;
   background: #ed5959;

@@ -3,6 +3,7 @@ import { Segment, Loader, Tab } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
+import styled from 'styled-components'
 
 import AllegianceTab from './AllegianceTab'
 import { Link } from 'react-router-dom'
@@ -14,6 +15,7 @@ const AddAllegiance = props => {
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
+  const id = props.id
   const dispatch = useDispatch()
 
   //Fetches Auth0 token for axios call
@@ -61,10 +63,11 @@ const AddAllegiance = props => {
       menuItem: { icon: 'hockey puck', key: 'NHL' },
       render: () => <AllegianceTab allegiances={data.NHL} />,
     },
-    {
-      menuItem: 'Other',
-      render: () => <AllegianceTab allegiances={data.Other} />,
-    },
+    // {
+    // This throws an error on click
+    //   menuItem: 'Other',
+    //   render: () => <AllegianceTab allegiances={data.Other} />,
+    // },
     {
       menuItem: 'Mine',
       render: () => <AllegianceTab allegiances={loggedInAllegiances} />,
@@ -79,15 +82,48 @@ const AddAllegiance = props => {
     )
 
   return (
-    <Segment
-      raised
-      color='blue'
-      style={{ width: '90%', margin: 'auto', marginBottom: '15%' }}
-    >
-      <Tab menu={{ borderless: true, pointing: true }} panes={panes} />
-      <Link to='/makeallegiance'>Can't find your Allegiance? Click here!</Link>
-    </Segment>
+    <>
+      {/* <Link */}
+      <Segment
+        raised
+        color='blue'
+        style={{ width: '90%', margin: 'auto', marginBottom: '15%' }}
+      >
+        <Tab menu={{ borderless: true, pointing: true }} panes={panes} />
+        <Link to='/makeallegiance'>
+          Can't find your Allegiance? Click here!
+        </Link>
+      </Segment>
+      <Link to={`/profile/${id}`}>
+        <ButtonDiv>
+          <JoinBtn>Back to Profile</JoinBtn>
+        </ButtonDiv>
+      </Link>
+    </>
   )
 }
+
+const ButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const JoinBtn = styled.button`
+  &:hover {
+    background: #4483cd;
+    cursor: pointer;
+  }
+  height: 54px;
+  width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  background: #ed5959;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  @media (max-width: 500px) {
+    width: 90%;
+  }
+`
 
 export default AddAllegiance
