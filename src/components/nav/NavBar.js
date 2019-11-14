@@ -4,8 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import useGetToken from '../utils/useGetToken'
 import NavLeft from './NavLeft'
 import NavRight from './NavRight'
+import UserNav from './UserNav'
+import Navigation from './Navigation'
 import styled from 'styled-components'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Input, Menu } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -24,7 +26,12 @@ import {
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
-import { receiveFeedLike, receiveFeedDislike, receiveFeedPost, receiveFeedReply } from '../feed/actions/index'
+import {
+  receiveFeedLike,
+  receiveFeedDislike,
+  receiveFeedPost,
+  receiveFeedReply,
+} from '../feed/actions/index'
 
 const NavBar = props => {
   const { location } = props
@@ -33,7 +40,7 @@ const NavBar = props => {
     state => state.userReducer.loggedInUser.notification_check
   )
   const socket = useSelector(state => state.socketReducer.socket)
-  const notifications = useSelector(state => state.notifyReducer.notifications)
+  const { notifications, unread } = useSelector(state => state.notifyReducer)
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const { loading } = useAuth0()
@@ -138,7 +145,7 @@ const NavBar = props => {
     socket.on('replyPost', data => {
       if (location.pathname === `/group/${data.room}`) {
         dispatch(receiveGroupReply(data))
-      } else if (location.pathname === `/post/${data.reply.post_id}`){
+      } else if (location.pathname === `/post/${data.reply.post_id}`) {
         dispatch(receivePostReply(data))
       } else if (location.pathname === `/home`) {
         dispatch(receiveFeedReply(data))
@@ -171,12 +178,41 @@ const NavBar = props => {
     )
   }
   return (
-    <Sticky>
-      <NavLeft />
-      <NavRight user={user} />
-    </Sticky>
+    // <Sticky>
+    <StickyNav pointing secondary>
+      <StyledMenuItem style={{ width: '30%' }}>
+        <Input
+          className='icon'
+          icon='search'
+          placeholder='Search for a group...'
+        />
+      </StyledMenuItem>
+      <Menu.Menu position='right'>
+        <Navigation />
+        <UserNav user={user} unread={unread} />
+      </Menu.Menu>
+    </StickyNav>
+    //   {/* <NavLeft />
+    // //   <NavRight user={user} /> */}
+    // </Sticky>
   )
 }
+
+const StickyNav = styled(Menu)`
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  font-family: 'Roboto', sans-serif !important;
+  background-color: #4483cd !important;
+  border-radius: 0px !important;
+  border: none !important;
+  font-size: 1.4rem !important;
+`
+
+const StyledMenuItem = styled(Menu.Item)`
+  align-self: center !important;
+`
 
 const Sticky = styled.nav`
   position: sticky;

@@ -29,8 +29,6 @@ const NavRight = props => {
         <ul>
           <li>
             <NavLink to='/notifications'>
-              {/* Placeholder to keep alignment of icon center as desired */}
-              {/* <PlaceHolder /> */}
               <BellWrapper>
                 <NavIcon
                   size='large'
@@ -40,14 +38,9 @@ const NavRight = props => {
                 />
               </BellWrapper>
 
-              {/* Notification count only shows when not navigated to notification 
-                  component and when there is more than zero notifications to show */}
               {pathname !== '/notifications' && notifyReducer.unread > 0 && (
                 <NotificationNumber>{notifyReducer.unread}</NotificationNumber>
               )}
-              {/* Placeholder to keep alignment of icon center as desired */}
-              {/* {(pathname === '/notifications' ||
-                notifyReducer.notifications.length === 0) && <PlaceHolder />} */}
             </NavLink>
           </li>
           <li className='avatar'>
@@ -66,15 +59,12 @@ export default withRouter(NavRight)
 
 const pulse = keyframes`
   0% {
-
     box-shadow: 0 0 0 0 rgba(255, 0, 34, 0.4);
   }
   70% {
-
     box-shadow: 0 0 0 10px rgba(255, 0, 34, 0);
   } 
   100% {
-
     box-shadow: 0 0 0 0 rgba(255, 0, 34, 0);
   }
 }
