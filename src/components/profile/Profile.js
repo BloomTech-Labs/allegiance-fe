@@ -86,9 +86,9 @@ const Profile = props => {
                 marginBottom: '5px',
               }}
             >
-              <button>
-                <Link to='/addallegiance'>Select your allegiances</Link>
-              </button>
+              <Link to='/addallegiance'>
+                <JoinBtn>Select your allegiances</JoinBtn>
+              </Link>
             </div>
 
             <H2>MY ALLEGIANCES</H2>
@@ -114,7 +114,6 @@ const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
 `
-
 const Banner = styled.div``
 
 const BannerImage = styled.img`
@@ -123,7 +122,6 @@ const BannerImage = styled.img`
   max-height: 225px;
   object-fit: cover;
 `
-
 const InfoHolder = styled.div`
   margin-top: 5%;
   .select {
@@ -135,7 +133,6 @@ const InfoHolder = styled.div`
     align-items: center;
   }
 `
-
 const Name = styled.div`
   display: flex;
   flex-direction: row;
@@ -143,7 +140,6 @@ const Name = styled.div`
   overflow: hidden;
   margin-bottom: 10px;
 `
-
 const ImageCrop = styled.div`
   width: 150px;
   height: 150px;
@@ -166,7 +162,6 @@ const H2 = styled.h2`
   margin-top: 10px;
   margin-bottom: 10px;
 `
-
 const H3 = styled.h3`
   padding-left: 20px;
   font-size: 3rem;
@@ -174,5 +169,21 @@ const H3 = styled.h3`
   margin-top: 0;
   margin-bottom: 0;
 `
-
+const JoinBtn = styled.button`
+  &:hover {
+    background: #4483cd;
+    cursor: pointer;
+  }
+  height: 54px;
+  width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  background: #ed5959;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  @media (max-width: 500px) {
+    width: 90%;
+  }
+`
 export default Profile
