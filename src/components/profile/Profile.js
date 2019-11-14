@@ -11,20 +11,17 @@ import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
+import ProfilePostsCard from './ProfilePostsCard'
 
 const Profile = props => {
+  const dispatch = useDispatch()
+  const [token] = useGetToken()
   const profile = useSelector(state => state.profile)
-
-  const loggedInGroups = useSelector(state => state.profile.groups)
-  const loggedInPosts = useSelector(state => state.profile.posts)
-
+  const posts = profile.posts
   const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
-  const dispatch = useDispatch()
-
-  const [token] = useGetToken()
 
   useEffect(() => {
     if (profile && token) {
