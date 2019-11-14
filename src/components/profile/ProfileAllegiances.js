@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 
 const ProfileAllegiances = props => {
-  const name = useSelector(state => state.userReducer.loggedInUser.first_name)
   const mixpanelCheck = link => {
     if (props.type === 'group') {
       props.history.push(link)
@@ -56,7 +55,7 @@ const ProfileAllegiances = props => {
       {props.content.length === 0 && (
         <DivAllegiance>
           <Join>
-            <h4>{`${name} doesn't belong to any allegiance's yet.`}</h4>
+            <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
           </Join>
         </DivAllegiance>
       )}

@@ -31,7 +31,7 @@ const Profile = props => {
       dispatch(fetchProfile(id))
       dispatch(fetchProfilePosts(id))
     }
-  }, [token, dispatch])
+  }, [id, token, dispatch])
 
   if (!profile) {
     return (
@@ -100,6 +100,7 @@ const Profile = props => {
             </DivAllegiance>
 
             <ProfileAllegiances
+              name={profile.first_name}
               content={loggedInAllegiances || []}
               type='allegiance'
               default={Default}
