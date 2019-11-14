@@ -3,7 +3,7 @@ import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
-import SearchBar from './groups/SearchBar'
+import NavSearch from './nav/NavSearch'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
@@ -61,7 +61,7 @@ const Landing = props => {
       </Top>
       <Middle>
         <LeftMiddle>
-          <SearchBar {...props} />
+          <NavSearch {...props} />
         </LeftMiddle>
         <RightMiddle>
           <RegisterBtn onClick={() => loginWithRedirect({})}>
@@ -139,7 +139,6 @@ const RightTop = styled.div`
   height: 15px;
 `
 const Middle = styled.div`
-  
   display: flex;
   justify-content: space-between;
   @media (max-width: 800px) {
@@ -237,9 +236,9 @@ const H1 = styled.h1`
 const RegisterBtn = styled.button`
   &:hover {
     background: #ed5959;
-    cursor: pointer
+    cursor: pointer;
   }
-  
+
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1;
   width: 163px;

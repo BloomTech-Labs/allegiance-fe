@@ -31,9 +31,9 @@ const NavItem = styled.span`
 padding-top: 0
 padding-bottom: 0
 
-  // &:hover {
-  //   color: black !important
-  // }
+  &:hover {
+    text-shadow:0px 0px 2px #fff; !important
+  }
   // &:before, &:after {
   //     position: absolute !important
   //     left: 0px !important

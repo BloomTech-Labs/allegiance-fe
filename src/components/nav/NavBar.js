@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
 import useGetToken from '../utils/useGetToken'
-import NavLeft from './NavLeft'
-import NavRight from './NavRight'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
+import NavSearch from './NavSearch'
 import styled from 'styled-components'
 import { Loader, Input, Menu } from 'semantic-ui-react'
 import {
@@ -180,12 +179,8 @@ const NavBar = props => {
   return (
     // <Sticky>
     <StickyNav pointing secondary>
-      <StyledMenuItem style={{ width: '30%' }}>
-        <Input
-          className='icon'
-          icon='search'
-          placeholder='Search for a group...'
-        />
+      <StyledMenuItem style={{ width: '25%' }}>
+        <NavSearch />
       </StyledMenuItem>
       <Menu.Menu position='right'>
         <Navigation />

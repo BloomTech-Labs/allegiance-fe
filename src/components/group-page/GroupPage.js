@@ -93,7 +93,7 @@ const GroupPageContainer = styled.div`
   justify-content: center;
   width: 100%;
   background-color: #e8edf1;
-  min-height: 87vh;
+  // min-height: 87vh;
 `
 const PaperContainer = styled(Paper)`
   padding-top: 25px;
