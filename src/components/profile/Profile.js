@@ -4,7 +4,7 @@ import { Icon, Loader } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ProfileAllegiances from './ProfileAllegiances'
-import PostCard from '../posts/PostCard'
+import ProfilePostCard from '../profile/ProfilePostCard'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
 import { fetchProfile, fetchProfilePosts } from './store/profileActions'
@@ -105,7 +105,7 @@ const Profile = props => {
             />
             <div className='lower-div'>
               {profile.posts.map(post => {
-                return <PostCard post={post} />
+                return <ProfilePostCard post={post} />
               })}
             </div>
           </>
