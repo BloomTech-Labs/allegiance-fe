@@ -17,7 +17,10 @@ const Profile = props => {
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const profile = useSelector(state => state.profile)
+  const login = useSelector(state => state.userReducer.loggedInUser.id)
   const posts = profile.posts
+  const user = profile.id
+  console.log('user::::', user)
   const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
@@ -86,9 +89,11 @@ const Profile = props => {
                 marginBottom: '5px',
               }}
             >
-              <Link to='/addallegiance'>
-                <JoinBtn>Select your allegiances</JoinBtn>
-              </Link>
+              {user === login && (
+                <Link to='/addallegiance'>
+                  <JoinBtn>Select your allegiances</JoinBtn>
+                </Link>
+              )}
             </div>
 
             <H2>MY ALLEGIANCES</H2>
