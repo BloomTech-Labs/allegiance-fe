@@ -54,13 +54,20 @@ const ProfileAllegiances = props => {
         ))}
 
       {props.content.length === 0 && (
-        <Join>
-          <h4>{`${name} doesn't belong to any allegiance's yet.`}</h4>
-        </Join>
+        <DivAllegiance>
+          <Join>
+            <h4>{`${name} doesn't belong to any allegiance's yet.`}</h4>
+          </Join>
+        </DivAllegiance>
       )}
     </LogoHolder>
   )
 }
+
+const DivAllegiance = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const LogoHolder = styled.div`
   width: 100%;

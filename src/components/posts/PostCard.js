@@ -93,7 +93,11 @@ export default function PostCard(props) {
             </IconButton>
           )
         }
-        title={`${first_name} ${last_name}`}
+        title={
+          <Link to={`/profile/${user_id}`}>
+            {first_name} {last_name}
+          </Link>
+        }
         titleTypographyProps={{ fontSize: 25 }}
         subheader={
           <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>

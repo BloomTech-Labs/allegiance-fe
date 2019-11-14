@@ -95,8 +95,9 @@ const Profile = props => {
                 </Link>
               )}
             </div>
-
-            <H2>MY ALLEGIANCES</H2>
+            <DivAllegiance>
+              <H2>MY ALLEGIANCES</H2>
+            </DivAllegiance>
 
             <ProfileAllegiances
               content={loggedInAllegiances || []}
@@ -114,6 +115,11 @@ const Profile = props => {
     </ProfileContainer>
   )
 }
+
+const DivAllegiance = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -164,8 +170,9 @@ const ProfileImage = styled.img`
 `
 const H2 = styled.h2`
   font-size: 2rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-weight: bold;
 `
 const H3 = styled.h3`
   padding-left: 20px;
