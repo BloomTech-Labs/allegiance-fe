@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
-const MyAllegianceGroups = props => {
+const ProfileAllegiances = props => {
   const name = useSelector(state => state.userReducer.loggedInUser.first_name)
   const mixpanelCheck = link => {
     if (props.type === 'group') {
@@ -55,7 +55,7 @@ const MyAllegianceGroups = props => {
 
       {props.content.length === 0 && (
         <Join>
-          <h4>{`${name} doesn't belong to any groups yet.`}</h4>
+          <h4>{`${name} doesn't belong to any allegiance's yet.`}</h4>
         </Join>
       )}
     </LogoHolder>
@@ -99,4 +99,4 @@ const GroupLogo = styled.img`
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `
 
-export default withRouter(MyAllegianceGroups)
+export default withRouter(ProfileAllegiances)

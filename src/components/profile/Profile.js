@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Icon, Loader } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import MyAllegianceGroups from './MyAllegianceGroups'
+import ProfileAllegiances from './ProfileAllegiances'
 import PostCard from '../posts/PostCard'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
@@ -11,7 +11,7 @@ import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
-import ProfilePostsCard from './ProfilePostsCard'
+import ProfilePostsCard from './ProfileAllegiances'
 
 const Profile = props => {
   const dispatch = useDispatch()
@@ -86,12 +86,14 @@ const Profile = props => {
                 marginBottom: '5px',
               }}
             >
-              <Link to='/addallegiance'>Select your allegiances</Link>
+              <button>
+                <Link to='/addallegiance'>Select your allegiances</Link>
+              </button>
             </div>
 
             <H2>MY ALLEGIANCES</H2>
 
-            <MyAllegianceGroups
+            <ProfileAllegiances
               content={loggedInAllegiances || []}
               type='allegiance'
               default={Default}
