@@ -4,6 +4,7 @@ import { Icon, Loader } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import MyAllegianceGroups from './MyAllegianceGroups'
+import PostCard from '../posts/PostCard'
 import axios from 'axios'
 import useGetToken from '../utils/useGetToken'
 import { fetchProfile, fetchProfilePosts } from './store/profileActions'
@@ -79,6 +80,7 @@ const Profile = props => {
           {/* <p>{loggedInUser.bio}</p> */}
           <>
             <div
+              className='select'
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -89,14 +91,19 @@ const Profile = props => {
             >
               <Link to='/addallegiance'>Select your allegiances</Link>
             </div>
+
             <H2>MY ALLEGIANCES</H2>
+
             <MyAllegianceGroups
               content={loggedInAllegiances || []}
               type='allegiance'
               default={Default}
             />
-            <h2>Posts</h2>
-            <h1>riiiiight herere lists</h1>
+            <div className='lower-div'>
+              {profile.posts.map(post => {
+                return <PostCard post={post} />
+              })}
+            </div>
           </>
         </InfoHolder>
       </div>
@@ -120,6 +127,14 @@ const BannerImage = styled.img`
 
 const InfoHolder = styled.div`
   margin-top: 5%;
+  .select {
+    border-bottom: 3px inset grey;
+  }
+  .lower-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const Name = styled.div`
