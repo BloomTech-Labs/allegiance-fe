@@ -16,6 +16,7 @@ const Profile = props => {
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const profile = useSelector(state => state.profile)
+  const posts = profile.posts
   const id = window.location.pathname.split('/profile/')[1]
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
@@ -93,13 +94,9 @@ const Profile = props => {
             />
             <H2>Posts</H2>
             <div>
-              {profile.posts > 0 ? (
-                profile.posts.map(post => {
-                  return <ProfilePostsCard post={post} id={post.id} />
-                })
-              ) : (
-                <h2>User has no posts.</h2>
-              )}
+              {posts.map(post => {
+                return <ProfilePostsCard post={post} id={post.id} />
+              })}
             </div>
           </>
         </InfoHolder>
