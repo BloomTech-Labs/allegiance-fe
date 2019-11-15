@@ -55,7 +55,7 @@ const MyAllegianceGroups = props => {
 
       {props.content.length === 0 && (
         <Join>
-          <h4>{`${name} doesn't belong to any groups yet.`}</h4>
+          <h4>{`You don't belong to any groups yet.`}</h4>
         </Join>
       )}
     </LogoHolder>
@@ -68,6 +68,7 @@ const LogoHolder = styled.div`
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-left: 1%;
+  margin-bottom: 20px;
   &::-webkit-scrollbar {
     display: none;
   }

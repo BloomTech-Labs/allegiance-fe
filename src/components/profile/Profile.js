@@ -12,12 +12,13 @@ import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
 import ProfilePostsCard from './ProfileAllegiances'
+import MyAllegianceGroups from './MyAllegianceGroups'
 
 const Profile = props => {
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const profile = useSelector(state => state.profile)
-  const login = useSelector(state => state.userReducer.loggedInUser.id)
+  const loggedInUserId = useSelector(state => state.userReducer.loggedInUser.id)
   const posts = profile.posts
   const user = profile.id
   console.log('user::::', user)
@@ -63,55 +64,48 @@ const Profile = props => {
           )}
         </ImageCrop>
         <InfoHolder>
-          <Bio>{profile.username && <h1>{profile.bio}</h1>}</Bio>
           <Name>
             {profile.username && (
               <Typography
-                variant='h5'
+                variant='h1'
                 noWrap={true}
                 style={{ fontWeight: 'bold' }}
               >{`${profile.first_name} ${profile.last_name}`}</Typography>
             )}
           </Name>
+          <Bio>{profile.username && <h1>{profile.bio}</h1>}</Bio>
+
           <Name>
             {props.match.url === '/profile' && (
               <Link to='/makeprofile'>Profile Settings</Link>
             )}
           </Name>
           {/* <p>{loggedInUser.bio}</p> */}
-          <>
-            <div
-              className='select'
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: '5px',
-              }}
-            >
-              {user === login && (
-                <Link to='/addallegiance'>
-                  <JoinBtn>Select your allegiances</JoinBtn>
-                </Link>
-              )}
+          <div className='alleg-group-container'>
+            <div className='select'>
+              <DivAllegiance>
+                <H2>ALLEGIANCES</H2>
+              </DivAllegiance>
             </div>
-            <DivAllegiance>
-              <H2>ALLEGIANCES</H2>
-            </DivAllegiance>
 
             <ProfileAllegiances
+              loggedInUserId={loggedInUserId}
+              user={user}
               name={profile.first_name}
-              content={loggedInAllegiances || []}
+              content={profile.allegiances}
               type='allegiance'
               default={Default}
             />
-            <div className='lower-div'>
-              {profile.posts.map(post => {
-                return <ProfilePostCard post={post} />
-              })}
-            </div>
-          </>
+
+            <H2>GROUPS</H2>
+            <MyAllegianceGroups content={profile.groups} />
+          </div>
+          <div className='lower-div'>
+            <H2>POSTS</H2>
+            {profile.posts.map(post => {
+              return <ProfilePostCard post={post} />
+            })}
+          </div>
         </InfoHolder>
       </div>
     </ProfileContainer>
@@ -136,9 +130,24 @@ const BannerImage = styled.img`
   object-fit: cover;
 `
 const InfoHolder = styled.div`
-  margin-top: 5%;
+  .alleg-group-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
   .select {
-    border-bottom: 3px inset grey;
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '5px',
+  }
+  .groupDiv {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .lower-div {
     display: flex;
@@ -158,7 +167,7 @@ const Bio = styled.div`
   flex-direction: row;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `
 const ImageCrop = styled.div`
   width: 150px;
@@ -190,22 +199,5 @@ const H3 = styled.h3`
   margin-top: 0;
   margin-bottom: 0;
 `
-const JoinBtn = styled.button`
-  &:hover {
-    background: #4483cd;
-    cursor: pointer;
-  }
-  height: 54px;
-  width: 192px;
-  border: none;
-  margin-bottom: 10px
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  color: white;
-  background: #ed5959;
-  font-size: 16px;
-  font-family: 'Roboto', sans-serif;
-  @media (max-width: 500px) {
-    width: 90%;
-  }
-`
+
 export default Profile
