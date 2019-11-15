@@ -26,7 +26,7 @@ const UserNav = props => {
           <NavLink to='/notifications'>
             <BellWrapper>
               <NavIcon
-                size='big'
+                size='large'
                 name='bell'
                 number={10}
                 alt={'Notifications'}
@@ -82,13 +82,15 @@ const pulse = keyframes`
 const BellWrapper = styled.div`
   display: flex;
   align-items: center;
+  font-size: 1.8rem !important;
 `
 
 const NavIcon = styled(Icon)`
-  color: #f0f0f0;
-  &:hover {
-    color: white;
+color: #fff !important;
+&:hover {
+    text-shadow:0px 0px 2px #fff; !important
   }
+}
 `
 const NotificationNumber = styled.div`
   width: 17px;

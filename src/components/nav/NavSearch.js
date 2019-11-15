@@ -39,6 +39,9 @@ const NavSearch = props => {
 
   const handleResultSelect = (evt, { result }) => {
     setValue('')
+    if (props.resultSelectCallback) {
+      props.resultSelectCallback()
+    }
     props.history.push(`/group/${result.id}`)
   }
 
@@ -50,7 +53,7 @@ const NavSearch = props => {
   return (
     <StyledSearch
       fluid
-      input={{ fluid: true }}
+      input={{ fluid: true, autoFocus: true }}
       loading={isLoading}
       onResultSelect={handleResultSelect}
       onSearchChange={_.debounce(handleSearchChange, 500, {

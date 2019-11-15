@@ -1,21 +1,38 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink, withRouter } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
-import { Menu } from 'semantic-ui-react'
+import { Mobile, Tablet } from '../utils/Responsive'
+import { Menu, Icon } from 'semantic-ui-react'
 
 const Navigation = () => {
+  const isMobile = useMediaQuery({
+    query: Mobile,
+  })
+
+  const isTablet = useMediaQuery({
+    query: Tablet,
+  })
+
   return (
     <>
       <StyledMenuItem>
-        <StyledNavLink activeClassName='active' to='/home'>
-          <NavItem>DASHBOARD</NavItem>
+        <StyledNavLink to='/home'>
+          {isTablet ? (
+            <NavIcon name='home' size='large' />
+          ) : (
+            <NavItem>DASHBOARD</NavItem>
+          )}
         </StyledNavLink>
       </StyledMenuItem>
       <StyledMenuItem>
         <StyledNavLink to='/groups'>
-          <NavItem>DISCOVER</NavItem>
+          {isTablet ? (
+            <NavIcon name='globe' size='large' />
+          ) : (
+            <NavItem>DISCOVER</NavItem>
+          )}
         </StyledNavLink>
       </StyledMenuItem>
     </>
@@ -23,13 +40,22 @@ const Navigation = () => {
 }
 
 const StyledMenuItem = styled(Menu.Item)`
-  align-self: center !important;
-  font-size: 2rem !important;
+  align-self: center !important
+  font-size: 1.8rem !important
+`
+
+const NavIcon = styled(Icon)`
+color: #fff !important;
+&:hover {
+    text-shadow:0px 0px 2px #fff; !important
+  }
+}
 `
 
 const NavItem = styled.span`
-padding-top: 0
-padding-bottom: 0
+  padding-top: 0
+  padding-bottom: 0
+  font-size: 2rem !important
 
   &:hover {
     text-shadow:0px 0px 2px #fff; !important

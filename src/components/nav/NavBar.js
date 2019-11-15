@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+import { Mobile, Tablet } from '../utils/Responsive'
+
 import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
 import styled from 'styled-components'
-import { Loader, Input, Menu } from 'semantic-ui-react'
+import { Loader, Search, Menu, Icon, Modal } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -43,6 +46,15 @@ const NavBar = props => {
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const { loading } = useAuth0()
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  const isMobile = useMediaQuery({
+    query: Mobile,
+  })
+
+  const isTablet = useMediaQuery({
+    query: Tablet,
+  })
 
   useEffect(() => {
     if (user) {
@@ -177,21 +189,81 @@ const NavBar = props => {
     )
   }
   return (
-    // <Sticky>
-    <StickyNav pointing secondary>
-      <StyledMenuItem style={{ width: '25%' }}>
-        <NavSearch />
-      </StyledMenuItem>
-      <Menu.Menu position='right'>
-        <Navigation />
-        <UserNav user={user} unread={unread} />
-      </Menu.Menu>
-    </StickyNav>
-    //   {/* <NavLeft />
-    // //   <NavRight user={user} /> */}
-    // </Sticky>
+    <>
+      {isMobile ? (
+        <StickyNav pointing secondary>
+          <StyledMenuItem>
+            <NavIcon
+              name='search'
+              size='large'
+              style={{
+                fontSize: '1.8rem !important',
+                cursor: 'pointer',
+              }}
+              onClick={() => setSearchOpen(true)}
+            />
+            <Modal
+              dimmer
+              open={searchOpen}
+              style={{
+                width: '100%',
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                zIndex: '1',
+              }}
+              onClose={() => setSearchOpen(false)}
+            >
+              <StickyNav pointing secondary>
+                <StyledMenuItem>
+                  <NavIcon
+                    name='arrow left'
+                    size='large'
+                    style={{
+                      fontSize: '1.8em',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setSearchOpen(false)}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem style={{ width: '80%' }}>
+                  <NavSearch
+                    resultSelectCallback={() => setSearchOpen(false)}
+                  />
+                </StyledMenuItem>
+              </StickyNav>
+            </Modal>
+          </StyledMenuItem>
+          <Menu.Menu position='right'>
+            <Navigation />
+            <UserNav user={user} unread={unread} />
+          </Menu.Menu>
+        </StickyNav>
+      ) : (
+        <StickyNav pointing secondary>
+          <StyledMenuItem
+            style={{ width: isTablet ? '50%' : '25%', minWidth: '220px' }}
+          >
+            <NavSearch />
+          </StyledMenuItem>
+          <Menu.Menu position='right'>
+            <Navigation />
+            <UserNav user={user} unread={unread} />
+          </Menu.Menu>
+        </StickyNav>
+      )}
+    </>
   )
 }
+
+const NavIcon = styled(Icon)`
+  color: #fff !important;
+  opacity: 1 !important;
+  &:hover {
+      text-shadow:0px 0px 2px #fff; !important
+    }
+  }
+`
 
 const StickyNav = styled(Menu)`
   position: sticky;
