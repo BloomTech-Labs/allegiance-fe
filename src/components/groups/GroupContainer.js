@@ -38,17 +38,6 @@ const Container = styled.div`
   }
 `
 
-const GroupTitleHolder = styled.div`
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  h3 {
-    margin: 0 1%;
-  }
-`
-
 const H3 = styled.h3`
   font-size: 3rem;
   font-weight: bold;

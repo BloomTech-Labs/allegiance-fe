@@ -1,35 +1,51 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Accordion, Icon } from 'semantic-ui-react'
-import GroupsNav from './GroupsNav'
+import MyGroups from '../profile/MyGroups'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
-export default class NavAccordion extends Component {
-  state = { activeIndex: 1 }
-
-  handleClick = (e, titleProps) => {
+const NavAccordion = () => {
+  const loggedInGroups = useSelector(state => state.myGroups)
+  const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
+  const handleClick = (e, titleProps) => {
     const { index } = titleProps
-    const { activeIndex } = this.state
-    const newIndex = activeIndex === index ? -1 : index
 
-    this.setState({ activeIndex: newIndex })
+    const newIndex = activeIndex.activeIndex === index ? -1 : index
+    setActiveIndex({ activeIndex: newIndex })
   }
 
-  render() {
-    const { activeIndex } = this.state
-
-    return (
-      <Accordion>
-        <Accordion.Title
-          active={activeIndex === 0}
-          index={0}
-          onClick={this.handleClick}
-        >
-          <Icon name='dropdown' />
-          My Groups
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 1}>
-          <GroupsNav />
-        </Accordion.Content>
-      </Accordion>
-    )
-  }
+  return (
+    <StyledAccordion>
+      <Accordion.Title
+        active={activeIndex.activeIndex === 0}
+        index={0}
+        onClick={handleClick}
+        className='title'
+      >
+        <Icon name='dropdown' />
+        My Groups
+      </Accordion.Title>
+      <Accordion.Content
+        active={activeIndex.activeIndex === 0}
+        className='accordion-content'
+      >
+        <MyGroups content={loggedInGroups || []} type='group' />
+      </Accordion.Content>
+    </StyledAccordion>
+  )
 }
+
+export default NavAccordion
+
+const StyledAccordion = styled(Accordion)`
+  .title {
+    color: #fff !important;
+    background-color: #1a4571;
+    &:hover {
+      text-shadow: 0px 0px 2px #fff !important;
+    }
+  }
+  .accordion-content {
+    padding: 0px !important;
+  }
+`

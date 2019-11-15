@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as types from 'actions/actionTypes'
 import GroupInfo from './GroupInfo'
 import PostsContainer from '../posts/PostsContainer'
-import {
-  fetchGroup,
-  fetchGroupPosts,
-  fetchUserMembership,
-  receiveGroupPost,
-  receiveGroupReply,
-} from 'actions'
+import { fetchGroup, fetchGroupPosts, fetchUserMembership } from 'actions'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
@@ -20,7 +14,6 @@ const GroupPage = props => {
   const id = parseInt(props.match.params.id)
   const user = useSelector(state => state.userReducer.loggedInUser)
   const group = useSelector(state => state.group)
-  const socket = useSelector(state => state.socketReducer.socket)
   const { memberType, posts } = group
   const dispatch = useDispatch()
   useEffect(() => {
@@ -84,8 +77,8 @@ const GroupPage = props => {
 }
 
 const PaperWrapper = styled.div`
-  display: flex
-  justify-content: center
+  display: flex;
+  justify-content: center;
 `
 const GroupPageContainer = styled.div`
   display: flex;
@@ -93,7 +86,6 @@ const GroupPageContainer = styled.div`
   justify-content: center;
   width: 100%;
   background-color: #e8edf1;
-  // min-height: 87vh;
 `
 const PaperContainer = styled(Paper)`
   padding-top: 25px;

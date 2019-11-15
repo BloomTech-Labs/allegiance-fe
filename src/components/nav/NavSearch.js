@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search } from 'semantic-ui-react'
 import axios from 'components/utils/axiosWithoutAuth'
 import { withRouter } from 'react-router-dom'
 

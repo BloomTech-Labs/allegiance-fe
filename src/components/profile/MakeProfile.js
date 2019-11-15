@@ -74,7 +74,7 @@ const MakeProfile = props => {
         payload: result.data.updated,
       })
       // Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
-      const push = () => props.history.push('/groups')
+      const push = () => props.history.push(`/profile/${loggedInUser.id}`)
       setTimeout(push, 1000)
     } catch (err) {
       dispatch({ type: types.UPDATE_USER_FAILURE, payload: err })

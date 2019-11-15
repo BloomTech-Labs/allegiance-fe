@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { Mobile, Tablet } from '../utils/Responsive'
+import { Mobile, Tablet } from '../utils/responsive'
 
 import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
 import styled from 'styled-components'
-import { Loader, Search, Menu, Icon, Modal } from 'semantic-ui-react'
+import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -260,8 +260,7 @@ const NavIcon = styled(Icon)`
   color: #fff !important;
   opacity: 1 !important;
   &:hover {
-      text-shadow:0px 0px 2px #fff; !important
-    }
+    text-shadow: 0px 0px 2px #fff !important;
   }
 `
 
@@ -275,25 +274,11 @@ const StickyNav = styled(Menu)`
   border-radius: 0px !important;
   border: none !important;
   font-size: 1.4rem !important;
+  margin-bottom: 0 !important;
 `
 
 const StyledMenuItem = styled(Menu.Item)`
   align-self: center !important;
-`
-
-const Sticky = styled.nav`
-  position: sticky;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  margin: 0 auto;
-  height: 55px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1a4570;
-  color: white;
 `
 
 export default NavBar

@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
-import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { ThumbUp, ModeCommentOutlined } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,
@@ -20,7 +19,7 @@ import {
 } from '@material-ui/core/'
 import styled from 'styled-components'
 
-export default function PostCard(props) {
+export default function ProfilePostCard(props) {
   const {
     first_name,
     last_name,
@@ -43,10 +42,6 @@ export default function PostCard(props) {
 
   const classes = useStyles()
 
-  async function deletePost(e) {
-    await dispatch(deleteGroupPost(token, id))
-  }
-
   async function addLike(e) {
     const data = {
       user: user,
@@ -59,14 +54,6 @@ export default function PostCard(props) {
 
   async function unLike(e) {
     await dispatch(dislikePost(token, postLikeId.id, group_id, socket))
-  }
-
-  const handleClick = () => {
-    console.log('handleCLick')
-    socket.emit('event', {
-      name: `${user.first_name} ✈️`,
-      room: 'FIVE FINGER POSSE',
-    })
   }
 
   // *************change icon number to reg number*************
@@ -85,20 +72,7 @@ export default function PostCard(props) {
             alt={'Avatar'}
           />
         }
-        action={
-          (user.id === user_id ||
-            (props.group && props.group.memberType === 'admin')) &&
-          !window.location.pathname.includes('/post') && (
-            <IconButton onClick={e => deletePost(e)} aria-label='settings'>
-              <DeleteOutline />
-            </IconButton>
-          )
-        }
-        title={
-          <Link to={`/profile/${user_id}`}>
-            {first_name} {last_name}
-          </Link>
-        }
+        title={`${first_name} ${last_name}`}
         titleTypographyProps={{ fontSize: 25 }}
         subheader={
           <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
@@ -112,7 +86,6 @@ export default function PostCard(props) {
           variant='body1'
           color='textSecondary'
           component='p'
-          onClick={handleClick}
         >
           {post_content}
         </Typography>

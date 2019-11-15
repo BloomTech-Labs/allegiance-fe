@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
-import { Dropdown } from 'semantic-ui-react'
 
 export const AvatarPopup = ({ user }) => {
+  const id = user.id
   const { logout } = useAuth0()
   const logoutWithRedirect = () =>
     logout({
@@ -16,7 +16,7 @@ export const AvatarPopup = ({ user }) => {
       <div className='arrow-up'></div>
       <div className='user-details'>
         <div className='user-info'>
-          <Link to='/profile' className='username'>
+          <Link to={`/profile/${id}`} className='username'>
             {user.username}
           </Link>
         </div>
@@ -24,9 +24,9 @@ export const AvatarPopup = ({ user }) => {
       <Link className='settings' to='/makeprofile'>
         Account Settings
       </Link>
-      <a className='logout' onClick={() => logoutWithRedirect()}>
+      <div className='logout' onClick={() => logoutWithRedirect()}>
         Logout
-      </a>
+      </div>
     </StyledAvatarPopup>
   )
 }

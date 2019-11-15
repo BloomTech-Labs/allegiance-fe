@@ -21,14 +21,7 @@ const Landing = props => {
     <LandingDiv>
       <Top>
         <LeftTop>
-          <Image
-            src={Logo2}
-            size='small'
-            alt={'Logo'}
-            onClick={() => {
-              window.location = window.location
-            }}
-          />
+          <Image src={Logo2} size='small' alt={'Logo'} />
           <Image src={DoSportsTogether} size='small' alt={'Do'} />
         </LeftTop>
         <RightTop>
