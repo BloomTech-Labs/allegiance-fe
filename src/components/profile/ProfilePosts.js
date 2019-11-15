@@ -16,7 +16,7 @@ export const ProfilePosts = ({ posts, name }) => {
   if (posts.length === 0) {
     return (
       <ProfilePostsContainer>
-        <h1>{name} has no posts</h1>
+        <Join>{name} has no posts</Join>
         <Img src={pic} />
       </ProfilePostsContainer>
     )
@@ -34,4 +34,13 @@ const ProfilePostsContainer = styled.div`
 const Img = styled.img`
   width: 70%;
   height: 70vh;
+`
+const Join = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid red;
+  font-weight: bold;
+  letter-spacing: adjusting;
+  font-size: 2rem;
 `
