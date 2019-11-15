@@ -58,7 +58,10 @@ const Landing = props => {
           <NavSearch {...props} />
         </LeftMiddle>
         <RightMiddle>
-          <LandingButton onClick={() => loginWithRedirect({})}>
+          <LandingButton
+            style={{ margin: '5px' }}
+            onClick={() => loginWithRedirect({})}
+          >
             Register/Log In
           </LandingButton>
         </RightMiddle>
