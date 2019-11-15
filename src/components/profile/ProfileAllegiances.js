@@ -1,15 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Popup, Icon } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
 const ProfileAllegiances = props => {
-  console.log('USER BTN', props.user, props.login)
   const mixpanelCheck = link => {
     if (props.type === 'group') {
       props.history.push(link)
@@ -18,26 +15,6 @@ const ProfileAllegiances = props => {
 
   return (
     <LogoHolder>
-      {props.type === 'group' && (
-        <div style={{ margin: '1%' }}>
-          <Link to={`/creategroup`}>
-            <Popup
-              content={'Create a Group'}
-              trigger={
-                <Icon
-                  name='plus'
-                  size='big'
-                  circular
-                  inverted
-                  color='grey'
-                  style={{ fontSize: '2.86rem' }}
-                  default={Default}
-                />
-              }
-            />
-          </Link>
-        </div>
-      )}
       {!!props.content.length &&
         props.content.map(item => (
           <div
@@ -47,7 +24,7 @@ const ProfileAllegiances = props => {
           >
             <Popup
               content={item.name}
-              trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
+              trigger={<GroupLogo src={item.image || Default} />}
             />
             <Nickname>{item.acronym && item.acronym}</Nickname>
           </div>
@@ -56,11 +33,7 @@ const ProfileAllegiances = props => {
       {props.content.length === 0 && (
         <Join>
           <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
-          {props.user === props.loggedInUserId && (
-            <Link to='/addallegiance'>
-              <JoinBtn>Select Your Allegiances</JoinBtn>
-            </Link>
-          )}
+          <Icon name='question circle' size='huge' color='grey' />
         </Join>
       )}
     </LogoHolder>
@@ -105,9 +78,6 @@ const GroupLogo = styled.img`
   border: 1px solid black;
   flex: 0 0 auto;
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
-`
-const JoinBtn = styled.button`
-  border: 1px solid pink;
 `
 
 export default withRouter(ProfileAllegiances)

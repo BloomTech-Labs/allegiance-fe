@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Popup, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
@@ -8,8 +7,7 @@ import styled from 'styled-components'
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
-const MyAllegianceGroups = props => {
-  const name = useSelector(state => state.userReducer.loggedInUser.first_name)
+const MyGroups = props => {
   const mixpanelCheck = link => {
     if (props.type === 'group') {
       props.history.push(link)
@@ -27,8 +25,6 @@ const MyAllegianceGroups = props => {
                 <Icon
                   name='plus'
                   size='big'
-                  circular
-                  inverted
                   color='grey'
                   style={{ fontSize: '2.86rem' }}
                   default={Default}
@@ -38,6 +34,7 @@ const MyAllegianceGroups = props => {
           </Link>
         </div>
       )}
+      {/* this only renders the account has a group(s) */}
       {!!props.content.length &&
         props.content.map(item => (
           <div
@@ -49,10 +46,9 @@ const MyAllegianceGroups = props => {
               content={item.name}
               trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
             />
-            <Nickname>{item.acronym && item.acronym}</Nickname>
           </div>
         ))}
-
+      {/* this only renders the account doesnt have any groups */}
       {props.content.length === 0 && (
         <Join>
           <h4>{`You don't belong to any groups yet.`}</h4>
@@ -63,12 +59,12 @@ const MyAllegianceGroups = props => {
 }
 
 const LogoHolder = styled.div`
-  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-left: 1%;
   margin-bottom: 20px;
+  background-color: white;
+  border: 2px solid pink;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -83,12 +79,6 @@ const Join = styled.div`
   font-size: 2rem;
 `
 
-const Nickname = styled.p`
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-top: 10%;
-`
-
 const GroupLogo = styled.img`
   border-color: black;
   object-fit: cover;
@@ -100,4 +90,4 @@ const GroupLogo = styled.img`
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `
 
-export default withRouter(MyAllegianceGroups)
+export default withRouter(MyGroups)
