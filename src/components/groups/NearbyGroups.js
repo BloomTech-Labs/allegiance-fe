@@ -102,7 +102,6 @@ const ResultsDiv = styled.div`
 `
 
 const CreateGroupButton = styled(Button)`
-  margin-top: 20px !important;
   font-size: 1.8rem !important;
   background-color: #1a4570 !important;
 `
@@ -128,7 +127,6 @@ const NearbyGroupsContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  margin-left: 5%;
 `
 
 export default NearbyGroups
