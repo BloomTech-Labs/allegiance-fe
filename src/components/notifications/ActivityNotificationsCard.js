@@ -3,6 +3,8 @@ import { withRouter } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
+import { useMediaQuery } from 'react-responsive'
+import { Tablet } from '../utils/responsive'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,6 +27,11 @@ const ActivityNotificationsCard = props => {
     post_id,
   } = props.activity
 
+  console.log({ content })
+  const isTablet = useMediaQuery({
+    query: Tablet,
+  })
+
   const dispatch = useDispatch()
   // Material UI styling
   const useStyles = makeStyles({
@@ -36,6 +43,7 @@ const ActivityNotificationsCard = props => {
     card: {
       display: 'flex',
       width: '90%',
+      maxWidth: '800px',
     },
     avatar: {
       marginRight: 0,
@@ -99,7 +107,13 @@ const ActivityNotificationsCard = props => {
         <CardMessage>
           <div>
             <span>{fullName || username}</span>{' '}
-            {type === 'like' && <>liked your post: {content}</>}
+            {type === 'like' && (
+              <>
+                liked your post:{' '}
+                {isTablet ? content.content.substring(1, 10) : { content }}
+              </>
+            )}
+            {/* {type === 'like' && <>liked your post: {content}</>} */}
             {type === 'reply' && <>replied to your post: {content}</>}
             {type === 'reply_like' && <>liked your reply: {content}</>}
             {type === 'group_request' && (

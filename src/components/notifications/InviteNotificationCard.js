@@ -38,6 +38,7 @@ const InviteNotificationsCard = props => {
     card: {
       display: 'flex',
       width: '90%',
+      maxWidth: '800px',
     },
     avatar: {
       marginRight: 0,
@@ -132,7 +133,7 @@ const InviteNotificationsCard = props => {
                   sender_id,
                   group_id,
                   Mixpanel,
-                  socket
+                  socket,
                 }
                 dispatch(acceptInvite(token, data))
               }}
