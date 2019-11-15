@@ -35,6 +35,7 @@ const Container = styled.div`
   h3 {
     text-align: left;
   }
+  padding: 20px;
 `
 const H3 = styled.h3`
   font-size: 3rem;

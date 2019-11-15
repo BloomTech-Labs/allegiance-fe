@@ -81,8 +81,7 @@ const NearbyGroupsContainer = styled.div`
   flex-direction: column;
   flex-wrap: nowrap;
   overflow-x: auto;
-  padding-bottom: 3%;
-  border: 2px solid pink;
+  padding: 0px 8px 8px 8px;
   &::-webkit-scrollbar {
     display: none;
   }

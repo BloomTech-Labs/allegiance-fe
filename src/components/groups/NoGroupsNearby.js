@@ -39,4 +39,8 @@ const CreateGroupButton = styled(Button)`
   margin-top: 20px !important;
   font-size: 1.8rem !important;
   background-color: #1a4570 !important;
+  :hover {
+    background-color: #4483cd !important;
+    curser: pointer;
+  }
 `
