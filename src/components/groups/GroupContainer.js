@@ -37,7 +37,6 @@ const Container = styled.div`
     margin-left: 5%;
   }
 `
-
 const H3 = styled.h3`
   font-size: 3rem;
   font-weight: bold;
