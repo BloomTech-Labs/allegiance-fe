@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux'
 import { Divider } from 'semantic-ui-react'
 import styled from 'styled-components'
 import GroupList from './GroupList'
-import SearchBar from './SearchBar'
-import MyAllegianceGroups from '../profile/MyAllegianceGroups'
 import NearbyGroups from './NearbyGroups'
 import { withRouter } from 'react-router-dom'
 function GroupContainer(props) {
@@ -14,7 +12,6 @@ function GroupContainer(props) {
   if (userIn) {
     return (
       <Container>
-        <SearchBar {...props} />
         <Divider />
         <H3>GROUPS NEAR YOU</H3>
         <NearbyGroups history={props.history} />
@@ -26,7 +23,6 @@ function GroupContainer(props) {
   } else {
     return (
       <Container>
-        <SearchBar {...props} />
         <H3>DISCOVER</H3>
         <GroupList groups={groups} />
       </Container>

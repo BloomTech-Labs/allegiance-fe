@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
+import { Dropdown } from 'semantic-ui-react'
 
 export const AvatarPopup = ({ user }) => {
   const { logout } = useAuth0()
@@ -14,11 +15,6 @@ export const AvatarPopup = ({ user }) => {
     <StyledAvatarPopup>
       <div className='arrow-up'></div>
       <div className='user-details'>
-        <div className='avatar-wrapper'>
-          <Link to='/profile'>
-            <img className='avatar-image' src={user.image} alt='avatar' />
-          </Link>
-        </div>
         <div className='user-info'>
           <Link to='/profile' className='username'>
             {user.username}
@@ -38,12 +34,12 @@ export const AvatarPopup = ({ user }) => {
 const StyledAvatarPopup = styled.div`
   position: absolute;
   cursor: default;
-  width: 220px;
-  height: 152px;
-  top: 0;
+  width: 150px;
+  height: auto;
+  top: 5px;
   right: 0px;
   z-index: 50;
-  background-color: #e8edf1;
+  background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 12px;
   margin-top: 59px;
@@ -52,7 +48,7 @@ const StyledAvatarPopup = styled.div`
   .arrow-up {
     position: absolute;
     top: -10px;
-    right: 15%;
+    right: 41px;
     z-index: 60;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
@@ -60,50 +56,23 @@ const StyledAvatarPopup = styled.div`
   }
   .user-details {
     display: flex;
-    border-bottom: 1px solid #e6e6e6;
-  }
-  .avatar-wrapper {
-    width: 60px;
-    height: 49px;
-  }
-  .avatar-image {
-    border-radius: 4px;
-  }
-  .user-info {
-    margin-left: 10px;
   }
   .username {
-    font-weight: bold;
-    color: #0077b3;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  .location {
-    font-size: 12px;
-    font-weight: bold;
+    font-weight: 700;
   }
   .logout,
   .settings,
-  .add-business {
+  .username {
     color: #0073bb;
     display: block;
     cursor: pointer;
-    padding-bottom: 12px;
+    font-size: 1.4rem;
     &:hover {
-      text-decoration: underline;
+      opacity: 0.8;
     }
   }
-  .add-business {
-    margin-top: 12px;
-    font-weight: bold;
-  }
+  .logout,
   .settings {
-    margin-top: 12px;
-    border-bottom: 1px solid #e6e6e6;
-    font-weight: bold;
-  }
-  .logout {
-    padding-top: 12px;
+    margin: 20px 0;
   }
 `
