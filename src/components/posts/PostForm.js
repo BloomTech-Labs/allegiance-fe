@@ -4,14 +4,9 @@ import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import styled from 'styled-components'
 import { createGroupPost } from 'actions'
-import { TextField, Fab } from '@material-ui/core/'
 import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
-import SendIcon from '@material-ui/icons/Send'
 import { makeStyles } from '@material-ui/core/styles'
-import AddIcon from '@material-ui/icons/Add'
 import { green } from '@material-ui/core/colors'
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom'
 
 import { Input } from 'semantic-ui-react'
 
@@ -73,7 +68,6 @@ const PostForm = props => {
           variant='contained'
           color='primary'
           className={classes.button}
-          endIcon={<SendIcon />}
           type='submit'
           aria-label='Reply'
         >
@@ -91,12 +85,7 @@ const FormContainer = styled.div`
   justify-content: center;
   background-color: #e8edf1;
 `
-const DownNav = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 10%;
-`
+
 const ReplyForm = styled.form`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -106,10 +95,6 @@ const ReplyForm = styled.form`
   width: 801px;
   background-color: #e8edf1;
   align-items: center;
-`
-const InputDiv = styled.div`
-  width: 75%;
-  margin-right: 10px;
 `
 
 export default PostForm

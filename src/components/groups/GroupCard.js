@@ -1,17 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { device } from 'styled/device'
 import Default from '../../assets/walter-avi.png'
 
 const GroupCard = props => {
-  // const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  // const mixpanelCheck = () =>
-  //   Mixpanel.activity(
-  //     loggedInUser.id,
-  //     `Visited Group Using ${props.nearby ? `Nearby Section` : `Group List`}`
-  //   )
-
   return (
     <GroupInfoCard minWidth={props.minWidth}>
       <Link to={`/group/${props.group.id}`}>
@@ -40,9 +32,9 @@ const GroupInfoCard = styled.div`
   flex-direction: column;
   height: 28vh;
   margin: 10px;
-  width: 40%
-  max-width: 250px
-  min-width: 175px
+  width: 40%;
+  max-width: 250px;
+  min-width: 175px;
   background-color: white;
   box-shadow: 0 0 10px rgba(33, 33, 33, 0.4);
   transition: 0.3s;
@@ -50,7 +42,6 @@ const GroupInfoCard = styled.div`
   &:hover {
     box-shadow: 0 0 15px rgba(33, 33, 33, 0.6);
   }
-
 `
 
 const CardContainer = styled.div`
@@ -58,8 +49,6 @@ const CardContainer = styled.div`
 `
 
 const CardImage = styled.img`
-  // max-width: 100%;
-  // max-height: 100%;
   width: 100%;
   height: 100%;
   object-fit: cover;

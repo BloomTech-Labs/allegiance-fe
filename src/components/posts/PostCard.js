@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import avi from '../../assets/walter-avi.png'
@@ -86,7 +86,8 @@ export default function PostCard(props) {
           />
         }
         action={
-          (user.id === user_id || (props.group && props.group.memberType === 'admin')) &&
+          (user.id === user_id ||
+            (props.group && props.group.memberType === 'admin')) &&
           !window.location.pathname.includes('/post') && (
             <IconButton onClick={e => deletePost(e)} aria-label='settings'>
               <DeleteOutline />

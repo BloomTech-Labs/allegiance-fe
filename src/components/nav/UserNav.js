@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
-import { NavLink, withRouter, Link } from 'react-router-dom'
+import React from 'react'
+import { NavLink, withRouter } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { Avatar } from './Avatar'
-import { Icon, Loader, Menu, Label, Dropdown } from 'semantic-ui-react'
-import { useSelector } from 'react-redux'
+import { Icon, Loader, Menu } from 'semantic-ui-react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 
 const UserNav = props => {
@@ -76,7 +75,6 @@ const pulse = keyframes`
   100% {
     box-shadow: 0 0 0 0 rgba(255, 0, 34, 0);
   }
-}
 `
 
 const BellWrapper = styled.div`
@@ -86,11 +84,10 @@ const BellWrapper = styled.div`
 `
 
 const NavIcon = styled(Icon)`
-color: #fff !important;
-&:hover {
-    text-shadow:0px 0px 2px #fff; !important
+  color: #fff !important;
+  &:hover {
+    text-shadow: 0px 0px 2px #fff !important;
   }
-}
 `
 const NotificationNumber = styled.div`
   width: 17px;
@@ -114,7 +111,7 @@ const RegisterBtn = styled.button`
   height: 53px;
   border: none;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1
+  z-index: 1;
   width: 163px;
   color: white;
   background: #4483cd;

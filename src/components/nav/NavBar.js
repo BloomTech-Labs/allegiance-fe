@@ -9,7 +9,7 @@ import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
 import styled from 'styled-components'
-import { Loader, Search, Menu, Icon, Modal } from 'semantic-ui-react'
+import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -274,25 +274,11 @@ const StickyNav = styled(Menu)`
   border-radius: 0px !important;
   border: none !important;
   font-size: 1.4rem !important;
+  margin-bottom: 0 !important;
 `
 
 const StyledMenuItem = styled(Menu.Item)`
   align-self: center !important;
-`
-
-const Sticky = styled.nav`
-  position: sticky;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  margin: 0 auto;
-  height: 55px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1a4570;
-  color: white;
 `
 
 export default NavBar

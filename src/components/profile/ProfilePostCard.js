@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
-import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { ThumbUp, ModeCommentOutlined } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,
@@ -42,10 +41,6 @@ export default function ProfilePostCard(props) {
   const postLikeId = likes.find(like => like.user_id === user.id)
 
   const classes = useStyles()
-
-  async function deletePost(e) {
-    await dispatch(deleteGroupPost(token, id))
-  }
 
   async function addLike(e) {
     const data = {

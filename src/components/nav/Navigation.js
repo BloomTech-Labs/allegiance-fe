@@ -3,14 +3,10 @@ import styled from 'styled-components'
 import { NavLink, withRouter } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
-import { Mobile, Tablet } from '../utils/responsive'
+import { Tablet } from '../utils/responsive'
 import { Menu, Icon } from 'semantic-ui-react'
 
 const Navigation = () => {
-  const isMobile = useMediaQuery({
-    query: Mobile,
-  })
-
   const isTablet = useMediaQuery({
     query: Tablet,
   })
@@ -26,6 +22,7 @@ const Navigation = () => {
           )}
         </StyledNavLink>
       </StyledMenuItem>
+
       <StyledMenuItem>
         <StyledNavLink to='/groups'>
           {isTablet ? (

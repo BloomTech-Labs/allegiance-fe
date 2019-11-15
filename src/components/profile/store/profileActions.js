@@ -1,4 +1,3 @@
-import React from 'react'
 import axios from 'components/utils/axiosWithoutAuth'
 import * as types from './profileTypes'
 

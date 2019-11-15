@@ -3,21 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader, Comment, Input } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
-import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
-import { Add, VerticalAlignBottom } from '@material-ui/icons/'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import Button from '@material-ui/core/Button'
 import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import {
-  fetchPost,
-  createReply,
-  fetchUserMembership,
-  receivePostReply,
-} from 'actions'
+import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
   const post = useSelector(state => state.group.post)
@@ -107,11 +100,6 @@ const ReplyContainer = props => {
 
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)
-
-  const scrollToBottom = () => {
-    if (repliesEndRef.current)
-      repliesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  }
 
   if (!post) {
     return (
@@ -214,11 +202,6 @@ const ReplyForm = styled.form`
 
   background-color: #e8edf1;
   align-items: center;
-`
-
-const InputDiv = styled.div`
-  width: 75%;
-  margin-right: 10px;
 `
 
 export default ReplyContainer
