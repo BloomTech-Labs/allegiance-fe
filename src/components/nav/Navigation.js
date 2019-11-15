@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { NavLink, withRouter } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
-import { Mobile, Tablet } from '../utils/Responsive'
+import { Mobile, Tablet } from '../utils/responsive'
 import { Menu, Icon } from 'semantic-ui-react'
 
 const Navigation = () => {
