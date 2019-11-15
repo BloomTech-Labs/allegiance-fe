@@ -3,11 +3,13 @@ import { withRouter } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import useGetToken from '../utils/useGetToken'
 import Moment from 'react-moment'
+import { useMediaQuery } from 'react-responsive'
+import { Mobile } from '../utils/responsive'
 
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, Avatar, Tooltip } from '@material-ui/core/'
-
+import { Button, Icon } from 'semantic-ui-react'
 import { acceptInvite, declineInvite } from 'actions/index'
 import { Mixpanel } from '../analytics/Mixpanel'
 
@@ -25,14 +27,18 @@ const InviteNotificationsCard = props => {
     accepted,
   } = props.invite
 
+  const isMobile = useMediaQuery({
+    query: Mobile,
+  })
+
   const socket = useSelector(state => state.socketReducer.socket)
   const dispatch = useDispatch()
   // Material UI styling
   const useStyles = makeStyles({
     newCard: {
       display: 'flex',
-      justifyContent: 'space-evenly',
       width: '90%',
+      maxWidth: '800px',
       backgroundColor: '#FFFFE0',
     },
     card: {
@@ -43,8 +49,8 @@ const InviteNotificationsCard = props => {
     avatar: {
       marginRight: 0,
       marginLeft: 0,
-      height: 50,
-      width: 50,
+      height: isMobile ? 30 : 50,
+      width: isMobile ? 30 : 50,
     },
     content: {
       color: 'black',
@@ -125,29 +131,34 @@ const InviteNotificationsCard = props => {
                 </p>
               </div>
             </CardMessage>
-            <Accept
-              onClick={evt => {
-                evt.stopPropagation()
-                const data = {
-                  user: props.user,
-                  sender_id,
-                  group_id,
-                  Mixpanel,
-                  socket,
-                }
-                dispatch(acceptInvite(token, data))
-              }}
-            >
-              ✔
-            </Accept>
-            <Decline
-              onClick={evt => {
-                evt.stopPropagation()
-                dispatch(declineInvite(token, user_id, sender_id, group_id))
-              }}
-            >
-              X
-            </Decline>
+            <ButtonGroup>
+              <Button
+                positive
+                onClick={evt => {
+                  evt.stopPropagation()
+                  const data = {
+                    user: props.user,
+                    sender_id,
+                    group_id,
+                    Mixpanel,
+                    socket,
+                  }
+                  dispatch(acceptInvite(token, data))
+                }}
+              >
+                {isMobile ? <Icon name='check' /> : <>Accept</>}
+              </Button>
+              <Button.Or style={{ zIndex: '0' }} />
+              <Button
+                negative
+                onClick={evt => {
+                  evt.stopPropagation()
+                  dispatch(declineInvite(token, user_id, sender_id, group_id))
+                }}
+              >
+                {isMobile ? <Icon name='close' /> : <>Decline</>}
+              </Button>
+            </ButtonGroup>
           </>
         ) : (
           <CardMessage>
@@ -158,6 +169,21 @@ const InviteNotificationsCard = props => {
     </NotificationCardDiv>
   )
 }
+
+const CardContent = styled.div`
+  display: flex;
+  width: 100%
+  justify-content: space-around;
+`
+
+const ButtonGroup = styled(Button.Group)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  margin: 0 2% !important;
+`
 
 const NotificationCardDiv = styled.div`
   display: flex;
@@ -181,15 +207,16 @@ const NotificationCardDiv = styled.div`
 const CardIcon = styled.div`
   display: flex;
   justify-content: center;
-  width: 20%;
   margin: 1%;
+  align-items: center;
 `
 
 const CardMessage = styled.div`
-  width: 40%;
+  width: 60%;
   display: flex;
   margin: 1%;
   overflow: hidden;
+  line-height: 25px;
 `
 
 // const CardGroup = styled.div`
@@ -206,12 +233,14 @@ const Accept = styled.button`
   align-items: center;
   justify-content: center;
   background: green;
-  font-weight: 700;
+
   border-radius: 5px;
   color: white;
-  width: 10%;
+  height: 40px
+  width: 50px;
   margin: 1%;
   border-style: none;
+  cursor: pointer;
 `
 const Decline = styled.button`
   display: flex;
@@ -219,12 +248,13 @@ const Decline = styled.button`
   align-items: center;
   justify-content: center;
   background: red;
-  font-weight: 700;
+
   border-radius: 5px;
   color: white;
-  width: 10%;
+  width: 50px;
   margin: 1%;
   border-style: none;
+  cursor: pointer;
 `
 
 export default withRouter(InviteNotificationsCard)
