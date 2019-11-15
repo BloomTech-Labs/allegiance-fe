@@ -79,6 +79,7 @@ const JoinBtn = styled.button`
   &:hover {
     background: #4483cd;
     cursor: pointer;
+    text-shadow: 0px 0px 2px #fff !important;
   }
   height: 54px;
   width: 192px;
