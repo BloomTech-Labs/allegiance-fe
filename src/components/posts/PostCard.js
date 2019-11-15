@@ -32,7 +32,9 @@ export default function PostCard(props) {
     replies,
     created_at,
     group_id,
+    group_name,
   } = props.post
+  const { redirectToGroup } = props
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
@@ -95,13 +97,29 @@ export default function PostCard(props) {
           )
         }
         title={
-          <Link to={`/profile/${user_id}`}>
-            {first_name} {last_name}
-          </Link>
+          <>
+            <Link to={`/profile/${user_id}`}>
+              {first_name} {last_name}
+            </Link>
+
+            {redirectToGroup && (
+              <>
+                <span style={{ fontWeight: '500' }}> posted in </span>
+                <Link to={`/group/${group_id}`}>{group_name}</Link>
+              </>
+            )}
+          </>
         }
         titleTypographyProps={{ fontSize: 25 }}
         subheader={
-          <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
+          <Tooltip
+            className={classes.timestamp}
+            title={
+              <Moment className={classes.fullTimestamp} format='LLLL'>
+                {created_at}
+              </Moment>
+            }
+          >
             <Moment fromNow>{created_at}</Moment>
           </Tooltip>
         }
@@ -205,7 +223,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   title: {
-    fontSize: 14,
+    fontSize: '1.8rem',
     fontWeight: 'bold',
   },
   avatar: {
@@ -214,8 +232,14 @@ const useStyles = makeStyles(theme => ({
     height: 60,
   },
   typography: {
-    fontSize: 20,
+    fontSize: '1.6rem',
     color: 'black',
+  },
+  timestamp: {
+    fontSize: '1.2rem',
+  },
+  fullTimestamp: {
+    fontSize: '1rem',
   },
   buttonDiv: {
     paddingRight: 1,
