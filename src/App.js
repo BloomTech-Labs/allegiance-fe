@@ -126,7 +126,7 @@ function App(props) {
     <AppContainer>
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div style={{ margin: '0 auto' }}>
+      <div className='sub-container' style={{ margin: '0 auto' }}>
         {loggedInUser && props.location.pathname !== '/profile' && (
           <NavBottom />
         )}
@@ -157,5 +157,8 @@ function App(props) {
 const AppContainer = styled.div`
   background-color: #e8edf1;
   min-height: 100vh;
+  .sub-container {
+    max-width: 1200px;
+  }
 `
 export default withRouter(App)
