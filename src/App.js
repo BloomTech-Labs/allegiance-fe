@@ -158,7 +158,7 @@ const AppContainer = styled.div`
   background-color: #e8edf1;
   min-height: 100vh;
   .sub-container {
-    max-width: 1200px;
+    max-width: 1000px;
   }
 `
 export default withRouter(App)

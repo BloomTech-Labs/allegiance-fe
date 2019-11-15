@@ -34,7 +34,7 @@ const Feed = () => {
       }
     })
 
-  return feed.length === 0 ? (
+  return filteredFeed.length === 0 ? (
     <FansDiv>
       {/* <Header>Your feed is currently empty...</Header>
       <br /> */}

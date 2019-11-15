@@ -98,7 +98,6 @@ const Profile = props => {
 }
 
 const ProfileContainer = styled.div`
-  border: 5px solid pink;
   max-width: 100%;
   .banner_img {
     width: 100%;

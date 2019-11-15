@@ -64,7 +64,6 @@ const LogoHolder = styled.div`
   overflow-x: auto;
   margin-bottom: 20px;
   background-color: white;
-  border: 2px solid pink;
   &::-webkit-scrollbar {
     display: none;
   }
