@@ -45,8 +45,9 @@ const Feed = () => {
     </FansDiv>
   ) : (
     <Container>
+      <H3>MY FEED</H3>
       {filteredFeed.map(activity => (
-        <PostCard key={activity.id} post={activity} />
+        <PostCard key={activity.id} post={activity} redirectToGroup={true} />
       ))}
     </Container>
   )
@@ -88,6 +89,11 @@ const JoinBtn = styled.button`
   background: #1a4571;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
+`
+const H3 = styled.h3`
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 1% 0;
 `
 
 export default Feed

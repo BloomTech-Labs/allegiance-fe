@@ -157,6 +157,7 @@ function App(props) {
 const AppContainer = styled.div`
   background-color: #e8edf1;
   min-height: 100vh;
+  font-family: 'Roboto', sans-serif !important;
   .sub-container {
     max-width: 1200px;
   }
