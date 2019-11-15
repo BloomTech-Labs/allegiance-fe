@@ -24,18 +24,18 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       }
-    case types.FETCH_PROFILE_SUCCESS:
-      //Refreshes logged in user's info, groups and allegiances upon entering their profile.
-      return {
-        ...state,
-        loggedInAllegiances: action.payload.basicAllegianceInfo,
-        error: '',
-      }
-    case types.FETCH_PROFILE_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      }
+    // case types.FETCH_PROFILE_SUCCESS:
+    //   //Refreshes logged in user's info, groups and allegiances upon entering their profile.
+    //   return {
+    //     ...state,
+    //     loggedInAllegiances: action.payload.basicAllegianceInfo,
+    //     error: '',
+    //   }
+    // case profileTypes.FETCH_PROFILE_FAILURE:
+    //   return {
+    //     ...state,
+    //     error: action.payload,
+    //   }
     case types.UPDATE_USER_SUCCESS:
       //Updates loggedInUser after their profile has been successfully edited.
       return {

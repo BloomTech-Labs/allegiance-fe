@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core/'
 import styled from 'styled-components'
 
-export default function PostCard(props) {
+export default function ProfilePostCard(props) {
   const {
     first_name,
     last_name,
@@ -61,14 +61,6 @@ export default function PostCard(props) {
     await dispatch(dislikePost(token, postLikeId.id, group_id, socket))
   }
 
-  const handleClick = () => {
-    console.log('handleCLick')
-    socket.emit('event', {
-      name: `${user.first_name} ✈️`,
-      room: 'FIVE FINGER POSSE',
-    })
-  }
-
   // *************change icon number to reg number*************
   return (
     <Card raised className={classes.card}>
@@ -85,19 +77,7 @@ export default function PostCard(props) {
             alt={'Avatar'}
           />
         }
-        action={
-          (user.id === user_id || (props.group && props.group.memberType === 'admin')) &&
-          !window.location.pathname.includes('/post') && (
-            <IconButton onClick={e => deletePost(e)} aria-label='settings'>
-              <DeleteOutline />
-            </IconButton>
-          )
-        }
-        title={
-          <Link to={`/profile/${user_id}`}>
-            {first_name} {last_name}
-          </Link>
-        }
+        title={`${first_name} ${last_name}`}
         titleTypographyProps={{ fontSize: 25 }}
         subheader={
           <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
@@ -111,7 +91,6 @@ export default function PostCard(props) {
           variant='body1'
           color='textSecondary'
           component='p'
-          onClick={handleClick}
         >
           {post_content}
         </Typography>

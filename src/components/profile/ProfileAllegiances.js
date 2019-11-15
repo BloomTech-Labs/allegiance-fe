@@ -8,8 +8,8 @@ import styled from 'styled-components'
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
-const MyAllegianceGroups = props => {
-  const name = useSelector(state => state.userReducer.loggedInUser.first_name)
+const ProfileAllegiances = props => {
+  console.log('USER BTN', props.user, props.login)
   const mixpanelCheck = link => {
     if (props.type === 'group') {
       props.history.push(link)
@@ -55,7 +55,12 @@ const MyAllegianceGroups = props => {
 
       {props.content.length === 0 && (
         <Join>
-          <h4>{`You don't belong to any groups yet.`}</h4>
+          <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
+          {props.user === props.loggedInUserId && (
+            <Link to='/addallegiance'>
+              <JoinBtn>Select Your Allegiances</JoinBtn>
+            </Link>
+          )}
         </Join>
       )}
     </LogoHolder>
@@ -65,6 +70,7 @@ const MyAllegianceGroups = props => {
 const LogoHolder = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-left: 1%;
@@ -76,8 +82,9 @@ const LogoHolder = styled.div`
 
 const Join = styled.div`
   display: flex;
-  flex-wrap: column;
+  flex-direction: column;
   align-items: center;
+  border: 1px solid red;
   font-weight: bold;
   letter-spacing: adjusting;
   font-size: 2rem;
@@ -99,5 +106,8 @@ const GroupLogo = styled.img`
   flex: 0 0 auto;
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `
+const JoinBtn = styled.button`
+  border: 1px solid pink;
+`
 
-export default withRouter(MyAllegianceGroups)
+export default withRouter(ProfileAllegiances)

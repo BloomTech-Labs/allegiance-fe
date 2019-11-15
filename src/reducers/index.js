@@ -5,7 +5,8 @@ import { groupReducer } from './groupReducer'
 import { notifyReducer } from './notifyReducer'
 import { socketReducer } from './socketReducer'
 import { groupsReducer } from './groupsReducer'
-import { feedReducer} from './feedReducer'
+import { feedReducer } from './feedReducer'
+import { profileReducer } from './profileReducer'
 
 const rootReducer = combineReducers({
   userReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   socketReducer,
   myGroups: groupsReducer,
   feedReducer,
+  profile: profileReducer,
 })
 
 export default rootReducer
