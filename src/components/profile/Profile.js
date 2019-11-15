@@ -20,11 +20,11 @@ const Profile = props => {
   const id = window.location.pathname.split('/profile/')[1]
 
   useEffect(() => {
-    if (profile && token) {
+    if (token) {
       dispatch(fetchProfile(id))
       dispatch(fetchProfilePosts(id))
     }
-  }, [id, token, dispatch, profile])
+  }, [id, token, dispatch])
 
   if (!profile) {
     return (

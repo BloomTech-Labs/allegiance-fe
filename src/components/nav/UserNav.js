@@ -108,15 +108,20 @@ const NotificationNumber = styled.div`
 `
 
 const RegisterBtn = styled.button`
-  height: 53px;
+  height: 80%;
   border: none;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1;
-  width: 163px;
+  width: 150px;
   color: white;
-  background: #4483cd;
+  background: #1a4571;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  margin-top: 5px;
+  &:hover {
+    text-shadow: 0px 0px 2px #fff !important;
+  }
 `
 
 export default withRouter(UserNav)

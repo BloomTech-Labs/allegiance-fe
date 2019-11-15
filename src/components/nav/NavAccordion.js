@@ -42,7 +42,7 @@ const StyledAccordion = styled(Accordion)`
     color: #fff !important;
     background-color: #1a4571;
     &:hover {
-      text-shadow: 0px 0px 2px #fff !important;
+      text-shadow: 0px 0px 5px #fff !important;
     }
   }
   .accordion-content {

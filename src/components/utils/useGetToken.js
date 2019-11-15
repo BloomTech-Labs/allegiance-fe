@@ -8,8 +8,12 @@ function useGetToken() {
 
   useEffect(() => {
     const fetchToken = async () => {
-      const result = await getTokenSilently()
-      setToken(result)
+      try {
+        const result = await getTokenSilently()
+        setToken(result)
+      } catch (err) {
+        console.log(err)
+      }
     }
     fetchToken()
   })
