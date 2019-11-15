@@ -58,9 +58,9 @@ const Landing = props => {
           <NavSearch {...props} />
         </LeftMiddle>
         <RightMiddle>
-          <CreateGroupButton onClick={() => loginWithRedirect({})}>
+          <LandingButton onClick={() => loginWithRedirect({})}>
             Register/Log In
-          </CreateGroupButton>
+          </LandingButton>
         </RightMiddle>
       </Middle>
       <Bottom>
@@ -74,9 +74,9 @@ const Landing = props => {
           <Image src={SportIcons} size='large' alt={'Sport_Icons'} />
         </LeftBottom3>
         <LeftBottom4>
-          <CreateGroupButton onClick={() => loginWithRedirect({})}>
+          <LandingButton onClick={() => loginWithRedirect({})}>
             Join a group today.
-          </CreateGroupButton>
+          </LandingButton>
         </LeftBottom4>
       </Bottom>
       <Footer>
@@ -246,23 +246,6 @@ const RegisterBtn = styled.button`
   }
   //
 `
-// const JoinBtn = styled.button`
-//   &:hover {
-//     background: #4483cd;
-//     cursor: pointer;
-//   }
-//   height: 54px;
-//   width: 192px;
-//   border: none;
-//   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-//   color: white;
-//   background: #ed5959;
-//   font-size: 16px;
-//   font-family: 'Roboto', sans-serif;
-//   @media (max-width: 500px) {
-//     width: 90%;
-//   }
-// `
 const ImageMini = styled.img`
   &:hover {
     transition: all 0.2s ease-in-out;
@@ -278,13 +261,13 @@ const About = styled.div`
     cursor: pointer;
   }
 `
-const CreateGroupButton = styled(Button)`
+const LandingButton = styled(Button)`
   color: white !important;
   margin-top: 20px !important;
   font-size: 1.8rem !important;
-  background-color: #1a4570 !important;
+  background-color: #4483cd !important;
   :hover {
-    background-color: #4483cd !important;
+    background-color: #1a4570 !important;
     curser: pointer;
   }
 `

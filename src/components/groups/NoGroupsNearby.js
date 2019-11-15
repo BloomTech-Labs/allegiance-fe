@@ -36,11 +36,12 @@ const ResultsDiv = styled.div`
   font-size: 1.8rem;
 `
 const CreateGroupButton = styled(Button)`
+  color: white !important;
   margin-top: 20px !important;
   font-size: 1.8rem !important;
-  background-color: #1a4570 !important;
+  background-color: #4483cd !important;
   :hover {
-    background-color: #4483cd !important;
+    background-color: #1a4570 !important;
     curser: pointer;
   }
 `
