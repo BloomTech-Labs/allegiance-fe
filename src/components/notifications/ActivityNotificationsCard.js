@@ -56,9 +56,9 @@ const ActivityNotificationsCard = props => {
   // fullName is needed here as if content is post or reply, there is no liker/poster, only first name and last name
   const fullName = first_name + ' ' + last_name
 
-  let notifyContent = ''
-  if (content) notifyContent = content.slice(0, 20)
-  if (content && content.length > 20) notifyContent += '...'
+  // let notifyContent = ''
+  // if (content) notifyContent = content.slice(0, 20)
+  // if (content && content.length > 20) notifyContent += '...'
 
   // Onclick handler for notifications to direct user to correct app path
   const goToNote = e => {

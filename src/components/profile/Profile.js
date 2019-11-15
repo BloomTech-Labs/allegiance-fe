@@ -20,11 +20,11 @@ const Profile = props => {
   const id = window.location.pathname.split('/profile/')[1]
 
   useEffect(() => {
-    if (profile && token) {
+    if (token) {
       dispatch(fetchProfile(id))
       dispatch(fetchProfilePosts(id))
     }
-  }, [id, token, dispatch, profile])
+  }, [id, token, dispatch])
 
   if (!profile) {
     return (
@@ -88,8 +88,8 @@ const Profile = props => {
         </div>
         <div className='lower-div'>
           <h2>POSTS</h2>
-          {profile.posts.map(post => {
-            return <ProfilePostCard post={post} />
+          {profile.posts.map((post, id) => {
+            return <ProfilePostCard key={id} post={post} />
           })}
         </div>
       </InfoHolder>
