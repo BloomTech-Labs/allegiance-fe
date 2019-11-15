@@ -260,8 +260,7 @@ const NavIcon = styled(Icon)`
   color: #fff !important;
   opacity: 1 !important;
   &:hover {
-      text-shadow:0px 0px 2px #fff; !important
-    }
+    text-shadow: 0px 0px 2px #fff !important;
   }
 `
 
