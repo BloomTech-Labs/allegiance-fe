@@ -4,13 +4,13 @@ import { Icon, Loader } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ProfileAllegiances from './ProfileAllegiances'
-import ProfilePostCard from '../profile/ProfilePostCard'
 import useGetToken from '../utils/useGetToken'
 import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
 import MyGroups from './MyGroups'
+import { ProfilePosts } from './ProfilePosts'
 
 const Profile = props => {
   const dispatch = useDispatch()
@@ -88,9 +88,7 @@ const Profile = props => {
         </div>
         <div className='lower-div'>
           <h2>POSTS</h2>
-          {profile.posts.map((post, id) => {
-            return <ProfilePostCard key={id} post={post} />
-          })}
+          <ProfilePosts posts={profile.posts} />
         </div>
       </InfoHolder>
     </ProfileContainer>
