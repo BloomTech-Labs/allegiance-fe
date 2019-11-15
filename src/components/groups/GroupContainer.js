@@ -34,7 +34,6 @@ export default withRouter(GroupContainer)
 const Container = styled.div`
   h3 {
     text-align: left;
-    margin-left: 5%;
   }
 `
 const H3 = styled.h3`

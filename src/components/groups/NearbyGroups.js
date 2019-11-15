@@ -86,7 +86,6 @@ const NearbyGroupsContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  margin-left: 5%;
 `
 
 const LoaderDiv = styled.div`
