@@ -88,7 +88,7 @@ const Profile = props => {
         </div>
         <div className='lower-div'>
           <h2>POSTS</h2>
-          <ProfilePosts posts={profile.posts} />
+          <ProfilePosts name={profile.first_name} posts={profile.posts} />
         </div>
       </InfoHolder>
     </ProfileContainer>
