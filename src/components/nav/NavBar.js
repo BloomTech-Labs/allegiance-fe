@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { Mobile, Tablet } from '../utils/Responsive'
+import { Mobile, Tablet } from '../utils/responsive'
 
 import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
