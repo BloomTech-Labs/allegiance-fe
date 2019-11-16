@@ -38,6 +38,10 @@ const NavAccordion = () => {
 export default NavAccordion
 
 const StyledAccordion = styled(Accordion)`
+  position: sticky;
+  top: 64px;
+  left: 0px;
+  z-index: 1 !important;
   .title {
     color: #fff !important;
     background-color: #1a4571;
