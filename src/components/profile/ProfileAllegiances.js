@@ -57,7 +57,6 @@ const Join = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid red;
   font-weight: bold;
   letter-spacing: adjusting;
   font-size: 2rem;

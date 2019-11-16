@@ -59,14 +59,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #e8edf1;
-  border: 3px solid purple;
 `
 
 const FansDiv = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  border: 3px solid purple;
 `
 
 const Img = styled.img`

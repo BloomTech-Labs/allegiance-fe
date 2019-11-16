@@ -24,7 +24,6 @@ export const ProfilePosts = ({ posts, name }) => {
 }
 
 const ProfilePostsContainer = styled.div`
-  border: 1px solid purple;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +38,6 @@ const Join = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid red;
   font-weight: bold;
   letter-spacing: adjusting;
   font-size: 2rem;

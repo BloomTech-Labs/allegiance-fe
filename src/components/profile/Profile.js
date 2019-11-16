@@ -123,7 +123,6 @@ const ProfileContainer = styled.div`
 `
 
 const InfoHolder = styled.div`
-  border: 2px solid purple;
   .name {
     display: flex;
     flex-direction: row;
@@ -135,7 +134,6 @@ const InfoHolder = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid red;
   }
   h2 {
     font-size: 2rem;
