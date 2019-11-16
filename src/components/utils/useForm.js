@@ -34,11 +34,14 @@ const useForm = (callback, keepValues) => {
 
   const SubmitButton = () => {
     return isLoading ? (
-      <Button loading color='violet'>
+      <Button loading style={{ backgroundColor: '#4483cd', color: 'white' }}>
         Submit
       </Button>
     ) : (
-      <Button type='submit' color='violet'>
+      <Button
+        type='submit'
+        style={{ backgroundColor: '#4483cd', color: 'white' }}
+      >
         Submit
       </Button>
     )
