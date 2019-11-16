@@ -159,7 +159,7 @@ const AppContainer = styled.div`
   min-height: 100vh;
   font-family: 'Roboto', sans-serif !important;
   .sub-container {
-    max-width: 1200px;
+    max-width: 1000px;
   }
 `
 export default withRouter(App)

@@ -4,8 +4,8 @@ import { Loader, Button } from 'semantic-ui-react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'
-
-import GroupCard from './GroupCard'
+import GroupCards from './GroupCards'
+import NoGroupsNearby from './NoGroupsNearby'
 
 const NearbyGroups = props => {
   const [data, setData] = useState()
@@ -60,75 +60,35 @@ const NearbyGroups = props => {
     )
   }
 
-  const goToCreateGroup = evt => {
-    evt.preventDefault()
-    props.history.push('/creategroup')
-  }
-
-  return (
-    <SectionContainer>
+  if (data.groups.length) {
+    return (
       <NearbyGroupsContainer>
-        {data.groups.length > 0 &&
-          data.groups.map(group => {
-            return <GroupCard group={group} key={group.id} nearby={true} />
-          })}
-        {data.groups.length === 0 && (
-          <h4 style={{ margin: '3% auto' }}>
-            {loggedInUser.location && (
-              <ResultsDiv>
-                <h1>
-                  No groups found near your location. Start one now to engage
-                  with your local community!
-                </h1>
-                <CreateGroupButton primary onClick={goToCreateGroup}>
-                  Create a Group
-                </CreateGroupButton>
-              </ResultsDiv>
-            )}
-            {!loggedInUser.location && 'Please Provide A Location In Profile!'}
-          </h4>
-        )}
+        <GroupCards groups={data.groups} />
       </NearbyGroupsContainer>
-    </SectionContainer>
-  )
+    )
+  }
+  if (data.groups.length === 0) {
+    return (
+      <NearbyGroupsContainer>
+        <NoGroupsNearby {...props} loggedInUser={loggedInUser} />
+      </NearbyGroupsContainer>
+    )
+  }
 }
 
-const ResultsDiv = styled.div`
+const NearbyGroupsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0px 8px 8px 8px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
-const CreateGroupButton = styled(Button)`
-  margin-top: 20px !important;
-  font-size: 1.8rem !important;
-  background-color: #1a4570 !important;
-`
-
-// LoaderDiv to keep sections from moving during load
 const LoaderDiv = styled.div`
   height: 28vh;
   margin: 4.75%;
 `
-
-const SectionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-const NearbyGroupsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding-bottom: 3%
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  margin-left: 5%;
-`
-
 export default NearbyGroups

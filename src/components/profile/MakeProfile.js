@@ -229,7 +229,7 @@ const ColumnHolder = styled.div`
 
 const FormSegment = styled(Segment)`
   margin: auto;
-  marginbottom: 15%;
+  margin-bottom: 15%;
   max-width: 800px;
 `
 
