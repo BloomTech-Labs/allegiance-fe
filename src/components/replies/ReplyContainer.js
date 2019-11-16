@@ -3,21 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Loader, Comment, Input } from 'semantic-ui-react'
 import { green } from '@material-ui/core/colors'
-import { TextField, Fab } from '@material-ui/core/'
 import { makeStyles } from '@material-ui/core/styles'
-import { Add, VerticalAlignBottom } from '@material-ui/icons/'
 import useGetToken from '../utils/useGetToken'
 import useForm from '../utils/useForm'
 import Button from '@material-ui/core/Button'
 import SendIcon from '@material-ui/icons/Send'
 import PostCard from '../posts/PostCard'
 import ReplyCard from './ReplyCard'
-import {
-  fetchPost,
-  createReply,
-  fetchUserMembership,
-  receivePostReply,
-} from 'actions'
+import { fetchPost, createReply, fetchUserMembership } from 'actions'
 
 const ReplyContainer = props => {
   const post = useSelector(state => state.group.post)
@@ -37,13 +30,6 @@ const ReplyContainer = props => {
       )
       setGroupId(res.group_id)
     })
-    socket.on('replyPost', data => {
-      console.log('replyPost2', data)
-      dispatch(receivePostReply(data))
-    })
-    return () => {
-      socket.off('replyPost')
-    }
   }, [dispatch, id, user.id])
 
   async function submitReply(e) {
@@ -115,11 +101,6 @@ const ReplyContainer = props => {
   // Create ref and scrollToBottom function to allow scroll to bottom button
   const repliesEndRef = useRef(null)
 
-  const scrollToBottom = () => {
-    if (repliesEndRef.current)
-      repliesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  }
-
   if (!post) {
     return (
       <Loader active size='large'>
@@ -188,7 +169,7 @@ const ReplyViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 87vh;
 `
 const ReplyCardsContainer = styled.div`
@@ -210,7 +191,7 @@ const ContainerBottom = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 
 const ReplyForm = styled.form`
@@ -219,13 +200,8 @@ const ReplyForm = styled.form`
   justify-content: center;
   width: 801px;
 
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   align-items: center;
-`
-
-const InputDiv = styled.div`
-  width: 75%;
-  margin-right: 10px;
 `
 
 export default ReplyContainer

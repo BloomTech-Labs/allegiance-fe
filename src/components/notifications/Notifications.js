@@ -143,7 +143,7 @@ const Notifications = () => {
 }
 
 const Container = styled.div`
-  background-color: whitesmoke;
+  background-color: #e8edf1;
   display: flex;
   flex-direction: column;
 `
@@ -156,7 +156,10 @@ const Wrapper = styled.div`
 `
 
 const Header = styled.h1`
-  font-size: 30px;
+  text-align: center
+  margin-top: 25px
+  margin-bottom: 25px
+  font-size: 3.5rem;
   font-weight: 700;
 `
 

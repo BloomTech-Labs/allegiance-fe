@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import avi from '../../assets/walter-avi.png'
 import Moment from 'react-moment'
-import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
+import { ThumbUp, ModeCommentOutlined } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,
@@ -20,7 +19,7 @@ import {
 } from '@material-ui/core/'
 import styled from 'styled-components'
 
-export default function PostCard(props) {
+export default function ProfilePostCard(props) {
   const {
     first_name,
     last_name,
@@ -32,9 +31,7 @@ export default function PostCard(props) {
     replies,
     created_at,
     group_id,
-    group_name,
   } = props.post
-  const { redirectToGroup } = props
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer.loggedInUser)
   // Obtaining the current users status within the current group
@@ -44,10 +41,6 @@ export default function PostCard(props) {
   const postLikeId = likes.find(like => like.user_id === user.id)
 
   const classes = useStyles()
-
-  async function deletePost(e) {
-    await dispatch(deleteGroupPost(token, id))
-  }
 
   async function addLike(e) {
     const data = {
@@ -61,14 +54,6 @@ export default function PostCard(props) {
 
   async function unLike(e) {
     await dispatch(dislikePost(token, postLikeId.id, group_id, socket))
-  }
-
-  const handleClick = () => {
-    console.log('handleCLick')
-    socket.emit('event', {
-      name: `${user.first_name} ✈️`,
-      room: 'FIVE FINGER POSSE',
-    })
   }
 
   // *************change icon number to reg number*************
@@ -87,39 +72,10 @@ export default function PostCard(props) {
             alt={'Avatar'}
           />
         }
-        action={
-          (user.id === user_id ||
-            (props.group && props.group.memberType === 'admin')) &&
-          !window.location.pathname.includes('/post') && (
-            <IconButton onClick={e => deletePost(e)} aria-label='settings'>
-              <DeleteOutline />
-            </IconButton>
-          )
-        }
-        title={
-          <>
-            <Link to={`/profile/${user_id}`}>
-              {first_name} {last_name}
-            </Link>
-
-            {redirectToGroup && (
-              <>
-                <span style={{ fontWeight: '500' }}> posted in </span>
-                <Link to={`/group/${group_id}`}>{group_name}</Link>
-              </>
-            )}
-          </>
-        }
+        title={`${first_name} ${last_name}`}
         titleTypographyProps={{ fontSize: 25 }}
         subheader={
-          <Tooltip
-            className={classes.timestamp}
-            title={
-              <Moment className={classes.fullTimestamp} format='LLLL'>
-                {created_at}
-              </Moment>
-            }
-          >
+          <Tooltip title={<Moment format='LLLL'>{created_at}</Moment>}>
             <Moment fromNow>{created_at}</Moment>
           </Tooltip>
         }
@@ -130,7 +86,6 @@ export default function PostCard(props) {
           variant='body1'
           color='textSecondary'
           component='p'
-          onClick={handleClick}
         >
           {post_content}
         </Typography>
@@ -223,7 +178,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   title: {
-    fontSize: '1.8rem',
+    fontSize: 14,
     fontWeight: 'bold',
   },
   avatar: {
@@ -232,14 +187,8 @@ const useStyles = makeStyles(theme => ({
     height: 60,
   },
   typography: {
-    fontSize: '1.6rem',
+    fontSize: 20,
     color: 'black',
-  },
-  timestamp: {
-    fontSize: '1.2rem',
-  },
-  fullTimestamp: {
-    fontSize: '1rem',
   },
   buttonDiv: {
     paddingRight: 1,

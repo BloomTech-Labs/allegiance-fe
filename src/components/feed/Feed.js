@@ -1,128 +1,99 @@
-import React, { useState, useEffect } from 'react'
-import { axiosWithAuth } from '../utils/axiosWithAuth'
-import useGetToken from '../utils/useGetToken'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Paper } from '@material-ui/core'
-import { Loader } from 'semantic-ui-react'
-import ContentFeedCard from './ContentFeedCard'
-import LikeFeedCard from './LikeFeedCard'
 import { Link } from 'react-router-dom'
+import { fetchFeed } from './actions/index'
 
 import undrawFans from '../../assets/undraw/undrawFans.svg'
+import PostCard from 'components/posts/PostCard'
 
 const Feed = () => {
-  const [feed, setFeed] = useState([])
   const userGroups = useSelector(state => state.myGroups)
   const userId = useSelector(state => state.userReducer.loggedInUser.id)
-
-  // Fetches Auth0 token for axios call
-  const [token] = useGetToken()
+  const feed = useSelector(state => state.feedReducer.posts)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // Fetch feed related data
-    const mappedGroupIds = userGroups.map(group => {
-      return group.id
-    })
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const response = await axiosWithAuth([token]).post(`/feed`, {
-            group_id: mappedGroupIds,
-            interval: 48,
-          })
-          setFeed(response.data.allActivity)
-        } catch {}
+    if (userGroups && userGroups.length > 0) {
+      const data = {
+        group_id: userGroups.map(group => group.id),
+        interval: 48,
       }
+      console.log(data)
+      dispatch(fetchFeed(data))
     }
-    fetchData()
-  }, [token, userGroups])
+  }, [userGroups, dispatch])
 
-  // <Loader active size='large'>
-  //   {' '}
-  //   Loading{' '}
-  // </Loader>
-  // Filter feed for activity by user
-  const filteredFeed = feed.filter(
-    act => userId !== act.user_id && userId !== act.liker_id
-  )
+  const filteredFeed = feed
+    .filter(act => userId !== act.user_id)
+    .map(act => {
+      return {
+        ...act,
+        image: act.user_image || act.image,
+      }
+    })
 
-  return feed.length === 0 ? (
+  return filteredFeed.length === 0 ? (
     <FansDiv>
       {/* <Header>Your feed is currently empty...</Header>
       <br /> */}
       <Link to='/groups'>
-        <Header>Select a group to join!</Header>
+        <JoinBtn>Select a group to join!</JoinBtn>
       </Link>
       <Img src={undrawFans} />
     </FansDiv>
   ) : (
     <Container>
-      {filteredFeed.map(activity => {
-        return (
-          <FeedContainer key={activity.tag + activity.id}>
-            {(activity.tag === 'post' || activity.tag === 'reply') && (
-              <ContentFeedCard activity={activity} />
-            )}
-            {(activity.tag === 'postLike' || activity.tag === 'replyLike') && (
-              <LikeFeedCard activity={activity} />
-            )}
-          </FeedContainer>
-        )
-      })}
+      <H3>MY FEED</H3>
+      {filteredFeed.map(activity => (
+        <PostCard key={activity.id} post={activity} redirectToGroup={true} />
+      ))}
     </Container>
   )
 }
 
 const Container = styled.div`
-  background-color: #dee4e7;
-`
-
-const MyGroups = styled(Paper)`
-  background-color: white;
-  margin-bottom: 3rem;
-`
-
-const GroupTitleHolder = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: #dee4e7;
-  h3 {
-    margin: 0 1%;
-  }
-`
-
-const H3 = styled.h3`
-  padding-top: 10px;
-  font-size: 3rem;
-  font-weight: bold;
-  margin: 1% 0;
-`
-
-const FeedContainer = styled.div`
-  display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100vw;
+  align-items: center;
+  background-color: #e8edf1;
 `
+
 const FansDiv = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  width: 100vw;
 `
 
 const Img = styled.img`
-  width: 70vw;
-  height: 70vh;
+  max-width: 800px;
+  width: 100%;
 `
 
-const Header = styled.h1`
-  margin-top: 10px;
-  padding: 10px;
+const JoinBtn = styled.button`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  &:hover {
+    background: #4483cd;
+    cursor: pointer;
+    text-shadow: 0px 0px 2px #fff !important;
+  }
+  height: 54px;
+  width: 192px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
+  background: #1a4571;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+`
+const H3 = styled.h3`
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: bold;
+  margin: 1% 0;
+  font-family: 'Roboto', sans-serif;
 `
 
 export default Feed

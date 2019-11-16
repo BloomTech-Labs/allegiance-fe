@@ -22,4 +22,6 @@ export const Avatar = ({ user }) => {
 const StyledAvatar = styled.div`
   height: 40px;
   width: 61px;
+  display: flex
+  align-items: center
 `

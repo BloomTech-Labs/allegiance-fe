@@ -3,15 +3,13 @@ import { withRouter } from 'react-router'
 import { Popup, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-// import { Mixpanel } from '../analytics/Mixpanel'
 
 // change Default to change group picture default.
 import Default from '../../assets/walter-avi.png'
 
-const MyAllegianceGroups = props => {
+const MyGroups = props => {
   const mixpanelCheck = link => {
     if (props.type === 'group') {
-      // Mixpanel.activity(props.userId, 'Visited Group From Profile Page')
       props.history.push(link)
     }
   }
@@ -27,8 +25,6 @@ const MyAllegianceGroups = props => {
                 <Icon
                   name='plus'
                   size='big'
-                  circular
-                  inverted
                   color='grey'
                   style={{ fontSize: '2.86rem' }}
                   default={Default}
@@ -38,39 +34,48 @@ const MyAllegianceGroups = props => {
           </Link>
         </div>
       )}
-      {props.content.map(item => (
-        <div
-          key={item.id}
-          style={{ margin: '1%' }}
-          onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}
-        >
-          <Popup
-            content={item.name}
-            trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
-          />
-          <Nickname>{item.acronym && item.acronym}</Nickname>
-        </div>
-      ))}
+      {/* this only renders the account has a group(s) */}
+      {!!props.content.length &&
+        props.content.map(item => (
+          <div
+            key={item.id}
+            style={{ margin: '1%' }}
+            onClick={() => mixpanelCheck(`/${props.type}/${item.id}`)}
+          >
+            <Popup
+              content={item.name}
+              trigger={<GroupLogo src={item.image || Default} alt='Logo' />}
+            />
+          </div>
+        ))}
+      {/* this only renders the account doesnt have any groups */}
+      {props.content.length === 0 && (
+        <Join>
+          <h4>{`You don't belong to any groups yet.`}</h4>
+        </Join>
+      )}
     </LogoHolder>
   )
 }
 
 const LogoHolder = styled.div`
-  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-left: 1%;
-  // background-color: white;
+  margin-bottom: 20px;
+  background-color: white;
   &::-webkit-scrollbar {
     display: none;
   }
 `
 
-const Nickname = styled.p`
-  font-size: 0.8rem;
+const Join = styled.div`
+  display: flex;
+  flex-wrap: column;
+  align-items: center;
   font-weight: bold;
-  margin-top: 10%;
+  letter-spacing: adjusting;
+  font-size: 2rem;
 `
 
 const GroupLogo = styled.img`
@@ -84,4 +89,4 @@ const GroupLogo = styled.img`
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `
 
-export default withRouter(MyAllegianceGroups)
+export default withRouter(MyGroups)

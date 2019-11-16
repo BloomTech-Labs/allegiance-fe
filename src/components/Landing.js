@@ -3,7 +3,7 @@ import { Image } from 'semantic-ui-react'
 import styled from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
-import SearchBar from './groups/SearchBar'
+import NavSearch from './nav/NavSearch'
 import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
 import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
@@ -14,6 +14,7 @@ import NewWay from '../assets/landing/NewWay.png'
 import SportsBetter from '../assets/landing/SportsBetter.png'
 import SportIcons from '../assets/landing/SportIcons.png'
 import Baseball from '../assets/landing/Baseball.jpg'
+import { Button } from 'semantic-ui-react'
 
 const Landing = props => {
   const { loginWithRedirect } = useAuth0()
@@ -21,14 +22,7 @@ const Landing = props => {
     <LandingDiv>
       <Top>
         <LeftTop>
-          <Image
-            src={Logo2}
-            size='small'
-            alt={'Logo'}
-            onClick={() => {
-              window.location = window.location
-            }}
-          />
+          <Image src={Logo2} size='small' alt={'Logo'} />
           <Image src={DoSportsTogether} size='small' alt={'Do'} />
         </LeftTop>
         <RightTop>
@@ -61,12 +55,15 @@ const Landing = props => {
       </Top>
       <Middle>
         <LeftMiddle>
-          <SearchBar {...props} />
+          <NavSearch {...props} />
         </LeftMiddle>
         <RightMiddle>
-          <RegisterBtn onClick={() => loginWithRedirect({})}>
+          <LandingButton
+            style={{ margin: '5px' }}
+            onClick={() => loginWithRedirect({})}
+          >
             Register/Log In
-          </RegisterBtn>
+          </LandingButton>
         </RightMiddle>
       </Middle>
       <Bottom>
@@ -80,9 +77,9 @@ const Landing = props => {
           <Image src={SportIcons} size='large' alt={'Sport_Icons'} />
         </LeftBottom3>
         <LeftBottom4>
-          <JoinBtn onClick={() => loginWithRedirect({})}>
+          <LandingButton onClick={() => loginWithRedirect({})}>
             Join a group today.
-          </JoinBtn>
+          </LandingButton>
         </LeftBottom4>
       </Bottom>
       <Footer>
@@ -139,7 +136,6 @@ const RightTop = styled.div`
   height: 15px;
 `
 const Middle = styled.div`
-  
   display: flex;
   justify-content: space-between;
   @media (max-width: 800px) {
@@ -237,9 +233,9 @@ const H1 = styled.h1`
 const RegisterBtn = styled.button`
   &:hover {
     background: #ed5959;
-    cursor: pointer
+    cursor: pointer;
   }
-  
+
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   z-index: 1;
   width: 163px;
@@ -251,23 +247,7 @@ const RegisterBtn = styled.button`
     width: 90vw;
     height: 45px;
   }
-`
-const JoinBtn = styled.button`
-  &:hover {
-    background: #4483cd;
-    cursor: pointer;
-  }
-  height: 54px;
-  width: 192px;
-  border: none;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  color: white;
-  background: #ed5959;
-  font-size: 16px;
-  font-family: 'Roboto', sans-serif;
-  @media (max-width: 500px) {
-    width: 90%;
-  }
+  //
 `
 const ImageMini = styled.img`
   &:hover {
@@ -282,6 +262,16 @@ const About = styled.div`
     transition: all 0.2s ease-in-out;
     transform: scale(1.5);
     cursor: pointer;
+  }
+`
+const LandingButton = styled(Button)`
+  color: white !important;
+  margin-top: 20px !important;
+  font-size: 1.8rem !important;
+  background-color: #4483cd !important;
+  :hover {
+    background-color: #1a4570 !important;
+    curser: pointer;
   }
 `
 

@@ -3,48 +3,30 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Icon, Loader } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import MyAllegianceGroups from './MyAllegianceGroups'
-import axios from 'axios'
+import ProfileAllegiances from './ProfileAllegiances'
 import useGetToken from '../utils/useGetToken'
-import * as types from 'actions/actionTypes'
+import { fetchProfile, fetchProfilePosts } from './store/profileActions'
 import defaultBanner from 'assets/defaultBanner.jpg'
 import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
+import MyGroups from './MyGroups'
+import { ProfilePosts } from './ProfilePosts'
 
 const Profile = props => {
-  const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
-  const loggedInGroups = useSelector(state => state.myGroups)
-  const loggedInAllegiances = useSelector(
-    state => state.userReducer.loggedInAllegiances
-  )
   const dispatch = useDispatch()
-
-  //Fetches Auth0 token for axios call
   const [token] = useGetToken()
+  const profile = useSelector(state => state.profile)
+  const loggedInUserId = useSelector(state => state.userReducer.loggedInUser.id)
+  const id = window.location.pathname.split('/profile/')[1]
 
   useEffect(() => {
-    if (loggedInUser && token) {
-      const fetchData = async () => {
-        try {
-          dispatch({ type: types.FETCH_PROFILE_REQUEST })
-          const result = await axios.post(process.env.REACT_APP_AUTHURL, {
-            email: loggedInUser.email,
-          })
-          dispatch({
-            type: types.FETCH_PROFILE_SUCCESS,
-            payload: result.data.userInfo,
-          })
-        } catch (err) {
-          dispatch({ type: types.FETCH_PROFILE_FAILURE, payload: err })
-          console.log("There was an issue retrieving the user's profile.")
-        }
-      }
-
-      fetchData()
+    if (token) {
+      dispatch(fetchProfile(id))
+      dispatch(fetchProfilePosts(id))
     }
-  }, [loggedInUser, token, dispatch])
+  }, [id, token, dispatch])
 
-  if (!loggedInUser) {
+  if (!profile) {
     return (
       <Loader active size='large'>
         Loading
@@ -54,121 +36,130 @@ const Profile = props => {
 
   return (
     <ProfileContainer>
-      <div style={{ maxWidth: '100%' }}>
-        <Banner>
-          <BannerImage
-            src={loggedInUser.banner_image || defaultBanner}
-            alt='Banner'
-          />
-        </Banner>
-        <ImageCrop>
-          {loggedInUser.image ? (
-            <ProfileImage src={loggedInUser.image} alt='Profile' />
-          ) : (
-            <Icon
-              name='football ball'
-              size='huge'
-              circular
-              style={{ fontSize: '5.3rem' }}
-            />
-          )}
-        </ImageCrop>
-        <InfoHolder>
-          <Name>
-            {loggedInUser.username && (
-              <Typography
-                variant='h5'
-                noWrap={true}
-                style={{ fontWeight: 'bold' }}
-              >{`${loggedInUser.username}`}</Typography>
-            )}
-          </Name>
-          <Name>
-            {props.match.url === '/profile' && (
-              <Link to='/makeprofile'>Profile Settings</Link>
-            )}
-          </Name>
-          {/* <p>{loggedInUser.bio}</p> */}
-          <>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: '5px',
-              }}
-            >
-              <Link to='/addallegiance'>Select your allegiances</Link>
-            </div>
-            <H2>MY ALLEGIANCES</H2>
-            <MyAllegianceGroups
-              content={loggedInAllegiances || []}
-              type='allegiance'
-              default={Default}
-            />
-          </>
-        </InfoHolder>
+      <div>
+        <img
+          className='banner_img'
+          src={profile.banner_image || defaultBanner}
+          alt='Banner'
+        />
       </div>
+      <div className='img_crop'>
+        {profile.image ? (
+          <img className='profile_img' src={profile.image} alt='Profile' />
+        ) : (
+          <Icon
+            name='football ball'
+            size='huge'
+            circular
+            style={{ fontSize: '5.3rem' }}
+          />
+        )}
+      </div>
+
+      <InfoHolder>
+        <div className='name'>
+          {profile.first_name && (
+            <Typography
+              variant='h1'
+              noWrap={true}
+              style={{ fontWeight: 'bold' }}
+            >{`${profile.first_name} ${profile.last_name}`}</Typography>
+          )}
+        </div>
+        <Bio>{profile.username && <h1>{profile.bio}</h1>}</Bio>
+
+        <div className='name'>
+          {props.match.url === '/profile' && (
+            <Link to='/makeprofile'>Profile Settings</Link>
+          )}
+        </div>
+        <div className='alleg-group-container'>
+          <h2>ALLEGIANCES</h2>
+          <ProfileAllegiances
+            loggedInUserId={loggedInUserId}
+            user={profile.id}
+            name={profile.first_name}
+            content={profile.allegiances}
+            type='allegiance'
+            default={Default}
+          />
+          <h2>GROUPS</h2>
+          <MyGroups content={profile.groups} />
+        </div>
+        <div className='lower-div'>
+          <h2>POSTS</h2>
+          <ProfilePosts name={profile.first_name} posts={profile.posts} />
+        </div>
+      </InfoHolder>
     </ProfileContainer>
   )
 }
 
 const ProfileContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`
-
-const Banner = styled.div``
-
-const BannerImage = styled.img`
-  width: 100%;
-  border-bottom: 10px solid black;
-  max-height: 225px;
-  object-fit: cover;
+  max-width: 100%;
+  .banner_img {
+    width: 100%;
+    border-bottom: 10px solid black;
+    max-height: 225px;
+    object-fit: cover;
+  }
+  .img_crop {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid white;
+    margin-top: -8rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+  }
+  .profile_img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+  }
 `
 
 const InfoHolder = styled.div`
-  margin-top: 5%;
+  .name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .alleg-group-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h2 {
+    font-size: 2rem;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .groupDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .lower-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
-const Name = styled.div`
+const Bio = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 10px;
-`
-
-const ImageCrop = styled.div`
-  width: 150px;
-  height: 150px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-  border: 1px solid white;
-  margin-top: -8rem;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-`
-const ProfileImage = styled.img`
-  object-fit: cover;
-  width: 150px;
-  height: 150px;
-`
-const H2 = styled.h2`
-  font-size: 2rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
-
-const H3 = styled.h3`
-  padding-left: 20px;
-  font-size: 3rem;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 `
 
 export default Profile

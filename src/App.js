@@ -126,7 +126,7 @@ function App(props) {
     <AppContainer>
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div style={{ margin: '0 auto' }}>
+      <div className='sub-container' style={{ margin: '0 auto' }}>
         {loggedInUser && props.location.pathname !== '/profile' && (
           <NavBottom />
         )}
@@ -139,7 +139,7 @@ function App(props) {
             <PrivateRoute path='/creategroup' component={CreateGroup} />
             <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
             <PrivateRoute path='/notifications' component={Notifications} />
-            <PrivateRoute path='/profile' component={Profile} />
+            <PrivateRoute path='/profile/:id' component={Profile} />
             <Route path='/group/:id' component={GroupPage} />
             <PrivateRoute
               path='/allegiance/:id'
@@ -155,7 +155,11 @@ function App(props) {
   )
 }
 const AppContainer = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   min-height: 100vh;
+  font-family: 'Roboto', sans-serif !important;
+  .sub-container {
+    max-width: 1000px;
+  }
 `
 export default withRouter(App)

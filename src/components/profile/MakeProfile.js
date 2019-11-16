@@ -38,9 +38,14 @@ const MakeProfile = props => {
     try {
       dispatch({ type: types.UPDATE_USER_REQUEST })
       if (image) values.image = image
-      Object.keys(values).forEach(
-        key => values[key] === '' && (values[key] = null)
-      )
+      Object.keys(values).forEach(key => {
+        const val = values[key]
+        if (val === '' || !val) {
+          values[key] = null
+        } else {
+          values[key] = val.replace(/\s\s+/g, ' ').trim()
+        }
+      })
 
       const users = await axiosWithAuth([token]).get(`/users`)
 
@@ -69,7 +74,7 @@ const MakeProfile = props => {
         payload: result.data.updated,
       })
       // Mixpanel.activity(loggedInUser.id, 'Complete Edit Profile')
-      const push = () => props.history.push('/profile')
+      const push = () => props.history.push(`/profile/${loggedInUser.id}`)
       setTimeout(push, 1000)
     } catch (err) {
       dispatch({ type: types.UPDATE_USER_FAILURE, payload: err })
@@ -89,7 +94,7 @@ const MakeProfile = props => {
   return (
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
-        <Form onSubmit={handleSubmit} error>
+        <Form onSubmit={handleSubmit} error style={{ fontSize: '1.5rem' }}>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
             <Modal
@@ -224,7 +229,7 @@ const ColumnHolder = styled.div`
 
 const FormSegment = styled(Segment)`
   margin: auto;
-  marginbottom: 15%;
+  margin-bottom: 15%;
   max-width: 800px;
 `
 

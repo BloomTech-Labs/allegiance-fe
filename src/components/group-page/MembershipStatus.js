@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import useGetToken from '../utils/useGetToken'
@@ -27,11 +27,6 @@ const MembershipStatus = props => {
   const privateGroupRequests = useSelector(
     state => state.userReducer.pendingGroupRequests
   )
-  let hasRequest = privateGroupRequests.includes(group_id)
-
-  useEffect(() => {
-    hasRequest = privateGroupRequests.includes(group_id)
-  }, [privateGroupRequests])
 
   async function joinGroupHandler(e) {
     e.preventDefault()
@@ -148,7 +143,7 @@ const MembershipStatus = props => {
           )}
           {privacy !== 'public' && (
             <>
-              {!hasRequest ? (
+              {!privateGroupRequests.includes(group_id) ? (
                 <>
                   <NotMember>Holder</NotMember>
                   <Button

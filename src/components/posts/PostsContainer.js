@@ -73,11 +73,11 @@ const PostListContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  background-color: #dee4e7;
+  background-color: #e8edf1;
   // padding-bottom: 15%;
 `
 const PostsWrapper = styled.div`
-  background-color: #dee4e7;
+  background-color: #e8edf1;
 `
 const PaperContainer = styled(Paper)`
   padding: 3.5rem;
@@ -88,11 +88,12 @@ const JoinBtn = styled.button`
   border: none;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   color: white;
-  background: #ed5959;
+  background: #1a4571;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
+  margin-top: 25px;
   @media (max-width: 500px) {
-    width: 90vw;
+    width: 75%;
   }
 `
 

@@ -50,7 +50,6 @@ export const groupReducer = (state = initialState, action) => {
         arePostsLoading: false,
       }
     case types.RECEIVE_POST_SUCCESS:
-
     case types.CREATE_POST_SUCCESS:
       return {
         ...state,

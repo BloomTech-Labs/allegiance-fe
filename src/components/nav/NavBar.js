@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+import { Mobile, Tablet } from '../utils/responsive'
+
 import useGetToken from '../utils/useGetToken'
-import NavLeft from './NavLeft'
-import NavRight from './NavRight'
+import UserNav from './UserNav'
+import Navigation from './Navigation'
+import NavSearch from './NavSearch'
+import NavBottom from './NavBottom'
 import styled from 'styled-components'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 import {
   CreateNotification,
   createInvite,
@@ -16,12 +21,20 @@ import {
   receiveDislike,
   receiveReplyLike,
   receiveReplyDislike,
+  receiveGroupReply,
+  receivePostReply,
 } from 'actions'
 import {
   SET_UNREAD_NOTIFICATION_NUM,
   INCREMENT_UNREAD_NOTIFICATION_NUM,
 } from 'actions/actionTypes'
 import { fetchPrivateRequests, receivingGroup } from 'actions'
+import {
+  receiveFeedLike,
+  receiveFeedDislike,
+  receiveFeedPost,
+  receiveFeedReply,
+} from '../feed/actions/index'
 
 const NavBar = props => {
   const { location } = props
@@ -30,10 +43,19 @@ const NavBar = props => {
     state => state.userReducer.loggedInUser.notification_check
   )
   const socket = useSelector(state => state.socketReducer.socket)
-  const notifications = useSelector(state => state.notifyReducer.notifications)
+  const { notifications, unread } = useSelector(state => state.notifyReducer)
   const dispatch = useDispatch()
   const [token] = useGetToken()
   const { loading } = useAuth0()
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  const isMobile = useMediaQuery({
+    query: Mobile,
+  })
+
+  const isTablet = useMediaQuery({
+    query: Tablet,
+  })
 
   useEffect(() => {
     if (user) {
@@ -122,12 +144,31 @@ const NavBar = props => {
         } else {
           dispatch(receiveGroupPost(data))
         }
+      else if (location.pathname === `/home`) {
+        if (data.type === 'like') {
+          dispatch(receiveFeedLike(data))
+        } else if (data.type === 'dislike') {
+          dispatch(receiveFeedDislike(data))
+        } else if (data.post) {
+          dispatch(receiveFeedPost(data))
+        }
+      }
+    })
+    socket.on('replyPost', data => {
+      if (location.pathname === `/group/${data.room}`) {
+        dispatch(receiveGroupReply(data))
+      } else if (location.pathname === `/post/${data.reply.post_id}`) {
+        dispatch(receivePostReply(data))
+      } else if (location.pathname === `/home`) {
+        dispatch(receiveFeedReply(data))
+      }
     })
     return () => {
       socket.off('new notification')
       socket.off('new invite')
       socket.off('event')
       socket.off('groupPost')
+      socket.off('replyPost')
     }
   }, [
     user,
@@ -149,26 +190,97 @@ const NavBar = props => {
     )
   }
   return (
-    <Sticky>
-      <NavLeft />
-      <NavRight user={user} />
-    </Sticky>
+    <>
+      {isMobile ? (
+        <StickyNav pointing secondary>
+          <StyledMenuItem>
+            <NavIcon
+              name='search'
+              size='large'
+              style={{
+                fontSize: '1.8rem !important',
+                cursor: 'pointer',
+              }}
+              onClick={() => setSearchOpen(true)}
+            />
+            <Modal
+              dimmer
+              open={searchOpen}
+              style={{
+                width: '100%',
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                zIndex: '1',
+              }}
+              onClose={() => setSearchOpen(false)}
+            >
+              <StickyNav pointing secondary>
+                <StyledMenuItem>
+                  <NavIcon
+                    name='arrow left'
+                    size='large'
+                    style={{
+                      fontSize: '1.8em',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setSearchOpen(false)}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem style={{ width: '80%' }}>
+                  <NavSearch
+                    resultSelectCallback={() => setSearchOpen(false)}
+                  />
+                </StyledMenuItem>
+              </StickyNav>
+            </Modal>
+          </StyledMenuItem>
+          <Menu.Menu position='right'>
+            <Navigation />
+            <UserNav user={user} unread={unread} />
+          </Menu.Menu>
+        </StickyNav>
+      ) : (
+        <StickyNav pointing secondary>
+          <StyledMenuItem
+            style={{ width: isTablet ? '50%' : '25%', minWidth: '220px' }}
+          >
+            <NavSearch />
+          </StyledMenuItem>
+          <Menu.Menu position='right'>
+            <Navigation />
+            <UserNav user={user} unread={unread} />
+          </Menu.Menu>
+        </StickyNav>
+      )}
+      {/* {user && props.location.pathname !== '/profile' && <NavBottom />} */}
+    </>
   )
 }
 
-const Sticky = styled.nav`
+const NavIcon = styled(Icon)`
+  color: #fff !important;
+  opacity: 1 !important;
+  &:hover {
+    text-shadow: 0px 0px 2px #fff !important;
+  }
+`
+
+const StickyNav = styled(Menu)`
   position: sticky;
-  width: 100%;
   top: 0;
   left: 0;
-  z-index: 1;
-  margin: 0 auto;
-  height: 55px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1a4570;
-  color: white;
+  z-index: 10 !important;
+  font-family: 'Roboto', sans-serif !important;
+  background-color: #4483cd !important;
+  border-radius: 0px !important;
+  border: none !important;
+  font-size: 1.4rem !important;
+  margin-bottom: 0 !important;
+`
+
+const StyledMenuItem = styled(Menu.Item)`
+  align-self: center !important;
 `
 
 export default NavBar
