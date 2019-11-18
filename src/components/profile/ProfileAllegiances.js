@@ -15,7 +15,10 @@ const ProfileAllegiances = props => {
 
   return (
     <LogoHolder>
-      <div style={{ margin: '1%' }}>
+      <div
+        className={props.appear ? 'appear' : 'disappear'}
+        style={{ margin: '1%' }}
+      >
         <Link to={`/addallegiance`}>
           <Popup
             content={'Add a allegiance'}
@@ -65,6 +68,11 @@ const LogoHolder = styled.div`
   overflow-x: auto;
   background-color: white;
   &::-webkit-scrollbar {
+    display: none;
+  }
+  .appear {
+  }
+  .disappear {
     display: none;
   }
 `

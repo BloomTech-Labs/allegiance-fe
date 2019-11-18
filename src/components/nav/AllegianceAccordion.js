@@ -35,6 +35,7 @@ const AllegianceAccordion = () => {
           content={loggedInAllegiances || []}
           type='group'
           name={"You don't"}
+          appear={true}
         />
       </Accordion.Content>
     </StyledAccordion>

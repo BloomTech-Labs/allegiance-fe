@@ -60,6 +60,7 @@ const MyGroups = props => {
 const LogoHolder = styled.div`
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
   overflow-x: auto;
   background-color: white;
   &::-webkit-scrollbar {
