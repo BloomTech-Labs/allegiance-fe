@@ -93,7 +93,7 @@ const MakeProfile = props => {
 
   return (
     <FormHolder>
-      <FormSegment raised color='violet' style={{ margin: 'auto' }}>
+      <FormSegment style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error style={{ fontSize: '1.5rem' }}>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
@@ -206,7 +206,8 @@ const StyledButton = {
 }
 
 const FormHolder = styled.div`
-  justify-content:center @media (max-width: 320px) {
+  justify-content: center;
+  @media (max-width: 320px) {
     height: 87vh;
   }
 `

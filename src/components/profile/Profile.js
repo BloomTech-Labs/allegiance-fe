@@ -62,7 +62,7 @@ const Profile = props => {
             <Typography
               variant='h1'
               noWrap={true}
-              style={{ fontWeight: 'bold' }}
+              style={{ fontWeight: 'bold', paddingBottom: '10px' }}
             >{`${profile.first_name} ${profile.last_name}`}</Typography>
           )}
         </div>
@@ -127,7 +127,6 @@ const InfoHolder = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    overflow: hidden;
     margin-bottom: 10px;
   }
   .alleg-group-container {
