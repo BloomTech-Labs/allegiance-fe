@@ -127,9 +127,9 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div className='sub-container' style={{ margin: '0 auto' }}>
-        {loggedInUser && props.location.pathname !== '/profile' && (
-          <NavBottom />
-        )}
+        {/* {loggedInUser && props.location.pathname !== '/profile' && (
+          <NavBottom style={{ maxWidth: '2000px' }} />
+        )} */}
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />
