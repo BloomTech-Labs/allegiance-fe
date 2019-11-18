@@ -242,7 +242,7 @@ const NavBar = props => {
             </Menu.Menu>
           </StickyNav>
           <div>
-            <NavBottom />
+            {user && props.location.pathname !== '/profile' && <NavBottom />}
           </div>
         </>
       ) : (
@@ -259,7 +259,7 @@ const NavBar = props => {
             </Menu.Menu>
           </StickyNav>
           <div>
-            <NavBottom />
+            {user && props.location.pathname !== './profile' && <NavBottom />}
           </div>
         </>
       )}

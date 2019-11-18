@@ -3,8 +3,9 @@ import { Accordion, Icon } from 'semantic-ui-react'
 import MyGroups from '../profile/MyGroups'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import ProfileAllegiances from '../profile/ProfileAllegiances'
 
-const NavAccordion = () => {
+const AllegianceAccordion = () => {
   const loggedInGroups = useSelector(state => state.myGroups)
   const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
   const handleClick = (e, titleProps) => {
@@ -23,19 +24,19 @@ const NavAccordion = () => {
         className='title'
       >
         <Icon name='dropdown' />
-        My Groups
+        My My Alliances
       </Accordion.Title>
       <Accordion.Content
         active={activeIndex.activeIndex === 0}
         className='accordion-content'
       >
-        <MyGroups content={loggedInGroups || []} type='group' />
+        <ProfileAllegiances content={loggedInGroups || []} type='group' />
       </Accordion.Content>
     </StyledAccordion>
   )
 }
 
-export default NavAccordion
+export default AllegianceAccordion
 
 const StyledAccordion = styled(Accordion)`
   position: sticky;

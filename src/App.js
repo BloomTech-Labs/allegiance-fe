@@ -11,7 +11,6 @@ import PrivateRoute from './components/PrivateRoute'
 import { initGA, logPageView } from './components/analytics/Analytics'
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import NavBar from './components/nav/NavBar'
-import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
 import { Mixpanel } from './components/analytics/Mixpanel'
 import MixpanelMessages from './components/analytics/MixpanelMessages'
@@ -127,9 +126,6 @@ function App(props) {
       <CssReset />
       {props.location.pathname !== '/' && <NavBar {...props} />}
       <div className='sub-container' style={{ margin: '0 auto' }}>
-        {/* {loggedInUser && props.location.pathname !== '/profile' && (
-          <NavBottom style={{ maxWidth: '2000px' }} />
-        )} */}
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />

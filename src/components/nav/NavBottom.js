@@ -1,13 +1,15 @@
 import React from 'react'
-import NavAccordion from './NavAccordion'
+import GroupsAccordion from './GroupsAccordion'
+import styled from 'styled-components'
 
 // ***ADD THESE 2 BACK IF WE ADD ALLEGIANCE TO NAV***
-// import AllegianceNav from './AllegianceNav'
+import AllegianceAccordion from './AllegianceAccordion'
 
 const NavBottom = () => {
   return (
     <>
-      <NavAccordion />
+      <GroupsAccordion />
+      <AllegianceAccordion />
     </>
   )
 }
