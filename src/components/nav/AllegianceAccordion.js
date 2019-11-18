@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Accordion, Icon } from 'semantic-ui-react'
-import MyGroups from '../profile/MyGroups'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import ProfileAllegiances from '../profile/ProfileAllegiances'
 
 const AllegianceAccordion = () => {
-  const loggedInGroups = useSelector(state => state.myGroups)
+  const loggedInAllegiances = useSelector(
+    state => state.userReducer.loggedInAllegiances
+  )
   const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
   const handleClick = (e, titleProps) => {
     const { index } = titleProps
@@ -24,13 +25,17 @@ const AllegianceAccordion = () => {
         className='title'
       >
         <Icon name='dropdown' />
-        My My Alliances
+        My Alliances
       </Accordion.Title>
       <Accordion.Content
         active={activeIndex.activeIndex === 0}
         className='accordion-content'
       >
-        <ProfileAllegiances content={loggedInGroups || []} type='group' />
+        <ProfileAllegiances
+          content={loggedInAllegiances || []}
+          type='group'
+          name={"You don't"}
+        />
       </Accordion.Content>
     </StyledAccordion>
   )

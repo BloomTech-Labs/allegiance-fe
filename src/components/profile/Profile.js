@@ -78,13 +78,16 @@ const Profile = props => {
           <ProfileAllegiances
             loggedInUserId={loggedInUserId}
             user={profile.id}
-            name={profile.first_name}
+            name={profile.first_name + ' ' + "doesn't"}
             content={profile.allegiances}
             type='allegiance'
             default={Default}
           />
           <h2>GROUPS</h2>
-          <MyGroups content={profile.groups} />
+          <MyGroups
+            content={profile.groups}
+            first_name={profile.first_name + ' ' + "doesn't"}
+          />
         </div>
         <div className='lower-div'>
           <h2>POSTS</h2>

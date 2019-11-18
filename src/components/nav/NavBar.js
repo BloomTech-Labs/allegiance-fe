@@ -190,9 +190,9 @@ const NavBar = props => {
     )
   }
   return (
-    <>
+    <div>
       {isMobile ? (
-        <>
+        <div>
           <StickyNav pointing secondary>
             <StyledMenuItem>
               <NavIcon
@@ -244,9 +244,9 @@ const NavBar = props => {
           <div>
             {user && props.location.pathname !== '/profile' && <NavBottom />}
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <div>
           <StickyNav pointing secondary>
             <StyledMenuItem
               style={{ width: isTablet ? '50%' : '25%', minWidth: '220px' }}
@@ -261,10 +261,10 @@ const NavBar = props => {
           <div>
             {user && props.location.pathname !== './profile' && <NavBottom />}
           </div>
-        </>
+        </div>
       )}
       {/* {user && props.location.pathname !== '/profile' && <NavBottom />} */}
-    </>
+    </div>
   )
 }
 

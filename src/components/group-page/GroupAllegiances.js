@@ -44,7 +44,7 @@ const ImageHolder = styled.div`
 
 const LogoHolder = styled.div`
   display: flex;
-  flexdirection: row;
+  flex-direction: row;
   justify-content: center;
   margin-top: 1%;
 `

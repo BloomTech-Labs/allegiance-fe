@@ -15,7 +15,7 @@ const AddAllegiance = props => {
   const loggedInAllegiances = useSelector(
     state => state.userReducer.loggedInAllegiances
   )
-  const id = props.id
+  const id = useSelector(state => state.userReducer.loggedInUser.id)
   const dispatch = useDispatch()
 
   //Fetches Auth0 token for axios call

@@ -1,7 +1,6 @@
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter, Link } from 'react-router-dom'
 import { Popup, Icon } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 // change Default to change group picture default.
@@ -51,7 +50,7 @@ const MyGroups = props => {
       {/* this only renders the account doesnt have any groups */}
       {props.content.length === 0 && (
         <Join>
-          <h4>{`You don't belong to any groups yet.`}</h4>
+          <h4>{`${props.first_name} belong to any groups yet.`}</h4>
         </Join>
       )}
     </LogoHolder>
@@ -62,7 +61,6 @@ const LogoHolder = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-bottom: 20px;
   background-color: white;
   &::-webkit-scrollbar {
     display: none;

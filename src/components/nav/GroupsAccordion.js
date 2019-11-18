@@ -29,7 +29,11 @@ const GroupsAccordion = () => {
         active={activeIndex.activeIndex === 0}
         className='accordion-content'
       >
-        <MyGroups content={loggedInGroups || []} type='group' />
+        <MyGroups
+          content={loggedInGroups || []}
+          type='group'
+          first_name="You don't"
+        />
       </Accordion.Content>
     </StyledAccordion>
   )
@@ -38,6 +42,7 @@ const GroupsAccordion = () => {
 export default GroupsAccordion
 
 const StyledAccordion = styled(Accordion)`
+  border-bottom: 1px solid #0e263e;
   position: sticky;
   top: 64px;
   left: 0px;
