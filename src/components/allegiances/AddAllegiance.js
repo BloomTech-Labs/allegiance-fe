@@ -86,8 +86,8 @@ const AddAllegiance = props => {
       {/* <Link */}
       <Segment
         raised
-        color='blue'
-        style={{ width: '90%', margin: 'auto', marginBottom: '15%' }}
+        color='white'
+        style={{ width: '90%', margin: 'auto', marginBottom: '5%' }}
       >
         <Tab menu={{ borderless: true, pointing: true }} panes={panes} />
         <Link to='/makeallegiance'>
@@ -110,16 +110,17 @@ const ButtonDiv = styled.div`
 
 const JoinBtn = styled.button`
   &:hover {
-    background: #4483cd;
-    cursor: pointer;
+    background-color: #1a4570 !important;
+    cursor: pointer !important;
   }
-  height: 54px;
-  width: 192px;
-  border: none;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  color: white;
-  background: #ed5959;
-  font-size: 16px;
+  height: 54px !important;
+  max-width: 400px !important;
+  margin-bottom: 18px !important;
+  border: none !important;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  background-color: #4483cd !important;
+  font-size: 16px !important;
   font-family: 'Roboto', sans-serif;
   @media (max-width: 500px) {
     width: 90%;

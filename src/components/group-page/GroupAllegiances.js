@@ -34,6 +34,7 @@ const Allegiances = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 4px solid red;
   h3 {
     margin: 0 auto;
   }
