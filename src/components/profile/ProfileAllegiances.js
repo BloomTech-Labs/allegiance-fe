@@ -33,7 +33,12 @@ const ProfileAllegiances = props => {
       {props.content.length === 0 && (
         <Join>
           <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
-          <Icon name='question circle' size='huge' color='grey' />
+          <Icon
+            name='question circle'
+            size='huge'
+            color='grey'
+            style={{ marginTop: '20px' }}
+          />
         </Join>
       )}
     </LogoHolder>
