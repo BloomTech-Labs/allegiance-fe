@@ -32,7 +32,16 @@ const Feed = lazy(() => import('components/feed/Feed'))
 const Notifications = lazy(() =>
   import('components/notifications/Notifications')
 )
-function App(props) {
+
+const AppWrapper = styled.div`
+  background-color: #e8edf1;
+  font-family: 'Roboto', sans-serif !important;
+  max-width: 1000px;
+  min-height: 100vh;
+  margin: 0 auto;
+`
+
+const App = props => {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
   const socket = useSelector(state => state.socketReducer.socket)
@@ -123,43 +132,51 @@ function App(props) {
     )
   }
   return (
-    <AppContainer>
+    <>
       <CssReset />
-      {props.location.pathname !== '/' && <NavBar {...props} />}
-      <div className='sub-container' style={{ margin: '0 auto' }}>
-        {loggedInUser && props.location.pathname !== '/profile' && (
-          <NavBottom />
-        )}
+      <div style={{ backgroundColor: '#e8edf1' }}>
+        {props.location.pathname !== '/' && <NavBar {...props} />}
         <Suspense fallback={null}>
           <Switch>
             <Route exact path='/' component={!isAuthenticated && Landing} />
-            <Route path='/home' component={Feed} />
-            <Route path='/groups' component={GroupContainer} />
-            <PrivateRoute path='/makeprofile' component={MakeProfile} />
-            <PrivateRoute path='/creategroup' component={CreateGroup} />
-            <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
-            <PrivateRoute path='/notifications' component={Notifications} />
-            <PrivateRoute path='/profile/:id' component={Profile} />
-            <Route path='/group/:id' component={GroupPage} />
-            <PrivateRoute
-              path='/allegiance/:id'
-              component={UnderConstruction}
-            />
-            <PrivateRoute path='/addallegiance' component={AddAllegiance} />
-            <PrivateRoute path='/makeallegiance' component={MakeAllegiance} />
-            <PrivateRoute path='/post/:id' component={ReplyContainer} />
+            <Route path='/'>
+              <AppWrapper>
+                {loggedInUser && props.location.pathname !== '/profile' && (
+                  <NavBottom />
+                )}
+                <Switch>
+                  <Route path='/home' component={Feed} />
+                  <Route path='/groups' component={GroupContainer} />
+                  <PrivateRoute path='/makeprofile' component={MakeProfile} />
+                  <PrivateRoute path='/creategroup' component={CreateGroup} />
+                  <PrivateRoute path='/editgroup/:id' component={CreateGroup} />
+                  <PrivateRoute
+                    path='/notifications'
+                    component={Notifications}
+                  />
+                  <PrivateRoute path='/profile/:id' component={Profile} />
+                  <Route path='/group/:id' component={GroupPage} />
+                  <PrivateRoute
+                    path='/allegiance/:id'
+                    component={UnderConstruction}
+                  />
+                  <PrivateRoute
+                    path='/addallegiance'
+                    component={AddAllegiance}
+                  />
+                  <PrivateRoute
+                    path='/makeallegiance'
+                    component={MakeAllegiance}
+                  />
+                  <PrivateRoute path='/post/:id' component={ReplyContainer} />
+                </Switch>
+              </AppWrapper>
+            </Route>
           </Switch>
         </Suspense>
       </div>
-    </AppContainer>
+    </>
   )
 }
-const AppContainer = styled.div`
-  background-color: #e8edf1;
-  min-height: 100vh;
-  font-family: 'Roboto', sans-serif !important;
-  .sub-container {
-    max-width: 1000px;
-  }
-`
+
 export default withRouter(App)
