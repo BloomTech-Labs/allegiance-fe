@@ -1,5 +1,9 @@
 import * as types from 'actions/actionTypes'
-
+import {
+  CREATE_POST_SUCCESS,
+  CREATE_POST_FAILURE,
+  DELETE_POST_SUCCESS,
+} from 'components/posts/store/postTypes'
 const initialState = {
   posts: [],
   arePostsLoading: false,
@@ -50,12 +54,12 @@ export const groupReducer = (state = initialState, action) => {
         arePostsLoading: false,
       }
     case types.RECEIVE_POST_SUCCESS:
-    case types.CREATE_POST_SUCCESS:
+    case CREATE_POST_SUCCESS:
       return {
         ...state,
         posts: [...state.posts, action.payload],
       }
-    case types.CREATE_POST_FAILURE:
+    case CREATE_POST_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -159,7 +163,7 @@ export const groupReducer = (state = initialState, action) => {
         allegiances: action.payload.allegiances,
         reqs: action.payload.reqs,
       }
-    case types.DELETE_POST_SUCCESS:
+    case DELETE_POST_SUCCESS:
       console.log(action.payload)
       return {
         ...state,
