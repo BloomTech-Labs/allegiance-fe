@@ -46,7 +46,7 @@ const ProfileAllegiances = props => {
 }
 
 const LogoHolder = styled.div`
-  padding: 5px
+  padding: 5px;
   width: 100%;
   display: flex;
   justify-content: center;

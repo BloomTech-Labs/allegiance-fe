@@ -4,17 +4,8 @@ import styled from 'styled-components'
 import { useAuth0 } from './auth/react-auth0-wrapper'
 import { withRouter } from 'react-router-dom'
 import NavSearch from './nav/NavSearch'
-import Logo2 from '../assets/landing/Logo2.png'
 import LandingImage from '../assets/landing/LandingImage.png'
-import DoSportsTogether from '../assets/landing/DoSportsTogether.png'
 import Logo from '../assets/landing/allegiance-logo.svg'
-import instagram from '../assets/landing/instagram.png'
-import twitter from '../assets/landing/twitter.png'
-import facebook from '../assets/landing/facebook.png'
-import NewWay from '../assets/landing/NewWay.png'
-import SportsBetter from '../assets/landing/SportsBetter.png'
-// import SportIcons from '../assets/landing/SportIcons.png'
-import Baseball from '../assets/landing/Baseball.jpg'
 import { Button } from 'semantic-ui-react'
 import { Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
@@ -125,21 +116,6 @@ const SportIconsWrapper = styled.div`
   }
 `
 
-const P1 = styled.p`
-  color: white;
-`
-const P2 = styled.span`
-  color: white;
-  font-weight: bold;
-`
-
-const Title = styled.h1`
-  margin: 25px 0 0 25px
-  font-size: 3rem
-  font-weight: bold
-  color: white
-`
-
 const P = styled.p`
   color: white;
   font-size: 2.5rem;
@@ -148,7 +124,7 @@ const P = styled.p`
 const PBold = styled.p`
   color: white;
   font-size: 3rem;
-  font-weight: bold
+  font-weight: bold;
   line-height: 3.5rem;
 `
 
@@ -161,8 +137,6 @@ const Top = styled.div`
   justify-content: space-between;
   height: 67px;
   @media (max-width: 470px) {
-    // flex-direction: column;
-    // height: 100px;
     margin-top: 10px;
     align-items: center;
   }
@@ -190,7 +164,6 @@ const RightTop = styled.div`
   height: 15px;
   @media (max-width: 470px) {
     width: 100%;
-    // margin-bottom: 25px;
     margin-top: 0px;
     font-size: 1.5rem;
   }
@@ -229,9 +202,6 @@ const Bottom = styled.div`
   width: 100%;
   height: 80%;
   margin: 0 auto;
-  // @media (max-width: 700px) {
-  //   background-image: url(${Baseball});
-  // }
   @media (max-width: 500px) {
     text-align: center;
     align-items: center;
@@ -292,33 +262,7 @@ const H1 = styled.h1`
   font-size: 1rem;
   color: grey;
 `
-const RegisterBtn = styled.button`
-  &:hover {
-    background: #ed5959;
-    cursor: pointer;
-  }
 
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  width: 163px;
-  color: white;
-  background: #1a4570;
-  font-size: 20px;
-  font-family: 'Roboto', sans-serif;
-  @media (max-width: 800px) {
-    width: 90vw;
-    height: 45px;
-  }
-  //
-`
-const ImageMini = styled.img`
-  &:hover {
-    transition: all 0.2s ease-in-out;
-
-    transform: scale(1.5);
-    cursor: pointer;
-  }
-`
 const About = styled.div`
   &:hover {
     transition: all 0.2s ease-in-out;
