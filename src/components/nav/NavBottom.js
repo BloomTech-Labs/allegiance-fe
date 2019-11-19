@@ -6,7 +6,7 @@ const NavBottom = () => {
   return (
     <div>
       <GroupsAccordion />
-      <AllegianceAccordion />
+      {/* <AllegianceAccordion /> */}
     </div>
   )
 }

@@ -23,7 +23,6 @@ const useImageUploader = type => {
         process.env.REACT_APP_CLOUDINARY_URL,
         formData
       )
-      console.log('ohhh yee give me that img url bbygirl', result)
       setImage(result.data.secure_url)
     }
     uploadImage()

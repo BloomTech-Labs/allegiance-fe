@@ -42,10 +42,10 @@ const GroupsAccordion = () => {
 export default GroupsAccordion
 
 const StyledAccordion = styled(Accordion)`
-  border-bottom: 1px solid #0e263e;
   position: sticky;
   top: 64px;
   left: 0px;
+  background-color: white !important;
   z-index: 1 !important;
   .title {
     color: #fff !important;
