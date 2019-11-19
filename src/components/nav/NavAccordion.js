@@ -41,6 +41,7 @@ const StyledAccordion = styled(Accordion)`
   position: sticky;
   top: 64px;
   left: 0px;
+  background-color: white !important;
   z-index: 1 !important;
   .title {
     color: #fff !important;
