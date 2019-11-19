@@ -170,12 +170,6 @@ const InviteNotificationsCard = props => {
   )
 }
 
-const CardContent = styled.div`
-  display: flex;
-  width: 100%
-  justify-content: space-around;
-`
-
 const ButtonGroup = styled(Button.Group)`
   display: flex;
   flex-direction: row;
@@ -217,44 +211,6 @@ const CardMessage = styled.div`
   margin: 1%;
   overflow: hidden;
   line-height: 25px;
-`
-
-// const CardGroup = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   width: 20%;
-//   margin: 1%;
-// `
-
-const Accept = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: green;
-
-  border-radius: 5px;
-  color: white;
-  height: 40px
-  width: 50px;
-  margin: 1%;
-  border-style: none;
-  cursor: pointer;
-`
-const Decline = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: red;
-
-  border-radius: 5px;
-  color: white;
-  width: 50px;
-  margin: 1%;
-  border-style: none;
-  cursor: pointer;
 `
 
 export default withRouter(InviteNotificationsCard)

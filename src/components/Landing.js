@@ -230,25 +230,7 @@ const H1 = styled.h1`
   font-size: 1rem;
   color: grey;
 `
-const RegisterBtn = styled.button`
-  &:hover {
-    background: #ed5959;
-    cursor: pointer;
-  }
 
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  width: 163px;
-  color: white;
-  background: #4483cd;
-  font-size: 20px;
-  font-family: 'Roboto', sans-serif;
-  @media (max-width: 800px) {
-    width: 90vw;
-    height: 45px;
-  }
-  //
-`
 const ImageMini = styled.img`
   &:hover {
     transition: all 0.2s ease-in-out;

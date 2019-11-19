@@ -79,7 +79,7 @@ const Profile = props => {
             <ProfileAllegiances
               loggedInUserId={loggedInUserId}
               user={profile.id}
-              name={profile.first_name + ' ' + "doesn't"}
+              name={profile.first_name + " doesn't"}
               content={profile.allegiances}
               type='allegiance'
               default={Default}
@@ -89,7 +89,7 @@ const Profile = props => {
           <div className='profile-groups-container'>
             <MyGroups
               content={profile.groups}
-              first_name={profile.first_name + ' ' + "doesn't"}
+              first_name={profile.first_name + " doesn't"}
             />
           </div>
         </div>
