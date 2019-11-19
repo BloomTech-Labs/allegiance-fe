@@ -8,7 +8,7 @@ import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
-import NavBottom from './NavBottom'
+
 import styled from 'styled-components'
 import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 import {

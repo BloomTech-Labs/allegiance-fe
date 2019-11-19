@@ -59,11 +59,12 @@ const MyGroups = props => {
 }
 
 const LogoHolder = styled.div`
+  padding: 5px;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-bottom: 20px;
-  background-color: white;
+  background-color: transparent;
   &::-webkit-scrollbar {
     display: none;
   }
