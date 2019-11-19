@@ -19,39 +19,6 @@ export const fetchGroupPosts = id => async dispatch => {
     dispatch({ type: actionTypes.FETCH_POSTS_FAILURE, payload: err })
   }
 }
-export const createGroupPost = (token, data, socket) => async dispatch => {
-  const { userId, groupId, post_content } = data
-  if (token) {
-    // If post content is not blank
-    if (!post_content.match(/^\s+$/)) {
-      try {
-        dispatch({ type: actionTypes.CREATE_POST_REQUEST })
-        const post = await axiosWithAuth([token]).post(
-          `/posts/group/${groupId}`,
-          {
-            user_id: userId,
-            group_id: groupId,
-            post_content: post_content,
-          }
-        )
-        dispatch({
-          type: actionTypes.CREATE_POST_SUCCESS,
-          payload: post.data.postResult,
-        })
-
-        socket.emit('groupPost', {
-          post: post.data.postResult,
-          room: groupId,
-        })
-
-        Mixpanel.activity(userId, MixpanelMessages.POST_CREATED)
-      } catch (err) {
-        console.log(err)
-        dispatch({ type: actionTypes.CREATE_POST_FAILURE, payload: err })
-      }
-    }
-  }
-}
 
 export const receiveGroupPost = data => async dispatch => {
   console.log('DATA IN RECEIVE', data)
@@ -419,7 +386,7 @@ export const createReply = (token, data, socket) => async dispatch => {
       })
     }
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 
@@ -453,16 +420,6 @@ export const receiveReplyDislike = data => dispatch => {
   dispatch({ type: actionTypes.RECEIVE_REPLY_DISLIKE, payload: data.likeType })
 }
 
-export const deleteGroupPost = (token, id) => async dispatch => {
-  dispatch({ type: actionTypes.DELETE_POST_REQUEST })
-  const deletedPost = await axiosWithAuth([token]).delete(`/posts/${id}`)
-  if (deletedPost.data) {
-    dispatch({
-      type: actionTypes.DELETE_POST_SUCCESS,
-      payload: deletedPost.data,
-    })
-  }
-}
 export const requestJoinPrivate = (token, data, socket) => async dispatch => {
   dispatch({ type: actionTypes.JOIN_PRIVATE_REQUEST })
   const { user, privateGroupID, adminIds } = data

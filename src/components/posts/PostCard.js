@@ -6,7 +6,7 @@ import Moment from 'react-moment'
 import { ThumbUp, ModeCommentOutlined, DeleteOutline } from '@material-ui/icons'
 import { likePost, dislikePost } from 'actions'
 import useGetToken from '../utils/useGetToken'
-import { deleteGroupPost } from 'actions'
+import { deleteGroupPost } from './store/postActions'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Card,

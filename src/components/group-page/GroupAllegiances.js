@@ -34,6 +34,7 @@ const Allegiances = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 4px solid red;
   h3 {
     margin: 0 auto;
   }
@@ -44,7 +45,7 @@ const ImageHolder = styled.div`
 
 const LogoHolder = styled.div`
   display: flex;
-  flexdirection: row;
+  flex-direction: row;
   justify-content: center;
   margin-top: 1%;
 `

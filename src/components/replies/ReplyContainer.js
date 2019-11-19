@@ -181,7 +181,7 @@ const ReplyCardsContainer = styled.div`
   font-size: 1.4rem;
   max-width: 800px;
   @media (max-width: 500px) {
-    min-width: 350px;
+    min-width: 150px;
     width: 95%;
   }
 `

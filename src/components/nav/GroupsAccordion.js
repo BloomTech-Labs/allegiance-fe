@@ -4,7 +4,7 @@ import MyGroups from '../profile/MyGroups'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-const NavAccordion = () => {
+const GroupsAccordion = () => {
   const loggedInGroups = useSelector(state => state.myGroups)
   const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
   const handleClick = (e, titleProps) => {
@@ -29,13 +29,17 @@ const NavAccordion = () => {
         active={activeIndex.activeIndex === 0}
         className='accordion-content'
       >
-        <MyGroups content={loggedInGroups || []} type='group' />
+        <MyGroups
+          content={loggedInGroups || []}
+          type='group'
+          first_name="You don't"
+        />
       </Accordion.Content>
     </StyledAccordion>
   )
 }
 
-export default NavAccordion
+export default GroupsAccordion
 
 const StyledAccordion = styled(Accordion)`
   position: sticky;

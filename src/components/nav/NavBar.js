@@ -3,12 +3,10 @@ import { useAuth0 } from '../auth/react-auth0-wrapper'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { Mobile, Tablet } from '../utils/responsive'
-
 import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
-import NavBottom from './NavBottom'
 import styled from 'styled-components'
 import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 import {
@@ -35,7 +33,6 @@ import {
   receiveFeedPost,
   receiveFeedReply,
 } from '../feed/actions/index'
-
 const NavBar = props => {
   const { location } = props
   const user = useSelector(state => state.userReducer.loggedInUser)
@@ -48,15 +45,12 @@ const NavBar = props => {
   const [token] = useGetToken()
   const { loading } = useAuth0()
   const [searchOpen, setSearchOpen] = useState(false)
-
   const isMobile = useMediaQuery({
     query: Mobile,
   })
-
   const isTablet = useMediaQuery({
     query: Tablet,
   })
-
   useEffect(() => {
     if (user) {
       const fetchRequests = async () => {
@@ -65,7 +59,6 @@ const NavBar = props => {
       fetchRequests()
     }
   }, [user, dispatch, token])
-
   useEffect(() => {
     const fetchData = async () => {
       if (token && user) {
@@ -99,7 +92,6 @@ const NavBar = props => {
           payload: 1,
         })
       }
-
       if (data.notification.type === 'group_accepted') {
         const group_id = data.notification.type_id
         dispatch(
@@ -180,7 +172,6 @@ const NavBar = props => {
     location.pathname,
     notifications.length,
   ])
-
   if (loading) {
     return (
       <Loader active size='large'>
@@ -253,11 +244,9 @@ const NavBar = props => {
           </Menu.Menu>
         </StickyNav>
       )}
-      {/* {user && props.location.pathname !== '/profile' && <NavBottom />} */}
     </>
   )
 }
-
 const NavIcon = styled(Icon)`
   color: #fff !important;
   opacity: 1 !important;
@@ -265,7 +254,6 @@ const NavIcon = styled(Icon)`
     text-shadow: 0px 0px 2px #fff !important;
   }
 `
-
 const StickyNav = styled(Menu)`
   position: sticky;
   top: 0;
@@ -278,9 +266,7 @@ const StickyNav = styled(Menu)`
   font-size: 1.4rem !important;
   margin-bottom: 0 !important;
 `
-
 const StyledMenuItem = styled(Menu.Item)`
   align-self: center !important;
 `
-
 export default NavBar

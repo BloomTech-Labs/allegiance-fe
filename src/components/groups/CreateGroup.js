@@ -77,7 +77,7 @@ const CreateGroup = props => {
   return (
     <FormHolder>
       <FormSegment raised color='violet' style={{ margin: 'auto' }}>
-        <Form onSubmit={handleSubmit} error>
+        <Form onSubmit={handleSubmit} error style={{ fontSize: '1.5rem' }}>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>
             <Modal

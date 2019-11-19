@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter, Link } from 'react-router-dom'
 import { Popup, Icon } from 'semantic-ui-react'
 import styled from 'styled-components'
 
@@ -15,6 +15,25 @@ const ProfileAllegiances = props => {
 
   return (
     <LogoHolder>
+      <div
+        className={props.appear ? 'appear' : 'disappear'}
+        style={{ margin: '1%' }}
+      >
+        <Link to={`/addallegiance`}>
+          <Popup
+            content={'Add a allegiance'}
+            trigger={
+              <Icon
+                name='plus'
+                size='big'
+                color='grey'
+                style={{ fontSize: '2.86rem' }}
+                default={Default}
+              />
+            }
+          />
+        </Link>
+      </div>
       {!!props.content.length &&
         props.content.map(item => (
           <div
@@ -31,47 +50,40 @@ const ProfileAllegiances = props => {
         ))}
 
       {props.content.length === 0 && (
-        <Join>
-          <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
-          <Icon
-            name='question circle'
-            size='huge'
-            color='grey'
-            style={{ marginTop: '20px' }}
-          />
-        </Join>
+        <div>
+          <Join>
+            <h4>{`${props.name} belong to any allegiance's yet.`}</h4>
+            {/* <Icon name='question circle' size='huge' color='grey' /> */}
+          </Join>
+        </div>
       )}
     </LogoHolder>
   )
 }
 
 const LogoHolder = styled.div`
-  padding: 5px
-  width: 100%;
   display: flex;
-  justify-content: center;
   flex-wrap: nowrap;
+  align-items: center;
   overflow-x: auto;
-  margin-left: 1%;
-  margin-bottom: 20px;
+  background-color: white;
   &::-webkit-scrollbar {
+    display: none;
+  }
+  .appear {
+  }
+  .disappear {
     display: none;
   }
 `
 
 const Join = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: column;
   align-items: center;
   font-weight: bold;
   letter-spacing: adjusting;
   font-size: 2rem;
-`
-
-const Nickname = styled.p`
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-top: 10%;
 `
 
 const GroupLogo = styled.img`
@@ -85,4 +97,9 @@ const GroupLogo = styled.img`
   box-shadow: 3px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `
 
+const Nickname = styled.p`
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-top: 10%;
+`
 export default withRouter(ProfileAllegiances)

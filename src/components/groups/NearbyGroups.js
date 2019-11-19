@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Loader, Button } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import { axiosWithAuth } from '../utils/axiosWithAuth'
 import useGetToken from '../utils/useGetToken'
 import styled from 'styled-components'

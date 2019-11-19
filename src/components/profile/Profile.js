@@ -79,16 +79,23 @@ const Profile = props => {
         </div>
         <div className='alleg-group-container'>
           <h2>ALLEGIANCES</h2>
-          <ProfileAllegiances
-            loggedInUserId={loggedInUserId}
-            user={profile.id}
-            name={profile.first_name}
-            content={profile.allegiances}
-            type='allegiance'
-            default={Default}
-          />
+          <div className='profile-allegiance-container'>
+            <ProfileAllegiances
+              loggedInUserId={loggedInUserId}
+              user={profile.id}
+              name={profile.first_name + " doesn't"}
+              content={profile.allegiances}
+              type='allegiance'
+              default={Default}
+            />
+          </div>
           <h2>GROUPS</h2>
-          <MyGroups content={profile.groups} />
+          <div className='profile-groups-container'>
+            <MyGroups
+              content={profile.groups}
+              first_name={profile.first_name + " doesn't"}
+            />
+          </div>
         </div>
         <div className='lower-div'>
           <h2>POSTS</h2>
@@ -127,6 +134,17 @@ const ProfileContainer = styled.div`
 `
 
 const InfoHolder = styled.div`
+  padding: 20px;
+  .profile-groups-container {
+    background-color: white;
+    width: 100%;
+    max-width: 800px;
+  }
+  .profile-allegiance-container {
+    background-color: white;
+    width: 100%;
+    max-width: 800px;
+  }
   .name {
     display: flex;
     flex-direction: row;

@@ -74,7 +74,6 @@ const PostListContainer = styled.div`
   flex-direction: column-reverse;
   align-items: center;
   background-color: #e8edf1;
-  // padding-bottom: 15%;
 `
 const PostsWrapper = styled.div`
   background-color: #e8edf1;
