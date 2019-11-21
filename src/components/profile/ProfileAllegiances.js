@@ -50,18 +50,23 @@ const ProfileAllegiances = props => {
         ))}
 
       {props.content.length === 0 && (
-        <div>
-          <Join>
-            <h4>{`${props.name} belong to any allegiance's yet.`}</h4>
-            {/* <Icon name='question circle' size='huge' color='grey' /> */}
-          </Join>
-        </div>
+        <Join>
+          <h4>{`${props.name} doesn't belong to any allegiance's yet.`}</h4>
+          <Icon
+            name='question circle'
+            size='huge'
+            color='grey'
+            style={{ marginTop: '20px' }}
+          />
+        </Join>
       )}
     </LogoHolder>
   )
 }
 
 const LogoHolder = styled.div`
+  padding: 5px;
+  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;

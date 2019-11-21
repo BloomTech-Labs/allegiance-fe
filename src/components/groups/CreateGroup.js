@@ -10,6 +10,7 @@ import Default from '../../assets/walter-avi.png'
 
 const CreateGroup = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
+  const socket = useSelector(state => state.socketReducer.socket)
   const dispatch = useDispatch()
   //Imports image upload functions
   const { image, UploaderUI, modalOpen, setModal } = useImageUploader()
@@ -47,6 +48,7 @@ const CreateGroup = props => {
       creator_id: loggedInUser.id,
     }
     await dispatch(createGroup(newGroup)).then(res => {
+      socket.emit('join.groups', res.id)
       props.history.push(`/group/${res.id}`)
     })
   }
@@ -76,7 +78,7 @@ const CreateGroup = props => {
       : null
   return (
     <FormHolder>
-      <FormSegment raised color='violet' style={{ margin: 'auto' }}>
+      <FormSegment style={{ margin: 'auto' }}>
         <Form onSubmit={handleSubmit} error style={{ fontSize: '1.5rem' }}>
           <h4 style={{ fontWeight: 'bold' }}>Select Image</h4>
           <BasicInfoHolder>

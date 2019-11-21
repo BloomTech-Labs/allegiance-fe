@@ -548,9 +548,13 @@ export const fetchPrivateRequests = (token, data) => async dispatch => {
 
 export const fetchGroup = id => async dispatch => {
   dispatch({ type: actionTypes.FETCH_GROUP_REQUEST })
-  const group = await axios.get(`/groups/${id}`)
-  dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
-  console.log(group.data)
+  try {
+    const group = await axios.get(`/groups/${id}`)
+    dispatch({ type: actionTypes.FETCH_GROUP_SUCCESS, payload: group.data })
+    console.log(group.data)
+  } catch (err) {
+    dispatch({ type: actionTypes.FETCH_GROUP_FAILURE, payload: err })
+  }
 }
 
 export const editGroup = (groupId, data) => async dispatch => {

@@ -42,7 +42,8 @@ const ActivityNotificationsCard = props => {
     newCard: {
       display: 'flex',
       width: '90%',
-      backgroundColor: '#FFFFE0',
+      maxWidth: '800px',
+      backgroundColor: '#D4E7FD',
     },
     card: {
       display: 'flex',
@@ -200,13 +201,6 @@ const CardMessage = styled.div`
   line-height: 25px;
 `
 
-// const CardGroup = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   width: 20%;
-//   margin: 1%;
-// `
 const DelContainer = styled.div`
   display: flex;
   align-items: center;
@@ -223,7 +217,7 @@ const DelButton = styled.button`
   font-weight: 700;
   border-radius: 5px;
   width: 30px;
-  height: 30px
+  height: 25px
   margin: 1%;
   border-style: none;
   background-color: white
