@@ -1,6 +1,6 @@
 # Allegiance
 
-Find this up on the Internet at [Allegiance17.com](https://www.allegiance17.com/home)
+Find this up on the Internet at [allegiance17.com](https://www.allegiance17.com)
 
 ## Contributors
 
