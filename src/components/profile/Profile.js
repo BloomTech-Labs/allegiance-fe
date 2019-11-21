@@ -11,6 +11,7 @@ import { Typography } from '@material-ui/core'
 import Default from '../../assets/walter-avi.png'
 import MyGroups from './MyGroups'
 import { ProfilePosts } from './ProfilePosts'
+import NotFound from 'components/NotFound'
 
 const Profile = props => {
   const dispatch = useDispatch()
@@ -32,6 +33,10 @@ const Profile = props => {
         Loading
       </Loader>
     )
+  }
+
+  if (!profile.id) {
+    return <NotFound />
   }
 
   return (
