@@ -1,12 +1,10 @@
 import React from 'react'
 import GroupAccordion from './GroupAccordion'
 import AllegianceAccordion from './AllegianceAccordion'
-import styled from 'styled-components'
-import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 
 const NavBottom = () => {
   return (
-    <div>
+    <div style={{ position: 'sticky', top: 64, left: 0, zIndex: '1' }}>
       <GroupAccordion />
       <AllegianceAccordion />
     </div>
