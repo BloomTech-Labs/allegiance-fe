@@ -8,6 +8,7 @@ import useGetToken from '../utils/useGetToken'
 import UserNav from './UserNav'
 import Navigation from './Navigation'
 import NavSearch from './NavSearch'
+import NavBottom from './NavBottom'
 
 import styled from 'styled-components'
 import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
@@ -251,9 +252,9 @@ const NavBar = props => {
             <Navigation />
             <UserNav user={user} unread={unread} />
           </Menu.Menu>
+          {user && props.location.pathname !== '/profile' && <NavBottom />}
         </StickyNav>
       )}
-      {/* {user && props.location.pathname !== '/profile' && <NavBottom />} */}
     </>
   )
 }
@@ -271,6 +272,8 @@ const StickyNav = styled(Menu)`
   top: 0;
   left: 0;
   z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column;
   font-family: 'Roboto', sans-serif !important;
   background-color: #4483cd !important;
   border-radius: 0px !important;

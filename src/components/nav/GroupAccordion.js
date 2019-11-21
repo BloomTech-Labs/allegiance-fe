@@ -52,5 +52,6 @@ const StyledAccordion = styled(Accordion)`
   }
   .accordion-content {
     padding: 0px !important;
+    margin: 0px !important;
   }
 `

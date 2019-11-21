@@ -142,9 +142,9 @@ const App = props => {
             <Route exact path='/' component={!isAuthenticated && Landing} />
             <Route path='/'>
               <AppWrapper>
-                {loggedInUser && props.location.pathname !== '/profile' && (
+                {/* {loggedInUser && props.location.pathname !== '/profile' && (
                   <NavBottom />
-                )}
+                )} */}
                 <Switch>
                   <Route path='/home' component={Feed} />
                   <Route path='/groups' component={GroupContainer} />
