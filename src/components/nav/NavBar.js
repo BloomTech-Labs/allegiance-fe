@@ -193,54 +193,57 @@ const NavBar = props => {
   return (
     <>
       {isMobile ? (
-        <StickyNav pointing secondary>
-          <StyledMenuItem>
-            <NavIcon
-              name='search'
-              size='large'
-              style={{
-                fontSize: '1.8rem !important',
-                cursor: 'pointer',
-              }}
-              onClick={() => setSearchOpen(true)}
-            />
-            <Modal
-              dimmer
-              open={searchOpen}
-              style={{
-                width: '100%',
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                zIndex: '1',
-              }}
-              onClose={() => setSearchOpen(false)}
-            >
-              <StickyNav pointing secondary>
-                <StyledMenuItem>
-                  <NavIcon
-                    name='arrow left'
-                    size='large'
-                    style={{
-                      fontSize: '1.8em',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => setSearchOpen(false)}
-                  />
-                </StyledMenuItem>
-                <StyledMenuItem style={{ width: '80%' }}>
-                  <NavSearch
-                    resultSelectCallback={() => setSearchOpen(false)}
-                  />
-                </StyledMenuItem>
-              </StickyNav>
-            </Modal>
-          </StyledMenuItem>
-          <Menu.Menu position='right'>
-            <Navigation />
-            <UserNav user={user} unread={unread} />
-          </Menu.Menu>
-        </StickyNav>
+        <>
+          <StickyNav pointing secondary>
+            <StyledMenuItem>
+              <NavIcon
+                name='search'
+                size='large'
+                style={{
+                  fontSize: '1.8rem !important',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setSearchOpen(true)}
+              />
+              <Modal
+                dimmer
+                open={searchOpen}
+                style={{
+                  width: '100%',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  zIndex: '1',
+                }}
+                onClose={() => setSearchOpen(false)}
+              >
+                <StickyNav pointing secondary>
+                  <StyledMenuItem>
+                    <NavIcon
+                      name='arrow left'
+                      size='large'
+                      style={{
+                        fontSize: '1.8em',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => setSearchOpen(false)}
+                    />
+                  </StyledMenuItem>
+                  <StyledMenuItem style={{ width: '80%' }}>
+                    <NavSearch
+                      resultSelectCallback={() => setSearchOpen(false)}
+                    />
+                  </StyledMenuItem>
+                </StickyNav>
+              </Modal>
+            </StyledMenuItem>
+            <Menu.Menu position='right'>
+              <Navigation />
+              <UserNav user={user} unread={unread} />
+            </Menu.Menu>
+          </StickyNav>
+          {user && props.location.pathname !== '/profile' && <NavBottom />}
+        </>
       ) : (
         <>
           <StickyNav pointing secondary>
