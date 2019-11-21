@@ -6,10 +6,10 @@ import { Loader, Menu, Icon, Modal } from 'semantic-ui-react'
 
 const NavBottom = () => {
   return (
-    <StickyNav>
+    <div>
       <GroupAccordion />
       <AllegianceAccordion />
-    </StickyNav>
+    </div>
   )
 }
 
@@ -19,7 +19,8 @@ const StickyNav = styled(Menu)`
   left: 0;
   z-index: 10 !important;
   font-family: 'Roboto', sans-serif !important;
-  background-color: #4483cd !important;
+  /* background-color: #4483cd !important; */
+  background-color: brown !important;
   border-radius: 0px !important;
   border: none !important;
   font-size: 1.4rem !important;

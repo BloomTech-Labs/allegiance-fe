@@ -275,7 +275,8 @@ const StickyNav = styled(Menu)`
   display: flex !important;
   flex-direction: column;
   font-family: 'Roboto', sans-serif !important;
-  background-color: #4483cd !important;
+  /* background-color: #4483cd !important; */
+  background-color: green !important;
   border-radius: 0px !important;
   border: none !important;
   font-size: 1.4rem !important;
