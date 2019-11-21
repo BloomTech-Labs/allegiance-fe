@@ -243,12 +243,12 @@ const NavBar = props => {
         </StickyNav>
       ) : (
         <StickyNav pointing secondary>
-          <StyledMenuItem
-            style={{ width: isTablet ? '50%' : '25%', minWidth: '220px' }}
-          >
-            <NavSearch />
-          </StyledMenuItem>
-          <Menu.Menu position='right'>
+          <Menu.Menu style={{ border: '2px solid green' }}>
+            <StyledMenuItem
+              style={{ width: isTablet ? '50%' : '25%', minWidth: '220px' }}
+            >
+              <NavSearch />
+            </StyledMenuItem>
             <Navigation />
             <UserNav user={user} unread={unread} />
           </Menu.Menu>
@@ -275,8 +275,7 @@ const StickyNav = styled(Menu)`
   display: flex !important;
   flex-direction: column;
   font-family: 'Roboto', sans-serif !important;
-  /* background-color: #4483cd !important; */
-  background-color: green !important;
+  background-color: #4483cd !important;
   border-radius: 0px !important;
   border: none !important;
   font-size: 1.4rem !important;
