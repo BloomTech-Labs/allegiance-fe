@@ -242,9 +242,9 @@ const NavBar = props => {
               <UserNav user={user} unread={unread} />
             </Menu.Menu>
           </StickyNav>
-          <div>
+          {/* <div>
             {user && props.location.pathname !== '/profile' && <NavBottom />}
-          </div>
+          </div> */}
         </div>
       ) : (
         <div>
@@ -258,10 +258,11 @@ const NavBar = props => {
               <Navigation />
               <UserNav user={user} unread={unread} />
             </Menu.Menu>
+            <NavBottom />
           </StickyNav>
-          <div>
+          {/* <div>
             {user && props.location.pathname !== './profile' && <NavBottom />}
-          </div>
+          </div> */}
         </div>
       )}
       {/* {user && props.location.pathname !== '/profile' && <NavBottom />} */}
@@ -279,9 +280,9 @@ const NavIcon = styled(Icon)`
 
 const StickyNav = styled(Menu)`
   position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 10 !important;
+  top: auto;
+  left: auto;
+  z-index: auto !important;
   font-family: 'Roboto', sans-serif !important;
   background-color: #4483cd !important;
   border-radius: 0px !important;

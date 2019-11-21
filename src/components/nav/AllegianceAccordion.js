@@ -46,7 +46,7 @@ export default AllegianceAccordion
 
 const StyledAccordion = styled(Accordion)`
   position: sticky;
-  top: 64px;
+  top: auto;
   left: 0px;
   z-index: 1 !important;
   .title {
