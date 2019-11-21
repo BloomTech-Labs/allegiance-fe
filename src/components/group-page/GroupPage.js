@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 import { Loader } from 'semantic-ui-react'
 import BlockedView from '../posts/BlockedView'
+import NotFound from 'components/NotFound'
 
 const GroupPage = props => {
   // Defines id to be group id from params
@@ -42,6 +43,10 @@ const GroupPage = props => {
         Loading
       </Loader>
     )
+  }
+
+  if (!group.id) {
+    return <NotFound />
   }
 
   return (

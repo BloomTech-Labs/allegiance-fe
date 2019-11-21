@@ -15,6 +15,7 @@ import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
 import { Mixpanel } from './components/analytics/Mixpanel'
 import MixpanelMessages from './components/analytics/MixpanelMessages'
+import NotFound from 'components/NotFound'
 
 const Landing = lazy(() => import('components/Landing'))
 const Profile = lazy(() => import('components/profile/Profile'))
@@ -169,6 +170,7 @@ const App = props => {
                     component={MakeAllegiance}
                   />
                   <PrivateRoute path='/post/:id' component={ReplyContainer} />
+                  <Route component={NotFound} />
                 </Switch>
               </AppWrapper>
             </Route>
