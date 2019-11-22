@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import Default from '../../assets/walter-avi.png'
 
 const ProfileAllegiances = props => {
+  const { isCentered } = props;
+
   const mixpanelCheck = link => {
     if (props.type === 'group') {
       props.history.push(link)
@@ -14,7 +16,7 @@ const ProfileAllegiances = props => {
   }
 
   return (
-    <LogoHolder>
+    <LogoHolder style={{ justifyContent: isCentered ? 'center' : 'flex-start' }}>
       {!!props.content.length &&
         props.content.map(item => (
           <div
@@ -49,7 +51,6 @@ const LogoHolder = styled.div`
   padding: 5px;
   width: 100%;
   display: flex;
-  justify-content: center;
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-left: 1%;

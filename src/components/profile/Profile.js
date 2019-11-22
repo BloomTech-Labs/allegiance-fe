@@ -91,6 +91,7 @@ const Profile = props => {
             content={profile.allegiances}
             type='allegiance'
             default={Default}
+            isCentered={true}
           />
           <h2>GROUPS</h2>
           <MyGroups content={profile.groups} />

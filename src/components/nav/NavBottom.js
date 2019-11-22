@@ -1,23 +1,14 @@
 import React from 'react'
-import NavAccordion from './NavAccordion'
-
-// ***ADD THESE 2 BACK IF WE ADD ALLEGIANCE TO NAV***
-// import AllegianceNav from './AllegianceNav'
+import GroupAccordion from './GroupAccordion'
+import AllegianceAccordion from './AllegianceAccordion'
 
 const NavBottom = () => {
   return (
-    <>
-      <NavAccordion />
-    </>
+    <div style={{ position: 'sticky', top: 64, left: 0, zIndex: '1' }}>
+      <GroupAccordion />
+      <AllegianceAccordion />
+    </div>
   )
 }
-
-// ***ADD THESE 2 BACK IF WE ADD ALLEGIANCE TO NAV***
-// const BottomNav = styled.div`
-//   background-color: blue;
-//   color: white;
-//   padding: 7px;
-//   margin-bottom: 15px;
-// `
 
 export default NavBottom

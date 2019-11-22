@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Accordion, Icon } from 'semantic-ui-react'
-import MyGroups from '../profile/MyGroups'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import ProfileAllegiances from '../profile/ProfileAllegiances'
 
-const NavAccordion = () => {
-  const loggedInGroups = useSelector(state => state.myGroups)
+const AllegianceAccordion = () => {
+  const loggedInAllegiances = useSelector(
+    state => state.userReducer.loggedInAllegiances
+  )
   const [activeIndex, setActiveIndex] = useState({ activeIndex: 0 })
   const handleClick = (e, titleProps) => {
     const { index } = titleProps
@@ -23,24 +25,26 @@ const NavAccordion = () => {
         className='title'
       >
         <Icon name='dropdown' />
-        My Groups
+        My Allegiances
       </Accordion.Title>
       <Accordion.Content
         active={activeIndex.activeIndex === 0}
         className='accordion-content'
       >
-        <MyGroups content={loggedInGroups || []} type='group' />
+        <ProfileAllegiances
+          content={loggedInAllegiances || []}
+          type='group'
+          name={"You don't"}
+          appear={true}
+        />
       </Accordion.Content>
     </StyledAccordion>
   )
 }
 
-export default NavAccordion
+export default AllegianceAccordion
 
 const StyledAccordion = styled(Accordion)`
-  position: sticky;
-  top: 64px;
-  left: 0px;
   background-color: white !important;
   z-index: 1 !important;
   .title {
@@ -52,5 +56,6 @@ const StyledAccordion = styled(Accordion)`
   }
   .accordion-content {
     padding: 0px !important;
+    margin: 0px !important;
   }
 `

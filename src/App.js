@@ -11,7 +11,6 @@ import PrivateRoute from './components/PrivateRoute'
 import { initGA, logPageView } from './components/analytics/Analytics'
 import { useAuth0 } from './components/auth/react-auth0-wrapper'
 import NavBar from './components/nav/NavBar'
-import NavBottom from './components/nav/NavBottom'
 import * as types from 'actions/actionTypes'
 import { Mixpanel } from './components/analytics/Mixpanel'
 import MixpanelMessages from './components/analytics/MixpanelMessages'
@@ -142,9 +141,9 @@ const App = props => {
             <Route exact path='/' component={!isAuthenticated && Landing} />
             <Route path='/'>
               <AppWrapper>
-                {loggedInUser && props.location.pathname !== '/profile' && (
+                {/* {loggedInUser && props.location.pathname !== '/profile' && (
                   <NavBottom />
-                )}
+                )} */}
                 <Switch>
                   <Route path='/home' component={Feed} />
                   <Route path='/groups' component={GroupContainer} />
