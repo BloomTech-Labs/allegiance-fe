@@ -25,7 +25,7 @@ const AllegianceAccordion = () => {
         className='title'
       >
         <Icon name='dropdown' />
-        My Alliances
+        My Allegiances
       </Accordion.Title>
       <Accordion.Content
         active={activeIndex.activeIndex === 0}

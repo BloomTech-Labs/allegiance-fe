@@ -6,7 +6,7 @@ import useImageUploader from '../utils/useImageUploader'
 import DeleteGroup from './DeleteGroup'
 import { Form, Modal, Segment } from 'semantic-ui-react'
 import styled from 'styled-components'
-import Default from '../../assets/walter-avi.png'
+import Default from '../../assets/logo192.png'
 
 const CreateGroup = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser)
